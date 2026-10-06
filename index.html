@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NumeraKey — Shop media</title>
+<style>
+body{margin:0;background:#050505;color:#eee;font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;padding:24px}
+.wrap{max-width:720px;width:100%;text-align:center}
+h1{font-weight:650;letter-spacing:.04em;margin:0 0 8px}
+p{color:#999;margin:0 0 20px}
+video{width:100%;border-radius:16px;border:1px solid #222;background:#000}
+a{color:#f5c542}
+code{color:#ccc;font-size:.85rem;word-break:break-all}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>NumeraKey</h1>
+  <p>Shop hero media (15s). Direct link below.</p>
+  <video controls playsinline preload="metadata" poster="" src="video/hero.mp4"></video>
+  <p style="margin-top:16px"><code id="u"></code></p>
+</div>
+<script>document.getElementById('u').textContent=location.origin+'/video/hero.mp4'</script>
+</body>
+</html>
