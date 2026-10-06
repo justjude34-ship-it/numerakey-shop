@@ -1,44 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NumeraKey — Shop media</title>
-<style>
-body{margin:0;background:#050505;color:#eee;font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;padding:24px}
-.wrap{max-width:720px;width:100%;text-align:center}
-h1{font-weight:650;letter-spacing:.04em;margin:0 0 8px}
-p{color:#999;margin:0 0 12px;line-height:1.45}
-img,video{width:100%;border-radius:16px;border:1px solid #222;background:#000;margin:8px 0 4px}
-a{color:#f5c542} code{color:#ccc;font-size:.85rem;word-break:break-all;display:block;margin-top:4px}
-.block{margin:22px 0;text-align:left}
-.block h2{font-size:1rem;color:#f5c542;margin:0 0 8px}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <h1>NumeraKey</h1>
-  <p>Shop hero media — image + 15s video. Use the direct links below.</p>
-  <div class="block">
-    <h2>Hero image</h2>
-    <img src="images/hero.jpg" alt="NumeraKey shop hero">
-    <code id="imgU"></code>
-    <p><a id="imgA" href="#">Open JPG</a></p>
-  </div>
-  <div class="block">
-    <h2>Hero video (web)</h2>
-    <video controls playsinline preload="metadata" poster="images/hero.jpg" src="video/hero.mp4"></video>
-    <code id="vidU"></code>
-    <p><a id="vidA" href="#">Open MP4</a></p>
-  </div>
-</div>
-<script>
-const img=location.origin+'/images/hero.jpg';
-const vid=location.origin+'/video/hero.mp4';
-document.getElementById('imgU').textContent=img;
-document.getElementById('imgA').href=img;
-document.getElementById('vidU').textContent=vid;
-document.getElementById('vidA').href=vid;
-</script>
-</body>
-</html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NumeraKey shop</title>
+<style>body{margin:0;background:#07080c;color:#eee;font-family:Georgia,serif}header,main{max-width:1100px;margin:0 auto;padding:24px}p,figcaption{font-family:system-ui,sans-serif}video{width:100%;border-radius:16px;background:#000}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}figure{margin:0;background:#12141c;border-radius:14px;overflow:hidden}img{width:100%;height:180px;object-fit:cover;display:block;background:#000}figcaption{padding:10px 12px 14px}</style>
+</head><body>
+<header>
+<h1>NumeraKey shop</h1>
+<p>Hero video, then covers that already live online.</p>
+<video controls playsinline preload="metadata" poster="images/hero.jpg" src="video/hero.mp4"></video>
+</header>
+<main><div class="grid">
+<figure><img src="https://auraflow.grok.me/og.jpg" alt="AuraFlow"><figcaption>AuraFlow</figcaption></figure>
+<figure><img src="https://my-pet.grok.me/og.jpg" alt="Paws of Destiny"><figcaption>Paws of Destiny</figcaption></figure>
+<figure><img src="https://lantern.grok.me/og.jpg" alt="Lantern"><figcaption>Lantern</figcaption></figure>
+<figure><img src="https://haven-cbt-adhd-support.grok.me/images/haven-hero.jpg" alt="Haven"><figcaption>Haven</figcaption></figure>
+<figure><img src="https://soul-sync-two.grok.me/og.jpg" alt="SoulSync"><figcaption>SoulSync</figcaption></figure>
+<figure><img src="https://ledger-noir.grok.me/og.jpg" alt="Ledger Noir"><figcaption>Ledger Noir</figcaption></figure>
+<figure><img src="https://held-one.grok.me/og.jpg" alt="Held"><figcaption>Held</figcaption></figure>
+<figure><img src="https://unspoken.grok.me/og.jpg" alt="Unspoken"><figcaption>Unspoken</figcaption></figure>
+<figure><img src="https://ember-one.grok.me/og.jpg" alt="Ember"><figcaption>Ember</figcaption></figure>
+<figure><img src="https://habits-1.grok.me/og.jpg" alt="Habit Swap"><figcaption>Habit Swap</figcaption></figure>
+<figure><img src="https://unstuck.grok.me/og.jpg" alt="Unstuck"><figcaption>Unstuck</figcaption></figure>
+<figure><img src="https://lumen-tarot-one.grok.me/og.jpg" alt="Lumen Tarot"><figcaption>Lumen Tarot</figcaption></figure>
+<figure><img src="https://narc-escape-guide.grok.me/og.jpg" alt="Narc Escape Guide"><figcaption>Narc Escape Guide</figcaption></figure>
+<figure><img src="https://still-one-alpha.vercel.app/cover.jpg" alt="Still"><figcaption>Still</figcaption></figure>
+<figure><img src="https://adhdmate.grok.me/cover-wide.jpg" alt="Nova"><figcaption>Nova</figcaption></figure>
+<figure><img src="https://room-to-breathe.grok.me/cover.jpg" alt="Room to Breathe"><figcaption>Room to Breathe</figcaption></figure>
+<figure><img src="https://accepting-me.grok.me/cover-portrait.jpg" alt="Soft Landing"><figcaption>Soft Landing</figcaption></figure>
+</div></main>
+</body></html>
