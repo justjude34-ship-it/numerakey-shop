@@ -8,19 +8,37 @@
 body{margin:0;background:#050505;color:#eee;font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;padding:24px}
 .wrap{max-width:720px;width:100%;text-align:center}
 h1{font-weight:650;letter-spacing:.04em;margin:0 0 8px}
-p{color:#999;margin:0 0 20px}
-video{width:100%;border-radius:16px;border:1px solid #222;background:#000}
-a{color:#f5c542}
-code{color:#ccc;font-size:.85rem;word-break:break-all}
+p{color:#999;margin:0 0 12px;line-height:1.45}
+img,video{width:100%;border-radius:16px;border:1px solid #222;background:#000;margin:8px 0 4px}
+a{color:#f5c542} code{color:#ccc;font-size:.85rem;word-break:break-all;display:block;margin-top:4px}
+.block{margin:22px 0;text-align:left}
+.block h2{font-size:1rem;color:#f5c542;margin:0 0 8px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>NumeraKey</h1>
-  <p>Shop hero media (15s). Direct link below.</p>
-  <video controls playsinline preload="metadata" poster="" src="video/hero.mp4"></video>
-  <p style="margin-top:16px"><code id="u"></code></p>
+  <p>Shop hero media — image + 15s video. Use the direct links below.</p>
+  <div class="block">
+    <h2>Hero image</h2>
+    <img src="images/hero.jpg" alt="NumeraKey shop hero">
+    <code id="imgU"></code>
+    <p><a id="imgA" href="#">Open JPG</a></p>
+  </div>
+  <div class="block">
+    <h2>Hero video (web)</h2>
+    <video controls playsinline preload="metadata" poster="images/hero.jpg" src="video/hero.mp4"></video>
+    <code id="vidU"></code>
+    <p><a id="vidA" href="#">Open MP4</a></p>
+  </div>
 </div>
-<script>document.getElementById('u').textContent=location.origin+'/video/hero.mp4'</script>
+<script>
+const img=location.origin+'/images/hero.jpg';
+const vid=location.origin+'/video/hero.mp4';
+document.getElementById('imgU').textContent=img;
+document.getElementById('imgA').href=img;
+document.getElementById('vidU').textContent=vid;
+document.getElementById('vidA').href=vid;
+</script>
 </body>
 </html>
