@@ -99,6 +99,7 @@ const AP3 = [
 },
 {
   slug:"wind-and-water", name:"Wind & Water", cat:"home", price:39, status:"live",
+  cover:"covers/wind-and-water.jpg",
   desc:"Feng shui for a real house, room by room, without buying anything.",
   tag:"Work with the house you have.",
   body:[

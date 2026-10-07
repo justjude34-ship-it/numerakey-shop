@@ -45,6 +45,7 @@ const AP2 = [
 },
 {
   slug:"frequency-guide", name:"Frequency Guide", cat:"sound", price:39, status:"live",
+  cover:"covers/frequency-guide.jpg",
   desc:"Solfeggio tones and brainwave states, sorted by what you actually need.",
   tag:"Pick the need, not the number.",
   body:[
