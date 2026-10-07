@@ -43,6 +43,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
   slug:"rise-beyond", name:"Rise Beyond", cat:"narc", price:39, status:"live", ready:true,
+  cover:"covers/rise-beyond.jpg",
   desc:"Four short regulation practices to watch and breathe along with — water, the Om, sound and a singing bowl.",
   tag:"Settle. Ground. Rise.",
   body:[
@@ -126,6 +127,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
   slug:"palmistry-studio", name:"Palmistry Studio", cat:"divine", price:39, status:"live", ready:true,
+  cover:"covers/palmistry-studio.jpg",
   desc:"A quiet studio for reading your own left palm — add a photo, see the major lines, and learn what each one means.",
   tag:"Learn palmistry on your own hand.",
   body:[
