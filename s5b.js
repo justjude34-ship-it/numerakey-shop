@@ -101,6 +101,7 @@ artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
   slug:"budgetpilot", name:"BudgetPilot", cat:"money", price:39, status:"live", ready:true,
+  cover:"covers/budgetpilot.jpg",
   desc:"A private monthly budget in your pocket — income, expenses, what is left, and a coach that answers in plain numbers.",
   tag:"Know what's left. Keep it private.",
   body:[
