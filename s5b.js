@@ -171,3 +171,18 @@ APPS.push({
   inside:["Exclusive modes: binaural or bowls, never mixed","Five binaural bands: Delta through Gamma","Four bowl sets: Deep, Earth, Tibetan, Crystal","Sessions from 5 to 120 minutes","Carrier, beat and root controls","Works offline, one HTML file"]
 });
 artFor(APPS[APPS.length - 1]).motif = "rings";
+
+APPS.push({
+  slug:"serenity", name:"Serenity Gratitude Journal", cat:"wellness", price:29, status:"live", ready:true,
+  cover:"covers/serenity.jpg",
+  demo:"https://justjude34-ship-it.github.io/serenity-gratitude-journal/",
+  desc:"A quiet daily gratitude practice — blessings, mood, and a private history that stays on your device.",
+  tag:"Pause. Notice. Write it down.",
+  body:[
+    "Serenity is one quiet page at a time. Open the cover when you are ready, write a few blessings, name how you feel, and optionally note what the gratitude reminds you of. A soft streak and week strip keep the rhythm without turning it into homework.",
+    "Everything stays in local storage on your phone. No account, nothing uploaded, works offline. A calm teal and pink cover on black, with soft gold accents — built for evening light."
+  ],
+  inside:["Daily blessings you write in your own words","Mood check: Grateful, Glad, Calm, Tired, Low","Optional reflection line","Streak, week and history on device","Quiet dark cover — teal, pink and gold","One HTML file, offline, buy once"]
+});
+artFor(APPS[APPS.length - 1]).motif = "rings";
+
