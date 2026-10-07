@@ -74,9 +74,9 @@
 
 
 <style>
-.nk-hero-video{position:relative;width:100%;max-width:100vw;overflow:hidden;background:#0a0b10;line-height:0;border-bottom:1px solid rgba(255,255,255,.06)}
-.nk-hero-video__el{display:block;width:100%;height:auto;max-height:min(56vh,520px);object-fit:cover;object-position:center center;background:#0a0b10}
-@media(max-width:640px){.nk-hero-video__el{max-height:42vh}}
+.nk-hero-video{position:relative;width:100%;max-width:100%;overflow:hidden;background:#0a0b10;line-height:0;border-bottom:1px solid rgba(255,255,255,.06);box-sizing:border-box}
+.nk-hero-video__el{display:block;width:100%;max-width:100%;height:auto;max-height:min(56vh,520px);object-fit:cover;object-position:center center;background:#0a0b10;min-width:0}
+@media(max-width:640px){.nk-hero-video__el{max-height:40vh}}
 @media(prefers-reduced-motion:reduce){.nk-hero-video__el{/* keep poster via paused state */} }
 </style>
 <script>

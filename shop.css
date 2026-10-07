@@ -34,16 +34,17 @@
 
 /* ========================================================================== */
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;overflow-x:hidden;max-width:100%}
 body{
   margin:0;background:var(--ground);color:var(--ink);
   font-family:var(--ui);font-size:16.5px;line-height:1.62;font-weight:300;
   -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;max-width:100%;
 }
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:2px solid var(--gold);outline-offset:3px}
 img,svg{display:block;max-width:100%}
-.wrap{max-width:1100px;margin:0 auto;padding:0 var(--pad)}
+.wrap{max-width:1100px;width:100%;margin:0 auto;padding:0 var(--pad);box-sizing:border-box}
 
 /* ---------- type ---------- */
 h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;text-wrap:balance}
@@ -68,20 +69,26 @@ header.bar{
   position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
   background:rgba(0,0,0,.76);backdrop-filter:blur(16px) saturate(140%);
   border-bottom:1px solid var(--line);
+  max-width:100%;overflow-x:hidden;
 }
-.bar .wrap{display:flex;align-items:center;gap:14px;height:60px}
+.bar .wrap{display:flex;align-items:center;gap:14px;height:60px;min-width:0;max-width:100%;overflow:hidden}
 @media(max-width:480px){
-  .bar .wrap{gap:10px}
-  .mark{font-size:1.28rem}
-  .bar nav{gap:13px;font-size:.84rem}
+  .bar .wrap{gap:8px}
+  .mark{font-size:1.2rem;flex-shrink:0}
+  .bar nav{gap:10px;font-size:.78rem;min-width:0}
 }
-.mark{font-family:var(--display);font-weight:600;font-size:1.5rem;letter-spacing:-.01em;line-height:1}
-.bar nav{margin-left:auto;display:flex;gap:clamp(14px,3vw,26px);font-size:.93rem;color:var(--ink-3)}
+@media(max-width:360px){
+  .bar .wrap{gap:6px}
+  .mark{font-size:1.1rem}
+  .bar nav{gap:8px;font-size:.72rem}
+}
+.mark{font-family:var(--display);font-weight:600;font-size:1.5rem;letter-spacing:-.01em;line-height:1;min-width:0}
+.bar nav{margin-left:auto;display:flex;gap:clamp(10px,2.5vw,26px);font-size:.93rem;color:var(--ink-3);min-width:0;flex-shrink:1}
 .bar nav a{white-space:nowrap}
 .bar nav a:hover,.bar nav a[aria-current]{color:var(--ink)}
 
 /* ---------- hero: the cover wall ---------- */
-.wall{position:relative;overflow:hidden;background:var(--ground)}
+.wall{position:relative;overflow:hidden;background:var(--ground);max-width:100%;width:100%}
 .wall-rows{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(8px,1.2vw,15px)}
 .wall-row{height:clamp(84px,10.5vw,150px);overflow:hidden}
 .wall-track{display:flex;gap:clamp(8px,1.2vw,15px);width:max-content;height:100%}
