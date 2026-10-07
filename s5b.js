@@ -29,6 +29,8 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
   slug:"nova", name:"Nova", cat:"wellness", price:39, status:"live", ready:true,
+  cover:"covers/nova.jpg",
+  demo:"https://justjude34-ship-it.github.io/nova/",
   desc:"Soft structure for a brain that runs on interest — tiny steps, short sprints, a mood check-in and a companion in three tones.",
   tag:"Productivity is optional. Regulation counts.",
   body:[
