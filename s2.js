@@ -132,7 +132,7 @@ const AP2 = [
 },
 {
   slug:"lumen-tarot", name:"Lumen Tarot", cat:"divine", price:39, status:"live",
-  cover:"https://lumen-tarot-one.grok.me/og.jpg",
+  cover:"covers/lumen-tarot.jpg",
   desc:"A full deck and a private reading journal \u2014 light for the question you're holding.",
   tag:"Light for the question you are holding.",
   body:[

@@ -12,7 +12,7 @@ const AP4 = [
 },
 {
   slug:"night-garden", name:"Night Garden", cat:"wellness", price:39, status:"live", ready:true,
-  cover:"https://night-garden.netlify.app/og.jpg",
+  cover:"covers/night-garden.jpg",
   desc:"Understanding complex PTSD \u2014 twelve lessons, plain language, and the words for what keeps happening.",
   tag:"Understanding complex PTSD.",
   body:[
@@ -89,6 +89,7 @@ const AP4 = [
 },
 {
   slug:"daily-plate", name:"Daily Plate", cat:"wellness", price:39, status:"live", ready:true,
+  cover:"covers/daily-plate.jpg",
   desc:"A food diary that knows the Australian shelf \u2014 Woolworths, Coles and ALDI, kept on your phone.",
   tag:"Your plate. On this phone only.",
   body:[
@@ -129,6 +130,7 @@ const AP4 = [
 },
 {
   slug:"nomen", name:"Nomen", cat:"divine", price:59, status:"live", ready:true,
+  cover:"covers/nomen.jpg",
   desc:"Read the name you were given, then find one that carries you better.",
   tag:"Your name is a number. Read it, then find one that carries you further.",
   body:[

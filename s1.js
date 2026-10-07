@@ -81,6 +81,7 @@ const AP1 = [
 },
 {
   slug:"black-sheep", name:"The Black Sheep", cat:"narc", price:39, status:"live", ready:true,
+  cover:"covers/black-sheep.jpg",
   desc:"For the one the family named difficult \u2014 and for the adult watching the same coat held out to a child.",
   tag:"You were never the problem.",
   body:[

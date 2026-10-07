@@ -95,6 +95,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
   slug:"first-light", name:"First Light", cat:"wellness", price:39, status:"live", ready:true,
+  cover:"covers/first-light.jpg",
   desc:"A quiet sleep course — a diary, a steady rise time and three tools for the middle of the night.",
   tag:"Sleep is a skill. You can relearn it.",
   body:[
