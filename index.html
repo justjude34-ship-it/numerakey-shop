@@ -22,9 +22,10 @@
     muted
     loop
     playsinline
-    poster="https://numerakey-media-host.vercel.app/images/hero.jpg"
+    preload="auto"
+    poster="/images/hero.jpg"
   >
-    <source src="https://numerakey-media-host.vercel.app/video/hero.mp4" type="video/mp4">
+    <source src="/video/hero.mp4" type="video/mp4">
   </video>
 </section>
 
@@ -74,17 +75,65 @@
 
 
 <style>
-.nk-hero-video{position:relative;width:100%;max-width:100%;overflow:hidden;background:#0a0b10;line-height:0;border-bottom:1px solid rgba(255,255,255,.06);box-sizing:border-box}
-.nk-hero-video__el{display:block;width:100%;max-width:100%;height:auto;max-height:min(56vh,520px);object-fit:cover;object-position:center center;background:#0a0b10;min-width:0}
-@media(max-width:640px){.nk-hero-video__el{max-height:40vh}}
+/* Full globe visible: contain + black letterbox (no crop). Portrait 1152x1668. */
+.nk-hero-video{position:relative;width:100%;max-width:100%;overflow:hidden;background:#0a0b10;line-height:0;border-bottom:1px solid rgba(255,255,255,.06);box-sizing:border-box;display:flex;justify-content:center;align-items:center}
+.nk-hero-video__el{display:block;width:100%;max-width:100%;height:auto;max-height:min(85vh,900px);object-fit:contain;object-position:center center;background:#0a0b10;min-width:0}
+@media(max-width:640px){
+  /* Let natural portrait aspect show on phone — no 40vh crop */
+  .nk-hero-video__el{max-height:none;width:100%;height:auto}
+}
 @media(prefers-reduced-motion:reduce){.nk-hero-video__el{/* keep poster via paused state */} }
 </style>
 <script>
 document.addEventListener('DOMContentLoaded',function(){
+  var v=document.querySelector('.nk-hero-video__el');
+  if(!v) return;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    var v=document.querySelector('.nk-hero-video__el');
-    if(v){try{v.pause();}catch(e){}}
+    try{v.pause();}catch(e){}
+    return;
   }
+  /* Quieter than full blast but audible */
+  var QUIET=0.35;
+  var unlocked=false;
+  function unmuteAndPlay(){
+    if(unlocked) return;
+    try{
+      v.muted=false;
+      v.volume=QUIET;
+      var p=v.play();
+      if(p&&typeof p.then==='function'){
+        p.then(function(){ unlocked=true; }).catch(function(){ /* still blocked */ });
+      } else {
+        unlocked=true;
+      }
+    }catch(e){}
+  }
+  function tryAutoplayWithSound(){
+    v.muted=false;
+    v.volume=QUIET;
+    var p=v.play();
+    if(p&&typeof p.then==='function'){
+      p.then(function(){ unlocked=true; }).catch(function(){
+        /* Browser blocked sound autoplay — keep video playing muted, unmute on first gesture */
+        v.muted=true;
+        v.play().catch(function(){});
+      });
+    }
+  }
+  tryAutoplayWithSound();
+  function onGesture(){
+    unmuteAndPlay();
+    if(unlocked){
+      document.removeEventListener('pointerdown',onGesture,true);
+      document.removeEventListener('touchstart',onGesture,true);
+      document.removeEventListener('keydown',onGesture,true);
+      document.removeEventListener('scroll',onGesture,true);
+    }
+  }
+  document.addEventListener('pointerdown',onGesture,true);
+  document.addEventListener('touchstart',onGesture,{capture:true,passive:true});
+  document.addEventListener('keydown',onGesture,true);
+  document.addEventListener('scroll',onGesture,{capture:true,passive:true});
 });
 </script>
 
