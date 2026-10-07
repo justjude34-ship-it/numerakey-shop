@@ -70,6 +70,7 @@ const AP1 = [
 },
 {
   slug:"haven", name:"Haven", cat:"narc", price:39, status:"live",
+  cover:"covers/haven.jpg",
   desc:"Nervous system first \u2014 for the pull, the contact, and the days after.",
   tag:"Nothing is required of you here.",
   body:[

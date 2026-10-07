@@ -5,6 +5,7 @@ STOPS.splice(0, STOPS.length, "#2EC4B6", "#9B5DE5", "#E040B0");
 
 APPS.push({
   slug:"lantern", name:"Lantern", cat:"narc", price:39, status:"live", ready:true,
+  cover:"covers/lantern.jpg",
   desc:"A calm space to understand relationship patterns, steady yourself, and plan healthy next steps.",
   tag:"Clarity without harsh labels.",
   body:[
@@ -17,6 +18,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
   slug:"pulse-plus", name:"Pulse Plus", cat:"sound", price:39, status:"live", ready:true,
+  cover:"covers/pulse-plus.jpg",
   desc:"A neon music player in teal and magenta for the music you already own — add songs, build playlists, keep it all on your device.",
   tag:"Your music. On this device.",
   body:[

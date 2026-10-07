@@ -110,6 +110,7 @@ const AP2 = [
 },
 {
   slug:"numera-plus", name:"Numera Plus", cat:"divine", price:39, status:"live", ready:true,
+  cover:"covers/numera-plus.jpg",
   desc:"Your birth date in Phillips' 3\u00d73 grid \u2014 the arrows, the empty squares, and what they ask of you.",
   tag:"Nine squares. Eight arrows. One date.",
   body:[
