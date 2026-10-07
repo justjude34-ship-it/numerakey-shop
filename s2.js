@@ -54,17 +54,6 @@ const AP2 = [
   inside:["Solfeggio tones filed by need","Brainwave state reference","Play pure tones in the app","Load your own entrainment tracks","Traditional associations, labelled as such","No medical claims"]
 },
 {
-  slug:"tidelight", name:"Tidelight", cat:"wellness", price:89, status:"live", ready:true,
-  cover:"covers/tidelight.jpg",
-  desc:"Check in, talk, breathe, land, and take one small step \u2014 out loud if that's easier.",
-  tag:"A calm self-care companion. Not therapy.",
-  body:[
-    "Five things, in whatever order the day needs them: a check-in, something to talk to, breathing, a way to land when you're somewhere above yourself, and one small step rather than a plan.",
-    "You can speak to it and be answered aloud. That runs on your own ElevenLabs key, pasted once and kept on your device \u2014 so the voice is yours, the cost is nothing, and it falls back to your browser's own speech if you'd rather not bother."
-  ],
-  inside:["Check in, talk, breathe, land, one small step","Speak to it and be answered aloud","Your own voice key, stored on your device","Falls back to browser speech with no key","Nothing sent anywhere, ever","One file, works offline"]
-},
-{
   slug:"habit-swap", name:"Habit Swap", cat:"wellness", price:39, status:"live",
   cover:"https://habits-1.grok.me/og.jpg",
   desc:"You can't delete a habit, only replace it \u2014 so find the cue and put something kinder in its place.",
