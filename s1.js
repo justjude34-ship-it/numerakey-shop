@@ -60,6 +60,7 @@ const AP1 = [
 },
 {
   slug:"indomita", name:"Indomita", cat:"narc", price:39, status:"live",
+  cover:"covers/indomita.jpg",
   desc:"Surviving one \u2014 through the separation, the smear, and everything designed to wear you down.",
   tag:"Built to outlast them.",
   body:[

@@ -23,7 +23,7 @@ const AP4 = [
 },
 {
   slug:"tend", name:"Tend", cat:"home", price:39, status:"live", ready:true,
-  cover:"https://tend-app-one.netlify.app/og.jpg",
+  cover:"covers/tend.jpg",
   desc:"One small cleaning job a day, worked out from the rooms you actually have.",
   tag:"A little bit of cleaning each day, planned around your home.",
   body:[
@@ -100,6 +100,7 @@ const AP4 = [
 },
 {
   slug:"right-action", name:"Right Action", cat:"divine", price:59, status:"live", ready:true,
+  cover:"covers/right-action.jpg",
   desc:"What this year is actually for, month by month, and the next useful step in it.",
   tag:"The year has a shape. Work with it.",
   body:[
