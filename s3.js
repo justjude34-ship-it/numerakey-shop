@@ -1,6 +1,6 @@
 const AP3 = [
 {
-  slug:"doorplate", name:"Doorplate", cat:"divine", price:29, status:"live", ready:true,
+  slug:"home-number", name:"Home Number", cat:"divine", price:29, status:"live", ready:true,
   desc:"The quick read on a house number \u2014 the arithmetic shown, and whether it suits your Life Path.",
   tag:"Every door has a number. Every number has a temper.",
   body:[
