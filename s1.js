@@ -100,6 +100,7 @@ const AP1 = [
 },
 {
   slug:"harbor", name:"Harbor", cat:"wellness", price:39, status:"live", ready:true,
+  cover:"covers/harbor.jpg",
   desc:"A companion for living with MS \u2014 fatigue, fog, heat, flares, and the days that ask too much.",
   tag:"Not a chart. Company.",
   body:[
