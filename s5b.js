@@ -175,7 +175,7 @@ artFor(APPS[APPS.length - 1]).motif = "rings";
 APPS.push({
   slug:"serenity", name:"Serenity Gratitude Journal", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/serenity.jpg",
-  demo:"https://justjude34-ship-it.github.io/serenity-gratitude-journal/",
+  demo:"https://serenity-gratitude-journal.vercel.app",
   desc:"A quiet daily gratitude practice — blessings, mood, and a private history that stays on your device.",
   tag:"Pause. Notice. Write it down.",
   body:[
