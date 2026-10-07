@@ -108,15 +108,17 @@ header.bar{
 .wall-copy{position:relative;padding:clamp(74px,13vw,144px) var(--pad) clamp(52px,9vw,96px)}
 @media(max-width:760px){
   /* On a phone the copy spans the full width, so the wall moves above it and
-     fades to black rather than sitting behind the words. */
-  .wall-rows{inset:0 0 auto 0;height:clamp(152px,46vw,236px);justify-content:flex-start}
-  .wall-row{height:clamp(70px,21vw,108px)}
+     fades to black rather than sitting behind the words. The rows keep their
+     full height (they must not shrink) so no cover title is cut off. */
+  .wall{--wr:clamp(92px,27vw,128px);--wg:clamp(8px,2vw,12px);--wall-h:calc(var(--wr) * 3 + var(--wg) * 2)}
+  .wall-rows{inset:0 0 auto 0;height:var(--wall-h);justify-content:flex-start;gap:var(--wg)}
+  .wall-row{height:var(--wr);flex:0 0 auto}
   .wall-scrim{
     background:linear-gradient(180deg,
-      rgba(0,0,0,.34) 0%, rgba(0,0,0,.42) 26%, rgba(0,0,0,.9) 44%,
-      var(--ground) 56%, var(--ground) 100%);
+      rgba(0,0,0,.14) 0, rgba(0,0,0,.18) var(--wall-h),
+      var(--ground) calc(var(--wall-h) + 64px), var(--ground) 100%);
   }
-  .wall-copy{padding-top:clamp(186px,54vw,290px)}
+  .wall-copy{padding-top:calc(var(--wall-h) + 40px)}
 }
 .wall-copy .lede{margin-top:20px}
 
