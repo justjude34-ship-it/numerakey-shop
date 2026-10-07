@@ -59,16 +59,6 @@ const AP1 = [
   inside:["A safe room built before anything is opened","Paced by how much room you have today","Toxic shame \u2014 the two kinds, and how it hides","Family roles and the four F protectors","Parts work, not one single child","Letters, and notes kept on your device","Plain about what it is not"]
 },
 {
-  slug:"undoing", name:"Undoing", cat:"wellness", price:39, status:"live",
-  desc:"A companion for the 365 lessons of A Course in Miracles, one day at a time.",
-  tag:"One lesson a day, for a year.",
-  body:[
-    "The full workbook year, with the day's lesson, a short reflection, and somewhere to record what you noticed.",
-    "Miss a day and it waits. There is no streak to break."
-  ],
-  inside:["All 365 daily lessons","Reflection prompt for each day","Your own notes, kept locally","Jump to any lesson by number","Reading reminders you control"]
-},
-{
   slug:"indomita", name:"Indomita", cat:"narc", price:39, status:"live",
   desc:"Surviving one \u2014 through the separation, the smear, and everything designed to wear you down.",
   tag:"Built to outlast them.",
@@ -117,17 +107,6 @@ const AP1 = [
     "There is a soft daily check-in for energy, pain, mood and symptoms, which it remembers and refers to when you talk. It is careful about its limits: it will not recommend starting, stopping or switching a medicine, it points you to your neurology team for anything new or worsening, and it names emergencies as emergencies. Crisis support is Lifeline 13 11 14 first, because it was built here."
   ],
   inside:["Talk or type \u2014 it speaks with your device's own voice","Daily check-in it remembers and refers back to","Fatigue, heat, fog, mobility, bladder, vision, pain","Energy banking, and a 4\u00b72\u00b76 breath","Questions to take to your neurologist","Lifeline 13 11 14 and 988 when it matters","A companion, never a substitute for your care team"]
-},
-{
-  slug:"tether", name:"Tether", cat:"wellness", price:39, status:"live", ready:true,
-  cover:"covers/tether.jpg",
-  desc:"CBT built for ADHD brains and rejection sensitivity \u2014 with a companion that remembers what you told it.",
-  tag:"For the brain that can\u2019t sit still enough for a worksheet.",
-  body:[
-    "Standard CBT assumes you can sit still and fill in a worksheet. Tether is written for the brain that can't: a daily check-in that takes seconds, an Unfreeze route for when starting is the problem, and a thought record that works on rejection sensitivity specifically \u2014 the flare where a neutral message lands as proof you are about to be dropped.",
-    "The companion learns your name and what you have told it, and it holds that between visits. It is honest about what it is not: if you say something that sounds like crisis, it stops being a companion and gives you Lifeline, 988 and an international directory, and says plainly that you deserve a real person. Everything stays on the device."
-  ],
-  inside:["A daily check-in that takes seconds","Unfreeze \u2014 for when starting is the wall","A thought record aimed at rejection sensitivity","A companion that remembers between visits","Crisis lines including Lifeline 13 11 14","Works from the file, with the network off","Nothing leaves your device"]
 },
 {
   slug:"spirit-breath", name:"Spirit Breath", cat:"wellness", price:89, status:"live", ready:true,
