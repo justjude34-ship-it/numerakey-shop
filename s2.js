@@ -109,17 +109,6 @@ const AP2 = [
   inside:["The moves named, one at a time","What each one is actually for","A line to hold onto after each","Grey rock, low contact and no contact","No forgiveness agenda, nothing to complete","One file, private to your device"]
 },
 {
-  slug:"unstuck", name:"Unstuck", cat:"wellness", price:39, status:"live", ready:true,
-  cover:"https://unstuck.grok.me/og.jpg",
-  desc:"For task paralysis \u2014 a way back in that you can use out loud, without being nagged.",
-  tag:"Gently start again.",
-  body:[
-    "Task paralysis isn't laziness and it doesn't respond to being told to just begin. Unstuck works the other way: it asks small, and it waits, and it never turns your day into a list of things you failed to do.",
-    "Voice-friendly throughout, for the times when reading a screen is already too much."
-  ],
-  inside:["Built for task paralysis, not procrastination","Voice-friendly \u2014 use it hands-free","Asks small and waits","No nagging, no guilt, no streaks","Runs offline on your device"]
-},
-{
   slug:"goodwin-readings", name:"Goodwin Readings", cat:"divine", price:89, status:"live", ready:true,
   cover:"covers/goodwin-readings.jpg",
   desc:"The complete Goodwin reading \u2014 the Core, the karmic debts, the Pinnacles, and the year you are standing in.",
