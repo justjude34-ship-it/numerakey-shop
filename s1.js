@@ -72,6 +72,7 @@ const AP1 = [
 {
   slug:"haven", name:"Haven", cat:"narc", price:39, status:"live",
   cover:"covers/haven.jpg",
+  demo:"https://haven-6.netlify.app",
   desc:"Nervous system first \u2014 for the pull, the contact, and the days after.",
   tag:"Nothing is required of you here.",
   body:[
@@ -117,6 +118,7 @@ const AP1 = [
 {
   slug:"spirit-breath", name:"Spirit Breath", cat:"wellness", price:89, status:"live", ready:true,
   cover:"covers/spirit-breath.jpg",
+  demo:"https://spirit-breath.vercel.app",
   desc:"A full breathwork practice \u2014 guided techniques, a seven-part journey, and the reasoning behind each one.",
   tag:"Breathe yourself awake.",
   body:[
@@ -139,6 +141,7 @@ const AP1 = [
 {
   slug:"narc-escape-guide", name:"Narc Escape Guide", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/narc-escape-guide.jpg",
+  demo:"https://narc-escape-guide.netlify.app",
   desc:"Name the tactics, check your own reality, and plan a quieter way out.",
   tag:"Name the pattern. Find the door.",
   body:[
