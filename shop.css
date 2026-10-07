@@ -29,7 +29,7 @@
   /* ---- spacing & shape ---- */
   --pad:clamp(20px,5vw,60px);
   --radius:0px;              /* set to 10px for rounded covers and panels */
-  --wall-speed:1;            /* >1 slows the cover wall, <1 speeds it up */
+  --wall-speed:1.9;            /* >1 slows the cover wall, <1 speeds it up */
 }
 
 /* ========================================================================== */
@@ -106,8 +106,8 @@ header.bar{
     linear-gradient(180deg,rgba(0,0,0,.72) 0%,rgba(0,0,0,.05) 34%,rgba(0,0,0,.22) 70%,var(--ground) 100%);
 }
 .wall-copy{position:relative;padding:clamp(74px,13vw,144px) var(--pad) clamp(52px,9vw,96px)}
-@media(max-width:760px){
-  /* On a phone the copy spans the full width, so the wall moves above it and
+@media(max-width:1000px){
+  /* On a phone or tablet the copy spans the full width, so the wall moves above it and
      fades to black rather than sitting behind the words. The rows keep their
      full height (they must not shrink) so no cover title is cut off. */
   .wall{--wr:clamp(92px,27vw,128px);--wg:clamp(8px,2vw,12px);--wall-h:calc(var(--wr) * 3 + var(--wg) * 2)}
@@ -141,6 +141,13 @@ header.bar{
 .art{position:relative;display:block;overflow:hidden;background:var(--raise);container-type:inline-size}
 .art svg{display:block;width:100%;height:100%}
 .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* A real cover is always shown whole, never cropped. The generated artwork and
+   title card sit behind it only until it loads (or if it cannot load). */
+.art:has(img){background:#050409}
+.art:has(img) svg,.art:has(img) .gen{display:none}
+.art img{object-fit:contain}
+.wall-tile .art:has(img){container-type:normal;aspect-ratio:auto;width:auto;background:transparent}
+.wall-tile .art img{position:static;inset:auto;width:auto;height:100%;max-width:none;aspect-ratio:1200/630}
 .gen{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:9%;gap:.3em}
 .gen-name{
   font-family:var(--display);font-weight:600;line-height:1.02;letter-spacing:-.01em;
