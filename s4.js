@@ -1,7 +1,7 @@
 const AP4 = [
 {
   slug:"accord", name:"Accord", cat:"wellness", price:39, status:"live", ready:true,
-  cover:"https://of-my-own-accord.netlify.app/og.jpg",
+  cover:"covers/accord.jpg",
   desc:"A practice house built on the Four Agreements \u2014 four rooms, and somewhere to go when you slip.",
   tag:"Four rooms. One accord.",
   body:[
@@ -67,6 +67,7 @@ const AP4 = [
 },
 {
   slug:"here", name:"Here", cat:"wellness", price:59, status:"live", ready:true,
+  cover:"covers/here.jpg",
   desc:"A complex PTSD skills kit for the bad hour \u2014 pick a state, get a tool, two minutes.",
   tag:"Phase one only: safety and stabilisation.",
   body:[

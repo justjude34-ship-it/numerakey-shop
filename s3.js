@@ -44,6 +44,7 @@ const AP3 = [
 },
 {
   slug:"comet", name:"Comet", cat:"money", price:59, status:"live",
+  cover:"covers/comet.jpg",
   desc:"The month-to-month one: bills, categories, savings goals, and where it actually went.",
   tag:"Where it goes, and why.",
   body:[
@@ -119,6 +120,7 @@ const AP3 = [
 },
 {
   slug:"testimony", name:"Testimony", cat:"narc", price:39, status:"soon",
+  cover:"covers/testimony.jpg",
   desc:"Turns what happened into a book, one guided question at a time.",
   tag:"Your account, in order.",
   body:[
@@ -140,6 +142,7 @@ const AP3 = [
 },
 {
   slug:"dual-compass", name:"Dual Compass", cat:"wellness", price:59, status:"live", ready:true,
+  cover:"covers/dual-compass.jpg",
   desc:"For AuDHD \u2014 the two nervous systems that want opposite things, in one place that holds both.",
   tag:"For the brain that needs two things at once.",
   body:[

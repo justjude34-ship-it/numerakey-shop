@@ -55,6 +55,7 @@ APPS.push({
 
 APPS.push({
   slug:"uncluttered-path", name:"Uncluttered Path", cat:"home", price:39, status:"live", ready:true,
+  cover:"covers/uncluttered-path.jpg",
   desc:"A gentle decluttering companion for when the mountain of stuff stops you starting — two minutes, one surface, one less thing.",
   tag:"You don't have to finish the whole house today.",
   body:[
@@ -66,6 +67,7 @@ APPS.push({
 
 APPS.push({
   slug:"stillwater", name:"Stillwater", cat:"wellness", price:39, status:"live", ready:true,
+  cover:"covers/stillwater.jpg",
   desc:"A private mood notebook kept on your phone — a check-in, a journal, a written coach and sounds made on the spot.",
   tag:"A quiet place, kept here.",
   body:[
@@ -78,6 +80,7 @@ artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
   slug:"mysomni", name:"MySomni", cat:"sound", price:39, status:"live", ready:true,
+  cover:"covers/mysomni.jpg",
   desc:"A quieter night. One sound only — binaural beats, a Tibetan singing bowl or a deep temple OM.",
   tag:"One sound. Then night.",
   body:[

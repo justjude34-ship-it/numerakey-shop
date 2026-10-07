@@ -90,6 +90,7 @@ const AP1 = [
 },
 {
   slug:"cassandra", name:"Cassandra", cat:"narc", price:39, status:"live",
+  cover:"covers/cassandra.jpg",
   desc:"Naming narcissistic family patterns, so the thing you noticed has a shape.",
   tag:"You were not imagining it.",
   body:[
@@ -156,6 +157,7 @@ const AP1 = [
 },
 {
   slug:"vesper", name:"Vesper", cat:"sound", price:29, status:"live", ready:true,
+  cover:"covers/vesper.jpg",
   desc:"Binaural beats and Tibetan bronze bowls \u2014 two modes, and they never run together.",
   tag:"One mode at a time.",
   body:[
