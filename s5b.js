@@ -146,3 +146,17 @@ APPS.push({
   inside:["Four full-screen mandalas","Binaural beds: Relax, Sleep, Meditate, Deep","Heartbeat, ocean and breath sound beds","Eight breath practices","Timers with soft fade-out","Add your own music","Works offline, one HTML file"]
 });
 artFor(APPS[APPS.length - 1]).motif = "rings";
+
+APPS.push({
+  slug:"lunara", name:"Lunara", cat:"sound", price:39, status:"live", ready:true,
+  cover:"covers/lunara.jpg",
+  demo:"https://justjude34-ship-it.github.io/lunara/",
+  desc:"Private relaxation with binaural beats and singing bowls — one file, offline, buy once.",
+  tag:"Binaural. Bowls. Still water.",
+  body:[
+    "Lunara keeps two exclusive sound modes — binaural beats and singing bowls — and they never run together. Five beat bands from Delta to Gamma for headphones, and four bowl sets from Deep to Crystal with soft, spaced strikes and long decay.",
+    "Set a session from five minutes to two hours, tune carrier, beat or root pitch, and keep the volume gentle. One HTML file, works offline, no accounts and no tracking. A calm relaxation tool, not medical treatment."
+  ],
+  inside:["Exclusive modes: binaural or bowls, never mixed","Five binaural bands: Delta through Gamma","Four bowl sets: Deep, Earth, Tibetan, Crystal","Sessions from 5 to 120 minutes","Carrier, beat and root controls","Works offline, one HTML file"]
+});
+artFor(APPS[APPS.length - 1]).motif = "rings";
