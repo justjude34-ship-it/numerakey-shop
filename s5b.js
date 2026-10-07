@@ -132,3 +132,17 @@ APPS.push({
   inside:["A photo reading of your left palm","Major lines and mounts, with a strength for each","Your hand type, in plain words","An explorable palm map","Hand types and a guided read","A short quiz and beginner lessons","Your photo stays on your device, nothing uploaded","Educational only, not medical advice or a fortune","One file, works offline"]
 });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
+
+APPS.push({
+  slug:"aureole", name:"Aureole", cat:"sound", price:39, status:"live", ready:true,
+  cover:"covers/aureole.jpg",
+  demo:"https://justjude34-ship-it.github.io/aureole/",
+  desc:"A full-screen mandala with binaural beds and breath practices — one file, dark and quiet.",
+  tag:"Mandala. Tone. Breath.",
+  body:[
+    "Four mandalas fill the screen — Original, Fuchsia, Purple, Hypnotic — with glass controls you can hide with a tap. Studio binaural beds for Relax, Sleep, Meditate and Deep (4 Hz), plus heartbeat, ocean and breath sound beds, each with a wide volume range.",
+    "Breath practices sit beside the sound: Spirit, Heart, Box, 4-7-8, Coherent, Calm, Sigh and Open. Timers at 15, 30 or 60 minutes with a soft fade, or leave it running. Add your own music. Headphones help the binaural beat lock in. A calm practice tool, not medical treatment."
+  ],
+  inside:["Four full-screen mandalas","Binaural beds: Relax, Sleep, Meditate, Deep","Heartbeat, ocean and breath sound beds","Eight breath practices","Timers with soft fade-out","Add your own music","Works offline, one HTML file"]
+});
+artFor(APPS[APPS.length - 1]).motif = "rings";

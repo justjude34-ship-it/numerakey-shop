@@ -148,6 +148,7 @@ function viewApp(slug){
         ${soon
           ? `<span class="btn soon">In development</span>`
           : `<a class="btn" href="${buyUrl(a)}">Buy ${esc(a.name)}</a>`}
+        ${(!soon && a.demo) ? `<a class="btn" href="${a.demo}" target="_blank" rel="noopener" style="display:block;margin-top:10px;background:transparent;border:1px solid var(--line-2)">Open ${esc(a.name)}</a>` : ""}
         <ul class="specs">
           ${soon ? `
           <li><span>Status</span><span>In development</span></li>
