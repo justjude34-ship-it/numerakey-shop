@@ -164,7 +164,7 @@ const AP3 = [
 },
 {
   slug:"soulsync", name:"SoulSync", cat:"wellness", price:39, status:"live", ready:true,
-  cover:"https://soul-sync-two.grok.me/og.jpg",
+  cover:"covers/soulsync.jpg",
   desc:"Mood, journal and tiny habits in one quiet place \u2014 with a companion that reflects rather than advises.",
   tag:"A small check-in is enough.",
   body:[
