@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is My Spirit Animal?</title>
+<meta name="description" content="Answer five questions and discover your spirit animal.">
+<meta name="theme-color" content="#1a120b">
+<link rel="manifest" href="data:application/manifest+json,{'name':'What Is My Spirit Animal','short_name':'Spirit Animal','start_url':'.','display':'standalone','background_color':'#1a120b','theme_color':'#1a120b'}">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: Georgia, 'Times New Roman', serif; background:#1a120b; color:#f3e9d7; min-height:100vh; display:flex; flex-direction:column; align-items:center; }
+  header { width:100%; text-align:center; padding:28px 16px 8px; }
+  header h1 { font-size:1.7rem; letter-spacing:1px; color:#e8c98a; }
+  header p { color:#b9a88a; font-size:0.95rem; margin-top:6px; }
+  .cover { width:100%; max-width:640px; margin:12px auto 0; border-radius:14px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,.5); }
+  .cover svg { display:block; width:100%; height:auto; }
+  main { width:100%; max-width:640px; padding:20px 16px 40px; flex:1; }
+  .progress { height:6px; background:#3a2e22; border-radius:3px; margin-bottom:22px; overflow:hidden; }
+  .progress > div { height:100%; width:0; background:linear-gradient(90deg,#c98a3a,#e8c98a); transition:width .4s ease; }
+  .q { font-size:1.25rem; line-height:1.45; margin-bottom:18px; }
+  .answers { display:flex; flex-direction:column; gap:10px; }
+  .answers button { background:#2a2118; color:#f3e9d7; border:1px solid #4a3b2a; border-radius:10px; padding:14px 16px; text-align:left; font-size:1rem; cursor:pointer; transition:background .2s, border-color .2s; }
+  .answers button:hover { background:#3a2e22; border-color:#c98a3a; }
+  .result { text-align:center; padding:10px 0; }
+  .result .emoji { font-size:3.5rem; margin-bottom:8px; }
+  .result h2 { font-size:2rem; color:#e8c98a; margin-bottom:6px; }
+  .result .tag { color:#b9a88a; font-style:italic; margin-bottom:18px; }
+  .result p { line-height:1.6; margin-bottom:14px; }
+  .result .shadow { color:#c9a88a; font-size:.95rem; }
+  .btns { display:flex; gap:10px; justify-content:center; margin-top:22px; flex-wrap:wrap; }
+  .btns button { background:#c98a3a; color:#1a120b; border:none; border-radius:10px; padding:12px 22px; font-size:1rem; font-weight:bold; cursor:pointer; }
+  .btns button.secondary { background:transparent; color:#e8c98a; border:1px solid #c98a3a; }
+  footer { color:#6b5a45; font-size:.75rem; padding:10px; text-align:center; }
+</style>
+</head>
+<body>
+<header>
+  <h1>What Is My Spirit Animal?</h1>
+  <p>Five questions. One animal. Discover yours.</p>
+</header>
+<div class="cover">
+<svg viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b1420"/>
+      <stop offset="1" stop-color="#1a120b"/>
+    </linearGradient>
+    <radialGradient id="moon" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f5e6c8"/>
+      <stop offset="1" stop-color="#c9a86a"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#sky)"/>
+  <g fill="#2a3a2a">
+    <path d="M0 430 L80 390 L160 430 L240 380 L320 430 L400 385 L480 430 L560 375 L640 430 L720 390 L800 430 L880 380 L960 430 L1040 385 L1120 430 L1200 390 L1200 630 L0 630 Z"/>
+    <path d="M0 480 L100 450 L200 480 L300 445 L400 480 L500 450 L600 480 L700 445 L800 480 L900 450 L1000 480 L1100 450 L1200 480 L1200 630 L0 630 Z"/>
+  </g>
+  <circle cx="900" cy="150" r="55" fill="url(#moon)"/>
+  <circle cx="900" cy="150" r="48" fill="#1a120b" opacity=".15"/>
+  <g fill="#3d4f3d">
+    <path d="M0 400 Q150 360 300 400 T600 400 T900 400 T1200 400 L1200 430 L0 430 Z"/>
+    <path d="M0 450 Q200 410 400 450 T800 450 T1200 450 L1200 480 L0 480 Z"/>
+  </g>
+  <g transform="translate(300,250) rotate(-12)">
+    <ellipse cx="0" cy="40" rx="90" ry="55" fill="#6b6b6b"/>
+    <ellipse cx="0" cy="30" rx="70" ry="45" fill="#8a8a8a"/>
+    <path d="M-55 -10 Q-75 -45 -40 -35 Q-25 -55 0 -30 Q20 -50 45 -25 Q70 -40 85 -10" fill="#7a7a7a"/>
+    <circle cx="35" cy="15" r="9" fill="#1a120b"/>
+    <circle cx="38" cy="13" r="3.5" fill="#e8a030"/>
+    <path d="M55 25 Q75 10 95 30 Q80 45 60 40 Z" fill="#5a5a5a"/>
+    <path d="M-70 50 Q-95 35 -110 60 Q-90 75 -65 65 Z" fill="#5a5a5a"/>
+    <path d="M-30 70 Q-10 95 15 75" fill="none" stroke="#4a4a4a" stroke-width="6" stroke-linecap="round"/>
+    <path d="M10 75 Q30 100 55 80" fill="none" stroke="#4a4a4a" stroke-width="6" stroke-linecap="round"/>
+  </g>
+  <g fill="#c98a3a" opacity=".7">
+    <circle cx="180" cy="120" r="1.5"/>
+    <circle cx="260" cy="90" r="1"/>
+    <circle cx="340" cy="140" r="1.2"/>
+    <circle cx="150" cy="200" r="1"/>
+    <circle cx="400" cy="70" r="1.5"/>
+  </g>
+</svg>
+</div>
+<main id="app"></main>
+<footer>What Is My Spirit Animal &middot; a single-file quiz</footer>
+<script>
+const QUESTIONS = [
+  { q: "When plans fall apart, what do you do?", a: [
+    { t: "Adapt fast and find a new way", animal: "fox" },
+    { t: "Get frustrated, then quietly rebuild", animal: "bear" },
+    { t: "Stick to the original plan anyway", animal: "beaver" },
+    { t: "Ask the group what to do", animal: "wolf" }
+  ]},
+  { q: "In a group, you are usually the one who...", a: [
+    { t: "Leads and decides", animal: "eagle" },
+    { t: "Listens and supports", animal: "wolf" },
+    { t: "Does your own thing", animal: "cat" },
+    { t: "Keeps everyone connected", animal: "dolphin" }
+  ]},
+  { q: "How do you recharge?", a: [
+    { t: "Alone, in quiet", animal: "owl" },
+    { t: "With a few close people", animal: "dolphin" },
+    { t: "In a crowd, the bigger the better", animal: "meerkat" },
+    { t: "Out in nature", animal: "deer" }
+  ]},
+  { q: "When someone is upset, you tend to...", a: [
+    { t: "Fix the problem", animal: "badger" },
+    { t: "Sit with them and listen", animal: "elephant" },
+    { t: "Give them space", animal: "deer" },
+    { t: "Cheer them up with humor", animal: "dolphin" }
+  ]},
+  { q: "Under pressure, your instinct is to...", a: [
+    { t: "Confront it head-on", animal: "tiger" },
+    { t: "Get out of there", animal: "hare" },
+    { t: "Stay calm and wait it out", animal: "turtle" },
+    { t: "Think it through before acting", animal: "owl" }
+  ]}
+];
+const ANIMALS = {
+  fox: { name:"Fox", emoji:"🦊", tag:"The quick-witted survivor", strength:"You read a room fast and thrive on change.", shadow:"You can scatter when things get too deep." },
+  bear: { name:"Bear", emoji:"🐻", tag:"The steady protector", strength:"You rebuild quietly and guard what matters.", shadow:"Your frustration can rumble before you speak." },
+  beaver: { name:"Beaver", emoji:"🦫", tag:"The patient builder", strength:"You work steadily toward long-term goals.", shadow:"You can get stuck when plans must change." },
+  eagle: { name:"Eagle", emoji:"🦅", tag:"The natural leader", strength:"You see the big picture and decide with confidence.", shadow:"You can soar above the details others need." },
+  wolf: { name:"Wolf", emoji:"🐺", tag:"The loyal packmate", strength:"You listen before acting and lead by example.", shadow:"You can lose yourself in the pack's needs." },
+  cat: { name:"Cat", emoji:"🐱", tag:"The independent spirit", strength:"You do things your own way, self-sufficient.", shadow:"You can shut people out when you need space." },
+  owl: { name:"Owl", emoji:"🦉", tag:"The quiet observer", strength:"You recharge alone and see what others miss.", shadow:"You can overthink instead of acting." },
+  dolphin: { name:"Dolphin", emoji:"🐬", tag:"The social spark", strength:"You energize a group and play as you go.", shadow:"You can avoid the hard, quiet work." },
+  meerkat: { name:"Meerkat", emoji:"🐒", tag:"The community guardian", strength:"You are always aware of the group.", shadow:"You can worry about everyone else's safety." },
+  badger: { name:"Badger", emoji:"🦡", tag:"The direct fixer", strength:"You solve problems head-on, no fuss.", shadow:"You can be blunt when people need gentleness." },
+  elephant: { name:"Elephant", emoji:"🐘", tag:"The empathetic heart", strength:"You sit with people in their pain and remember everything.", shadow:"You can carry burdens that aren't yours." },
+  deer: { name:"Deer", emoji:"🦌", tag:"The gentle one", strength:"You sense tension early and give space kindly.", shadow:"You can freeze when you need to stand firm." },
+  tiger: { name:"Tiger", emoji:"🐯", tag:"The fierce one", strength:"You confront pressure directly and protect your own.", shadow:"You can burn bridges in the heat of it." },
+  hare: { name:"Hare", emoji:"🐇", tag:"The quick escape", strength:"You avoid conflict and move fast when needed.", shadow:"You can run from things worth facing." },
+  turtle: { name:"Turtle", emoji:"🐢", tag:"The calm one", strength:"You stay steady and wait things out.", shadow:"You can retreat so far you stop moving." }
+);
+let scores = {}, idx = 0;
+const app = document.getElementById('app);
+const bar = document.querySelector('.progress > div);
+function start(){ scores={}; idx=0; render(); }
+function render(){
+  bar.style.width = (idx/QUESTIONS.length*100)+'%';
+  if(idx>=QUESTIONS.length){ showResult(); return; }
+  const Q = QUESTIONS[idx];
+  app.innerHTML = '<div class="q">'+Q.q+'</div><div class="answers">'+Q.a.map((a,i)=>'<button onclick="pick('+i+')">'+a.t+'</button>').join('')+'</div>';
+}
+function pick(i){ const a = QUESTIONS[idx].a[i]; scores[a.animal]=(scores[a.animal]||0)+1; idx++; render(); }
+function showResult(){
+  let best=null, top=-1;
+  for(const k in scores){ if(scores[k]>top){ top=scores[k]; best=k; } }
+  const A = ANIMALS[best];
+  app.innerHTML = '<div class="result"><div class="emoji">'+A.emoji+'</div><h2>'+A.name+'</h2><div class="tag">'+A.tag+'</div><p><strong>Your strength:</strong> '+A.strength+'</p><p class="shadow"><strong>Your shadow:</strong> '+A.shadow+'</p></div><div class="btns"><button onclick="share()">Share</button><button class="secondary" onclick="start()">Start over</button></div>';
+}
+function share(){
+  const A = ANIMALS[Object.keys(scores).reduce((b,k)=>scores[k]>scores[b]?k:b)];
+  const text = 'My spirit animal is the '+A.name+'! '+A.emoji+' Take the quiz: '+location.href;
+  if(navigator.share){ navigator.share({title:'What Is My Spirit Animal?', text:text}); }
+  else { navigator.clipboard.writeText(text); alert('Copied to clipboard!'); }
+}
+start();
+</script>
+</body>
+</html>
