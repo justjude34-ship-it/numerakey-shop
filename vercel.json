@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/download.js": {
+      "includeFiles": "{private/**,s*.js}"
+    },
+    "api/checkout.js": {
+      "includeFiles": "s*.js"
+    }
+  }
+}

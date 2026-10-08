@@ -58,16 +58,21 @@ function viewLicence(){
   </div>`;
 }
 
-function viewThanks(slug){
+function viewThanks(slug, sid){
   const a = app(slug);
   if (!a || !FILES[slug]) return viewMissing();
   document.title = `Your download — ${a.name} — NumeraKey`;
+  if (USE_CHECKOUT && !sid) return `<div class="wrap page">
+    <h1><span class="spectrum">${esc(a.name)}</span></h1>
+    <p class="lede" style="margin-top:20px">This page needs the link from your purchase. Open it from the page you landed on after paying, or email us your receipt and we'll send it again.</p>
+    <p style="margin-top:24px"><a class="btn" style="display:inline-block;padding:12px 26px" href="#/">See all apps</a></p>
+  </div>`;
   const file = a.name.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".html";
   return `<div class="wrap page">
     <p class="eyebrow">Thank you</p>
     <h1><span class="spectrum">${esc(a.name)}</span></h1>
     <p class="lede" style="margin-top:20px">Your payment went through. The app is yours to keep.</p>
-    <p style="margin-top:28px"><a class="btn" style="display:inline-block;padding:14px 30px" href="${FILES[slug]}" download="${file}">Download ${esc(a.name)}</a></p>
+    <p style="margin-top:28px"><a class="btn" style="display:inline-block;padding:14px 30px" href="${USE_CHECKOUT ? "/api/download?s=" + encodeURIComponent(sid || "") : FILES[slug]}" download="${file}">Download ${esc(a.name)}</a></p>
     <h3 style="margin-top:36px">Using it</h3>
     <p>It is one file. Open it in your phone or computer browser and it runs, with no account and no internet needed after it has loaded. To keep it like an app, use your browser's Add to Home Screen.</p>
     <p>Save the downloaded file somewhere safe. If you ever need it again, bookmark this page, or email <a id="mailto2" href="#" style="text-decoration:underline"></a> and say which app you bought.</p>
@@ -88,12 +93,14 @@ function viewMissing(){
    ========================================================================== */
 function render(){
   const h = (location.hash || "#/").slice(1);
-  const parts = h.split("/").filter(Boolean);
+  const qi = h.indexOf("?");
+  const parts = (qi < 0 ? h : h.slice(0, qi)).split("/").filter(Boolean);
+  const query = new URLSearchParams(qi < 0 ? "" : h.slice(qi + 1));
   let html;
   document.title = "NumeraKey — apps you buy once and own";
   if (parts[0] === "app" && parts[1])  html = viewApp(parts[1]);
   else if (parts[0] === "c" && parts[1]) html = viewCategory(parts[1]);
-  else if (parts[0] === "thanks" && parts[1]) html = viewThanks(parts[1]);
+  else if (parts[0] === "thanks" && parts[1]) html = viewThanks(parts[1], query.get("s"));
   else if (parts[0] === "how")         html = viewHow();
   else if (parts[0] === "support")     html = viewSupport();
   else if (parts[0] === "licence")     html = viewLicence();
