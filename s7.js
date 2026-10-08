@@ -58,6 +58,22 @@ function viewLicence(){
   </div>`;
 }
 
+function viewThanks(slug){
+  const a = app(slug);
+  if (!a || !FILES[slug]) return viewMissing();
+  document.title = `Your download — ${a.name} — NumeraKey`;
+  const file = a.name.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".html";
+  return `<div class="wrap page">
+    <p class="eyebrow">Thank you</p>
+    <h1><span class="spectrum">${esc(a.name)}</span></h1>
+    <p class="lede" style="margin-top:20px">Your payment went through. The app is yours to keep.</p>
+    <p style="margin-top:28px"><a class="btn" style="display:inline-block;padding:14px 30px" href="${FILES[slug]}" download="${file}">Download ${esc(a.name)}</a></p>
+    <h3 style="margin-top:36px">Using it</h3>
+    <p>It is one file. Open it in your phone or computer browser and it runs, with no account and no internet needed after it has loaded. To keep it like an app, use your browser's Add to Home Screen.</p>
+    <p>Save the downloaded file somewhere safe. If you ever need it again, bookmark this page, or email <a id="mailto2" href="#" style="text-decoration:underline"></a> and say which app you bought.</p>
+  </div>`;
+}
+
 function viewMissing(){
   document.title = "Not found — NumeraKey";
   return `<div class="wrap page">
@@ -77,6 +93,7 @@ function render(){
   document.title = "NumeraKey — apps you buy once and own";
   if (parts[0] === "app" && parts[1])  html = viewApp(parts[1]);
   else if (parts[0] === "c" && parts[1]) html = viewCategory(parts[1]);
+  else if (parts[0] === "thanks" && parts[1]) html = viewThanks(parts[1]);
   else if (parts[0] === "how")         html = viewHow();
   else if (parts[0] === "support")     html = viewSupport();
   else if (parts[0] === "licence")     html = viewLicence();
