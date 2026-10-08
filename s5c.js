@@ -1,0 +1,13 @@
+APPS.push({
+  slug:"spirit-animal", name:"What Is My Spirit Animal?", cat:"divine", price:29, status:"live", ready:true,
+  cover:"covers/spirit-animal.jpg",
+  demo:"https://what-is-my-spirit-animal-studio-3368s-projects.vercel.app",
+  desc:"Five questions, fifteen animals — find out which one is yours.",
+  tag:"Five questions. One animal. Discover yours.",
+  body:[
+    "When plans fall apart, when a group needs a leader, when someone is upset, when pressure hits — your answers to five short questions point to one animal. Fox, bear, beaver, eagle, wolf, cat, owl, dolphin, meerkat, badger, elephant, deer, tiger, hare or turtle.",
+    "Each result comes with a strength and a shadow side, so you get the honest read, not just the flattering one. Everything runs in your browser, works offline, and stays on your device."
+  ],
+  inside:["Five questions, one animal each","Fifteen animals to match","Strength and shadow side for each result","Shareable result page","Works offline, one file, no account"]
+});
+artFor(APPS[APPS.length - 1]).motif = "spokes";
