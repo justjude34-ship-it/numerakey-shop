@@ -34,7 +34,7 @@ const AP2 = [
 },
 {
   slug:"ember", name:"Ember", cat:"narc", price:39, status:"live",
-  cover:"https://ember-one.grok.me/og.jpg",
+  cover:"covers/ember.jpg",
   desc:"For parents living with parental alienation \u2014 the loss nobody offers condolences for.",
   tag:"You are still their parent.",
   body:[
