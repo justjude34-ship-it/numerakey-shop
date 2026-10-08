@@ -121,7 +121,7 @@ const AP4 = [
   inside:["Whole name read as it will be written","Numbers rebuild live as you type","Lock the surname, try first names","Weighed against the Life Path","A name book, girls and boys","Shortlist and compare the final two"]
 },
 {
-  slug:"synergy", name:"Synergy", cat:"divine", price:59, status:"live", ready:true,
+  slug:"synergy", name:"Synergy", cat:"divine", price:59, status:"live", ready:true, cover:"covers/synergy.jpg",
   desc:"Two charts side by side \u2014 where you meet easily, where the friction is structural, and what neither of you carries.",
   tag:"The bond, aspect by aspect.",
   body:[

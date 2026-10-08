@@ -202,7 +202,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"steady-day", name:"Steady Day", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"steady-day", name:"Steady Day", cat:"wellness", price:39, status:"live", ready:true, cover:"covers/steady-day.jpg",
   desc:"A calm personal logging companion for diabetes — glucose, meals, medication reminders and notes, kept on your device.",
   tag:"A quiet place to log your day.",
   body:[
@@ -214,7 +214,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"hearthaven", name:"HeartHaven", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"hearthaven", name:"HeartHaven", cat:"wellness", price:39, status:"live", ready:true, cover:"covers/hearthaven.jpg",
   desc:"A private sanctuary for reality, rest and recovery — reality-check language, grounding, singing-bowl tones and a journal, behind your own PIN.",
   tag:"Your private sanctuary.",
   body:[
