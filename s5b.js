@@ -186,3 +186,28 @@ APPS.push({
 });
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
+
+APPS.push({
+  slug:"elegy", name:"Elegy", cat:"narc", price:39, status:"live", ready:true,
+  cover:"covers/elegy.jpg",
+  desc:"A private companion for daughters of narcissistic mothers — a playbook, a sealed record, ready scripts, and the decisions that are still yours.",
+  tag:"What stays true, even now.",
+  body:[
+    "Elegy is for the daughter who is still carrying a narcissistic mother, at the stage where the old patterns meet the hardest decisions. It gives you plain language for what is happening, scripts for the calls and messages you dread, and a place to write it all down.",
+    "Everything stays on your device: no account, no cloud, and a quick-exit button if someone walks in."
+  ],
+  inside:["A playbook for the hardest stretch","Plain-language glossary of the patterns","Ready scripts for difficult conversations","A decision ladder: what is yours to decide","A private, sealed record of what happened","Quick exit, and support lines in the footer","No account, works offline"]
+});
+artFor(APPS[APPS.length - 1]).motif = "orbits";
+
+APPS.push({
+  slug:"steady-day", name:"Steady Day", cat:"wellness", price:39, status:"live", ready:true,
+  desc:"A calm personal logging companion for diabetes — glucose, meals, medication reminders and notes, kept on your device.",
+  tag:"A quiet place to log your day.",
+  body:[
+    "Steady Day is a calm, dark logbook for living with diabetes. Log glucose readings against thresholds you set, keep track of meals and medication, set reminders, and see how your days line up.",
+    "It is a logging companion, not a medical device, and it does not tell you what to dose. Everything stays on your device, and you can export your log to share with your care team."
+  ],
+  inside:["Glucose log with your own thresholds","Meals and medication notes","Medication reminders","Type 1 and Type 2 settings","Plain-language education notes","Export your log","No account, works offline"]
+});
+artFor(APPS[APPS.length - 1]).motif = "wave";
