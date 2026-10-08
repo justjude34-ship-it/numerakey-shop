@@ -1,13 +1,5 @@
-APPS.push({
-  slug:"spirit-animal", name:"What Is My Spirit Animal?", cat:"divine", price:29, status:"live", ready:true,
-  cover:"covers/spirit-animal.jpg",
-  demo:"https://what-is-my-spirit-animal-studio-3368s-projects.vercel.app",
-  desc:"Five questions, fifteen animals — find out which one is yours.",
-  tag:"Five questions. One animal. Discover yours.",
-  body:[
-    "When plans fall apart, when a group needs a leader, when someone is upset, when pressure hits — your answers to five short questions point to one animal. Fox, bear, beaver, eagle, wolf, cat, owl, dolphin, meerkat, badger, elephant, deer, tiger, hare or turtle.",
-    "Each result comes with a strength and a shadow side, so you get the honest read, not just the flattering one. Everything runs in your browser, works offline, and stays on your device."
-  ],
-  inside:["Five questions, one animal each","Fifteen animals to match","Strength and shadow side for each result","Shareable result page","Works offline, one file, no account"]
-});
+APPS.push({ slug:"spirit-animal", name:"What Is My Spirit Animal?", cat:"divine", price:29, status:"live", ready:true, cover:"covers/spirit-animal.jpg", demo:"https://what-is-my-spirit-animal.vercel.app", desc:"Five questions, fifteen animals — find out which one is yours.", tag:"Five questions. One animal. Discover yours.", body:["When plans fall apart, when a group needs a leader, when someone is upset, when pressure hits — your answers to five short questions point to one animal. Fox, bear, beaver, eagle, wolf, cat, owl, dolphin, meerkat, badger, elephant, deer, tiger, hare or turtle.","Each result comes with a strength and a shadow side, so you get the honest read, not just the flattering one. Everything runs in your browser, works offline, and stays on your device."], inside:["Five questions, one animal each","Fifteen animals to match","Strength and shadow side for each result","Shareable result page","Works offline, one file, no account"] });
 artFor(APPS[APPS.length - 1]).motif = "spokes";
+
+APPS.push({ slug:"serenity-journal", name:"Serenity — Gratitude Journal", cat:"wellness", price:19, status:"live", ready:true, cover:"covers/serenity.jpg", demo:"https://justjude34-ship-it.github.io/serenity-gratitude-journal/", desc:"A quiet daily gratitude journal — three blessings, a mood, and a prompt. No account, no cloud, just you and the page.", tag:"Pause. Notice. Write it down.", body:["Serenity is a single-file gratitude journal that lives entirely on your device. Each day it offers a quiet prompt, and you write three blessings, pick a mood, and add an optional line. Your streak, this week's entries, and your top mood are tracked right on the home screen.","Everything stays local — nothing is uploaded, no account is needed. You can export your journal as a file anytime, or erase it completely. The cover is a soft botanical illustration, and the whole app is built to feel calm rather than busy."], inside:["Daily prompts and three-blessing entries","Mood tracking with streak and weekly stats","Local-only — nothing uploaded, no account","Export or erase your journal anytime","Works offline as a PWA"] });
+artFor(APPS[APPS.length - 1]).motif = "leaf";
