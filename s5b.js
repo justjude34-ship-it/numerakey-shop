@@ -223,3 +223,16 @@ APPS.push({
   inside:["A gentle companion for check-ins","Reality-check language and cards","Guided breathwork with a glowing heart","Singing bowls, deep toning and binaural beats","Private journal behind your own PIN","Appointment reminders for care","Support lines built in","No account, works offline"]
 });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
+
+APPS.push({
+  slug:"lumina-sleep", name:"Lumina Sleep", cat:"sound", price:39, status:"live", ready:true,
+  cover:"covers/lumina-sleep.jpg",
+  desc:"Ocean, rain and brown noise with delta, theta and alpha tones for drifting off — generated on your phone, with a sleep timer that fades out.",
+  tag:"Sound for sleep. No voice.",
+  body:[
+    "Lumina Sleep is a night of sound and nothing else: an ocean wash, midnight rain, a brown-noise cocoon, and binaural tones in the delta, theta and alpha ranges for people who like them. There is no narrator and no script, just sound to settle into.",
+    "Set the sleep timer and it fades itself out once you have gone under. Everything is generated on your device, so there is nothing to download, no account and no signal needed."
+  ],
+  inside:["Ocean, rain and brown-noise beds","Delta, theta and alpha binaural tones","432 Hz tone, plus a no-headphones theta pulse","Sleep timer that fades out (15 to 90 min)","No voice, no narration","Works offline, nothing leaves your phone"]
+});
+artFor(APPS[APPS.length - 1]).motif = "wave";
