@@ -121,6 +121,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
   slug:"right-action-essentials", name:"Right Action Essentials", cat:"divine", price:39, status:"live", ready:true,
+  cover:"covers/right-action-essentials.jpg",
   desc:"A personal-year numerology companion — what this year is for, this month, today, and the next useful step.",
   tag:"Right action, not fortune-telling.",
   body:[
