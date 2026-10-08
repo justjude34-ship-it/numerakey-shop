@@ -211,3 +211,15 @@ APPS.push({
   inside:["Glucose log with your own thresholds","Meals and medication notes","Medication reminders","Type 1 and Type 2 settings","Plain-language education notes","Export your log","No account, works offline"]
 });
 artFor(APPS[APPS.length - 1]).motif = "wave";
+
+APPS.push({
+  slug:"hearthaven", name:"HeartHaven", cat:"wellness", price:39, status:"live", ready:true,
+  desc:"A private sanctuary for reality, rest and recovery — reality-check language, grounding, singing-bowl tones and a journal, behind your own PIN.",
+  tag:"Your private sanctuary.",
+  body:[
+    "HeartHaven is a quiet place to steady yourself when your sense of what is real has been shaken. A gentle companion offers reality-check language, short self-care routines and company without pressure, and a glowing-heart breathing practice walks you down.",
+    "Singing-bowl tones, deep resonant toning and binaural beats are generated on your device. Your journal and appointments sit behind a PIN, and nothing leaves your phone."
+  ],
+  inside:["A gentle companion for check-ins","Reality-check language and cards","Guided breathwork with a glowing heart","Singing bowls, deep toning and binaural beats","Private journal behind your own PIN","Appointment reminders for care","Support lines built in","No account, works offline"]
+});
+artFor(APPS[APPS.length - 1]).motif = "orbits";
