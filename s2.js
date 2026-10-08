@@ -12,7 +12,7 @@ const AP2 = [
 },
 {
   slug:"held", name:"Held", cat:"narc", price:39, status:"live",
-  cover:"https://held-one.grok.me/og.jpg",
+  cover:"covers/held.jpg",
   desc:"For daughters of narcissistic mothers \u2014 a warm friend at two in the morning.",
   tag:"A quiet place to put it down.",
   body:[
@@ -23,7 +23,7 @@ const AP2 = [
 },
 {
   slug:"unspoken", name:"Unspoken", cat:"narc", price:39, status:"live",
-  cover:"https://unspoken.grok.me/og.jpg",
+  cover:"covers/unspoken.jpg",
   desc:"For daughters of narcissistic fathers \u2014 a private place to name the pattern.",
   tag:"His approval was never the measure of her.",
   body:[
@@ -56,7 +56,7 @@ const AP2 = [
 },
 {
   slug:"habit-swap", name:"Habit Swap", cat:"wellness", price:39, status:"live",
-  cover:"https://habits-1.grok.me/og.jpg",
+  cover:"covers/habit-swap.jpg",
   desc:"You can't delete a habit, only replace it \u2014 so find the cue and put something kinder in its place.",
   tag:"Swap it, don't fight it.",
   body:[

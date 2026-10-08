@@ -66,7 +66,7 @@ const AP3 = [
 },
 {
   slug:"ledger-noir", name:"Ledger Noir", cat:"money", price:59, status:"live",
-  cover:"https://ledger-noir.grok.me/og.jpg",
+  cover:"covers/ledger-noir.jpg",
   desc:"A budget spreadsheet for people who actually want a spreadsheet \u2014 dark, fast, and it saves itself.",
   tag:"Rows, totals, and no lectures.",
   body:[
