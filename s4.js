@@ -111,6 +111,7 @@ const AP4 = [
 },
 {
   slug:"nua", name:"Nua", cat:"divine", price:39, status:"live", ready:true,
+  cover:"covers/nua.jpg",
   desc:"Name a child and see the numbers before the certificate is signed.",
   tag:"Name the child. See the numbers.",
   body:[
