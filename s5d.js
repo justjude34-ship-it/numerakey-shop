@@ -8,7 +8,13 @@ const PAYMENTS = {
   "steady-day": "https://buy.stripe.com/eVq00c1dP4whbr69li0RG01"
 };
 const FILES = {
-  "steady-day": "apps/steady-day/index.html"
+  "steady-day": "apps/steady-day/index.html",
+  "comet": "private/comet.html",
+  "sanctuary": "private/sanctuary.html",
+  "elegy": "private/elegy.html",
+  "wind-and-water": "private/wind-and-water.html",
+  "synergy": "private/synergy.html",
+  "numera": "private/numera.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;

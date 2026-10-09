@@ -1,0 +1,1663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nine Lives — Pet Numerology &amp; Health Journal</title>
+<style>
+:root{
+  --void:#000000;
+  --card:#0A0A0C;
+  --card2:#101014;
+  --line:#1C1C23;
+  --line2:#2B2B36;
+  --ink:#F5F4F7;
+  --mute:#8C8C99;
+  --dim:#5C5C68;
+  --gold:#FFC46B;
+  --coral:#FF6F91;
+  --orchid:#A78BFA;
+  --mint:#5EEAD4;
+  --grad:linear-gradient(100deg,#FFC46B 0%,#FF6F91 48%,#A78BFA 100%);
+  --display:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --r:14px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--void);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  padding-bottom:64px;
+}
+.wrap{max-width:840px;margin:0 auto;padding:0 18px}
+
+/* ---------- type ---------- */
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1,h2,h3{font-family:var(--display);font-weight:600;margin:0;letter-spacing:-.01em}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.muted{color:var(--mute)}
+.small{font-size:13px}
+
+/* ---------- header ---------- */
+header{padding:26px 0 14px;border-bottom:1px solid var(--line)}
+.brandrow{display:flex;align-items:center;gap:12px}
+.mark{width:38px;height:38px;flex:none}
+.brand h1{font-size:26px;line-height:1.1}
+.brand p{margin:2px 0 0;font-size:12.5px;color:var(--mute)}
+
+/* ---------- tabs ---------- */
+nav{position:sticky;top:0;z-index:30;background:var(--void);border-bottom:1px solid var(--line)}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:9px 18px;max-width:840px;margin:0 auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:none;border:1px solid transparent;background:none;color:var(--mute);
+  font-family:var(--sans);font-size:13.5px;font-weight:500;padding:7px 13px;border-radius:999px;cursor:pointer;
+}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--line2);background:var(--card2)}
+.tab:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--orchid);outline-offset:2px}
+
+/* ---------- panels ---------- */
+.view{display:none;padding:22px 0 40px}
+.view.on{display:block;animation:rise .32s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- cards ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.card + .card{margin-top:14px}
+.grid2{display:grid;gap:14px}
+@media(min-width:660px){.grid2{grid-template-columns:1fr 1fr}}
+.sechead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:26px 0 12px}
+.sechead h2{font-size:20px}
+.view > .sechead:first-child{margin-top:0}
+
+/* ---------- forms ---------- */
+label.f{display:block;margin-bottom:12px}
+label.f span{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+input,select,textarea{
+  width:100%;background:var(--card2);border:1px solid var(--line2);border-radius:10px;
+  color:var(--ink);font-family:var(--sans);font-size:15px;padding:11px 12px;
+}
+textarea{resize:vertical;min-height:74px}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--mute) 50%),linear-gradient(135deg,var(--mute) 50%,transparent 50%);background-position:calc(100% - 18px) 51%,calc(100% - 13px) 51%;background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+input[type="date"]{min-height:45px}
+.row{display:grid;gap:12px}
+@media(min-width:520px){.row.two{grid-template-columns:1fr 1fr}}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{
+  flex:1;min-width:110px;background:var(--card2);border:1px solid var(--line2);color:var(--mute);
+  font-family:var(--sans);font-size:13.5px;padding:9px 10px;border-radius:10px;cursor:pointer;
+}
+.seg button[aria-pressed="true"]{color:var(--void);background:var(--ink);border-color:var(--ink);font-weight:600}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:none;border-radius:11px;padding:12px 18px;cursor:pointer;
+  font-family:var(--sans);font-size:15px;font-weight:600;color:#0B0B0D;background:var(--grad);
+}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line2);font-weight:500}
+.btn.danger{background:none;border:1px solid #5A2230;color:#FF8FA6;font-weight:500}
+.btn.sm{padding:8px 13px;font-size:13.5px;border-radius:9px}
+.btn[disabled]{opacity:.4;pointer-events:none}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:4px}
+.note{font-size:12.5px;color:var(--dim);margin-top:8px}
+
+/* ---------- pet roster ---------- */
+.petgrid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(158px,1fr))}
+.pet{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+  padding:14px;text-align:left;cursor:pointer;color:var(--ink);font-family:var(--sans);
+}
+.pet:hover{border-color:var(--line2)}
+.pet[aria-current="true"]{border-color:var(--orchid)}
+.pet .av{width:52px;height:52px;display:block;margin-bottom:10px}
+.pet b{display:block;font-family:var(--display);font-size:18px;font-weight:600;line-height:1.2}
+.pet .meta{font-size:12px;color:var(--mute);margin-top:2px}
+.pet .num{font-family:var(--mono);font-size:12px;color:var(--gold);margin-top:8px;letter-spacing:.08em}
+.pet.add{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-style:dashed;color:var(--mute);min-height:140px}
+.pet.add .plus{font-size:26px;font-family:var(--display);line-height:1}
+
+/* ---------- cipher strip (signature) ---------- */
+.cipher{display:flex;flex-wrap:wrap;gap:7px;margin:6px 0 4px}
+.tile{
+  width:44px;border:1px solid var(--line2);border-radius:9px;background:var(--card2);
+  padding:8px 0 6px;text-align:center;animation:pop .34s ease both;
+}
+.tile .ch{font-family:var(--display);font-size:20px;line-height:1;display:block}
+.tile .vl{font-family:var(--mono);font-size:11px;color:var(--dim);margin-top:5px;display:block}
+.tile.vowel{border-color:#3A2A46}
+.tile.vowel .ch{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tile.gap{width:12px;border:none;background:none;animation:none}
+@keyframes pop{from{opacity:0;transform:translateY(9px) scale(.94)}to{opacity:1;transform:none}}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--mute);margin-top:10px;flex-wrap:wrap}
+.swatch{display:inline-block;width:9px;height:9px;border-radius:3px;margin-right:6px;vertical-align:middle}
+
+/* ---------- tag (core number) ---------- */
+.tagwrap{display:flex;flex-direction:column;align-items:center;padding:8px 0 2px}
+.tag{
+  position:relative;width:168px;height:168px;border-radius:50%;
+  border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;
+}
+.tag::before{content:"";position:absolute;top:12px;left:50%;transform:translateX(-50%);width:11px;height:11px;border-radius:50%;border:1px solid var(--line2)}
+.tag .n{font-family:var(--display);font-size:74px;line-height:1;font-weight:600;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag.spin{animation:spinin .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes spinin{from{opacity:0;transform:scale(.86)}to{opacity:1;transform:none}}
+.tagname{font-family:var(--display);font-size:22px;margin-top:14px;text-align:center}
+.tagsub{font-size:13px;color:var(--mute);text-align:center;margin-top:2px}
+
+/* ---------- reading cards ---------- */
+.read{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:17px}
+.read .top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.read .n{
+  font-family:var(--display);font-size:34px;line-height:1;width:54px;height:54px;flex:none;
+  display:flex;align-items:center;justify-content:center;border:1px solid var(--line2);border-radius:12px;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.read h3{font-size:17px}
+.read .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.read p{margin:0;font-size:14.5px;color:#D8D7DE}
+.read .need{margin-top:11px;padding-top:11px;border-top:1px solid var(--line);font-size:13.5px;color:var(--mute)}
+.read .need b{color:var(--gold);font-weight:600}
+.master{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--mint);border:1px solid #1E4A44;border-radius:5px;padding:1px 6px;margin-left:8px;vertical-align:2px}
+
+/* ---------- journal ---------- */
+.entry{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:10px}
+.entry .hd{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;flex:none}
+.entry .ty{font-size:12.5px;font-weight:600;letter-spacing:.02em}
+.entry .dt{font-family:var(--mono);font-size:11.5px;color:var(--dim);margin-left:auto}
+.entry p{margin:8px 0 0;font-size:14px;color:#D8D7DE;white-space:pre-wrap}
+.entry .vals{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-family:var(--mono);font-size:12px;color:var(--mint)}
+.entry .del{background:none;border:none;color:var(--dim);font-size:12px;cursor:pointer;padding:4px 0 0;font-family:var(--sans)}
+.entry .del:hover{color:#FF8FA6}
+.moodrow{display:flex;gap:7px}
+.moodrow button{
+  flex:1;background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:9px 0;cursor:pointer;color:var(--mute);font-size:19px;line-height:1;
+}
+.moodrow button[aria-pressed="true"]{border-color:var(--mint);color:var(--ink)}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{background:var(--card2);border:1px solid var(--line2);color:var(--mute);font-size:12.5px;padding:6px 11px;border-radius:999px;cursor:pointer;font-family:var(--sans)}
+.chip[aria-pressed="true"]{color:var(--void);background:var(--ink);border-color:var(--ink);font-weight:600}
+.stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(88px,1fr));gap:10px;margin-top:2px}
+.stat div{background:var(--card2);border:1px solid var(--line);border-radius:11px;padding:11px}
+.stat b{display:block;font-family:var(--display);font-size:23px;line-height:1.1}
+.stat span{font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
+
+/* ---------- household matrix ---------- */
+.matrix{width:100%;border-collapse:collapse;font-size:13px}
+.matrix th,.matrix td{border:1px solid var(--line);padding:8px 6px;text-align:center}
+.matrix th{font-family:var(--sans);font-weight:500;color:var(--mute);font-size:12px}
+.matrix td.self{color:var(--dim)}
+.matrix td b{font-family:var(--display);font-size:18px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.scroller{overflow-x:auto}
+
+/* ---------- learn ---------- */
+.pyth{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:14px;text-align:center}
+.pyth th{color:var(--gold);font-weight:600;padding:8px 4px;border-bottom:1px solid var(--line2)}
+.pyth td{padding:8px 4px;border-bottom:1px solid var(--line);color:#D8D7DE}
+details{border:1px solid var(--line);border-radius:12px;padding:0;margin-bottom:10px;background:var(--card)}
+summary{padding:14px 16px;cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;align-items:center;gap:10px}
+summary::-webkit-details-marker{display:none}
+summary .idx{font-family:var(--display);font-size:19px;width:30px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+details[open] summary{border-bottom:1px solid var(--line)}
+details .body{padding:14px 16px;font-size:14.5px;color:#D8D7DE}
+details .body p{margin:0 0 10px}
+details .body p:last-child{margin:0}
+.wheelwrap{display:flex;justify-content:center;padding:6px 0 14px}
+.disclaim{border:1px solid #2A2A33;border-left:2px solid var(--mint);border-radius:10px;padding:13px 15px;font-size:13px;color:var(--mute);background:var(--card2)}
+
+/* ---------- misc ---------- */
+.empty{border:1px dashed var(--line2);border-radius:var(--r);padding:26px 20px;text-align:center;color:var(--mute)}
+.empty h3{font-size:18px;margin-bottom:6px;color:var(--ink)}
+.toast{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);
+  background:var(--ink);color:var(--void);font-size:13.5px;font-weight:600;padding:10px 18px;border-radius:999px;
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:99;
+}
+.toast.on{opacity:1;transform:translateX(-50%)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+footer{border-top:1px solid var(--line);padding:20px 0 30px;font-size:12px;color:var(--dim)}
+
+/* ---------- medications ---------- */
+.due{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 13px;margin-bottom:9px}
+.due .t{font-family:var(--mono);font-size:15px;width:50px;flex:none;color:var(--mute)}
+.due .nm{flex:1;font-size:14.5px;line-height:1.35}
+.due .nm small{display:block;color:var(--mute);font-size:12px}
+.due.done{border-color:#1E4A44}
+.due.done .t{color:var(--mint)}
+.due.late{border-color:#5A2230}
+.due.late .t{color:var(--coral)}
+.tick{width:36px;height:36px;border-radius:50%;border:1px solid var(--line2);background:var(--card2);color:var(--mute);font-size:15px;cursor:pointer;flex:none;font-family:var(--sans)}
+.tick[aria-pressed="true"]{background:var(--mint);border-color:var(--mint);color:#04201C;font-weight:700}
+.med{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer}
+.med:hover{border-color:var(--line2)}
+.med[aria-current="true"]{border-color:var(--orchid)}
+.med .hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.med h3{font-size:17px}
+.med .dose{font-family:var(--mono);font-size:12px;color:var(--gold)}
+.med .sched{font-size:12.5px;color:var(--mute);margin-top:5px}
+.med .stopped{font-family:var(--mono);font-size:10px;letter-spacing:.12em;color:var(--dim);border:1px solid var(--line2);border-radius:5px;padding:1px 6px}
+.bar{height:6px;border-radius:3px;background:#1C1C23;overflow:hidden;margin-top:9px}
+.bar i{display:block;height:100%;background:var(--grad)}
+.hrow{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+.hrow .lbl{width:92px;flex:none;font-size:12px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hcells{display:grid;grid-template-columns:repeat(14,1fr);gap:3px;flex:1}
+.hcell{height:17px;border-radius:3px;background:#0E0E12;border:1px solid #191920}
+.hcell.full{background:#5EEAD4;border-color:#5EEAD4}
+.hcell.part{background:#FFC46B;border-color:#FFC46B}
+.hcell.miss{background:#3A1620;border-color:#5A2230}
+.hcell.future{background:#0A0A0C;border-color:#151519}
+.timegrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:12px}
+.next{font-family:var(--mono);font-size:12.5px;color:var(--gold);letter-spacing:.04em}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== SVG artwork library ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFC46B"/><stop offset=".5" stop-color="#FF6F91"/><stop offset="1" stop-color="#A78BFA"/>
+    </linearGradient>
+  </defs>
+  <g id="art-common" fill="none" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></g>
+
+  <symbol id="sp-dog" viewBox="0 0 64 64"><g fill="none" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M20 20c-5-4-9-3-9 4 0 8 3 13 6 15"/><path d="M44 20c5-4 9-3 9 4 0 8-3 13-6 15"/>
+    <path d="M17 26c0-8 6-13 15-13s15 5 15 13c0 6-1 10-3 13-2 4-6 6-12 6s-10-2-12-6c-2-3-3-7-3-13Z"/>
+    <ellipse cx="32" cy="42" rx="7" ry="5"/><path d="M32 39.5v-2"/><circle cx="32" cy="37" r="1.6" fill="url(#g1)" stroke="none"/>
+    <circle cx="25" cy="30" r="1.8" fill="url(#g1)" stroke="none"/><circle cx="39" cy="30" r="1.8" fill="url(#g1)" stroke="none"/>
+  </g></symbol>
+
+  <symbol id="sp-cat" viewBox="0 0 64 64"><g fill="none" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 27 14 12l13 7"/><path d="M48 27 50 12l-13 7"/>
+    <path d="M16 30c0-8 7-14 16-14s16 6 16 14-7 18-16 18-16-10-16-18Z"/>
+    <path d="M32 36l-3-2h6l-3 2Z" fill="url(#g1)"/><path d="M32 36v3"/><path d="M29 41c1 1.5 5 1.5 6 0"/>
+    <circle cx="25" cy="29" r="1.8" fill="url(#g1)" stroke="none"/><circle cx="39" cy="29" r="1.8" fill="url(#g1)" stroke="none"/>
+    <path d="M18 34 8 32M18 38 9 39M46 34l10-2M46 38l9 1"/>
+  </g></symbol>
+
+  <symbol id="sp-rabbit" viewBox="0 0 64 64"><g fill="none" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M25 26c-3-6-5-14-3-18 2-3 6 2 8 9"/><path d="M39 26c3-6 5-14 3-18-2-3-6 2-8 9"/>
+    <path d="M19 36c0-8 6-13 13-13s13 5 13 13-6 16-13 16-13-8-13-16Z"/>
+    <circle cx="26" cy="35" r="1.8" fill="url(#g1)" stroke="none"/><circle cx="38" cy="35" r="1.8" fill="url(#g1)" stroke="none"/>
+    <path d="M32 41v3"/><path d="M30 40.5h4"/><path d="M29 46c1 1.5 5 1.5 6 0"/>
+  </g></symbol>
+
+  <symbol id="sp-bird" viewBox="0 0 64 64"><g fill="none" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M38 20c0-5-4-9-9-9s-9 4-9 9c0 3 1 5 3 7-6 3-10 9-10 16 0 6 5 10 12 10 10 0 18-8 18-19"/>
+    <path d="M38 20l10 3-10 4"/><circle cx="30" cy="18" r="1.9" fill="url(#g1)" stroke="none"/>
+    <path d="M24 36c5 0 9 3 10 8"/><path d="M25 53l6-3M31 53l4-4"/>
+  </g></symbol>
+
+  <symbol id="sp-horse" viewBox="0 0 64 64"><g fill="none" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M24 14l2 8"/><path d="M32 13l1 8"/>
+    <path d="M25 21c8-1 13 4 14 12 1 6 4 9 7 13 2 3 1 6-3 6H26c-4 0-6-3-6-7 0-6 2-9 2-14 0-4 1-8 3-10Z"/>
+    <path d="M43 46c3-2 5-6 5-10"/><circle cx="31" cy="30" r="1.9" fill="url(#g1)" stroke="none"/>
+    <path d="M24 24c-4 3-6 8-6 13"/><path d="M40 50h6"/>
+  </g></symbol>
+
+  <symbol id="sp-reptile" viewBox="0 0 64 64"><g fill="none" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 22c0-4 3-7 7-7s7 3 7 7c0 5-4 6-4 10s3 6 7 6 8 3 8 8-3 8-8 8-9-4-9-9"/>
+    <path d="M40 54c8 0 12-5 12-11s-4-9-9-9"/>
+    <path d="M15 26l-6 3M15 18l-6-3M27 27l5 4M25 34l-6 4M39 40l5-4M37 49l4 5"/>
+    <circle cx="19" cy="20" r="1.7" fill="url(#g1)" stroke="none"/>
+  </g></symbol>
+
+  <symbol id="sp-fish" viewBox="0 0 64 64"><g fill="none" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M42 32c0 9-9 16-19 16-8 0-12-7-12-16s4-16 12-16c10 0 19 7 19 16Z"/>
+    <path d="M42 32l12-9v18l-12-9Z"/><path d="M22 18c3-4 8-6 12-6-1 4-3 6-6 8"/>
+    <path d="M22 46c3 4 8 6 12 6-1-4-3-6-6-8"/><circle cx="18" cy="29" r="1.9" fill="url(#g1)" stroke="none"/>
+    <path d="M26 32h10"/>
+  </g></symbol>
+
+  <symbol id="sp-small" viewBox="0 0 64 64"><g fill="none" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="19" cy="22" r="7"/><circle cx="45" cy="22" r="7"/>
+    <path d="M18 34c0-8 6-13 14-13s14 5 14 13-6 17-14 17-14-9-14-17Z"/>
+    <circle cx="26" cy="33" r="1.8" fill="url(#g1)" stroke="none"/><circle cx="38" cy="33" r="1.8" fill="url(#g1)" stroke="none"/>
+    <path d="M32 39v3"/><path d="M30 38.5h4"/><path d="M20 40l-8-2M20 44l-7 2M44 40l8-2M44 44l7 2"/>
+  </g></symbol>
+
+  <symbol id="sp-other" viewBox="0 0 64 64"><g fill="none" stroke="url(#g1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="18" cy="24" rx="6" ry="8"/><ellipse cx="32" cy="18" rx="6" ry="8"/><ellipse cx="46" cy="24" rx="6" ry="8"/>
+    <path d="M32 32c9 0 16 6 16 12s-7 8-16 8-16-2-16-8 7-12 16-12Z"/>
+  </g></symbol>
+</svg>
+
+<div class="wrap">
+  <header>
+    <div class="brandrow">
+      <svg class="mark" viewBox="0 0 64 64" aria-hidden="true">
+        <circle cx="32" cy="32" r="26" fill="none" stroke="url(#g1)" stroke-width="1.4" opacity=".55"/>
+        <circle cx="32" cy="32" r="19" fill="none" stroke="url(#g1)" stroke-width="1" opacity=".3"/>
+        <text x="32" y="41" text-anchor="middle" font-family="Georgia,serif" font-size="26" fill="url(#g1)">9</text>
+      </svg>
+      <div class="brand">
+        <h1><span class="grad">Nine Lives</span></h1>
+        <p>Pythagorean numerology &amp; a health journal for up to seven animals</p>
+      </div>
+    </div>
+  </header>
+</div>
+
+<nav>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" data-view="pets" aria-selected="true">Pets</button>
+    <button class="tab" role="tab" data-view="reading" aria-selected="false">Reading</button>
+    <button class="tab" role="tab" data-view="journal" aria-selected="false">Journal</button>
+    <button class="tab" role="tab" data-view="meds" aria-selected="false">Meds</button>
+    <button class="tab" role="tab" data-view="house" aria-selected="false">Household</button>
+    <button class="tab" role="tab" data-view="learn" aria-selected="false">Learn</button>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ===================== PETS ===================== -->
+  <section class="view on" id="v-pets">
+    <div class="sechead"><h2>Your animals</h2><span class="eyebrow" id="petcount">0 of 7</span></div>
+    <div class="petgrid" id="petgrid"></div>
+
+    <div class="sechead"><h2 id="formTitle">Add a pet</h2></div>
+    <div class="card">
+      <label class="f"><span>Name (as you call them)</span>
+        <input id="fName" type="text" placeholder="Biscuit" autocomplete="off" maxlength="40"></label>
+      <div class="row two">
+        <label class="f"><span>Species</span>
+          <select id="fSpecies">
+            <option value="dog">Dog</option><option value="cat">Cat</option>
+            <option value="rabbit">Rabbit</option><option value="bird">Bird</option>
+            <option value="horse">Horse</option><option value="reptile">Reptile</option>
+            <option value="fish">Fish</option><option value="small">Small pet</option>
+            <option value="other">Other</option>
+          </select></label>
+        <label class="f"><span>Breed <span class="muted">(optional)</span></span>
+          <input id="fBreed" type="text" placeholder="Tabby" autocomplete="off" maxlength="40"></label>
+      </div>
+      <label class="f"><span>Which date do you know?</span></label>
+      <div class="seg" id="fDateType" style="margin-bottom:12px">
+        <button type="button" data-dt="birth" aria-pressed="true">Birthday</button>
+        <button type="button" data-dt="gotcha" aria-pressed="false">Gotcha day</button>
+      </div>
+      <label class="f"><span>Date <span class="muted">(optional — unlocks the Life Path)</span></span>
+        <input id="fDate" type="date"></label>
+      <label class="f"><span>Your name <span class="muted">(optional — unlocks the Bond number)</span></span>
+        <input id="fOwner" type="text" placeholder="Judith" autocomplete="off" maxlength="40"></label>
+      <div class="actions">
+        <button class="btn" id="savePet">Save pet</button>
+        <button class="btn ghost" id="cancelEdit" style="display:none">Cancel</button>
+        <button class="btn danger" id="deletePet" style="display:none">Delete pet</button>
+      </div>
+      <p class="note" id="saveNote"></p>
+    </div>
+  </section>
+
+  <!-- ===================== READING ===================== -->
+  <section class="view" id="v-reading"></section>
+
+  <!-- ===================== JOURNAL ===================== -->
+  <section class="view" id="v-journal"></section>
+
+  <!-- ===================== MEDS ===================== -->
+  <section class="view" id="v-meds"></section>
+
+  <!-- ===================== HOUSEHOLD ===================== -->
+  <section class="view" id="v-house"></section>
+
+  <!-- ===================== LEARN ===================== -->
+  <section class="view" id="v-learn"></section>
+
+  <footer>
+    <p>Nine Lives keeps everything on this device. Numerology is a symbolic tradition, not a medical or behavioural science — the journal is for your records, and your vet is the one who reads it clinically.</p>
+  </footer>
+</main>
+
+<div class="toast" id="toast"></div>
+<script>
+/* ================= interpretation library ================= */
+const EXPRESSION = {
+1:{t:"The First Through the Door",r:"Decisive, self-starting, allergic to being steered. This animal wants to arrive first, choose the route and be the one who noticed the squirrel. Their confidence is real but brittle — it comes from being allowed to decide things.",n:"Give them small choices every day: which way at the corner, which toy comes out. Let them win something."},
+2:{t:"The Shadow",r:"Attaches hard, usually to one person, and reads the mood of a room before anyone speaks. Peaceable with other animals, easily flattened by conflict. Their whole nervous system is tuned to yours.",n:"Gentleness and predictable reunions. Harsh correction lands ten times harder than you intend it to."},
+3:{t:"The Broadcaster",r:"Expressive, vocal, comically timed. A 3 name belongs to an animal who performs — the leap, the yodel, the dramatic collapse onto the rug — and who understands exactly which behaviours get a laugh.",n:"Attention on a schedule. If you don't book it in, they will invent a way to take it."},
+4:{t:"The Fixed Point",r:"Routine-keeper. Knows when the food is late, notices when the furniture moves, settles fastest of any number once a rhythm is set. Not the flashiest animal in the house, and the one everything else organises itself around.",n:"Same times, same places. Warn them before change — a day of a new smell or a packed bag beats a surprise."},
+5:{t:"The Escape Artist",r:"Curious, quick, bored in about four minutes. Tests the fence, learns the door handle, adapts to travel better than most. A 5 that isn't stimulated doesn't sulk — it invents a project, usually a destructive one.",n:"New smells, new routes, puzzle feeders. Enrichment isn't a luxury for this one, it's maintenance."},
+6:{t:"The Household Guardian",r:"Counts heads. Herds children, frets when the family splits between rooms, positions themselves at the junction where they can see everyone. Deeply domestic and quietly anxious about it.",n:"Include them, and reassure them when someone leaves. A goodbye ritual is worth more than you'd think."},
+7:{t:"The Watcher",r:"Observes from the doorway. Warms slowly, chooses carefully, and once they've chosen you it is permanent. Often mistaken for unfriendly by people who haven't earned the second look.",n:"A den. A private high shelf, a crate that nobody reaches into, one spot that is theirs alone."},
+8:{t:"The Presence",r:"Takes up room. Dignified, strong-willed, tests where the line is and remembers whether it held. Other animals defer to them without a fuss being made about it.",n:"Calm, consistent authority. Never negotiate the same rule twice — with an 8, an exception becomes the new rule."},
+9:{t:"The Old Soul",r:"Tolerant of kittens, puppies, toddlers and the recently bereaved. A 9 finds whoever in the room is struggling and sits with them. Gentle, a bit weary, wiser than their age suggests.",n:"Protect them from being everybody's emotional sponge. Guard their sleep like it's medicine."},
+11:{t:"The Live Wire",r:"Extraordinarily attuned. Knows the car three streets away, startles at things you can't hear, reads tension in a room and holds it in their body. The most perceptive number and the most easily overloaded.",n:"A low-stimulation baseline. Household stress goes straight into this animal — manage the room, not just the pet."},
+22:{t:"The Anchor",r:"A steady presence that settles other animals and people without appearing to do anything. Natural working temperament: patient, capable, happiest when there's a task attached to the day.",n:"Give them a real job. Carrying, patrolling the garden, accompanying you on a fixed errand — purpose is their comfort."},
+33:{t:"The Comforter",r:"Pure caretaking instinct. Presses in when someone cries, sleeps against the sick one, gives without measuring. The rarest name number and the most depleting to carry.",n:"They will give until they are empty. Make them rest, and don't let them absorb every hard day in the house."}
+};
+const SOUL = {
+1:{t:"To be their own animal",r:"Freedom to lead the walk, pick the spot, decide when the cuddle is finished."},
+2:{t:"Contact",r:"Touching you while asleep is not a habit, it's the entire point of their day."},
+3:{t:"To be delighted in",r:"Play is how they receive love. Being laughed at, kindly, is the highest reward on offer."},
+4:{t:"To know what happens next",r:"Certainty is their comfort. The predictable version of a day beats the exciting one."},
+5:{t:"The door open",r:"Not necessarily to leave — just to know that leaving is possible. Closed-in is their worst feeling."},
+6:{t:"To be needed",r:"A job in the family. Something to guard, mind, or fuss over."},
+7:{t:"Quiet",r:"Stillness beside you rather than on you. Company without demand."},
+8:{t:"To be taken seriously",r:"Respect over baby talk. This animal wants to be addressed, not handled."},
+9:{t:"To belong to everyone",r:"An open house, a wide circle, no one shut out of the room."},
+11:{t:"To be understood without noise",r:"They want you to notice the small signal before it has to become a big one."},
+22:{t:"To be useful",r:"A structure to fit into. Work, in the widest sense, is what settles them."},
+33:{t:"To take away someone's pain",r:"Their contentment is genuinely tied to whether the household is alright."}
+};
+const PERSONA = {
+1:{t:"Bold on arrival",r:"Reaches the visitor before you do. Reads as confident, occasionally as rude."},
+2:{t:"Soft approach",r:"Hangs back, then commits. Strangers work for this one and value it more for the effort."},
+3:{t:"The crowd favourite",r:"Instantly likeable, slightly too much, remembered by everyone who met them once."},
+4:{t:"Solid and unshowy",r:"People call them well behaved when what they mean is calm. Nothing performative about them."},
+5:{t:"Kinetic",r:"Wriggling, hard to photograph, reads years younger than they actually are."},
+6:{t:"Approachable",r:"The one strangers ask to pet. Something in the face says safe."},
+7:{t:"Hard to read",r:"Dignity that gets mistaken for aloofness. Watches the room from the edge of it."},
+8:{t:"Impressive",r:"People straighten up slightly. Presence out of proportion to actual size."},
+9:{t:"Noble, faintly sad",r:"Looks wiser than they behave. Strangers describe them as an old soul before you mention the number."},
+11:{t:"Magnetic",r:"Visitors say they were staring right at me. They were."},
+22:{t:"Dependable",r:"Other animals arrange themselves around this one without any negotiation."},
+33:{t:"Disarming",r:"Wins over the animal-shy. The person who said they don't like dogs likes this dog."}
+};
+const PATH = {
+1:{t:"A life of firsts",r:"Independence learned, lost and learned again. Often the first pet, the first of a litter, or the one who arrived at a beginning in your life."},
+2:{t:"A life built around one bond",r:"The whole arc of this animal's life is a single relationship. Partings matter enormously; reunions are the plot."},
+3:{t:"A life of joy-making",r:"They lift the mood of every house they live in, and they know it. Expect years defined by ridiculous, specific happiness."},
+4:{t:"A life of steadying",r:"Frequently a rocky start settling into deep security. The story is one of ground being found."},
+5:{t:"A life of movement",r:"Changes of home, travel, new people. Adapts faster than the humans around them and asks for the next thing."},
+6:{t:"A life centred on home",r:"Their world is the household and the people in it. Growth comes through family events, not adventures."},
+7:{t:"A life of learning trust",r:"Slow to open, unshakeable once open. Often an animal with a history that has to be undone before it can be rewritten."},
+8:{t:"A life of strength",r:"Recovers from things that should have stopped them. Tests, and survives the tests, and is somehow larger afterwards."},
+9:{t:"A life of service",r:"Frequently the pet who carries a family through a hard chapter. Endings are handled well and felt deeply."},
+11:{t:"A life of sensitivity",r:"The animal who knows before you do. A finely-tuned life that needs protecting from noise."},
+22:{t:"A life of grounding others",r:"Everything around them becomes steadier. Often the pet a whole household organises itself around."},
+33:{t:"A life of healing",r:"They tend to arrive exactly when someone needed them. Whether that's coincidence is up to you."}
+};
+const BOND = {
+1:{t:"Direction",r:"Two starters. You'll spend this relationship quietly deciding who decides — set the rules early and hold them, because you'll both push."},
+2:{t:"Attachment",r:"Closeness comes easily to you two. The work is separation: teach them that you leaving is boring, not tragic."},
+3:{t:"Play",r:"Loud, funny, easily derailed. Enormous fun and very little discipline unless you deliberately build some in."},
+4:{t:"Routine",r:"Steady and unglamorous. You'll dislike the same disruptions and settle into a rhythm most people would find dull and you both find perfect."},
+5:{t:"Adventure",r:"You'll be each other's excuse to leave the house. Watch the boundaries — neither of you is naturally the sensible one."},
+6:{t:"Family",r:"Protective in both directions. The risk isn't neglect, it's worry: you'll each read too much into the other's off days."},
+7:{t:"Quiet",r:"Long companionable silences that suit you both. Trust builds slowly here and then holds completely."},
+8:{t:"Respect",r:"Two strong wills. This works beautifully with consistency and badly without it. Decide the rules once."},
+9:{t:"Compassion",r:"Rescue energy runs both ways. Kind, generous, occasionally lopsided — check that the care is flowing in both directions."},
+11:{t:"Intuition",r:"Uncanny attunement. The catch: your stress becomes theirs almost immediately, so your own regulation is part of their care plan."},
+22:{t:"Partnership",r:"Practical, capable, built to last. The kind of pairing where you two get things done that neither manages alone."},
+33:{t:"Devotion",r:"Enormous warmth. The only real hazard is indulgence quietly replacing structure — love this one with rules attached."}
+};
+const YEAR = {
+1:{t:"A year of beginnings",r:"New home, new routine, new confidence. Good year to start training something you've been putting off."},
+2:{t:"A year of bonding",r:"Sensitivity runs high. Gentle handling, more contact, less change than usual."},
+3:{t:"A year of expression",r:"Playful, social, vocal. Their personality gets bigger — enjoy it, and give it somewhere to go."},
+4:{t:"A year of building",r:"Structure pays off now. Routines set this year tend to stick for the rest of their life."},
+5:{t:"A restless year",r:"Change, movement, curiosity. Check the fences and the collar tag; this is a wandering cycle."},
+6:{t:"A year of home",r:"Family focus. New household members, moves, or a deepening of who they consider theirs."},
+7:{t:"A quiet year",r:"More sleep, more solitude, less appetite for crowds. Let them withdraw a little; it's the cycle, not a decline."},
+8:{t:"A year of strength",r:"Physical confidence and a bit of boundary testing. A good year to book the check-up you've been meaning to book."},
+9:{t:"A year of completion",r:"A chapter closes. Extra tenderness, fewer demands, and space for whatever this year turns out to be about."}
+};
+const NUMREF = {
+1:"Initiative, independence, being first.",2:"Partnership, sensitivity, peace-keeping.",
+3:"Expression, play, communication.",4:"Structure, routine, reliability.",
+5:"Freedom, change, curiosity.",6:"Home, care, responsibility.",
+7:"Observation, solitude, trust.",8:"Power, endurance, authority.",
+9:"Compassion, completion, service.",
+11:"Master number — heightened intuition and sensitivity.",
+22:"Master number — the builder; grounded, capable, steadying.",
+33:"Master number — the carer; unconditional devotion."
+};
+const TYPES = {
+  weight:{l:"Weight",c:"#5EEAD4"}, vet:{l:"Vet visit",c:"#FF6F91"}, med:{l:"Medication",c:"#A78BFA"},
+  food:{l:"Food",c:"#FFC46B"}, symptom:{l:"Symptom",c:"#FF8A5B"}, mood:{l:"Mood",c:"#7DD3FC"},
+  groom:{l:"Grooming",c:"#C4B5FD"}, activity:{l:"Activity",c:"#86EFAC"}, note:{l:"Note",c:"#9AA0AA"}
+};
+const SPECIES = {dog:"Dog",cat:"Cat",rabbit:"Rabbit",bird:"Bird",horse:"Horse",reptile:"Reptile",fish:"Fish",small:"Small pet",other:"Other"};
+const MOODS = ["😿","🙁","😐","🙂","😻"];
+
+/* ================= numerology ================= */
+const VAL = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+const MASTERS = [11,22,33];
+
+function reduceNum(n, keepMasters){
+  if(keepMasters === undefined) keepMasters = true;
+  while(n > 9 && !(keepMasters && MASTERS.indexOf(n) > -1)){
+    n = String(n).split("").reduce(function(a,d){return a + (+d);},0);
+  }
+  return n;
+}
+/* Y counts as a vowel when it isn't following a vowel sound (Rocky, Lyla) and
+   as a consonant at the start of a word or after a vowel (Yoshi, Maya). */
+function tokenise(raw){
+  const up = (raw||"").toUpperCase();
+  const out = [];
+  let prevVowel = null;   // was the previous letter in this word a vowel?
+  for(let i=0;i<up.length;i++){
+    const ch = up[i];
+    if(!/[A-Z]/.test(ch)){ out.push({ch:ch,kind:"gap"}); prevVowel = null; continue; }
+    let kind;
+    if("AEIOU".indexOf(ch) > -1) kind = "vowel";
+    else if(ch === "Y") kind = (prevVowel === null || prevVowel === true) ? "consonant" : "vowel";
+    else kind = "consonant";
+    out.push({ch:ch,kind:kind,val:VAL[ch]});
+    prevVowel = (kind === "vowel");
+  }
+  return out;
+}
+function sumOf(tokens,kind){
+  return tokens.filter(function(t){return t.kind !== "gap" && (kind === "all" || t.kind === kind);})
+               .reduce(function(a,t){return a + t.val;},0);
+}
+function nameNumbers(name){
+  const t = tokenise(name);
+  return {
+    tokens:t,
+    expressionRaw:sumOf(t,"all"), expression:reduceNum(sumOf(t,"all")),
+    soulRaw:sumOf(t,"vowel"), soul:reduceNum(sumOf(t,"vowel")),
+    personaRaw:sumOf(t,"consonant"), persona:reduceNum(sumOf(t,"consonant"))
+  };
+}
+function parseDate(s){
+  if(!s) return null;
+  const p = s.split("-");
+  if(p.length !== 3) return null;
+  return {y:+p[0], m:+p[1], d:+p[2]};
+}
+function lifePath(s){
+  const d = parseDate(s); if(!d) return null;
+  const parts = [reduceNum(d.m), reduceNum(d.d), reduceNum(d.y)];
+  return reduceNum(parts[0] + parts[1] + parts[2]);
+}
+function personalYear(s, year){
+  const d = parseDate(s); if(!d) return null;
+  return reduceNum(reduceNum(d.m,false) + reduceNum(d.d,false) + reduceNum(year,false), false);
+}
+function fmtDate(s){
+  const d = parseDate(s); if(!d) return "";
+  return new Date(d.y, d.m-1, d.d).toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+}
+function shortDate(s){
+  const d = parseDate(s); if(!d) return "";
+  return new Date(d.y, d.m-1, d.d).toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"2-digit"});
+}
+function todayISO(){
+  const n = new Date();
+  return n.getFullYear() + "-" + String(n.getMonth()+1).padStart(2,"0") + "-" + String(n.getDate()).padStart(2,"0");
+}
+function ageText(s){
+  const d = parseDate(s); if(!d) return "";
+  const then = new Date(d.y,d.m-1,d.d), now = new Date();
+  let months = (now.getFullYear()-then.getFullYear())*12 + (now.getMonth()-then.getMonth());
+  if(now.getDate() < then.getDate()) months--;
+  if(months < 0) return "";
+  const y = Math.floor(months/12), m = months%12;
+  if(y === 0) return m + (m === 1 ? " month" : " months");
+  return y + (y === 1 ? " year" : " years") + (m ? ", " + m + "m" : "");
+}
+
+/* ================= storage ================= */
+const Store = (function(){
+  const KEY = "ninelives:v1";
+  let mem = null;
+  const cloud = (typeof window !== "undefined" && window.storage && typeof window.storage.get === "function");
+  let ls = null;
+  if(!cloud){
+    try{ localStorage.setItem("__nl","1"); localStorage.removeItem("__nl"); ls = localStorage; }catch(e){ ls = null; }
+  }
+  return {
+    where: cloud ? "this device" : (ls ? "this browser" : "this session only"),
+    load:async function(){
+      try{
+        if(cloud){ const r = await window.storage.get(KEY); return (r && r.value) ? JSON.parse(r.value) : null; }
+        if(ls){ const v = ls.getItem(KEY); return v ? JSON.parse(v) : null; }
+      }catch(e){ /* nothing saved yet */ }
+      return mem;
+    },
+    save:async function(data){
+      mem = data;
+      const s = JSON.stringify(data);
+      try{
+        if(cloud){ await window.storage.set(KEY, s); return true; }
+        if(ls){ ls.setItem(KEY, s); return true; }
+      }catch(e){ return false; }
+      return false;
+    }
+  };
+})();
+
+/* ================= state ================= */
+let state = {pets:[], entries:[], meds:[], doses:[], owner:"", reminders:false,
+             selected:null, editing:null, editingMed:null, filter:"all", draftMood:0, dateType:"birth"};
+let saveTimer = null;
+function persist(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(function(){
+    Store.save({pets:state.pets, entries:state.entries, meds:state.meds,
+                doses:state.doses, owner:state.owner, reminders:state.reminders});
+  }, 250);
+}
+function uid(){ return Math.random().toString(36).slice(2,9); }
+function esc(s){ return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];
+});}
+function petById(id){ return state.pets.filter(function(p){return p.id === id;})[0] || null; }
+function currentPet(){ return petById(state.selected) || state.pets[0] || null; }
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("on");
+  clearTimeout(t._t); t._t = setTimeout(function(){ t.classList.remove("on"); }, 2200);
+}
+
+/* ================= tabs ================= */
+const VIEWS = {pets:renderPets, reading:renderReading, journal:renderJournal, meds:renderMeds, house:renderHouse, learn:renderLearn};
+function show(name){
+  document.querySelectorAll(".tab").forEach(function(b){ b.setAttribute("aria-selected", String(b.dataset.view === name)); });
+  document.querySelectorAll(".view").forEach(function(v){ v.classList.toggle("on", v.id === "v-" + name); });
+  VIEWS[name]();
+  window.scrollTo({top:0, behavior:"instant"});
+}
+document.querySelectorAll(".tab").forEach(function(b){
+  b.addEventListener("click", function(){ show(b.dataset.view); });
+});
+
+/* ================= pets view ================= */
+function avatar(species, cls){
+  return '<svg class="' + (cls||"av") + '" viewBox="0 0 64 64" aria-hidden="true"><use href="#sp-' + (SPECIES[species] ? species : "other") + '"/></svg>';
+}
+function renderPets(){
+  const grid = document.getElementById("petgrid");
+  document.getElementById("petcount").textContent = state.pets.length + " of 7";
+  let html = state.pets.map(function(p){
+    const n = nameNumbers(p.name);
+    return '<button class="pet" data-id="' + p.id + '" aria-current="' + (p.id === state.selected) + '">' +
+      avatar(p.species) +
+      '<b>' + esc(p.name) + '</b>' +
+      '<div class="meta">' + esc(SPECIES[p.species] || "Pet") + (p.breed ? " · " + esc(p.breed) : "") +
+        (p.date && ageText(p.date) ? "<br>" + ageText(p.date) : "") + '</div>' +
+      '<div class="num">EXPRESSION ' + n.expression + '</div></button>';
+  }).join("");
+  if(state.pets.length < 7){
+    html += '<button class="pet add" id="addPet"><span class="plus">+</span><span class="small">Add a pet</span></button>';
+  }
+  if(!state.pets.length){
+    html = '<div class="empty" style="grid-column:1/-1"><h3>No animals yet</h3>' +
+      '<p class="small">Add one below. All you strictly need is a name — the date and your own name unlock two more numbers.</p></div>' + html;
+  }
+  grid.innerHTML = html;
+  grid.querySelectorAll(".pet[data-id]").forEach(function(b){
+    b.addEventListener("click", function(){
+      state.selected = b.dataset.id;
+      loadForm(b.dataset.id);
+      renderPets();
+      toast(petById(b.dataset.id).name + " selected");
+    });
+  });
+  const add = document.getElementById("addPet");
+  if(add) add.addEventListener("click", function(){ clearForm(); document.getElementById("fName").focus(); });
+}
+function clearForm(){
+  state.editing = null;
+  ["fName","fBreed","fDate"].forEach(function(id){ document.getElementById(id).value = ""; });
+  document.getElementById("fSpecies").value = "dog";
+  document.getElementById("fOwner").value = state.owner || "";
+  setDateType("birth");
+  document.getElementById("formTitle").textContent = "Add a pet";
+  document.getElementById("savePet").textContent = "Save pet";
+  document.getElementById("cancelEdit").style.display = "none";
+  document.getElementById("deletePet").style.display = "none";
+  document.getElementById("saveNote").textContent = state.pets.length >= 7 ? "You have all seven. Remove one to add another." : "";
+  document.getElementById("savePet").disabled = state.pets.length >= 7;
+}
+function loadForm(id){
+  const p = petById(id); if(!p) return;
+  state.editing = id;
+  document.getElementById("fName").value = p.name;
+  document.getElementById("fSpecies").value = p.species;
+  document.getElementById("fBreed").value = p.breed || "";
+  document.getElementById("fDate").value = p.date || "";
+  document.getElementById("fOwner").value = state.owner || "";
+  setDateType(p.dateType || "birth");
+  document.getElementById("formTitle").textContent = "Edit " + p.name;
+  document.getElementById("savePet").textContent = "Save changes";
+  document.getElementById("savePet").disabled = false;
+  document.getElementById("cancelEdit").style.display = "";
+  document.getElementById("deletePet").style.display = "";
+  document.getElementById("saveNote").textContent = "";
+}
+function setDateType(t){
+  state.dateType = t;
+  document.querySelectorAll("#fDateType button").forEach(function(b){
+    b.setAttribute("aria-pressed", String(b.dataset.dt === t));
+  });
+}
+document.querySelectorAll("#fDateType button").forEach(function(b){
+  b.addEventListener("click", function(){ setDateType(b.dataset.dt); });
+});
+document.getElementById("savePet").addEventListener("click", function(){
+  const name = document.getElementById("fName").value.trim();
+  if(!/[A-Za-z]/.test(name)){
+    document.getElementById("saveNote").textContent = "A name needs at least one letter — that's what the numbers are made from.";
+    document.getElementById("fName").focus(); return;
+  }
+  state.owner = document.getElementById("fOwner").value.trim();
+  const data = {
+    name:name,
+    species:document.getElementById("fSpecies").value,
+    breed:document.getElementById("fBreed").value.trim(),
+    date:document.getElementById("fDate").value,
+    dateType:state.dateType
+  };
+  if(state.editing){
+    Object.assign(petById(state.editing), data);
+    toast("Saved");
+  }else{
+    if(state.pets.length >= 7){ toast("Seven is the limit"); return; }
+    data.id = uid();
+    state.pets.push(data);
+    state.selected = data.id;
+    toast(name + " added");
+  }
+  persist(); clearForm(); renderPets();
+});
+document.getElementById("cancelEdit").addEventListener("click", clearForm);
+document.getElementById("deletePet").addEventListener("click", function(){
+  const btn = this;
+  if(btn.dataset.confirm !== "1"){
+    btn.dataset.confirm = "1"; btn.textContent = "Tap again to delete";
+    setTimeout(function(){ btn.dataset.confirm = ""; btn.textContent = "Delete pet"; }, 3500);
+    return;
+  }
+  const id = state.editing;
+  state.pets = state.pets.filter(function(p){ return p.id !== id; });
+  state.entries = state.entries.filter(function(e){ return e.petId !== id; });
+  state.meds = state.meds.filter(function(m){ return m.petId !== id; });
+  state.doses = state.doses.filter(function(d){ return d.petId !== id; });
+  if(state.selected === id) state.selected = state.pets.length ? state.pets[0].id : null;
+  btn.dataset.confirm = ""; btn.textContent = "Delete pet";
+  persist(); clearForm(); renderPets(); toast("Removed");
+});
+
+/* ================= reading view ================= */
+function readCard(label, num, data, needLabel){
+  if(!data) return "";
+  const isMaster = MASTERS.indexOf(num) > -1;
+  return '<div class="read"><div class="top"><div class="n">' + num + '</div><div>' +
+    '<div class="lab">' + label + '</div>' +
+    '<h3>' + esc(data.t) + (isMaster ? '<span class="master">MASTER</span>' : '') + '</h3></div></div>' +
+    '<p>' + esc(data.r) + '</p>' +
+    (data.n ? '<div class="need"><b>' + (needLabel || "What they need from you") + ':</b> ' + esc(data.n) + '</div>' : '') +
+    '</div>';
+}
+function renderReading(){
+  const el = document.getElementById("v-reading");
+  const p = currentPet();
+  if(!p){
+    el.innerHTML = '<div class="empty"><h3>Nothing to read yet</h3><p class="small">Add an animal on the Pets tab and their numbers appear here.</p></div>';
+    return;
+  }
+  const n = nameNumbers(p.name);
+  const lp = p.date ? lifePath(p.date) : null;
+  const py = p.date ? personalYear(p.date, new Date().getFullYear()) : null;
+  const own = state.owner ? nameNumbers(state.owner) : null;
+  const bond = own ? reduceNum(n.expression + own.expression) : null;
+
+  let picker = "";
+  if(state.pets.length > 1){
+    picker = '<div class="chips" style="margin-bottom:16px">' + state.pets.map(function(x){
+      return '<button class="chip" data-pick="' + x.id + '" aria-pressed="' + (x.id === p.id) + '">' + esc(x.name) + '</button>';
+    }).join("") + '</div>';
+  }
+
+  const tiles = n.tokens.map(function(t, i){
+    if(t.kind === "gap") return '<div class="tile gap"></div>';
+    return '<div class="tile ' + t.kind + '" style="animation-delay:' + (i*45) + 'ms">' +
+      '<span class="ch">' + esc(t.ch) + '</span><span class="vl">' + t.val + '</span></div>';
+  }).join("");
+
+  el.innerHTML = picker +
+  '<div class="card">' +
+    '<div class="tagwrap">' +
+      '<div class="tag spin"><span class="n">' + n.expression + '</span></div>' +
+      '<div class="tagname">' + esc(p.name) + ' · <span class="grad">' + esc(EXPRESSION[n.expression].t) + '</span></div>' +
+      '<div class="tagsub">' + esc(SPECIES[p.species]) + (p.breed ? " · " + esc(p.breed) : "") +
+        (p.date ? " · " + (p.dateType === "gotcha" ? "home since " : "born ") + fmtDate(p.date) : "") + '</div>' +
+    '</div>' +
+  '</div>' +
+
+  '<div class="sechead"><h2>The name, decoded</h2><span class="eyebrow">Pythagorean</span></div>' +
+  '<div class="card">' +
+    '<div class="cipher">' + tiles + '</div>' +
+    '<div class="legend">' +
+      '<span><i class="swatch" style="background:var(--grad)"></i>Vowels → Heart (' + n.soulRaw + ' → ' + n.soul + ')</span>' +
+      '<span><i class="swatch" style="background:#D8D7DE"></i>Consonants → Presence (' + n.personaRaw + ' → ' + n.persona + ')</span>' +
+    '</div>' +
+    '<p class="note">All letters: ' + n.expressionRaw + ' → ' + n.expression +
+      (MASTERS.indexOf(n.expression) > -1 ? " (held as a master number — not reduced further)" : "") + '</p>' +
+  '</div>' +
+
+  '<div class="sechead"><h2>The reading</h2></div>' +
+  '<div class="grid2">' +
+    readCard("Expression · the whole name", n.expression, EXPRESSION[n.expression]) +
+    readCard("Heart · the vowels", n.soul, SOUL[n.soul]) +
+    readCard("Presence · the consonants", n.persona, PERSONA[n.persona]) +
+    (n.soul === 0 ? '<div class="read"><div class="lab">Heart · the vowels</div><p style="margin-top:8px">No vowels in this name, so there is no Heart number to read — unusual, and worth noticing on its own.</p></div>' : "") +
+    (n.persona === 0 ? '<div class="read"><div class="lab">Presence · the consonants</div><p style="margin-top:8px">All vowels. Nothing between the sound and the animal.</p></div>' : "") +
+    (lp ? readCard("Life path · " + (p.dateType === "gotcha" ? "gotcha day" : "birthday"), lp, PATH[lp]) : "") +
+  '</div>' +
+
+  (py ? '<div class="sechead"><h2>' + new Date().getFullYear() + '</h2><span class="eyebrow">Personal year</span></div>' +
+    '<div class="grid2">' + readCard("Cycle for this year", py, YEAR[py]) + '</div>' : "") +
+
+  (bond ? '<div class="sechead"><h2>You two</h2><span class="eyebrow">Bond number</span></div>' +
+    '<div class="grid2">' + readCard(esc(p.name) + " " + n.expression + " + " + esc(state.owner) + " " + own.expression, bond, BOND[bond]) + '</div>' : 
+    '<div class="sechead"><h2>You two</h2></div><div class="empty"><p class="small">Add your own name on the Pets tab to see the Bond number — how your name and theirs run together.</p></div>') +
+
+  (!p.date ? '<div class="empty" style="margin-top:14px"><p class="small">No date saved for ' + esc(p.name) + ' yet. A birthday or gotcha day unlocks the Life Path and this year\'s cycle.</p></div>' : "") +
+
+  '<div class="actions" style="margin-top:18px"><button class="btn ghost" id="copyRead">Copy this reading</button></div>';
+
+  el.querySelectorAll("[data-pick]").forEach(function(b){
+    b.addEventListener("click", function(){ state.selected = b.dataset.pick; renderReading(); });
+  });
+  const cr = document.getElementById("copyRead");
+  if(cr) cr.addEventListener("click", function(){
+    const lines = [
+      p.name + " — Pythagorean reading",
+      SPECIES[p.species] + (p.breed ? " · " + p.breed : "") + (p.date ? " · " + fmtDate(p.date) : ""),
+      "",
+      "Expression " + n.expression + " — " + EXPRESSION[n.expression].t, EXPRESSION[n.expression].r,
+      "Needs: " + EXPRESSION[n.expression].n, "",
+      (SOUL[n.soul] ? "Heart " + n.soul + " — " + SOUL[n.soul].t + ". " + SOUL[n.soul].r : ""), "",
+      (PERSONA[n.persona] ? "Presence " + n.persona + " — " + PERSONA[n.persona].t + ". " + PERSONA[n.persona].r : "")
+    ];
+    if(lp) lines.push("", "Life path " + lp + " — " + PATH[lp].t + ". " + PATH[lp].r);
+    if(py) lines.push("", new Date().getFullYear() + " personal year " + py + " — " + YEAR[py].t + ". " + YEAR[py].r);
+    if(bond) lines.push("", "Bond with " + state.owner + " " + bond + " — " + BOND[bond].t + ". " + BOND[bond].r);
+    copyText(lines.join("\n"));
+  });
+}
+function copyText(txt){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ toast("Copied"); }, fallback);
+  } else fallback();
+  function fallback(){
+    const ta = document.createElement("textarea");
+    ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); toast("Copied"); }catch(e){ toast("Select and copy manually"); }
+    document.body.removeChild(ta);
+  }
+}
+
+/* ================= journal view ================= */
+function weightChart(points){
+  if(points.length < 2) return "";
+  const W = 320, H = 120, pad = 8;
+  const vals = points.map(function(p){ return p.v; });
+  const min = Math.min.apply(null, vals), max = Math.max.apply(null, vals);
+  const span = (max - min) || 1;
+  const step = (W - pad*2) / (points.length - 1);
+  const xy = points.map(function(p,i){
+    const x = pad + i*step;
+    const y = pad + (H - pad*2) * (1 - (p.v - min)/span);
+    return [x,y];
+  });
+  const line = xy.map(function(c){ return c[0].toFixed(1) + "," + c[1].toFixed(1); }).join(" ");
+  const dots = xy.map(function(c){ return '<circle cx="' + c[0].toFixed(1) + '" cy="' + c[1].toFixed(1) + '" r="2.6" fill="#5EEAD4"/>'; }).join("");
+  return '<div class="card" style="margin-top:14px"><div class="eyebrow" style="margin-bottom:10px">Weight trend · ' +
+    points.length + ' readings</div>' +
+    '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="130" preserveAspectRatio="none" role="img" aria-label="Weight over time">' +
+    '<polyline points="' + line + '" fill="none" stroke="#5EEAD4" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>' +
+    dots + '</svg>' +
+    '<div class="legend"><span>Low ' + min + '</span><span>High ' + max + '</span>' +
+    '<span>' + shortDate(points[0].d) + ' → ' + shortDate(points[points.length-1].d) + '</span></div></div>';
+}
+function renderJournal(){
+  const el = document.getElementById("v-journal");
+  const p = currentPet();
+  if(!p){
+    el.innerHTML = '<div class="empty"><h3>The journal follows your pets</h3><p class="small">Add an animal on the Pets tab first, then log weights, visits, medication and the small things you\'d otherwise forget by Thursday.</p></div>';
+    return;
+  }
+  const mine = state.entries.filter(function(e){ return e.petId === p.id; })
+    .sort(function(a,b){ return a.date < b.date ? 1 : (a.date > b.date ? -1 : 0); });
+  const shown = state.filter === "all" ? mine : mine.filter(function(e){ return e.type === state.filter; });
+  const weights = mine.filter(function(e){ return e.weight; })
+    .map(function(e){ return {d:e.date, v:+e.weight, u:e.unit}; })
+    .sort(function(a,b){ return a.d < b.d ? -1 : 1; });
+  const lastVet = mine.filter(function(e){ return e.type === "vet"; })[0];
+  const latestW = weights.length ? weights[weights.length-1] : null;
+  const delta = weights.length > 1 ? (weights[weights.length-1].v - weights[0].v) : null;
+
+  let picker = "";
+  if(state.pets.length > 1){
+    picker = '<div class="chips" style="margin-bottom:16px">' + state.pets.map(function(x){
+      return '<button class="chip" data-pick="' + x.id + '" aria-pressed="' + (x.id === p.id) + '">' + esc(x.name) + '</button>';
+    }).join("") + '</div>';
+  }
+
+  el.innerHTML = picker +
+  '<div class="sechead"><h2>' + esc(p.name) + '\u2019s health journal</h2><span class="eyebrow">' + mine.length + ' entries</span></div>' +
+  '<div class="stat">' +
+    '<div><b>' + mine.length + '</b><span>Entries</span></div>' +
+    '<div><b>' + (latestW ? latestW.v + " " + latestW.u : "—") + '</b><span>Latest weight</span></div>' +
+    '<div><b>' + (delta === null ? "—" : (delta > 0 ? "+" : "") + Math.round(delta*100)/100) + '</b><span>Change</span></div>' +
+    '<div><b>' + (lastVet ? shortDate(lastVet.date) : "—") + '</b><span>Last vet</span></div>' +
+  '</div>' +
+
+  weightChart(weights) +
+
+  '<div class="sechead"><h2>New entry</h2></div>' +
+  '<div class="card">' +
+    '<div class="row two">' +
+      '<label class="f"><span>Date</span><input id="jDate" type="date" value="' + todayISO() + '"></label>' +
+      '<label class="f"><span>Type</span><select id="jType">' +
+        Object.keys(TYPES).map(function(k){ return '<option value="' + k + '">' + TYPES[k].l + '</option>'; }).join("") +
+      '</select></label>' +
+    '</div>' +
+    '<div class="row two">' +
+      '<label class="f"><span>Weight <span class="muted">(optional)</span></span><input id="jWeight" type="number" step="0.01" min="0" placeholder="4.2"></label>' +
+      '<label class="f"><span>Unit</span><select id="jUnit"><option>kg</option><option>lb</option><option>g</option></select></label>' +
+    '</div>' +
+    '<label class="f"><span>How were they?</span></label>' +
+    '<div class="moodrow" id="jMood" style="margin-bottom:12px">' +
+      MOODS.map(function(m,i){ return '<button type="button" data-m="' + (i+1) + '" aria-pressed="' + (state.draftMood === i+1) + '" aria-label="Mood ' + (i+1) + ' of 5">' + m + '</button>'; }).join("") +
+    '</div>' +
+    '<label class="f"><span>Notes</span><textarea id="jNote" placeholder="Ate half breakfast. Limped slightly on the left hind leg after the park, gone by evening."></textarea></label>' +
+    '<div class="actions"><button class="btn" id="addEntry">Add entry</button>' +
+    (mine.length ? '<button class="btn ghost" id="copyJournal">Copy journal for the vet</button>' : '') + '</div>' +
+  '</div>' +
+
+  '<div class="sechead"><h2>History</h2></div>' +
+  (mine.length ? '<div class="chips" style="margin-bottom:14px">' +
+    '<button class="chip" data-filter="all" aria-pressed="' + (state.filter === "all") + '">All</button>' +
+    Object.keys(TYPES).filter(function(k){ return mine.some(function(e){ return e.type === k; }); })
+      .map(function(k){ return '<button class="chip" data-filter="' + k + '" aria-pressed="' + (state.filter === k) + '">' + TYPES[k].l + '</button>'; }).join("") +
+    '</div>' : "") +
+  (shown.length ? shown.map(function(e){
+    const ty = TYPES[e.type] || TYPES.note;
+    return '<div class="entry"><div class="hd">' +
+      '<i class="dot" style="background:' + ty.c + '"></i><span class="ty">' + ty.l + '</span>' +
+      '<span class="dt">' + shortDate(e.date) + '</span></div>' +
+      ((e.weight || e.mood) ? '<div class="vals">' +
+        (e.weight ? '<span>' + esc(e.weight) + ' ' + esc(e.unit) + '</span>' : '') +
+        (e.mood ? '<span>' + MOODS[e.mood-1] + ' ' + e.mood + '/5</span>' : '') + '</div>' : '') +
+      (e.note ? '<p>' + esc(e.note) + '</p>' : '') +
+      '<button class="del" data-del="' + e.id + '">Remove</button></div>';
+  }).join("") : '<div class="empty"><h3>' + (mine.length ? "Nothing of that kind yet" : "The page is blank") +
+      '</h3><p class="small">' + (mine.length ? "Try a different filter." : "Log today\u2019s weight, or a note about how they seemed. Patterns only show up once there\u2019s something to compare.") + '</p></div>');
+
+  el.querySelectorAll("[data-pick]").forEach(function(b){
+    b.addEventListener("click", function(){ state.selected = b.dataset.pick; state.filter = "all"; renderJournal(); });
+  });
+  el.querySelectorAll("[data-filter]").forEach(function(b){
+    b.addEventListener("click", function(){ state.filter = b.dataset.filter; renderJournal(); });
+  });
+  el.querySelectorAll("#jMood button").forEach(function(b){
+    b.addEventListener("click", function(){
+      state.draftMood = (state.draftMood === +b.dataset.m) ? 0 : +b.dataset.m;
+      el.querySelectorAll("#jMood button").forEach(function(x){
+        x.setAttribute("aria-pressed", String(+x.dataset.m === state.draftMood));
+      });
+    });
+  });
+  el.querySelectorAll("[data-del]").forEach(function(b){
+    b.addEventListener("click", function(){
+      if(b.dataset.confirm !== "1"){
+        b.dataset.confirm = "1"; b.textContent = "Tap again to remove";
+        setTimeout(function(){ if(b.dataset){ b.dataset.confirm = ""; b.textContent = "Remove"; } }, 3000);
+        return;
+      }
+      state.entries = state.entries.filter(function(e){ return e.id !== b.dataset.del; });
+      persist(); renderJournal(); toast("Entry removed");
+    });
+  });
+  const ae = document.getElementById("addEntry");
+  if(ae) ae.addEventListener("click", function(){
+    const date = document.getElementById("jDate").value || todayISO();
+    const w = document.getElementById("jWeight").value.trim();
+    const note = document.getElementById("jNote").value.trim();
+    const type = document.getElementById("jType").value;
+    if(!w && !note && !state.draftMood){ toast("Add a weight, a mood or a note"); return; }
+    state.entries.push({
+      id:uid(), petId:p.id, date:date, type:type,
+      weight:w, unit:document.getElementById("jUnit").value,
+      mood:state.draftMood, note:note
+    });
+    state.draftMood = 0;
+    persist(); renderJournal(); toast("Logged");
+  });
+  const cj = document.getElementById("copyJournal");
+  if(cj) cj.addEventListener("click", function(){
+    const head = p.name + " — health journal (" + SPECIES[p.species] + (p.breed ? ", " + p.breed : "") + ")" +
+      (p.date ? "\n" + (p.dateType === "gotcha" ? "Home since " : "Born ") + fmtDate(p.date) + (ageText(p.date) ? " · " + ageText(p.date) + " old" : "") : "");
+    const meds = medsFor(p.id);
+    const medBlock = meds.length ? "\n\nMEDICATION\n" + meds.map(function(m){
+      const a = adherence(m, 14);
+      return "· " + m.name + (m.dose ? " " + m.dose + " " + m.unit : "") + " — " + scheduleText(m) +
+        (m.start ? " · from " + shortDate(m.start) : "") + (m.end ? " to " + shortDate(m.end) : " · ongoing") +
+        (a.pct === null ? "" : " · " + a.taken + "/" + a.sched + " doses given in 14 days (" + a.pct + "%)") +
+        (m.notes ? "\n  " + m.notes : "");
+    }).join("\n") + "\n\nJOURNAL" : "";
+    const body = mine.map(function(e){
+      return shortDate(e.date) + " · " + (TYPES[e.type]||TYPES.note).l +
+        (e.weight ? " · " + e.weight + e.unit : "") +
+        (e.mood ? " · mood " + e.mood + "/5" : "") +
+        (e.note ? "\n  " + e.note : "");
+    }).join("\n");
+    copyText(head + medBlock + "\n\n" + body);
+  });
+}
+
+/* ================= medications ================= */
+const UNITS = ["mg","ml","tablet","half tablet","capsule","drops","units","sachet","pump","application"];
+const notified = {};
+let medTimer = null;
+
+function dayKey(d){ return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0"); }
+function addDays(iso, n){
+  const p = parseDate(iso); const d = new Date(p.y, p.m-1, p.d + n); return dayKey(d);
+}
+function diffDays(a, b){
+  const x = parseDate(a), y = parseDate(b);
+  if(!x || !y) return 0;
+  return Math.round((Date.UTC(y.y,y.m-1,y.d) - Date.UTC(x.y,x.m-1,x.d)) / 86400000);
+}
+function hm(mins){ return String(Math.floor(mins/60)).padStart(2,"0") + ":" + String(mins%60).padStart(2,"0"); }
+function toMins(t){ const p = (t||"00:00").split(":"); return (+p[0])*60 + (+p[1]); }
+function nowMins(){ const n = new Date(); return n.getHours()*60 + n.getMinutes(); }
+
+function medsFor(petId){ return state.meds.filter(function(m){ return m.petId === petId; }); }
+function medActive(m, iso){
+  if(!m.start || iso < m.start) return false;
+  if(m.end && iso > m.end) return false;
+  return true;
+}
+function medSlots(m, iso){
+  if(!medActive(m, iso)) return [];
+  const gap = diffDays(m.start, iso);
+  if(gap < 0 || (gap % (m.everyDays || 1)) !== 0) return [];
+  return (m.times || []).slice().sort();
+}
+function given(medId, iso, slot){
+  return state.doses.some(function(d){ return d.medId === medId && d.date === iso && d.slot === slot; });
+}
+function toggleDose(m, iso, slot){
+  const has = given(m.id, iso, slot);
+  if(has){
+    state.doses = state.doses.filter(function(d){ return !(d.medId === m.id && d.date === iso && d.slot === slot); });
+  }else{
+    state.doses.push({id:uid(), petId:m.petId, medId:m.id, date:iso, slot:slot, at:new Date().toISOString()});
+  }
+  persist();
+}
+function scheduleText(m){
+  const n = (m.times || []).length;
+  const per = n === 1 ? "Once" : n === 2 ? "Twice" : n + " times";
+  const every = (m.everyDays || 1) === 1 ? "a day" : "every " + m.everyDays + " days";
+  return per + " " + every + " · " + (m.times || []).slice().sort().join(", ");
+}
+function adherence(m, days){
+  const today = todayISO();
+  let sched = 0, taken = 0;
+  for(let i = days - 1; i >= 0; i--){
+    const iso = addDays(today, -i);
+    const slots = medSlots(m, iso);
+    slots.forEach(function(s){
+      const passed = (iso < today) || (iso === today && toMins(s) <= nowMins());
+      if(passed) sched++;
+      if(given(m.id, iso, s)) taken++;
+    });
+  }
+  return {sched:sched, taken:taken, pct: sched ? Math.round(taken/sched*100) : null};
+}
+function nextDose(petId){
+  const today = todayISO();
+  const now = nowMins();
+  let best = null;
+  medsFor(petId).forEach(function(m){
+    for(let i = 0; i < 8; i++){
+      const iso = addDays(today, i);
+      const slots = medSlots(m, iso);
+      for(let k = 0; k < slots.length; k++){
+        const mins = toMins(slots[k]) + i*1440;
+        if(i === 0 && (toMins(slots[k]) <= now || given(m.id, iso, slots[k]))) continue;
+        if(!best || mins < best.mins) best = {mins:mins, m:m, slot:slots[k], iso:iso, day:i};
+      }
+      if(best && i > best.day) break;
+    }
+  });
+  return best;
+}
+function nextDoseText(petId){
+  const b = nextDose(petId);
+  if(!b) return "Nothing else scheduled";
+  const delta = b.mins - nowMins();
+  const h = Math.floor(delta/60), mm = delta % 60;
+  const when = b.day === 0 ? "in " + (h ? h + "h " : "") + mm + "m" : (b.day === 1 ? "tomorrow" : "in " + b.day + " days");
+  return "Next · " + b.m.name + " at " + b.slot + " (" + when + ")";
+}
+
+/* ---- reminders ---- */
+function notifyState(){
+  if(typeof Notification === "undefined") return "unsupported";
+  return Notification.permission;
+}
+function requestReminders(){
+  if(typeof Notification === "undefined"){ toast("This browser can't show notifications"); return; }
+  try{
+    Notification.requestPermission().then(function(p){
+      state.reminders = (p === "granted");
+      persist(); renderMeds();
+      toast(p === "granted" ? "Reminders on" : "Permission not given");
+    });
+  }catch(e){ toast("Notifications blocked here — use the calendar export"); }
+}
+function medTick(){
+  const el = document.getElementById("nextDose");
+  if(el && state.selected) el.textContent = nextDoseText(state.selected);
+  if(!state.reminders || notifyState() !== "granted") return;
+  const iso = todayISO(), now = nowMins();
+  state.pets.forEach(function(p){
+    medsFor(p.id).forEach(function(m){
+      medSlots(m, iso).forEach(function(s){
+        const key = m.id + "|" + iso + "|" + s;
+        const due = toMins(s);
+        if(now >= due && now - due < 10 && !notified[key] && !given(m.id, iso, s)){
+          notified[key] = true;
+          try{
+            new Notification(p.name + " — " + m.name, {
+              body: (m.dose ? m.dose + " " + m.unit + " · " : "") + "due at " + s + (m.notes ? "\n" + m.notes : ""),
+              tag: key
+            });
+          }catch(e){ /* blocked */ }
+        }
+      });
+    });
+  });
+}
+
+/* ---- calendar export ---- */
+function pad(n){ return String(n).padStart(2,"0"); }
+function icsStamp(){
+  const d = new Date();
+  return d.getUTCFullYear() + pad(d.getUTCMonth()+1) + pad(d.getUTCDate()) + "T" + pad(d.getUTCHours()) + pad(d.getUTCMinutes()) + "00Z";
+}
+function buildICS(pet){
+  const out = ["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Nine Lives//Pet medication//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH"];
+  const stamp = icsStamp();
+  medsFor(pet.id).forEach(function(m){
+    if(m.end && m.end < todayISO()) return;
+    const start = parseDate(m.start) ? m.start : todayISO();
+    (m.times || []).forEach(function(t, i){
+      const d = parseDate(start), tp = t.split(":");
+      const dt = d.y + pad(d.m) + pad(d.d) + "T" + pad(+tp[0]) + pad(+tp[1]) + "00";
+      let rule = "RRULE:FREQ=DAILY;INTERVAL=" + (m.everyDays || 1);
+      if(m.end){ const e = parseDate(m.end); rule += ";UNTIL=" + e.y + pad(e.m) + pad(e.d) + "T235900"; }
+      out.push("BEGIN:VEVENT",
+        "UID:" + m.id + "-" + i + "@ninelives",
+        "DTSTAMP:" + stamp,
+        "DTSTART:" + dt,
+        "DURATION:PT10M",
+        rule,
+        "SUMMARY:" + pet.name + " — " + m.name + (m.dose ? " " + m.dose + " " + m.unit : ""),
+        "DESCRIPTION:" + (m.notes ? m.notes.replace(/\n/g," ") + " " : "") + "Logged in Nine Lives.",
+        "BEGIN:VALARM","TRIGGER:PT0M","ACTION:DISPLAY",
+        "DESCRIPTION:" + pet.name + " — " + m.name,
+        "END:VALARM","END:VEVENT");
+    });
+  });
+  out.push("END:VCALENDAR");
+  return out.join("\r\n");
+}
+function exportICS(pet){
+  const text = buildICS(pet);
+  if(text.indexOf("BEGIN:VEVENT") === -1){ toast("No active medication to export"); return; }
+  try{
+    const blob = new Blob([text], {type:"text/calendar"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = pet.name.replace(/[^A-Za-z0-9]/g,"-").toLowerCase() + "-medication.ics";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    toast("Calendar file saved");
+  }catch(e){
+    copyText(text);
+    toast("Download blocked — copied instead");
+  }
+}
+
+/* ---- med form ---- */
+function medTimeInputs(count, existing){
+  let html = "";
+  for(let i = 0; i < count; i++){
+    const def = (existing && existing[i]) || ["08:00","20:00","13:00","22:00"][i] || "12:00";
+    html += '<label class="f" style="margin:0"><span>Dose ' + (i+1) + '</span><input type="time" class="mTime" value="' + def + '"></label>';
+  }
+  return html;
+}
+function readTimes(){
+  return Array.prototype.map.call(document.querySelectorAll(".mTime"), function(i){ return i.value || "08:00"; });
+}
+function medFormClear(){
+  state.editingMed = null;
+  const set = function(id, v){ const e = document.getElementById(id); if(e) e.value = v; };
+  set("mName",""); set("mDose",""); set("mNotes","");
+  set("mUnit","mg"); set("mEvery","1"); set("mStart", todayISO()); set("mEnd","");
+  const c = document.getElementById("mCount"); if(c) c.value = "2";
+  const t = document.getElementById("mTimes"); if(t) t.innerHTML = medTimeInputs(2, null);
+  const b = document.getElementById("saveMed"); if(b) b.textContent = "Add medication";
+  const cn = document.getElementById("cancelMed"); if(cn) cn.style.display = "none";
+  const dl = document.getElementById("deleteMed"); if(dl) dl.style.display = "none";
+  const st = document.getElementById("stopMed"); if(st) st.style.display = "none";
+  const ft = document.getElementById("medFormTitle"); if(ft) ft.textContent = "Add medication";
+}
+function medFormLoad(id, scroll){
+  const m = state.meds.filter(function(x){ return x.id === id; })[0];
+  if(!m) return;
+  state.editingMed = id;
+  document.getElementById("mName").value = m.name;
+  document.getElementById("mDose").value = m.dose || "";
+  document.getElementById("mUnit").value = m.unit || "mg";
+  document.getElementById("mEvery").value = String(m.everyDays || 1);
+  document.getElementById("mStart").value = m.start || todayISO();
+  document.getElementById("mEnd").value = m.end || "";
+  document.getElementById("mNotes").value = m.notes || "";
+  document.getElementById("mCount").value = String((m.times || []).length || 1);
+  document.getElementById("mTimes").innerHTML = medTimeInputs((m.times||[]).length || 1, m.times);
+  document.getElementById("saveMed").textContent = "Save changes";
+  document.getElementById("cancelMed").style.display = "";
+  document.getElementById("deleteMed").style.display = "";
+  document.getElementById("stopMed").style.display = m.end ? "none" : "";
+  document.getElementById("medFormTitle").textContent = "Edit " + m.name;
+  if(scroll) document.getElementById("medFormTitle").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+/* ---- render ---- */
+function renderMeds(){
+  const el = document.getElementById("v-meds");
+  const p = currentPet();
+  if(!p){
+    el.innerHTML = '<div class="empty"><h3>Medication needs a patient</h3><p class="small">Add an animal on the Pets tab, then set up a schedule here. Doses tick off day by day and build an adherence chart your vet can actually read.</p></div>';
+    return;
+  }
+  const iso = todayISO(), now = nowMins();
+  const mine = medsFor(p.id);
+  const live = mine.filter(function(m){ return medActive(m, iso); });
+
+  let picker = "";
+  if(state.pets.length > 1){
+    picker = '<div class="chips" style="margin-bottom:16px">' + state.pets.map(function(x){
+      const d = medsFor(x.id).reduce(function(a,m){ return a + medSlots(m, iso).filter(function(s){ return !given(m.id, iso, s); }).length; }, 0);
+      return '<button class="chip" data-pick="' + x.id + '" aria-pressed="' + (x.id === p.id) + '">' + esc(x.name) + (d ? " · " + d : "") + '</button>';
+    }).join("") + '</div>';
+  }
+
+  // today's doses
+  const due = [];
+  mine.forEach(function(m){
+    medSlots(m, iso).forEach(function(s){ due.push({m:m, s:s}); });
+  });
+  due.sort(function(a,b){ return toMins(a.s) - toMins(b.s); });
+  const doneCount = due.filter(function(d){ return given(d.m.id, iso, d.s); }).length;
+
+  const todayHtml = due.length ? due.map(function(d){
+    const isGiven = given(d.m.id, iso, d.s);
+    const late = !isGiven && toMins(d.s) < now;
+    return '<div class="due ' + (isGiven ? "done" : (late ? "late" : "")) + '">' +
+      '<span class="t">' + d.s + '</span>' +
+      '<span class="nm">' + esc(d.m.name) +
+        (d.m.dose ? ' <span class="dose">' + esc(d.m.dose) + " " + esc(d.m.unit) + '</span>' : '') +
+        (d.m.notes ? '<small>' + esc(d.m.notes) + '</small>' : (late ? '<small>overdue</small>' : '')) +
+      '</span>' +
+      '<button class="tick" data-give="' + d.m.id + '|' + d.s + '" aria-pressed="' + isGiven + '" aria-label="Mark ' + esc(d.m.name) + ' at ' + d.s + ' as given">' + (isGiven ? "✓" : "") + '</button>' +
+      '</div>';
+  }).join("") : '<div class="empty"><p class="small">No doses scheduled for today.</p></div>';
+
+  // reminder status
+  const perm = notifyState();
+  const remLine = perm === "unsupported" ? "Notifications aren\u2019t available in this browser."
+    : perm === "granted" ? (state.reminders ? "On — but only while this page is open." : "Permission granted. Switch reminders on to use them.")
+    : perm === "denied" ? "Blocked in your browser settings."
+    : "Off.";
+
+  // charts
+  const DAYS = 14;
+  const heat = mine.map(function(m){
+    let cells = "";
+    for(let i = DAYS - 1; i >= 0; i--){
+      const day = addDays(iso, -i);
+      const slots = medSlots(m, day);
+      let cls = "future";
+      if(slots.length){
+        const g = slots.filter(function(s){ return given(m.id, day, s); }).length;
+        const passed = day < iso || (day === iso && toMins(slots[slots.length-1]) <= now);
+        cls = g >= slots.length ? "full" : (g > 0 ? "part" : (passed ? "miss" : "future"));
+      }
+      cells += '<div class="hcell ' + cls + '" title="' + shortDate(day) + '"></div>';
+    }
+    return '<div class="hrow"><span class="lbl">' + esc(m.name) + '</span><div class="hcells">' + cells + '</div></div>';
+  }).join("");
+
+  const overall = mine.reduce(function(a, m){ const r = adherence(m, DAYS); a.s += r.sched; a.t += r.taken; return a; }, {s:0, t:0});
+  const pct = overall.s ? Math.round(overall.t/overall.s*100) : null;
+
+  const medCards = mine.length ? mine.map(function(m){
+    const a = adherence(m, DAYS);
+    return '<div class="med" data-med="' + m.id + '" aria-current="' + (state.editingMed === m.id) + '">' +
+      '<div class="hd"><h3>' + esc(m.name) + '</h3>' +
+        (m.dose ? '<span class="dose">' + esc(m.dose) + " " + esc(m.unit) + '</span>' : '') +
+        (m.end && m.end < iso ? '<span class="stopped">FINISHED</span>' : '') + '</div>' +
+      '<div class="sched">' + esc(scheduleText(m)) + '</div>' +
+      '<div class="sched">' + (m.start ? "From " + shortDate(m.start) : "") + (m.end ? " to " + shortDate(m.end) : " · ongoing") + '</div>' +
+      (m.notes ? '<div class="sched">' + esc(m.notes) + '</div>' : '') +
+      (a.pct === null ? '' : '<div class="bar"><i style="width:' + a.pct + '%"></i></div>' +
+        '<div class="sched">' + a.taken + " of " + a.sched + " doses given in the last " + DAYS + " days · " + a.pct + '%</div>') +
+      '</div>';
+  }).join("") : '<div class="empty"><h3>No medication on file</h3><p class="small">Add one below — a wormer, a daily joint supplement, a two-week course of antibiotics. Everything works the same way.</p></div>';
+
+  el.innerHTML = picker +
+
+  '<div class="sechead"><h2>Today</h2><span class="eyebrow">' + doneCount + " of " + due.length + ' given</span></div>' +
+  todayHtml +
+  '<p class="next" id="nextDose" style="margin:10px 0 0">' + esc(nextDoseText(p.id)) + '</p>' +
+
+  '<div class="sechead"><h2>Reminders</h2></div>' +
+  '<div class="card">' +
+    '<div class="seg" style="margin-bottom:12px">' +
+      '<button type="button" id="remToggle" aria-pressed="' + (!!state.reminders && perm === "granted") + '">' +
+        (perm === "granted" ? (state.reminders ? "Reminders on" : "Turn reminders on") : "Allow notifications") + '</button>' +
+      '<button type="button" id="icsBtn">Add to calendar</button>' +
+    '</div>' +
+    '<p class="note" style="margin-top:0">' + esc(remLine) + '</p>' +
+    '<div class="disclaim" style="margin-top:12px"><p style="margin:0">A web page can only alert you while it\u2019s open, so in-app reminders are a backstop, not a system. The calendar file is the reliable one: it drops every dose into your phone\u2019s calendar with an alarm attached, and it keeps working when Nine Lives is closed.</p></div>' +
+  '</div>' +
+
+  '<div class="sechead"><h2>Adherence</h2><span class="eyebrow">Last ' + DAYS + ' days</span></div>' +
+  '<div class="stat">' +
+    '<div><b>' + live.length + '</b><span>Active</span></div>' +
+    '<div><b>' + (pct === null ? "—" : pct + "%") + '</b><span>Given</span></div>' +
+    '<div><b>' + overall.t + '</b><span>Doses logged</span></div>' +
+    '<div><b>' + (overall.s - overall.t) + '</b><span>Missed</span></div>' +
+  '</div>' +
+  (mine.length ? '<div class="card" style="margin-top:14px">' + heat +
+    '<div class="legend" style="margin-top:12px">' +
+      '<span><i class="swatch" style="background:#5EEAD4"></i>All given</span>' +
+      '<span><i class="swatch" style="background:#FFC46B"></i>Partial</span>' +
+      '<span><i class="swatch" style="background:#3A1620"></i>Missed</span>' +
+      '<span><i class="swatch" style="background:#0E0E12;border:1px solid #191920"></i>Not due</span>' +
+    '</div></div>' : '') +
+
+  '<div class="sechead"><h2>Medications</h2></div>' + medCards +
+
+  '<div class="sechead"><h2 id="medFormTitle">Add medication</h2></div>' +
+  '<div class="card">' +
+    '<label class="f"><span>Name</span><input id="mName" type="text" placeholder="Gabapentin" autocomplete="off" maxlength="50"></label>' +
+    '<div class="row two">' +
+      '<label class="f"><span>Dose</span><input id="mDose" type="text" placeholder="100" autocomplete="off" maxlength="20"></label>' +
+      '<label class="f"><span>Unit</span><select id="mUnit">' + UNITS.map(function(u){ return '<option>' + u + '</option>'; }).join("") + '</select></label>' +
+    '</div>' +
+    '<div class="row two">' +
+      '<label class="f"><span>Doses per day</span><select id="mCount"><option>1</option><option>2</option><option>3</option><option>4</option></select></label>' +
+      '<label class="f"><span>Repeat</span><select id="mEvery">' +
+        '<option value="1">Every day</option><option value="2">Every 2 days</option><option value="3">Every 3 days</option>' +
+        '<option value="7">Weekly</option><option value="14">Fortnightly</option><option value="30">Monthly</option></select></label>' +
+    '</div>' +
+    '<div class="timegrid" id="mTimes"></div>' +
+    '<div class="row two">' +
+      '<label class="f"><span>Start</span><input id="mStart" type="date"></label>' +
+      '<label class="f"><span>End <span class="muted">(blank = ongoing)</span></span><input id="mEnd" type="date"></label>' +
+    '</div>' +
+    '<label class="f"><span>Notes</span><input id="mNotes" type="text" placeholder="With food. Hide in cheese." maxlength="80"></label>' +
+    '<div class="actions">' +
+      '<button class="btn" id="saveMed">Add medication</button>' +
+      '<button class="btn ghost" id="cancelMed" style="display:none">Cancel</button>' +
+      '<button class="btn ghost" id="stopMed" style="display:none">Mark finished</button>' +
+      '<button class="btn danger" id="deleteMed" style="display:none">Delete</button>' +
+    '</div>' +
+    '<p class="note" id="medNote"></p>' +
+  '</div>';
+
+  // wire up
+  el.querySelectorAll("[data-pick]").forEach(function(b){
+    b.addEventListener("click", function(){ state.selected = b.dataset.pick; state.editingMed = null; renderMeds(); });
+  });
+  el.querySelectorAll("[data-give]").forEach(function(b){
+    b.addEventListener("click", function(){
+      const parts = b.dataset.give.split("|");
+      const m = state.meds.filter(function(x){ return x.id === parts[0]; })[0];
+      toggleDose(m, iso, parts[1]);
+      renderMeds();
+    });
+  });
+  el.querySelectorAll("[data-med]").forEach(function(c){
+    c.addEventListener("click", function(){ medFormLoad(c.dataset.med, true); renderMedsHighlight(); });
+  });
+
+  const cnt = document.getElementById("mCount");
+  cnt.addEventListener("change", function(){
+    document.getElementById("mTimes").innerHTML = medTimeInputs(+cnt.value, readTimes());
+  });
+
+  document.getElementById("remToggle").addEventListener("click", function(){
+    if(notifyState() === "granted"){
+      state.reminders = !state.reminders; persist(); renderMeds();
+      toast(state.reminders ? "Reminders on" : "Reminders off");
+    } else requestReminders();
+  });
+  document.getElementById("icsBtn").addEventListener("click", function(){ exportICS(p); });
+
+  document.getElementById("saveMed").addEventListener("click", function(){
+    const name = document.getElementById("mName").value.trim();
+    if(!name){
+      document.getElementById("medNote").textContent = "Give the medication a name so it\u2019s clear on the chart.";
+      return;
+    }
+    const data = {
+      petId:p.id, name:name,
+      dose:document.getElementById("mDose").value.trim(),
+      unit:document.getElementById("mUnit").value,
+      times:readTimes().slice().sort(),
+      everyDays:+document.getElementById("mEvery").value || 1,
+      start:document.getElementById("mStart").value || todayISO(),
+      end:document.getElementById("mEnd").value,
+      notes:document.getElementById("mNotes").value.trim()
+    };
+    if(state.editingMed){
+      Object.assign(state.meds.filter(function(x){ return x.id === state.editingMed; })[0], data);
+      toast("Saved");
+    }else{
+      data.id = uid(); state.meds.push(data); toast(name + " added");
+    }
+    persist(); state.editingMed = null; renderMeds();
+  });
+  document.getElementById("cancelMed").addEventListener("click", function(){ state.editingMed = null; renderMeds(); });
+  document.getElementById("stopMed").addEventListener("click", function(){
+    const m = state.meds.filter(function(x){ return x.id === state.editingMed; })[0];
+    if(!m) return;
+    m.end = todayISO(); persist(); state.editingMed = null; renderMeds(); toast("Marked finished");
+  });
+  document.getElementById("deleteMed").addEventListener("click", function(){
+    const btn = this;
+    if(btn.dataset.confirm !== "1"){
+      btn.dataset.confirm = "1"; btn.textContent = "Tap again to delete";
+      setTimeout(function(){ btn.dataset.confirm = ""; btn.textContent = "Delete"; }, 3500);
+      return;
+    }
+    const id = state.editingMed;
+    state.meds = state.meds.filter(function(x){ return x.id !== id; });
+    state.doses = state.doses.filter(function(d){ return d.medId !== id; });
+    persist(); state.editingMed = null; renderMeds(); toast("Removed");
+  });
+
+  if(state.editingMed) medFormLoad(state.editingMed); else medFormClear();
+}
+function renderMedsHighlight(){
+  document.querySelectorAll("[data-med]").forEach(function(c){
+    c.setAttribute("aria-current", String(c.dataset.med === state.editingMed));
+  });
+}
+
+/* ================= household view ================= */
+function renderHouse(){
+  const el = document.getElementById("v-house");
+  if(state.pets.length < 2){
+    el.innerHTML = '<div class="sechead"><h2>Household harmony</h2></div>' +
+      '<div class="empty"><h3>Needs at least two animals</h3><p class="small">Add a second pet and this becomes a grid of bond numbers — how each pair of names runs together, and where the friction usually sits.</p></div>';
+    return;
+  }
+  const pets = state.pets;
+  const nums = pets.map(function(p){ return nameNumbers(p.name).expression; });
+  let rows = '<tr><th></th>' + pets.map(function(p){ return '<th>' + esc(p.name) + '</th>'; }).join("") + '</tr>';
+  pets.forEach(function(a,i){
+    rows += '<tr><th style="text-align:left">' + esc(a.name) + '</th>' + pets.map(function(b,j){
+      if(i === j) return '<td class="self">' + nums[i] + '</td>';
+      return '<td><b>' + reduceNum(nums[i] + nums[j]) + '</b></td>';
+    }).join("") + '</tr>';
+  });
+
+  const pairs = [];
+  pets.forEach(function(a,i){ pets.forEach(function(b,j){ if(j > i) pairs.push([a,b,reduceNum(nums[i]+nums[j])]); }); });
+
+  const totals = reduceNum(nums.reduce(function(x,y){ return x+y; }, 0) + (state.owner ? nameNumbers(state.owner).expression : 0));
+
+  el.innerHTML =
+  '<div class="sechead"><h2>Household harmony</h2><span class="eyebrow">' + pets.length + ' animals</span></div>' +
+  '<div class="card"><div class="scroller"><table class="matrix">' + rows + '</table></div>' +
+  '<p class="note">Each cell reduces the two Expression numbers together. The diagonal is each animal\u2019s own number.</p></div>' +
+
+  '<div class="sechead"><h2>The whole house</h2></div>' +
+  '<div class="grid2">' + readCard("Every name, including yours", totals, BOND[totals], "Living with it") + '</div>' +
+
+  '<div class="sechead"><h2>Pair by pair</h2></div>' +
+  '<div class="grid2">' + pairs.map(function(pr){
+    return readCard(esc(pr[0].name) + " + " + esc(pr[1].name), pr[2], BOND[pr[2]], "Living with it");
+  }).join("") + '</div>';
+}
+
+/* ================= learn view ================= */
+let learnBuilt = false;
+function renderLearn(){
+  if(learnBuilt) return;
+  learnBuilt = true;
+  const el = document.getElementById("v-learn");
+  const rows = [];
+  for(let r=0;r<3;r++){
+    const cells = [];
+    for(let c=1;c<=9;c++){
+      const letters = Object.keys(VAL).filter(function(L){ return VAL[L] === c; });
+      cells.push('<td>' + (letters[r] || "") + '</td>');
+    }
+    rows.push('<tr>' + cells.join("") + '</tr>');
+  }
+  const wheel = (function(){
+    let s = '<svg viewBox="0 0 240 240" width="230" height="230" role="img" aria-label="The nine numbers arranged in a circle">';
+    const pts = [];
+    for(let i=0;i<9;i++){
+      const a = (-90 + i*40) * Math.PI/180;
+      pts.push([120 + 92*Math.cos(a), 120 + 92*Math.sin(a)]);
+    }
+    s += '<circle cx="120" cy="120" r="92" fill="none" stroke="#2B2B36"/>';
+    for(let i=0;i<9;i++) for(let j=i+1;j<9;j++){
+      if((i+j+2) % 3 === 0) s += '<line x1="'+pts[i][0].toFixed(1)+'" y1="'+pts[i][1].toFixed(1)+'" x2="'+pts[j][0].toFixed(1)+'" y2="'+pts[j][1].toFixed(1)+'" stroke="url(#g1)" stroke-width=".7" opacity=".45"/>';
+    }
+    pts.forEach(function(p,i){
+      s += '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="15" fill="#0A0A0C" stroke="#2B2B36"/>';
+      s += '<text x="'+p[0].toFixed(1)+'" y="'+(p[1]+6).toFixed(1)+'" text-anchor="middle" font-family="Georgia,serif" font-size="17" fill="url(#g1)">'+(i+1)+'</text>';
+    });
+    return s + '</svg>';
+  })();
+
+  el.innerHTML =
+  '<div class="sechead"><h2>How this works</h2><span class="eyebrow">Pythagorean</span></div>' +
+  '<div class="wheelwrap">' + wheel + '</div>' +
+  '<div class="card">' +
+    '<p class="small muted" style="margin-top:0">Every letter carries a number, one to nine, in the order of the alphabet. Add the letters of a name, reduce the total to a single digit, and you have the number that tradition says the name carries. The Pythagorean method is the most widely used system in the West — it\u2019s the one behind almost every name reading you\u2019ll meet.</p>' +
+    '<table class="pyth"><tr>' + [1,2,3,4,5,6,7,8,9].map(function(i){ return '<th>' + i + '</th>'; }).join("") + '</tr>' + rows.join("") + '</table>' +
+  '</div>' +
+
+  '<div class="sechead"><h2>Try a name</h2></div>' +
+  '<div class="card">' +
+    '<label class="f"><span>Any name, nickname or shortening</span><input id="labName" type="text" placeholder="Mr Bingley" autocomplete="off" maxlength="40"></label>' +
+    '<div id="labOut"><p class="note" style="margin:0">Nicknames carry their own number. If you call them Biscuit but the paperwork says Beatrice, both are real — the one you actually use is the one they answer to.</p></div>' +
+  '</div>' +
+
+  '<div class="sechead"><h2>The four calculations</h2></div>' +
+  '<details><summary><span class="idx">1</span>Expression — the whole name</summary><div class="body">' +
+    '<p>Add the value of every letter, then reduce. This is read as the animal\u2019s overall character: the thing you\u2019d describe to someone who asked what they\u2019re like.</p>' +
+    '<p class="muted small">B(2) + E(5) + A(1) + N(5) = 13 → 1 + 3 = 4.</p></div></details>' +
+  '<details><summary><span class="idx">2</span>Heart — the vowels</summary><div class="body">' +
+    '<p>Only A, E, I, O, U (and sometimes Y). Traditionally the Soul Urge: what the animal wants when nothing is being asked of them.</p>' +
+    '<p class="muted small">In BEAN: E(5) + A(1) = 6.</p></div></details>' +
+  '<details><summary><span class="idx">3</span>Presence — the consonants</summary><div class="body">' +
+    '<p>Everything the vowels left behind. The outer impression — what a stranger takes from the first thirty seconds.</p>' +
+    '<p class="muted small">In BEAN: B(2) + N(5) = 7.</p></div></details>' +
+  '<details><summary><span class="idx">4</span>Life path — the date</summary><div class="body">' +
+    '<p>Reduce the month, the day and the year separately, add the three, reduce again. For rescued animals whose birthday nobody knows, the gotcha day is used instead — the tradition treats the day a life changed direction as a legitimate starting point.</p>' +
+    '<p class="muted small">14 March 2019 → 3 + 5 + 3 = 11, a master number, held as 11.</p></div></details>' +
+
+  '<div class="sechead"><h2>Two rules people get wrong</h2></div>' +
+  '<details><summary><span class="idx">Y</span>When Y is a vowel</summary><div class="body">' +
+    '<p>Y counts as a vowel when it is doing a vowel\u2019s job in the word, and as a consonant when it isn\u2019t. In practice: after a consonant it\u2019s a vowel (Rocky, Lyla), and at the start of a word or straight after a vowel it\u2019s a consonant (Yoshi, Maya). Nine Lives applies that rule automatically — you can see which way it fell in the decoded strip.</p></div></details>' +
+  '<details><summary><span class="idx">M</span>Master numbers</summary><div class="body">' +
+    '<p>11, 22 and 33 are not reduced. When a total lands on one of them it\u2019s left standing, because the tradition reads them as intensified versions of 2, 4 and 6 rather than as the same thing. A master number is not a better number — it usually describes an animal who feels more and needs more managing.</p></div></details>' +
+
+  '<div class="sechead"><h2>The nine, in one line each</h2></div>' +
+  '<div class="card">' + Object.keys(NUMREF).map(function(k){
+    return '<div style="display:flex;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)">' +
+      '<b class="grad" style="font-family:var(--display);font-size:20px;width:34px;flex:none">' + k + '</b>' +
+      '<span class="small" style="color:#D8D7DE">' + NUMREF[k] + '</span></div>';
+  }).join("") + '</div>' +
+
+  '<div class="sechead"><h2>Being straight with you</h2></div>' +
+  '<div class="disclaim"><p style="margin:0 0 8px">Numerology is a symbolic tradition, not a science. Nothing here predicts an animal\u2019s health, temperament or lifespan, and no number should ever stand in for a vet\u2019s opinion or a behaviourist\u2019s.</p>' +
+  '<p style="margin:0">What it does do well: it gives you a vocabulary and a reason to look closely. The health journal on the other tab is the practical half of this app — dated, factual, and genuinely useful in a consulting room.</p></div>';
+
+  const lab = document.getElementById("labName");
+  lab.addEventListener("input", function(){
+    const v = lab.value.trim();
+    const out = document.getElementById("labOut");
+    if(!/[A-Za-z]/.test(v)){
+      out.innerHTML = '<p class="note" style="margin:0">Nicknames carry their own number. If you call them Biscuit but the paperwork says Beatrice, both are real — the one you actually use is the one they answer to.</p>';
+      return;
+    }
+    const n = nameNumbers(v);
+    out.innerHTML = '<div class="cipher">' + n.tokens.map(function(t,i){
+      if(t.kind === "gap") return '<div class="tile gap"></div>';
+      return '<div class="tile ' + t.kind + '" style="animation-delay:' + (i*30) + 'ms"><span class="ch">' + esc(t.ch) + '</span><span class="vl">' + t.val + '</span></div>';
+    }).join("") + '</div>' +
+    '<div class="stat" style="margin-top:12px">' +
+      '<div><b class="grad">' + n.expression + '</b><span>Expression</span></div>' +
+      '<div><b class="grad">' + n.soul + '</b><span>Heart</span></div>' +
+      '<div><b class="grad">' + n.persona + '</b><span>Presence</span></div>' +
+    '</div>' +
+    (EXPRESSION[n.expression] ? '<p class="note">' + esc(EXPRESSION[n.expression].t) + " — " + esc(EXPRESSION[n.expression].r.split(".")[0]) + '.</p>' : "");
+  });
+}
+
+/* ================= boot ================= */
+(async function(){
+  const saved = await Store.load();
+  if(saved){
+    state.pets = (saved.pets || []).slice(0,7);
+    state.entries = saved.entries || [];
+    state.meds = saved.meds || [];
+    state.doses = saved.doses || [];
+    state.reminders = !!saved.reminders;
+    state.owner = saved.owner || "";
+    state.selected = state.pets.length ? state.pets[0].id : null;
+  }
+  clearForm();
+  renderPets();
+  document.getElementById("fOwner").value = state.owner || "";
+  medTick();
+  medTimer = setInterval(medTick, 30000);
+})();
+
+</script>
+</body>
+</html>
