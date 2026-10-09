@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wind &amp; Water — feng shui in plain language</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ── Tokens ─────────────────────────────────────────────
+   True black. The five elements at full saturation —
+   jade, vermilion, gold, platinum, ultramarine — plus violet.
+   Flat surfaces, hairline borders, zero blur.            */
+:root{
+  --paper:#000000;
+  --paper-2:#0C0C0F;
+  --paper-3:#17171D;
+  --ink:#F4F3F0;
+  --ink-soft:#9B9BA6;
+  --ink-faint:#61616C;
+  --line:#212128;
+  --line-strong:#34343F;
+
+  --wood:#3DD68C;
+  --fire:#FF5A3C;
+  --earth:#FFB43C;
+  --metal:#C3D0E4;
+  --water:#4C82FF;
+  --violet:#B36BFF;
+
+  --r-sm:6px;
+  --r-md:12px;
+  --r-lg:18px;
+  --display:"Bricolage Grotesque",-apple-system,sans-serif;
+  --body:"Inter",-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);color:var(--ink);font-family:var(--body);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--water);outline-offset:3px;border-radius:2px}
+
+/* ── Masthead ─────────────────────────────────────────── */
+.masthead{position:sticky;top:0;z-index:40;background:rgba(0,0,0,.88);border-bottom:1px solid var(--line);padding:0 20px}
+.masthead-inner{max-width:1140px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:64px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;padding:13px 0 0}
+.brand-mark{font-size:21px;line-height:1;letter-spacing:.04em;background:linear-gradient(120deg,var(--wood),var(--water) 60%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand-name{font-family:var(--display);font-size:18px;font-weight:700;letter-spacing:-.02em}
+.brand-sub{font-family:var(--mono);font-size:10px;color:var(--ink-faint);letter-spacing:.14em;text-transform:uppercase}
+.tabs{display:flex;gap:3px;flex-wrap:wrap;padding-bottom:11px}
+.tab{background:none;border:1px solid transparent;padding:7px 14px;font-size:14px;font-weight:500;color:var(--ink-soft);border-radius:100px;letter-spacing:-.01em;transition:color .15s ease,border-color .15s ease,background .15s ease}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{color:var(--ink);background:var(--paper-3);border-color:var(--line-strong)}
+
+/* ── Layout ───────────────────────────────────────────── */
+main{max-width:1140px;margin:0 auto;padding:0 20px 96px}
+.panel{display:none;padding-top:44px;--grad:linear-gradient(100deg,var(--wood),var(--water))}
+.panel.is-active{display:block}
+#ask{--grad:linear-gradient(100deg,var(--wood) 0%,var(--water) 55%,var(--violet) 100%)}
+#learn{--grad:linear-gradient(100deg,var(--earth) 0%,var(--fire) 100%)}
+#bagua{--grad:linear-gradient(100deg,var(--water) 0%,var(--violet) 100%)}
+#room{--grad:linear-gradient(100deg,var(--wood) 0%,var(--earth) 100%)}
+#quiz{--grad:linear-gradient(100deg,var(--fire) 0%,var(--violet) 100%)}
+@media(prefers-reduced-motion:no-preference){.panel.is-active{animation:rise .35s cubic-bezier(.2,.7,.3,1) both}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);font-weight:500;margin:0 0 14px}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,7vw,68px);line-height:1.02;margin:0 0 16px;letter-spacing:-.035em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-family:var(--display);font-weight:700;font-size:clamp(26px,3.8vw,38px);line-height:1.08;margin:0 0 10px;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h3{font-family:var(--display);font-weight:700;font-size:19px;margin:0 0 6px;letter-spacing:-.02em}
+.lede{font-size:17.5px;color:var(--ink-soft);max-width:58ch;margin:0 0 30px;letter-spacing:-.011em}
+.rule{height:1px;background:var(--line);border:0;margin:52px 0}
+.card{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r-lg);padding:24px}
+
+/* ── Hero ─────────────────────────────────────────────── */
+.hero{display:grid;gap:34px;grid-template-columns:minmax(0,1fr);align-items:center;margin-bottom:44px}
+@media(min-width:880px){.hero{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:52px}}
+.hero-copy .lede{margin-bottom:18px}
+.hero-note{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin:0}
+.hero-art{width:100%;max-width:430px;margin:0 auto}
+.hero-art svg{width:100%;height:auto;display:block;overflow:visible}
+.ha-ring{fill:none;stroke-width:1.25;transform-origin:200px 200px}
+.ha-chi path{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-dasharray:5 13}
+.ha-tri{font-size:23px;text-anchor:middle;dominant-baseline:central;font-family:inherit}
+.ha-glyphs text{transform-box:fill-box;transform-origin:center}
+@media(prefers-reduced-motion:no-preference){
+  .ring-a{animation:spin 72s linear infinite}
+  .ring-b{animation:spin 52s linear infinite reverse}
+  .ha-chi path{animation:flow 2.6s linear infinite}
+  .ha-chi path:nth-child(2){animation-duration:3.4s}
+  .ha-chi path:nth-child(3){animation-duration:4.2s}
+  .ha-glyphs text{animation:emerge .6s cubic-bezier(.2,.7,.3,1) both}
+  .ha-glyphs text:nth-child(1){animation-delay:.06s}
+  .ha-glyphs text:nth-child(2){animation-delay:.12s}
+  .ha-glyphs text:nth-child(3){animation-delay:.18s}
+  .ha-glyphs text:nth-child(4){animation-delay:.24s}
+  .ha-glyphs text:nth-child(5){animation-delay:.30s}
+  .ha-glyphs text:nth-child(6){animation-delay:.36s}
+  .ha-glyphs text:nth-child(7){animation-delay:.42s}
+  .ha-glyphs text:nth-child(8){animation-delay:.48s}
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes flow{to{stroke-dashoffset:-36}}
+@keyframes emerge{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
+
+/* ── Voice console ────────────────────────────────────── */
+.console{padding:28px 24px}
+.console-top{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.mic{position:relative;flex:0 0 auto;width:76px;height:76px;border-radius:50%;background:linear-gradient(140deg,var(--fire),var(--violet));border:0;display:grid;place-items:center;transition:transform .18s cubic-bezier(.2,.7,.3,1)}
+.mic:hover{transform:scale(1.05)}
+.mic:active{transform:scale(.96)}
+.mic svg{width:27px;height:27px;fill:none;stroke:#000;stroke-width:1.9;stroke-linecap:round}
+.mic.is-live{background:linear-gradient(140deg,var(--water),var(--wood))}
+.mic.is-live::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:1.5px solid var(--water)}
+@media(prefers-reduced-motion:no-preference){.mic.is-live::after{animation:pulse 1.5s cubic-bezier(.2,.7,.3,1) infinite}}
+@keyframes pulse{0%{transform:scale(.9);opacity:1}100%{transform:scale(1.28);opacity:0}}
+.mic[disabled]{background:var(--paper-3);border:1px solid var(--line-strong);cursor:not-allowed;transform:none}
+.mic[disabled] svg{stroke:var(--ink-faint)}
+.console-text{flex:1 1 240px;min-width:200px}
+.console-label{font-family:var(--display);font-size:23px;font-weight:700;letter-spacing:-.025em;margin:0 0 2px}
+.status{font-size:14px;color:var(--ink-soft);margin:0;min-height:22px}
+.status.is-warn{color:var(--fire)}
+.heard{margin-top:20px;padding:13px 16px;background:var(--paper-3);border-radius:var(--r-md);border-left:2px solid var(--water);font-size:15px;color:var(--ink-soft);display:none}
+.heard.show{display:block}
+.heard b{font-family:var(--mono);font-weight:500;color:var(--water);font-size:10px;letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:4px}
+.typerow{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.typerow input{flex:1 1 200px;min-width:0;font-family:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--line-strong);border-radius:var(--r-md);padding:12px 15px}
+.typerow input::placeholder{color:var(--ink-faint)}
+.typerow input:focus{outline:none;border-color:var(--water)}
+
+.btn{background:var(--ink);color:#000;border:1px solid var(--ink);padding:12px 20px;border-radius:var(--r-md);font-weight:600;font-size:14px;letter-spacing:-.01em;transition:opacity .15s ease}
+.btn:hover{opacity:.85}
+.btn[disabled]{opacity:.35;cursor:not-allowed}
+.btn-quiet{background:transparent;color:var(--ink-soft);border:1px solid var(--line-strong);font-weight:500}
+.btn-quiet:hover{color:var(--ink);border-color:var(--ink-soft);opacity:1}
+.btn-sm{padding:8px 14px;font-size:13px}
+.btn-tiny{padding:5px 11px;font-size:12px;border-radius:100px}
+
+.toggles{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:18px}
+.switch{display:flex;align-items:center;gap:9px;font-size:13.5px;color:var(--ink-soft);cursor:pointer}
+.switch input{appearance:none;-webkit-appearance:none;margin:0;width:40px;height:22px;border-radius:11px;background:var(--line-strong);position:relative;cursor:pointer;transition:background .2s ease}
+.switch input::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:var(--ink);transition:transform .2s cubic-bezier(.2,.7,.3,1)}
+.switch input:checked{background:var(--wood)}
+.switch input:checked::after{transform:translateX(18px);background:#000}
+
+.vset{display:none;gap:14px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.vset.show{display:grid}
+.vset label{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:7px}
+.vset select,.vset input[type=range]{width:100%}
+.vset select{background:var(--paper);color:var(--ink);border:1px solid var(--line-strong);border-radius:var(--r-sm);padding:9px 11px;font-family:inherit;font-size:13.5px}
+.vset input[type=range]{appearance:none;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--line-strong);margin:9px 0}
+.vset input[type=range]::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--water);cursor:pointer}
+.vset input[type=range]::-moz-range-thumb{width:16px;height:16px;border:0;border-radius:50%;background:var(--water);cursor:pointer}
+
+/* ── Thread ───────────────────────────────────────────── */
+.thread{display:flex;flex-direction:column}
+.turn{border-top:1px solid var(--line);padding-top:22px;margin-top:22px}
+.turn-q{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.025em;margin:0 0 13px;color:var(--ink);display:flex;gap:10px;align-items:baseline}
+.turn-q::before{content:"";flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:var(--water);transform:translateY(-3px)}
+.reply-body{font-size:17.5px;line-height:1.62;letter-spacing:-.011em;color:var(--ink)}
+.reply-body p{margin:0 0 13px}
+.reply-body p:last-child{margin-bottom:0}
+.turn-tools{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap}
+.thinking{display:flex;gap:5px;align-items:center;color:var(--ink-faint);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--water)}
+@media(prefers-reduced-motion:no-preference){
+  .dot{animation:blink 1.2s ease-in-out infinite}
+  .dot:nth-child(2){animation-delay:.2s}
+  .dot:nth-child(3){animation-delay:.4s}
+}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+.starters{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+.starter{background:var(--paper-2);border:1px solid var(--line);color:var(--ink-soft);border-radius:100px;padding:8px 15px;font-size:13.5px;transition:border-color .15s ease,color .15s ease}
+.starter:hover{border-color:var(--water);color:var(--ink)}
+
+/* ── Daily tip ────────────────────────────────────────── */
+.tip{margin-top:34px;border:1px solid var(--line);border-left:3px solid var(--earth);border-radius:var(--r-md);padding:20px 22px;background:var(--paper-2)}
+.tip-label{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--earth);margin:0 0 8px;font-weight:500}
+.tip-text{font-family:var(--display);font-weight:700;font-size:21px;line-height:1.3;letter-spacing:-.025em;margin:0}
+.tip-tools{display:flex;gap:7px;margin-top:14px;flex-wrap:wrap}
+.saved-list{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);display:none}
+.saved-list.show{display:block}
+.saved-list h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 10px;font-weight:500}
+.saved-list ul{list-style:none;margin:0;padding:0}
+.saved-list li{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;font-size:14px;color:var(--ink-soft);padding:8px 0;border-bottom:1px solid var(--line)}
+.saved-list li:last-child{border-bottom:0}
+.saved-x{background:none;border:0;color:var(--ink-faint);font-size:16px;line-height:1;padding:0 2px}
+.saved-x:hover{color:var(--fire)}
+
+/* ── Principles ───────────────────────────────────────── */
+.grid-2{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.principle h3{display:flex;align-items:center;gap:10px}
+.glyph{font-size:15px;font-weight:400;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.principle p{margin:0;color:var(--ink-soft);font-size:15.5px}
+.principle p + p{margin-top:11px}
+.elements{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));margin-top:24px}
+.el{background:var(--paper-2);border:1px solid var(--line);border-top:2px solid var(--el);border-radius:var(--r-md);padding:18px}
+.el-name{font-family:var(--display);font-weight:700;font-size:20px;letter-spacing:-.025em;margin:0 0 2px;color:var(--el)}
+.el-cn{color:var(--ink-faint);font-weight:400;font-size:14px;letter-spacing:.08em}
+.el dl{margin:12px 0 0;font-size:13.5px;color:var(--ink-soft)}
+.el dt{font-family:var(--mono);font-weight:500;color:var(--ink-faint);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;margin-top:10px}
+.el dd{margin:2px 0 0}
+.yy{display:flex;gap:26px;align-items:center;flex-wrap:wrap}
+.yy-cols{display:grid;gap:18px;grid-template-columns:1fr 1fr;flex:1 1 280px}
+.yy-col h4{margin:0 0 6px;font-family:var(--display);font-size:18px;font-weight:700;letter-spacing:-.025em}
+.yy-col ul{margin:0;padding-left:16px;color:var(--ink-soft);font-size:14px}
+.yy-col li{margin-bottom:3px}
+
+/* ── Cycles diagram ───────────────────────────────────── */
+.cycles{display:grid;gap:26px;grid-template-columns:minmax(0,1fr);align-items:center;margin-top:24px}
+@media(min-width:820px){.cycles{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:40px}}
+.cyc-art{width:100%;max-width:400px;margin:0 auto}
+.cyc-art svg{width:100%;height:auto;display:block;overflow:visible}
+.cyc-edge{fill:none;stroke-width:1.25;opacity:.3;transition:opacity .2s ease,stroke-width .2s ease}
+.cyc-edge.lit{opacity:1;stroke-width:2}
+.cyc-head{opacity:.3;transition:opacity .2s ease}
+.cyc-head.lit{opacity:1}
+.cyc-node{cursor:pointer}
+.cyc-node circle{fill:var(--paper);stroke:var(--el);stroke-width:1.5;transition:fill .2s ease,stroke-width .2s ease}
+.cyc-node:hover circle,.cyc-node.on circle{fill:var(--paper-3)}
+.cyc-node.on circle{stroke-width:3}
+.cyc-node text{font-family:var(--display);font-weight:700;font-size:15px;letter-spacing:-.02em;text-anchor:middle;dominant-baseline:central;fill:var(--el)}
+.cyc-info h3{font-size:26px;letter-spacing:-.03em;color:var(--el)}
+.cyc-line{display:flex;gap:12px;align-items:baseline;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink-soft)}
+.cyc-line:last-of-type{border-bottom:0}
+.cyc-tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);flex:0 0 76px}
+.cyc-key{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+.cyc-key i{display:inline-block;width:22px;height:0;border-top:1.5px solid currentColor;margin-right:8px;vertical-align:middle;font-style:normal}
+.cyc-key .k-ctrl i{border-top-style:dashed}
+
+/* ── Bagua ────────────────────────────────────────────── */
+.bagua-wrap{display:grid;gap:24px;grid-template-columns:minmax(0,1fr);align-items:start}
+@media(min-width:820px){.bagua-wrap{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr)}}
+.bagua{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;aspect-ratio:1}
+.bg-cell{background:var(--paper-2);border:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:6px 4px;text-align:center;transition:background .16s ease;position:relative}
+.bg-cell:hover,.bg-cell[aria-pressed="true"]{background:var(--paper-3)}
+.bg-cell[aria-pressed="true"]::after{content:"";position:absolute;inset:0;border:1.5px solid var(--sec)}
+.bg-tri{font-size:clamp(19px,3.6vw,27px);color:var(--sec);line-height:1}
+.bg-label{font-size:clamp(9.5px,1.5vw,11.5px);font-weight:600;line-height:1.25;color:var(--ink-soft)}
+.bagua-door{text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-top:10px}
+.sector{border:1px solid var(--line);border-left:2px solid var(--sec)}
+.sector-tri{font-size:40px;color:var(--sec);line-height:1;display:block;margin-bottom:10px}
+.sector h3{font-size:25px;margin-bottom:4px;letter-spacing:-.03em}
+.sector-meta{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 14px}
+.sector p{margin:0 0 14px;color:var(--ink-soft);font-size:15.5px}
+.sector ul{margin:0;padding-left:17px;color:var(--ink-soft);font-size:15px}
+.sector li{margin-bottom:6px}
+.sector li::marker{color:var(--sec)}
+
+/* ── Room planner ─────────────────────────────────────── */
+.planner{display:grid;gap:24px;grid-template-columns:minmax(0,1fr)}
+@media(min-width:860px){.planner{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)}}
+.room{position:relative;aspect-ratio:1.28;background:var(--paper-2);border:1.5px solid var(--ink-soft);border-radius:var(--r-sm);overflow:hidden;touch-action:none}
+.room-grid{position:absolute;inset:0;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);pointer-events:none}
+.rg-cell{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:6px 7px;display:flex;flex-direction:column;gap:2px}
+.rg-cell:nth-child(3n){border-right:0}
+.rg-cell:nth-child(n+7){border-bottom:0}
+.rg-tri{font-size:14px;color:var(--sec);line-height:1}
+.rg-name{font-family:var(--mono);font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);line-height:1.2}
+.door-mark{position:absolute;background:var(--fire);border-radius:2px;font-family:var(--mono);font-size:8px;color:#000;font-weight:700;letter-spacing:.1em;display:grid;place-items:center;text-transform:uppercase}
+.ritem{position:absolute;transform:translate(-50%,-50%);background:var(--paper-3);border:1px solid var(--it);border-radius:var(--r-sm);padding:6px 10px;font-size:12.5px;font-weight:600;color:var(--ink);white-space:nowrap;cursor:grab;touch-action:none;user-select:none}
+.ritem:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.ritem.dragging{cursor:grabbing;border-width:2px;z-index:5;background:var(--paper)}
+.ritem-x{background:transparent;border:0;color:var(--it);width:15px;height:15px;font-size:14px;line-height:1;padding:0;margin-left:7px;vertical-align:middle}
+.palette{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.pal{background:var(--paper-2);border:1px solid var(--line);border-radius:100px;padding:7px 14px;font-size:13.5px;font-weight:500;color:var(--ink-soft);display:inline-flex;align-items:center;gap:8px;transition:border-color .15s ease,color .15s ease}
+.pal:hover{border-color:var(--it);color:var(--ink)}
+.pal::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--it)}
+.hint{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin:12px 0 0}
+.field{margin-top:24px}
+.field-label{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 9px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{background:var(--paper-2);border:1px solid var(--line);border-radius:100px;padding:7px 14px;font-size:13.5px;color:var(--ink-soft)}
+.seg button:hover{color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#000;border-color:var(--ink);font-weight:600}
+.readout{margin-top:10px;font-size:14.5px;color:var(--ink-soft)}
+.readout ul{margin:0;padding-left:0;list-style:none}
+.readout li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--line)}
+.readout li:last-child{border-bottom:0}
+.readout .ro-area{font-weight:600;text-align:right}
+.empty{color:var(--ink-faint);font-size:14.5px}
+.dropzone{border:1px dashed var(--line-strong);border-radius:var(--r-md);padding:18px;text-align:center;font-size:14px;color:var(--ink-soft);background:var(--paper-2);width:100%}
+.dropzone:hover{border-color:var(--ink-soft)}
+.dropzone img{max-width:100%;border-radius:var(--r-sm);margin-top:12px;display:block}
+input[type=file]{display:none}
+
+/* ── Balance meter ────────────────────────────────────── */
+.bal-row{display:grid;grid-template-columns:50px 1fr 24px;gap:11px;align-items:center;margin-bottom:9px}
+.bal-name{font-family:var(--mono);font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--el)}
+.bal-track{height:5px;background:var(--paper-3);border-radius:3px;overflow:hidden}
+.bal-fill{display:block;height:100%;background:var(--el);border-radius:3px;transition:width .35s cubic-bezier(.2,.7,.3,1)}
+.bal-num{font-family:var(--mono);font-size:11px;color:var(--ink-faint);text-align:right}
+.bal-advice{margin:16px 0 0;padding-left:13px;border-left:2px solid var(--acc);font-size:14.5px;color:var(--ink-soft)}
+.bal-advice b{color:var(--acc);font-weight:600}
+
+/* ── Quiz ─────────────────────────────────────────────── */
+.quiz{max-width:660px}
+.q-progress{display:flex;gap:4px;margin-bottom:26px}
+.q-pip{flex:1;height:3px;border-radius:2px;background:var(--line)}
+.q-pip.done{background:var(--wood)}
+.q-pip.wrong{background:var(--fire)}
+.q-pip.now{background:var(--ink)}
+.q-count{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 12px;display:flex;justify-content:space-between;gap:12px}
+.q-text{font-family:var(--display);font-weight:700;font-size:clamp(23px,3.4vw,30px);line-height:1.15;letter-spacing:-.03em;margin:0 0 24px}
+.q-opts{display:grid;gap:8px}
+.opt{text-align:left;background:var(--paper-2);border:1px solid var(--line);border-radius:var(--r-md);padding:14px 17px;font-size:15.5px;line-height:1.4;color:var(--ink-soft);transition:border-color .15s ease,color .15s ease}
+.opt:hover:not([disabled]){border-color:var(--ink-soft);color:var(--ink)}
+.opt[disabled]{cursor:default}
+.opt.correct{border-color:var(--wood);color:var(--wood);font-weight:600}
+.opt.wrong{border-color:var(--fire);color:var(--fire)}
+.q-explain{margin-top:18px;padding:16px 18px;background:var(--paper-3);border-radius:var(--r-md);font-size:14.5px;color:var(--ink-soft);display:none}
+.q-explain.show{display:block}
+.q-explain b{color:var(--ink)}
+.q-nav{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.score{font-family:var(--display);font-weight:700;font-size:88px;line-height:1;letter-spacing:-.05em;margin:0 0 8px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.q-missed{margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
+.q-missed h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 12px;font-weight:500}
+.q-missed ul{margin:0;padding-left:17px}
+.q-missed li{font-size:14.5px;color:var(--ink-soft);margin-bottom:11px}
+.q-missed li b{color:var(--ink);font-weight:600}
+.q-missed li::marker{color:var(--fire)}
+
+footer{border-top:1px solid var(--line);margin-top:20px;padding:28px 20px 48px;text-align:center;font-size:13px;color:var(--ink-faint)}
+footer span{background:linear-gradient(120deg,var(--wood),var(--water) 60%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="brand">
+      <span class="brand-mark">風水</span>
+      <span>
+        <span class="brand-name">Wind &amp; Water</span><br>
+        <span class="brand-sub">Feng shui, plainly</span>
+      </span>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Sections">
+      <button class="tab" role="tab" aria-selected="true" data-panel="ask">Ask</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="learn">Principles</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="bagua">Bagua map</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="room">Your room</button>
+      <button class="tab" role="tab" aria-selected="false" data-panel="quiz">Quiz</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══ ASK ═══ -->
+<section class="panel is-active" id="ask" role="tabpanel">
+  <div class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Ask out loud</p>
+      <h1>Say what's on your mind about your space.</h1>
+      <p class="lede">Tap Speak and ask anything — where the bed should go, why the hallway feels stuck, what colour to paint the front door. It follows the conversation, so you can just say "and the desk?"</p>
+      <p class="hero-note">風水 — wind and water. The two things that move.</p>
+    </div>
+    <div class="hero-art" id="heroArt"></div>
+  </div>
+
+  <div class="card console">
+    <div class="console-top">
+      <button class="mic" id="mic" aria-label="Speak your question">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="9" y="2.5" width="6" height="11" rx="3"/>
+          <path d="M5 11a7 7 0 0 0 14 0"/>
+          <path d="M12 18v3.5"/>
+        </svg>
+      </button>
+      <div class="console-text">
+        <p class="console-label" id="consoleLabel">Tap to speak</p>
+        <p class="status" id="status" aria-live="polite">Your question stays in this browser.</p>
+      </div>
+    </div>
+
+    <div class="heard" id="heard"><b>Heard</b><span id="heardText"></span></div>
+
+    <div class="typerow">
+      <input type="text" id="typed" placeholder="…or type your question here" autocomplete="off">
+      <button class="btn" id="send">Ask</button>
+    </div>
+
+    <div class="toggles">
+      <label class="switch"><input type="checkbox" id="speakBack" checked> Speak the answer back</label>
+      <button class="btn btn-quiet btn-sm" id="voiceSettings">Voice settings</button>
+      <button class="btn btn-quiet btn-sm" id="stopVoice" style="display:none">Stop speaking</button>
+      <button class="btn btn-quiet btn-sm" id="clearThread" style="display:none">Clear conversation</button>
+    </div>
+
+    <div class="vset" id="vset">
+      <div>
+        <label for="voicePick">Voice</label>
+        <select id="voicePick"></select>
+      </div>
+      <div>
+        <label for="rate">Speed — <span id="rateVal">0.97</span>×</label>
+        <input type="range" id="rate" min="0.6" max="1.4" step="0.01" value="0.97">
+      </div>
+      <div>
+        <label for="lang">Listening for</label>
+        <select id="lang">
+          <option value="en-GB">English (UK)</option>
+          <option value="en-US">English (US)</option>
+          <option value="en-AU">English (Australia)</option>
+          <option value="en-IN">English (India)</option>
+          <option value="en-CA">English (Canada)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="thread" id="thread"></div>
+  </div>
+
+  <div class="starters" id="starters">
+    <button class="starter">Where should my bed go?</button>
+    <button class="starter">My front door faces a staircase — is that bad?</button>
+    <button class="starter">How do I make a small flat feel less cramped?</button>
+    <button class="starter">What colours suit a north-facing room?</button>
+  </div>
+
+  <div class="tip">
+    <p class="tip-label">Today's practice</p>
+    <p class="tip-text" id="tipText">…</p>
+    <div class="tip-tools">
+      <button class="btn btn-quiet btn-sm" id="tipSpeak">Read it aloud</button>
+      <button class="btn btn-quiet btn-sm" id="tipSave">Save this</button>
+      <button class="btn btn-quiet btn-sm" id="tipNext">Another one</button>
+    </div>
+    <div class="saved-list" id="savedList">
+      <h4>Saved practices</h4>
+      <ul id="savedUl"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRINCIPLES ═══ -->
+<section class="panel" id="learn" role="tabpanel">
+  <p class="eyebrow">The ideas underneath everything</p>
+  <h1>Chi, the five elements,<br>yin and yang.</h1>
+  <p class="lede">Feng shui means <em>wind and water</em> — the two things that move. Strip away the folklore and it's a way of noticing how a room makes you feel, then adjusting it on purpose.</p>
+
+  <div class="grid-2">
+    <div class="card principle">
+      <h3><span class="glyph">氣</span> Chi — the flow</h3>
+      <p>Chi is the energy that moves through a space. The practical version: imagine water poured in your front door. Where would it rush straight through? Where would it pool and go stagnant? Where would it snag on clutter?</p>
+      <p>You want it to meander — entering easily, curving through rooms, never blasting straight out the back window. Blocked doorways, dead corners and long uninterrupted corridors are the usual culprits.</p>
+    </div>
+    <div class="card principle">
+      <h3><span class="glyph">陰陽</span> Yin and yang — the balance</h3>
+      <p>Every space holds two qualities. Yin is quiet, soft, dark, still — good for bedrooms and reading corners. Yang is bright, hard, loud, active — good for kitchens, offices and entryways.</p>
+      <p>Neither is better. Trouble comes from too much of one: a bedroom with glaring light and a TV can't hold sleep, and a home office in a dim, soft, cave-like room can't hold focus.</p>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <h2>The five elements</h2>
+  <p class="lede">Five moods, each with its own colours, shapes and materials. Most rooms lean too far into one. The fix is usually adding a little of what's missing, not redecorating.</p>
+  <div class="elements" id="elements"></div>
+
+  <hr class="rule">
+
+  <h2>How the elements act on each other</h2>
+  <p class="lede">This is the part most people skip, and it's the part that makes feng shui usable. Two cycles: one where each element feeds the next, one where each element keeps another in check. Tap any element to trace both.</p>
+
+  <div class="cycles">
+    <div class="cyc-art" id="cycArt"></div>
+    <div class="card cyc-info" id="cycInfo"></div>
+  </div>
+  <div class="cyc-key">
+    <span><i></i>Feeding cycle</span>
+    <span class="k-ctrl"><i></i>Controlling cycle</span>
+  </div>
+
+  <hr class="rule">
+
+  <h2>Yin and yang, side by side</h2>
+  <div class="card yy" style="margin-top:20px">
+    <div>
+      <svg width="128" height="128" viewBox="0 0 100 100" aria-label="Yin yang symbol">
+        <circle cx="50" cy="50" r="48" fill="#17171D" stroke="#34343F"/>
+        <path d="M50 2a48 48 0 0 1 0 96 24 24 0 0 1 0-48 24 24 0 0 0 0-48z" fill="#F4F3F0"/>
+        <circle cx="50" cy="26" r="7" fill="#17171D"/>
+        <circle cx="50" cy="74" r="7" fill="#F4F3F0"/>
+      </svg>
+    </div>
+    <div class="yy-cols">
+      <div class="yy-col">
+        <h4>Yin — restore</h4>
+        <ul><li>Soft, layered light</li><li>Curves and textiles</li><li>Muted, deep colours</li><li>Quiet, low ceilings</li><li>Bedrooms, bathrooms, snugs</li></ul>
+      </div>
+      <div class="yy-col">
+        <h4>Yang — activate</h4>
+        <ul><li>Daylight and reflection</li><li>Straight lines, hard surfaces</li><li>Bright, saturated colours</li><li>Sound and movement</li><li>Kitchens, offices, hallways</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BAGUA ═══ -->
+<section class="panel" id="bagua" role="tabpanel">
+  <p class="eyebrow">The eight areas</p>
+  <h1>The bagua map.</h1>
+  <p class="lede">Lay this nine-square grid over your floor plan with the bottom edge along the wall your main door is in. Each square governs one part of life. Tap any square to read it.</p>
+  <div class="bagua-wrap">
+    <div>
+      <div class="bagua" id="baguaGrid"></div>
+      <p class="bagua-door">↑ main door wall ↑</p>
+    </div>
+    <div class="card sector" id="sectorCard"></div>
+  </div>
+</section>
+
+<!-- ═══ ROOM ═══ -->
+<section class="panel" id="room" role="tabpanel">
+  <p class="eyebrow">Room planner</p>
+  <h1>Lay out your space.</h1>
+  <p class="lede">Tap a piece to drop it in, then drag it where it actually sits. The bagua grid and the element balance both update as you go. Your plan is kept for next time.</p>
+
+  <div class="planner">
+    <div>
+      <div class="room" id="roomBox">
+        <div class="room-grid" id="roomGrid"></div>
+        <div class="door-mark" id="doorMark">door</div>
+      </div>
+      <div class="palette" id="palette"></div>
+      <p class="hint">Drag to move · arrow keys nudge · delete removes</p>
+
+      <div class="field">
+        <p class="field-label">Which wall is the main door in?</p>
+        <div class="seg" id="doorSeg">
+          <button data-wall="bottom" aria-pressed="true">Bottom</button>
+          <button data-wall="left" aria-pressed="false">Left</button>
+          <button data-wall="top" aria-pressed="false">Top</button>
+          <button data-wall="right" aria-pressed="false">Right</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <p class="field-label">What is this room?</p>
+        <div class="seg" id="roomSeg">
+          <button data-room="Bedroom" aria-pressed="true">Bedroom</button>
+          <button data-room="Living room" aria-pressed="false">Living room</button>
+          <button data-room="Home office" aria-pressed="false">Home office</button>
+          <button data-room="Kitchen" aria-pressed="false">Kitchen</button>
+          <button data-room="Studio flat" aria-pressed="false">Studio flat</button>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h3>Element balance</h3>
+        <div id="balance" style="margin-top:16px"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h3>What sits where</h3>
+        <div class="readout" id="readout" aria-live="polite"></div>
+      </div>
+
+      <div class="field">
+        <p class="field-label">Optional — add a photo of the room</p>
+        <button class="dropzone" id="photoZone">
+          <span id="photoLabel">Tap to choose a photo. It's read once and never stored.</span>
+          <img id="photoPreview" alt="Your room" style="display:none">
+        </button>
+        <input type="file" id="photoInput" accept="image/*">
+      </div>
+
+      <div class="q-nav">
+        <button class="btn" id="readRoom">Read my room</button>
+        <button class="btn btn-quiet" id="clearRoom">Clear plan</button>
+      </div>
+
+      <div class="card" id="roomReply" style="margin-top:18px;display:none">
+        <div class="reply-body" id="roomReplyBody"></div>
+        <div class="turn-tools" id="roomTools"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUIZ ═══ -->
+<section class="panel" id="quiz" role="tabpanel">
+  <p class="eyebrow">Check yourself</p>
+  <h1>Eight questions,<br>drawn from twenty.</h1>
+  <p class="lede">A different set each time, with the answers shuffled. Each one explains itself afterwards, so a wrong guess still teaches you something.</p>
+
+  <div class="quiz card" id="quizCard">
+    <div class="q-progress" id="qProgress"></div>
+    <p class="q-count" id="qCount"></p>
+    <p class="q-text" id="qText"></p>
+    <div class="q-opts" id="qOpts"></div>
+    <div class="q-explain" id="qExplain"></div>
+    <div class="q-nav" id="qNav"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>風水</span> — Wind &amp; Water. Everything happens in your browser; nothing is saved to a server.
+</footer>
+
+<script>
+"use strict";
+
+/* ══════════════════════════════════════════════════════════
+   1. DATA
+   ══════════════════════════════════════════════════════════ */
+const ELEMENTS = [
+  { key:"wood", name:"Wood", cn:"木",
+    colours:"green, teal and spring blue", shapes:"Tall, columnar, rectangular",
+    stuff:"living plants, timber, cotton and botanical prints",
+    feels:"Growth, new starts, kindness. Add when you feel stuck or stale.",
+    too:"Too much: restlessness, projects half-finished." },
+  { key:"fire", name:"Fire", cn:"火",
+    colours:"red, orange and deep pink", shapes:"Triangles, points, star shapes",
+    stuff:"candles, lamps, animal prints and art of people",
+    feels:"Passion, visibility, being seen. Add when a room feels flat.",
+    too:"Too much: irritability, poor sleep, arguments." },
+  { key:"earth", name:"Earth", cn:"土",
+    colours:"ochre, sand, terracotta and warm brown", shapes:"Squares, low and wide",
+    stuff:"ceramics, stone, clay pots and chunky knits",
+    feels:"Steadiness, care, grounding. Add when life feels wobbly.",
+    too:"Too much: heaviness, inertia, hard to leave the house." },
+  { key:"metal", name:"Metal", cn:"金",
+    colours:"white, grey, silver and pale pastels", shapes:"Circles, arches, domes",
+    stuff:"brass, steel, mirrors, marble and clear empty surfaces",
+    feels:"Clarity, precision, finishing things. Add when you're scattered.",
+    too:"Too much: coldness, perfectionism, a room nobody relaxes in." },
+  { key:"water", name:"Water", cn:"水",
+    colours:"black, navy and charcoal", shapes:"Wavy, curving, irregular",
+    stuff:"glass, mirrors, fountains and flowing fabric",
+    feels:"Depth, wisdom, career movement. Add when you feel blocked.",
+    too:"Too much: drifting, low mood, sleeplessness." }
+];
+const EL = Object.fromEntries(ELEMENTS.map(e => [e.key, e]));
+
+const CYCLE = ["wood","fire","earth","metal","water"];
+const FEEDS = { wood:"feeds", fire:"makes", earth:"bears", metal:"holds", water:"nourishes" };
+const CONTROLS = { wood:"parts", fire:"melts", earth:"dams", metal:"cuts", water:"quenches" };
+const idx = k => CYCLE.indexOf(k);
+const nextOf = k => CYCLE[(idx(k)+1)%5];
+const prevOf = k => CYCLE[(idx(k)+4)%5];
+const controlsOf = k => CYCLE[(idx(k)+2)%5];
+const controlledBy = k => CYCLE[(idx(k)+3)%5];
+
+const SECTORS = {
+  wealth:{ tri:"☴", name:"Wealth & Abundance", trigram:"Xun — Wind", el:"wood",
+    p:"The far left corner from your door. This governs prosperity, but also everything you already have and value.",
+    tips:["Keep it clean, lit and free of bins or broken things","Add something living — a healthy plant, not a dying one","Purple, deep green and gold belong here","Fix any dripping tap in this corner first"] },
+  fame:{ tri:"☲", name:"Fame & Reputation", trigram:"Li — Fire", el:"fire",
+    p:"The far middle, straight ahead as you enter. How you're seen, and how clearly you see yourself.",
+    tips:["Hang awards, diplomas or work you're proud of","Reds, candles and good lighting","Avoid mirrors and water features here — they dampen fire","Keep it uncluttered so the eye lands somewhere confident"] },
+  love:{ tri:"☷", name:"Love & Partnership", trigram:"Kun — Earth", el:"earth",
+    p:"The far right corner. Romantic partnership, but also every close relationship you're tending.",
+    tips:["Everything in pairs — two lamps, two cushions, two chairs","Rose, coral, ochre and skin tones","Remove photos of you alone, and anything from an ex","Never put a single chair or a work desk here"] },
+  family:{ tri:"☳", name:"Family & Health", trigram:"Zhen — Thunder", el:"wood",
+    p:"Middle left. Ancestors, elders, the people who raised you, and your physical vitality.",
+    tips:["Family photographs belong here more than anywhere else","Green, wood grain, upright shapes","A good spot for a tall plant or a wooden shelf","Clear it if you feel weighed down by old obligations"] },
+  center:{ tri:"太極", name:"Centre — Tai Chi", trigram:"The still point", el:"earth",
+    p:"The heart of the room. It touches every other area, so whatever sits here colours the lot.",
+    tips:["Keep it as open as the room allows","Earth tones, ceramics, a low round rug","Never store clutter, laundry or bins here","If only one thing gets tidied today, make it this"] },
+  children:{ tri:"☱", name:"Children & Creativity", trigram:"Dui — Lake", el:"metal",
+    p:"Middle right. Actual children, and anything you're making — projects, ideas, play.",
+    tips:["White, pastels, metal and round shapes","Display art you made, not only art you bought","Good place for instruments, craft supplies, a sketchbook","Clear finished projects out so new ones have room"] },
+  knowledge:{ tri:"☶", name:"Knowledge & Stillness", trigram:"Gen — Mountain", el:"earth",
+    p:"Near left as you enter. Study, self-understanding, and the quiet needed for both.",
+    tips:["Books, a reading chair, a meditation cushion","Deep blue, green and earth tones","Keep it dim and soft rather than bright","Avoid putting anything noisy or electronic here"] },
+  career:{ tri:"☵", name:"Career & Path", trigram:"Kan — Water", el:"water",
+    p:"Near middle — the wall your door is in. Work, yes, but really the direction your life is heading.",
+    tips:["Black, navy, glass and mirrors","A clear, unobstructed entrance matters most of all","A small water feature works here and almost nowhere else","Fix a sticking or squeaking front door — it's the classic block"] },
+  helpers:{ tri:"☰", name:"Helpful People & Travel", trigram:"Qian — Heaven", el:"metal",
+    p:"Near right. Mentors, allies, useful strangers, and journeys away from home.",
+    tips:["Grey, white, silver, metal frames","Photos of places you want to go","Keep your phone charger or address book here — it's the asking corner","Clear it when you feel you're doing everything alone"] }
+};
+const BASE = [
+  ["wealth","fame","love"],
+  ["family","center","children"],
+  ["knowledge","career","helpers"]
+];
+
+const TIPS = [
+  "Open every window in the house for nine minutes. Stale air is stale chi, and this is the cheapest cure there is.",
+  "Stand in your front doorway and look in. Whatever you see first is what your day starts with — make it something you like.",
+  "Clear the space under your bed. Chi needs to circulate while you sleep, and stored boxes stop it.",
+  "Fix one broken thing today. A dead bulb, a loose handle, a squeaking hinge. Broken things quietly drain attention.",
+  "Move your desk so you can see the door without facing it straight on. It's called the command position, and your nervous system knows the difference.",
+  "Put something living in the room you use most. One healthy plant does more than a dozen ornaments.",
+  "Wipe your front door and its handle. It's the mouth of chi, and it's usually the dirtiest thing you own.",
+  "Take everything off the kitchen worktop that you didn't use this week. Clear surfaces are clear thinking.",
+  "Check the mirror opposite your bed. If there is one, cover it at night — catching your own reflection while half asleep is unsettling for a reason.",
+  "Add a curve. One round rug, one arched lamp, one oval tray in a room of straight lines.",
+  "Empty every bin in the house, then notice how the rooms feel. This isn't mystical; it's just true.",
+  "Sit in each chair in your living room for a minute. If one feels wrong, it's probably facing away from the door.",
+  "Hang art at eye level for the person who is sitting, not standing. Rooms feel taller when you look slightly up.",
+  "Deal with the pile. You know which one. Chi stops moving where you've stopped looking.",
+  "Put two of something in the far-right corner from your door — two candles, two cushions. That's the partnership corner.",
+  "Let more light into a dark corner before you buy anything for it. Half of what looks like bad energy is bad lighting.",
+  "Close the toilet lid and shut the bathroom door tonight. Old advice, but it keeps the room feeling contained.",
+  "Clear the path from your door to your bed. If you have to sidestep anything, so does your rest.",
+  "Add one metal thing to a room that feels chaotic — a brass frame, a steel bowl. Metal brings precision.",
+  "Look at your ceiling. If it's cracked, marked or hung with something heavy above where you sit, that's worth solving.",
+  "Get rid of one dead plant. Keeping it is a small daily agreement to tolerate decline.",
+  "Move the bed away from the wall it shares with a bathroom or a kitchen if you can. Water and fire don't make good neighbours for sleep.",
+  "Put the things you use every morning where you can reach them without stretching. Friction at 7am shapes the whole day.",
+  "Add red to the far middle of your main room — the fame corner. A single object is plenty.",
+  "Sweep the entrance, inside and out. Start where the energy starts.",
+  "Turn off one screen an hour earlier tonight. Yang in a yin room is the most common sleep problem there is.",
+  "Notice which room you avoid. That's where the work is, and it's usually clutter rather than anything mysterious.",
+  "Hang a mirror to widen a narrow hallway, but never so it faces the front door — that bounces arriving chi straight back out.",
+  "Give one drawer a full clear-out. Small closed spaces hold more stuck feeling than big open ones.",
+  "Put something you genuinely love in your line of sight from where you sit most. Not something expensive. Something you love."
+];
+
+const POOL = [
+  { q:"What does the word feng shui actually mean?",
+    o:["Wind and water","Balance and harmony","Earth and sky","Peace and prosperity"], a:0,
+    e:"Wind and water — the two elements that move and shape the land. The practice began as a way of siting buildings in the landscape, long before it reached interiors." },
+  { q:"You want a desk in the command position. Where does it go?",
+    o:["Diagonally across from the door, facing it","Directly facing the door","Facing away from the door","Directly under the window"], a:0,
+    e:"Diagonal to the door, with a solid wall behind you and a clear view of anyone entering. Straight in line with the door is too exposed; facing away leaves you startled all day." },
+  { q:"A room feels cold and sharp. Lots of white, chrome and glass. Which element is dominant?",
+    o:["Metal","Water","Earth","Fire"], a:0,
+    e:"Metal brings clarity and precision, but unbalanced it reads as clinical. Add earth (ceramics, ochre, texture) or wood (plants, timber) to soften it." },
+  { q:"On the bagua map, where is the wealth area?",
+    o:["The far left corner from the door","Nearest the door on the right","The centre of the room","The far right corner from the door"], a:0,
+    e:"Far left corner, viewed from your main door. Its trigram is Xun, wind, and its element is wood — which is why a living plant is the classic cure there." },
+  { q:"What's the problem with a long straight corridor from the front door to a back window?",
+    o:["Chi rushes through and out instead of circulating","It makes the house look smaller","It traps stagnant energy at both ends","Nothing — straight paths are ideal"], a:0,
+    e:"Chi behaves like water: a straight run means it accelerates and leaves. Slow it with a rug, a curved piece of furniture, a plant or artwork partway along." },
+  { q:"Which of these is a yin quality?",
+    o:["Soft, dark, quiet","Bright overhead light","Hard tiled floors","Loud music"], a:0,
+    e:"Yin is soft, dark, still and restorative — bedroom qualities. Yang is bright, hard, loud and active. Problems come from too much of one in the wrong room." },
+  { q:"Your bed sits in line with the door, feet pointing straight out. What's that called?",
+    o:["The coffin position","The command position","The mountain position","The water gate"], a:0,
+    e:"The coffin position, named for how bodies were carried out feet-first. Practically, it puts you in the busiest line of the room. Shift the bed sideways so you can see the door without lining up with it." },
+  { q:"Red walls, spotlights, sharp angles, and nobody can settle. Which element calms it?",
+    o:["Water","Wood","Earth","More metal"], a:0,
+    e:"Water controls fire in the controlling cycle. Add black, navy, glass, mirror or a real water feature. Wood would be the worst choice — wood feeds fire." },
+  { q:"In the feeding cycle, water nourishes which element?",
+    o:["Wood","Fire","Metal","Earth"], a:0,
+    e:"Water nourishes wood — the most literal link in the cycle. Wood then feeds fire, fire makes earth as ash, earth bears metal, and metal holds water. Five steps, back to the start." },
+  { q:"Which element does wood control?",
+    o:["Earth","Fire","Metal","Water"], a:0,
+    e:"Wood parts earth — roots break up soil. Use it when a room feels heavy and inert: plants and upright timber lift over-earthed spaces." },
+  { q:"On the bagua, the Career area sits where?",
+    o:["Along the wall your main door is in","The far corner from the door","The centre","Wherever your desk happens to be"], a:0,
+    e:"Career is the middle of the entry wall — the Kan trigram, water. Its condition is really about the entrance, which is why a sticking front door is the classic career block." },
+  { q:"A mirror hung directly facing the front door does what?",
+    o:["Bounces arriving chi straight back out","Doubles the wealth entering","Slows chi down usefully","Nothing — mirrors are neutral"], a:0,
+    e:"It reflects incoming energy back through the door. Mirrors are excellent for widening narrow halls or lighting dark corners — just place them to the side, not opposite the entrance." },
+  { q:"Which element owns circles, arches and domes?",
+    o:["Metal","Water","Wood","Fire"], a:0,
+    e:"Metal. Wood is tall and columnar, fire is triangular and pointed, earth is low and square, water is wavy and irregular. Shape is the easiest element cue to spot in a room." },
+  { q:"The front door is traditionally called what?",
+    o:["The mouth of chi","The eye of the house","The spine","The gate of fire"], a:0,
+    e:"The mouth of chi — where energy enters the home. It's why so much classical advice concentrates on the entrance before anything inside." },
+  { q:"Too much earth in a room shows up as what?",
+    o:["Heaviness and inertia","Restlessness","Coldness and perfectionism","Arguments and poor sleep"], a:0,
+    e:"Earth over-applied is sluggish and hard to leave. Restlessness is excess wood, coldness is excess metal, arguments are excess fire, and drifting is excess water." },
+  { q:"Which trigram is Kan, and what does it govern?",
+    o:["Water — career and life path","Fire — fame and reputation","Earth — partnership","Metal — helpful people"], a:0,
+    e:"Kan is water, and it governs career and life direction. Its counterpart Li is fire, sitting straight opposite in the fame position." },
+  { q:"The command position applies to three things. Which set?",
+    o:["Bed, desk and cooker","Bed, sofa and door","Desk, mirror and window","Cooker, sink and bin"], a:0,
+    e:"Bed, desk and cooker — where you sleep, where you work and where you're nourished. In each case you want a solid wall behind and a view of the door without being in line with it." },
+  { q:"A room is heavy with metal. Which element keeps it in check?",
+    o:["Fire","Water","Wood","Earth"], a:0,
+    e:"Fire melts metal. Add warm light, candles, reds or something with a point to it. Adding earth would make it worse — earth bears metal, so it feeds the excess." },
+  { q:"What's the objection to clutter stored under the bed?",
+    o:["It stops chi circulating while you sleep","It attracts bad luck","It blocks the wealth corner","It weakens the front door"], a:0,
+    e:"Chi needs to move around you overnight. Stored boxes hold it still, and there's a plain version too: you sleep worse above a pile of unresolved stuff." },
+  { q:"A hallway feels stagnant and dead. What's the first move?",
+    o:["Light, air and one living or moving thing","Paint it red","Add a mirror facing the door","Fill it with furniture"], a:0,
+    e:"Stagnation responds to movement. Open it up, get light in, add one living plant or something that catches the eye. Red would over-fire a transit space, and filling it makes the block worse." }
+];
+
+/* ══════════════════════════════════════════════════════════
+   2. STORAGE — best effort; the app works fine without it
+   ══════════════════════════════════════════════════════════ */
+const store = {
+  async get(k){
+    try { const r = await window.storage.get(k); return r ? JSON.parse(r.value) : null; }
+    catch { return null; }
+  },
+  async set(k,v){ try { await window.storage.set(k, JSON.stringify(v)); } catch {} }
+};
+const K = { prefs:"ww:prefs", plan:"ww:plan", tips:"ww:tips", best:"ww:best" };
+
+/* ══════════════════════════════════════════════════════════
+   3. HELPERS
+   ══════════════════════════════════════════════════════════ */
+const $ = id => document.getElementById(id);
+const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const esc = s => String(s).replace(/[&<>]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;" }[c]));
+const paragraphs = t => t.trim().split(/\n\s*\n/).map(p => `<p>${esc(p).replace(/\n/g," ")}</p>`).join("");
+const shuffle = a => { const c = [...a]; for (let i = c.length-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [c[i],c[j]] = [c[j],c[i]]; } return c; };
+const thinkingHTML = () => `<span class="thinking"><span class="dot"></span><span class="dot"></span><span class="dot"></span> thinking</span>`;
+async function copyText(text, btn){
+  try { await navigator.clipboard.writeText(text); const o = btn.textContent; btn.textContent = "Copied"; setTimeout(() => btn.textContent = o, 1400); }
+  catch { btn.textContent = "Couldn't copy"; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   4. TABS
+   ══════════════════════════════════════════════════════════ */
+const tabs = [...document.querySelectorAll(".tab")];
+tabs.forEach(t => t.addEventListener("click", () => {
+  tabs.forEach(x => x.setAttribute("aria-selected", String(x === t)));
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("is-active", p.id === t.dataset.panel));
+  window.scrollTo({ top:0, behavior: reduced() ? "auto" : "smooth" });
+}));
+
+/* ══════════════════════════════════════════════════════════
+   5. HERO — eight trigrams, Later Heaven order
+   ══════════════════════════════════════════════════════════ */
+(function buildHero(){
+  const C = 200;
+  const ring = r => Array.from({length:8}, (_,k) => {
+    const a = (-90 + 45*k) * Math.PI/180;
+    return [ +(C + r*Math.cos(a)).toFixed(1), +(C + r*Math.sin(a)).toFixed(1) ];
+  });
+  const poly = r => ring(r).map(p => p.join(",")).join(" ");
+  const TRI = [["☲","fire"],["☷","earth"],["☱","metal"],["☰","metal"],
+               ["☵","water"],["☶","earth"],["☳","wood"],["☴","wood"]];
+  const r150 = ring(150);
+  const glyphs = TRI.map(([g,el],i) =>
+    `<text x="${r150[i][0]}" y="${r150[i][1]}" class="ha-tri" fill="var(--${el})">${g}</text>`).join("");
+
+  $("heroArt").innerHTML = `
+  <svg viewBox="0 0 400 400" role="img" aria-label="The eight trigrams in Later Heaven order around a yin yang centre">
+    <defs>
+      <linearGradient id="gRing" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="var(--wood)"/><stop offset="50%" stop-color="var(--water)"/><stop offset="100%" stop-color="var(--violet)"/>
+      </linearGradient>
+      <linearGradient id="gRing2" x1="1" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--earth)"/><stop offset="100%" stop-color="var(--fire)"/>
+      </linearGradient>
+      <linearGradient id="gChi" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="var(--water)" stop-opacity="0"/><stop offset="45%" stop-color="var(--water)"/><stop offset="100%" stop-color="var(--wood)" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="gChi2" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="var(--violet)" stop-opacity="0"/><stop offset="55%" stop-color="var(--fire)"/><stop offset="100%" stop-color="var(--earth)" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <g class="ha-chi">
+      <path d="M-30 296 C 70 268, 118 150, 214 126 S 372 156, 430 92" stroke="url(#gChi)"/>
+      <path d="M-30 122 C 88 168, 116 288, 208 300 S 356 258, 430 306" stroke="url(#gChi2)"/>
+      <path d="M-30 210 C 96 210, 130 96, 220 84" stroke="url(#gChi)" opacity=".5"/>
+    </g>
+    <polygon class="ha-ring ring-a" points="${poly(168)}" stroke="url(#gRing)"/>
+    <polygon class="ha-ring ring-b" points="${poly(132)}" stroke="url(#gRing2)" opacity=".55"/>
+    <polygon class="ha-ring ring-a" points="${poly(96)}" stroke="url(#gRing)" opacity=".3"/>
+    <g class="ha-glyphs">${glyphs}</g>
+    <g transform="translate(200,200) scale(.8) translate(-50,-50)">
+      <circle cx="50" cy="50" r="48" fill="#17171D" stroke="#34343F"/>
+      <path d="M50 2a48 48 0 0 1 0 96 24 24 0 0 1 0-48 24 24 0 0 0 0-48z" fill="#F4F3F0"/>
+      <circle cx="50" cy="26" r="7" fill="#17171D"/>
+      <circle cx="50" cy="74" r="7" fill="#F4F3F0"/>
+    </g>
+  </svg>`;
+})();
+
+/* ══════════════════════════════════════════════════════════
+   6. ELEMENT CARDS
+   ══════════════════════════════════════════════════════════ */
+$("elements").innerHTML = ELEMENTS.map(e => `
+  <div class="el" style="--el:var(--${e.key})">
+    <p class="el-name">${e.name} <span class="el-cn">${e.cn}</span></p>
+    <dl>
+      <dt>Colours</dt><dd>${e.colours.charAt(0).toUpperCase() + e.colours.slice(1)}</dd>
+      <dt>Shapes</dt><dd>${e.shapes}</dd>
+      <dt>Bring it in with</dt><dd>${e.stuff.charAt(0).toUpperCase() + e.stuff.slice(1)}</dd>
+      <dt>What it does</dt><dd>${e.feels}</dd>
+      <dt>Out of balance</dt><dd>${e.too}</dd>
+    </dl>
+  </div>`).join("");
+
+/* ══════════════════════════════════════════════════════════
+   7. CYCLES DIAGRAM
+   ══════════════════════════════════════════════════════════ */
+(function buildCycles(){
+  const C = 150, R = 112;
+  const P = CYCLE.map((_,i) => {
+    const deg = -90 + 72*i, a = deg*Math.PI/180;
+    return [ +(C + R*Math.cos(a)).toFixed(2), +(C + R*Math.sin(a)).toFixed(2) ];
+  });
+  const head = (x,y,deg,el,cls) =>
+    `<path class="cyc-head ${cls}" d="M0,-4.5 L9,0 L0,4.5 Z" fill="var(--${el})" transform="translate(${x},${y}) rotate(${deg})"/>`;
+
+  let feed = "", ctrl = "";
+  CYCLE.forEach((k,i) => {
+    const [x1,y1] = P[i], [x2,y2] = P[(i+1)%5];
+    feed += `<path class="cyc-edge feed-${k}" d="M${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}" stroke="var(--${k})"/>`;
+    const mid = -90 + 72*i + 36, ma = mid*Math.PI/180;
+    feed += head((C + R*Math.cos(ma)).toFixed(2), (C + R*Math.sin(ma)).toFixed(2), mid + 90, k, `feed-${k}`);
+
+    const [cx,cy] = P[(i+2)%5];
+    ctrl += `<path class="cyc-edge ctrl-${k}" stroke-dasharray="4 5" d="M${x1} ${y1} L${cx} ${cy}" stroke="var(--${k})"/>`;
+    const t = .74, hx = x1 + (cx-x1)*t, hy = y1 + (cy-y1)*t;
+    const deg = Math.atan2(cy-y1, cx-x1) * 180/Math.PI;
+    ctrl += head(hx.toFixed(2), hy.toFixed(2), deg.toFixed(1), k, `ctrl-${k}`);
+  });
+
+  const nodes = CYCLE.map((k,i) =>
+    `<g class="cyc-node" data-el="${k}" style="--el:var(--${k})" tabindex="0" role="button" aria-label="${EL[k].name}">
+       <circle cx="${P[i][0]}" cy="${P[i][1]}" r="30"/>
+       <text x="${P[i][0]}" y="${P[i][1]}">${EL[k].name}</text>
+     </g>`).join("");
+
+  $("cycArt").innerHTML =
+    `<svg viewBox="-10 -10 320 320" role="img" aria-label="The five element feeding and controlling cycles">
+       <g>${ctrl}</g><g>${feed}</g>${nodes}
+     </svg>`;
+
+  const art = $("cycArt"), info = $("cycInfo");
+  function select(k){
+    art.querySelectorAll(".cyc-edge,.cyc-head").forEach(e => e.classList.remove("lit"));
+    art.querySelectorAll(`.feed-${k},.ctrl-${k}`).forEach(e => e.classList.add("lit"));
+    art.querySelectorAll(".cyc-node").forEach(n => n.classList.toggle("on", n.dataset.el === k));
+    const e = EL[k], nx = EL[nextOf(k)], pv = EL[prevOf(k)], co = EL[controlsOf(k)], cb = EL[controlledBy(k)];
+    info.style.setProperty("--el", `var(--${k})`);
+    info.innerHTML = `
+      <h3>${e.name} ${e.cn}</h3>
+      <p style="color:var(--ink-soft);font-size:15px;margin:0 0 14px">${e.feels}</p>
+      <div class="cyc-line"><span class="cyc-tag">Fed by</span><span>${pv.name} ${FEEDS[pv.key]} ${e.name.toLowerCase()}</span></div>
+      <div class="cyc-line"><span class="cyc-tag">Feeds</span><span>${e.name} ${FEEDS[k]} ${nx.name.toLowerCase()}</span></div>
+      <div class="cyc-line"><span class="cyc-tag">Controls</span><span>${e.name} ${CONTROLS[k]} ${co.name.toLowerCase()}</span></div>
+      <div class="cyc-line"><span class="cyc-tag">Held by</span><span>${cb.name} ${CONTROLS[cb.key]} ${e.name.toLowerCase()}</span></div>
+      <p style="margin:16px 0 0;font-size:15px;color:var(--ink-soft)">
+        <b style="color:var(--${k})">Too much ${e.name.toLowerCase()}?</b> Add ${cb.name.toLowerCase()} — ${cb.colours}.
+        Don't add ${pv.name.toLowerCase()}; it feeds the excess.<br><br>
+        <b style="color:var(--${k})">Too little?</b> Add ${e.name.toLowerCase()} directly — ${e.stuff} — or build it up with ${pv.name.toLowerCase()}.
+      </p>`;
+  }
+  art.addEventListener("click", ev => { const n = ev.target.closest(".cyc-node"); if (n) select(n.dataset.el); });
+  art.addEventListener("keydown", ev => {
+    const n = ev.target.closest(".cyc-node");
+    if (n && (ev.key === "Enter" || ev.key === " ")){ ev.preventDefault(); select(n.dataset.el); }
+  });
+  select("fire");
+})();
+
+/* ══════════════════════════════════════════════════════════
+   8. BAGUA
+   ══════════════════════════════════════════════════════════ */
+const baguaGrid = $("baguaGrid"), sectorCard = $("sectorCard");
+baguaGrid.innerHTML = BASE.flat().map(key => {
+  const s = SECTORS[key];
+  return `<button class="bg-cell" data-key="${key}" style="--sec:var(--${s.el})" aria-pressed="false">
+    <span class="bg-tri">${s.tri}</span>
+    <span class="bg-label">${s.name.replace(/ & /," &<br>")}</span>
+  </button>`;
+}).join("");
+function showSector(key){
+  const s = SECTORS[key];
+  sectorCard.style.setProperty("--sec", `var(--${s.el})`);
+  sectorCard.innerHTML = `
+    <span class="sector-tri">${s.tri}</span>
+    <h3>${s.name}</h3>
+    <p class="sector-meta">${s.trigram} · ${EL[s.el].name} element</p>
+    <p>${s.p}</p>
+    <ul>${s.tips.map(t => `<li>${t}</li>`).join("")}</ul>`;
+  baguaGrid.querySelectorAll(".bg-cell").forEach(c => c.setAttribute("aria-pressed", String(c.dataset.key === key)));
+}
+baguaGrid.addEventListener("click", e => { const c = e.target.closest(".bg-cell"); if (c) showSector(c.dataset.key); });
+showSector("career");
+
+/* ══════════════════════════════════════════════════════════
+   9. VOICE OUT
+   ══════════════════════════════════════════════════════════ */
+const synth = window.speechSynthesis;
+const stopBtn = $("stopVoice");
+let voices = [];
+let prefs = { voice:null, rate:0.97, lang:"en-GB", speak:true };
+
+function loadVoices(){
+  if (!synth) return;
+  const all = synth.getVoices();
+  if (!all.length) return;
+  voices = all.filter(v => !v.lang || v.lang.toLowerCase().startsWith("en"));
+  if (!voices.length) voices = all;
+  const sel = $("voicePick");
+  sel.innerHTML = voices.map((v,i) => `<option value="${i}">${esc(v.name)}${v.lang ? " · " + v.lang : ""}</option>`).join("");
+  let i = voices.findIndex(v => v.name === prefs.voice);
+  if (i < 0){
+    const liked = ["Samantha","Serena","Karen","Google UK English Female","Microsoft Aria","Moira","Google US English","Fiona"];
+    for (const n of liked){ const j = voices.findIndex(v => v.name.includes(n)); if (j >= 0){ i = j; break; } }
+  }
+  sel.value = String(i < 0 ? 0 : i);
+}
+if (synth){ loadVoices(); synth.onvoiceschanged = loadVoices; }
+const currentVoice = () => voices[Number($("voicePick").value)] || null;
+
+function speak(text){
+  if (!synth || !text) return;
+  synth.cancel();
+  const clean = text.replace(/[*_#`>]/g,"").replace(/\s+/g," ").trim();
+  const chunks = clean.match(/[^.!?]+[.!?]*/g) || [clean];
+  const v = currentVoice();
+  chunks.forEach((chunk,i) => {
+    const u = new SpeechSynthesisUtterance(chunk.trim());
+    if (v) u.voice = v;
+    u.rate = prefs.rate; u.pitch = 1.02;
+    if (i === chunks.length - 1) u.onend = () => stopBtn.style.display = "none";
+    synth.speak(u);
+  });
+  stopBtn.style.display = "inline-block";
+}
+stopBtn.addEventListener("click", () => { if (synth) synth.cancel(); stopBtn.style.display = "none"; });
+
+const savePrefs = () => store.set(K.prefs, prefs);
+$("voiceSettings").addEventListener("click", () => $("vset").classList.toggle("show"));
+$("rate").addEventListener("input", e => {
+  prefs.rate = Number(e.target.value);
+  $("rateVal").textContent = prefs.rate.toFixed(2);
+  savePrefs();
+});
+$("voicePick").addEventListener("change", () => {
+  const v = currentVoice();
+  prefs.voice = v ? v.name : null;
+  savePrefs();
+  speak("This is how I'll sound.");
+});
+$("lang").addEventListener("change", e => {
+  prefs.lang = e.target.value;
+  if (recog) recog.lang = prefs.lang;
+  savePrefs();
+});
+$("speakBack").addEventListener("change", e => { prefs.speak = e.target.checked; savePrefs(); });
+
+/* ══════════════════════════════════════════════════════════
+   10. VOICE IN
+   ══════════════════════════════════════════════════════════ */
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const mic = $("mic"), statusEl = $("status"), labelEl = $("consoleLabel");
+const heard = $("heard"), heardText = $("heardText");
+let recog = null, listening = false, gotSpeech = false;
+
+function setStatus(msg, warn){
+  statusEl.textContent = msg;
+  statusEl.classList.toggle("is-warn", !!warn);
+}
+if (!SR){
+  mic.disabled = true;
+  labelEl.textContent = "Typing only, here";
+  setStatus("This browser can't listen. Chrome, Edge or Safari can — or just type below.", true);
+} else {
+  recog = new SR();
+  recog.lang = prefs.lang;
+  recog.interimResults = true;
+  recog.continuous = false;
+  recog.maxAlternatives = 1;
+
+  recog.onstart = () => {
+    listening = true; gotSpeech = false;
+    mic.classList.add("is-live");
+    labelEl.textContent = "Listening…";
+    setStatus("Go ahead. Tap again when you're done.");
+    heard.classList.remove("show"); heardText.textContent = "";
+  };
+  recog.onresult = e => {
+    let interim = "", final = "";
+    for (let i = e.resultIndex; i < e.results.length; i++){
+      const t = e.results[i][0].transcript;
+      if (e.results[i].isFinal) final += t; else interim += t;
+    }
+    gotSpeech = true;
+    heard.classList.add("show");
+    heardText.textContent = (final || interim).trim();
+    if (final.trim()){ stopListening(); ask(final.trim()); }
+  };
+  recog.onerror = e => {
+    listening = false;
+    mic.classList.remove("is-live");
+    labelEl.textContent = "Tap to speak";
+    const m = {
+      "no-speech":"Nothing came through. Tap Speak and start talking straight away — it stops listening after a short silence.",
+      "not-allowed":"Microphone access is blocked. Allow it in your browser's site settings, then tap Speak again.",
+      "service-not-allowed":"Your browser blocked the speech service. Try Chrome, or type your question below.",
+      "audio-capture":"No microphone found. Check it's plugged in and not in use by another app.",
+      "network":"Speech recognition needs an internet connection. Type your question instead."
+    };
+    if (e.error === "aborted"){ setStatus("Stopped listening."); return; }
+    setStatus(m[e.error] || "That didn't come through. Tap Speak to try again, or type it below.", true);
+  };
+  recog.onend = () => {
+    listening = false;
+    mic.classList.remove("is-live");
+    labelEl.textContent = "Tap to speak";
+    if (!gotSpeech && !statusEl.classList.contains("is-warn"))
+      setStatus("I didn't catch any words. Try again a little closer to the mic, or type it below.", true);
+  };
+  mic.addEventListener("click", () => {
+    if (listening){ stopListening(); return; }
+    if (synth) synth.cancel();
+    stopBtn.style.display = "none";
+    try { recog.start(); }
+    catch { setStatus("Still finishing the last one — give it a second and tap again.", true); }
+  });
+}
+function stopListening(){ try { if (recog) recog.stop(); } catch {} }
+
+/* ══════════════════════════════════════════════════════════
+   11. ASKING — with conversation memory
+   ══════════════════════════════════════════════════════════ */
+const SYSTEM = `You are a warm, plain-spoken feng shui guide inside an app called Wind & Water.
+Your answers are read aloud by a speech synthesiser, so:
+- Reply in 2 to 5 short conversational sentences. Never longer.
+- Plain spoken English. No markdown, no bullet points, no headings, no asterisks, no emoji.
+- Give one concrete, doable action rather than a list of options.
+- Explain the reasoning in everyday terms (how a space feels, how people move through it) rather than leaning on mysticism.
+- Use the traditional vocabulary (chi, bagua, the five elements, yin and yang, the feeding and controlling cycles) but always translate it into something practical.
+- This is a conversation. If the person asks a short follow-up like "and the desk?", answer it in the context of what has already been discussed.
+- If a question isn't about homes, spaces, objects or feng shui, say warmly that it's outside what you help with and steer back.
+- Never give medical, legal or financial advice. Feng shui does not cure illness or guarantee money.`;
+
+const thread = $("thread"), typed = $("typed"), clearThreadBtn = $("clearThread");
+let history = [];
+
+async function callClaude(content, withHistory){
+  const msgs = withHistory ? [...history.slice(-8), { role:"user", content }] : [{ role:"user", content }];
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:1000, system:SYSTEM, messages:msgs })
+  });
+  if (!res.ok) throw new Error("status " + res.status);
+  const data = await res.json();
+  return (data.content || []).map(b => b.type === "text" ? b.text : "").join("\n").trim();
+}
+
+function addTurn(question){
+  const turn = document.createElement("div");
+  turn.className = "turn";
+  turn.innerHTML = `<p class="turn-q">${esc(question)}</p><div class="reply-body">${thinkingHTML()}</div><div class="turn-tools"></div>`;
+  thread.appendChild(turn);
+  clearThreadBtn.style.display = "inline-block";
+  if (!reduced()) turn.scrollIntoView({ behavior:"smooth", block:"nearest" });
+  return turn;
+}
+
+async function ask(question){
+  question = question.trim();
+  if (!question) return;
+  heard.classList.remove("show");
+  const turn = addTurn(question);
+  const body = turn.querySelector(".reply-body"), tools = turn.querySelector(".turn-tools");
+  setStatus("Working it out…");
+  try {
+    const answer = await callClaude([{ type:"text", text:question }], true);
+    history.push({ role:"user", content:[{ type:"text", text:question }] });
+    history.push({ role:"assistant", content:answer });
+    body.innerHTML = paragraphs(answer);
+    tools.innerHTML = `<button class="btn btn-quiet btn-tiny" data-a="s">Read aloud</button>
+                       <button class="btn btn-quiet btn-tiny" data-a="c">Copy</button>`;
+    tools.querySelector('[data-a="s"]').addEventListener("click", () => speak(answer));
+    tools.querySelector('[data-a="c"]').addEventListener("click", e => copyText(answer, e.target));
+    setStatus("Ask a follow-up — it remembers what you just asked.");
+    if ($("speakBack").checked) speak(answer);
+  } catch {
+    body.innerHTML = `<p>That answer didn't come back. Check your connection and ask again.</p>`;
+    setStatus("Couldn't reach the guide just now.", true);
+  }
+}
+
+$("send").addEventListener("click", () => {
+  const q = typed.value.trim();
+  if (q){ ask(q); typed.value = ""; }
+});
+typed.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); $("send").click(); } });
+$("starters").addEventListener("click", e => { if (e.target.classList.contains("starter")) ask(e.target.textContent); });
+clearThreadBtn.addEventListener("click", () => {
+  history = []; thread.innerHTML = "";
+  clearThreadBtn.style.display = "none";
+  setStatus("Fresh start. Ask anything.");
+});
+
+/* ══════════════════════════════════════════════════════════
+   12. DAILY TIP
+   ══════════════════════════════════════════════════════════ */
+const startOfYear = new Date(new Date().getFullYear(), 0, 0);
+let tipIndex = Math.floor((Date.now() - startOfYear) / 86400000) % TIPS.length;
+let savedTips = [];
+
+const renderTip = () => { $("tipText").textContent = TIPS[tipIndex]; };
+function renderSaved(){
+  $("savedList").classList.toggle("show", savedTips.length > 0);
+  $("savedUl").innerHTML = savedTips.map((t,i) =>
+    `<li><span>${esc(t)}</span><button class="saved-x" data-i="${i}" aria-label="Remove">×</button></li>`).join("");
+}
+$("tipSpeak").addEventListener("click", () => speak(TIPS[tipIndex]));
+$("tipNext").addEventListener("click", () => { tipIndex = (tipIndex + 1) % TIPS.length; renderTip(); });
+$("tipSave").addEventListener("click", e => {
+  const t = TIPS[tipIndex];
+  if (!savedTips.includes(t)){ savedTips.push(t); store.set(K.tips, savedTips); renderSaved(); }
+  const o = e.target.textContent;
+  e.target.textContent = "Saved";
+  setTimeout(() => e.target.textContent = o, 1300);
+});
+$("savedUl").addEventListener("click", e => {
+  const b = e.target.closest(".saved-x"); if (!b) return;
+  savedTips.splice(Number(b.dataset.i), 1);
+  store.set(K.tips, savedTips);
+  renderSaved();
+});
+renderTip();
+
+/* ══════════════════════════════════════════════════════════
+   13. ROOM PLANNER
+   ══════════════════════════════════════════════════════════ */
+const PIECES = [
+  { n:"Bed", el:"earth" },          { n:"Sofa", el:"earth" },
+  { n:"Rug", el:"earth" },          { n:"Ceramics", el:"earth" },
+  { n:"Desk", el:"wood" },          { n:"Dining table", el:"wood" },
+  { n:"Wardrobe", el:"wood" },      { n:"Bookshelf", el:"wood" },
+  { n:"Plant", el:"wood" },         { n:"Lamp", el:"fire" },
+  { n:"Candles", el:"fire" },       { n:"TV", el:"fire" },
+  { n:"Stove", el:"fire" },         { n:"Metal art", el:"metal" },
+  { n:"Window", el:"metal" },       { n:"Mirror", el:"water" },
+  { n:"Glass table", el:"water" },  { n:"Water feature", el:"water" }
+];
+
+const roomBox = $("roomBox"), roomGrid = $("roomGrid"), doorMark = $("doorMark");
+const readout = $("readout"), balance = $("balance");
+let doorWall = "bottom", roomType = "Bedroom", items = [];
+
+const rotCW = m => m.map((r,i) => r.map((_,j) => m[2-j][i]));
+function currentMatrix(){
+  let m = BASE;
+  const turns = { bottom:0, left:1, top:2, right:3 }[doorWall];
+  for (let i = 0; i < turns; i++) m = rotCW(m);
+  return m;
+}
+function drawGrid(){
+  roomGrid.innerHTML = currentMatrix().flat().map(k => {
+    const s = SECTORS[k];
+    return `<div class="rg-cell" style="--sec:var(--${s.el})">
+      <span class="rg-tri">${s.tri}</span>
+      <span class="rg-name">${k === "center" ? "Centre" : s.name.split(" & ")[0]}</span>
+    </div>`;
+  }).join("");
+  const pos = {
+    bottom:{ left:"42%", bottom:"-1px", top:"auto", right:"auto", width:"16%", height:"13px" },
+    top:{ left:"42%", top:"-1px", bottom:"auto", right:"auto", width:"16%", height:"13px" },
+    left:{ top:"42%", left:"-1px", bottom:"auto", right:"auto", width:"13px", height:"16%" },
+    right:{ top:"42%", right:"-1px", bottom:"auto", left:"auto", width:"13px", height:"16%" }
+  }[doorWall];
+  Object.assign(doorMark.style, pos);
+  doorMark.textContent = (doorWall === "left" || doorWall === "right") ? "" : "door";
+}
+function areaAt(x,y){
+  const col = Math.min(2, Math.max(0, Math.floor(x / (100/3))));
+  const row = Math.min(2, Math.max(0, Math.floor(y / (100/3))));
+  return currentMatrix()[row][col];
+}
+function elementCounts(){
+  const c = Object.fromEntries(CYCLE.map(k => [k,0]));
+  items.forEach(it => c[it.el]++);
+  return c;
+}
+function balanceAdvice(){
+  const c = elementCounts(), total = items.length;
+  if (!total) return null;
+  const top = CYCLE.slice().sort((a,b) => c[b]-c[a])[0];
+  const missing = CYCLE.filter(k => c[k] === 0);
+  if (total >= 3 && missing.length >= 3){
+    const m = missing[0];
+    return { acc:m, html:`Only ${5 - missing.length} of the five elements are here. The quickest lift is <b>${EL[m].name.toLowerCase()}</b> — ${EL[m].stuff}.` };
+  }
+  if (total >= 3 && c[top]/total >= 0.45){
+    const fix = controlledBy(top), feeder = prevOf(top);
+    return { acc:fix, html:`This room leans heavily <b>${EL[top].name.toLowerCase()}</b>, which reads as ${EL[top].too.replace("Too much: ","").replace(/\.$/,"")}. ${EL[fix].name} settles it — ${EL[fix].colours}. Don't add more ${EL[feeder].name.toLowerCase()}; it feeds the excess.` };
+  }
+  if (missing.length){
+    const m = missing[0];
+    return { acc:m, html:`Reasonably balanced. The one gap is <b>${EL[m].name.toLowerCase()}</b> — ${EL[m].stuff}.` };
+  }
+  return { acc:"wood", html:`All five elements present, none dominating. Leave it alone — this is what balance looks like.` };
+}
+function renderBalance(){
+  const c = elementCounts(), max = Math.max(1, ...Object.values(c));
+  const bars = CYCLE.map(k => `
+    <div class="bal-row" style="--el:var(--${k})">
+      <span class="bal-name">${EL[k].name}</span>
+      <span class="bal-track"><span class="bal-fill" style="width:${(c[k]/max)*100}%"></span></span>
+      <span class="bal-num">${c[k]}</span>
+    </div>`).join("");
+  const a = balanceAdvice();
+  balance.innerHTML = bars + (a
+    ? `<p class="bal-advice" style="--acc:var(--${a.acc})">${a.html}</p>`
+    : `<p class="bal-advice" style="--acc:var(--line-strong);color:var(--ink-faint)">Add a few pieces and the balance appears here.</p>`);
+}
+function renderReadout(){
+  readout.innerHTML = !items.length
+    ? `<p class="empty">Nothing placed yet. Tap a piece under the plan to add it.</p>`
+    : "<ul>" + items.map(it => {
+        const s = SECTORS[areaAt(it.x, it.y)];
+        return `<li><span>${esc(it.name)}</span><span class="ro-area" style="color:var(--${s.el})">${s.name}</span></li>`;
+      }).join("") + "</ul>";
+  renderBalance();
+  savePlan();
+}
+
+const place = it => { it.node.style.left = it.x + "%"; it.node.style.top = it.y + "%"; };
+function removeItem(it){ it.node.remove(); items = items.filter(x => x !== it); renderReadout(); }
+function wire(it){
+  const node = it.node;
+  node.querySelector(".ritem-x").addEventListener("click", e => { e.stopPropagation(); removeItem(it); });
+  node.addEventListener("pointerdown", e => {
+    if (e.target.classList.contains("ritem-x")) return;
+    node.setPointerCapture(e.pointerId);
+    node.classList.add("dragging");
+    const move = ev => {
+      const r = roomBox.getBoundingClientRect();
+      it.x = Math.min(96, Math.max(4, ((ev.clientX - r.left)/r.width)*100));
+      it.y = Math.min(94, Math.max(6, ((ev.clientY - r.top)/r.height)*100));
+      place(it); renderReadout();
+    };
+    const up = () => {
+      node.classList.remove("dragging");
+      node.removeEventListener("pointermove", move);
+      node.removeEventListener("pointerup", up);
+      node.removeEventListener("pointercancel", up);
+    };
+    node.addEventListener("pointermove", move);
+    node.addEventListener("pointerup", up);
+    node.addEventListener("pointercancel", up);
+  });
+  node.addEventListener("keydown", e => {
+    const s = e.shiftKey ? 8 : 2;
+    const moves = { ArrowLeft:[-s,0], ArrowRight:[s,0], ArrowUp:[0,-s], ArrowDown:[0,s] };
+    if (moves[e.key]){
+      e.preventDefault();
+      it.x = Math.min(96, Math.max(4, it.x + moves[e.key][0]));
+      it.y = Math.min(94, Math.max(6, it.y + moves[e.key][1]));
+      place(it); renderReadout();
+    } else if (e.key === "Delete" || e.key === "Backspace"){
+      e.preventDefault(); removeItem(it);
+    }
+  });
+}
+function addItem(name, el, x = 50, y = 50){
+  const node = document.createElement("div");
+  node.className = "ritem";
+  node.style.setProperty("--it", `var(--${el})`);
+  node.tabIndex = 0;
+  node.innerHTML = `<span>${esc(name)}</span><button class="ritem-x" tabindex="-1" aria-label="Remove ${esc(name)}">×</button>`;
+  const it = { name, el, x, y, node };
+  place(it);
+  roomBox.appendChild(node);
+  items.push(it);
+  wire(it);
+  renderReadout();
+}
+
+$("palette").innerHTML = PIECES.map(p =>
+  `<button class="pal" style="--it:var(--${p.el})" data-n="${p.n}" data-el="${p.el}">${p.n}</button>`).join("");
+$("palette").addEventListener("click", e => {
+  const b = e.target.closest(".pal");
+  if (b) addItem(b.dataset.n, b.dataset.el, 44 + Math.random()*12, 40 + Math.random()*18);
+});
+$("doorSeg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  doorWall = b.dataset.wall;
+  [...e.currentTarget.children].forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  drawGrid(); renderReadout();
+});
+$("roomSeg").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  roomType = b.dataset.room;
+  [...e.currentTarget.children].forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  savePlan();
+});
+$("clearRoom").addEventListener("click", () => {
+  items.forEach(i => i.node.remove());
+  items = [];
+  photoData = null;
+  $("photoPreview").style.display = "none";
+  $("photoLabel").textContent = "Tap to choose a photo. It's read once and never stored.";
+  $("roomReply").style.display = "none";
+  renderReadout();
+});
+
+let saveTimer = null;
+function savePlan(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    store.set(K.plan, { doorWall, roomType, items: items.map(i => ({ n:i.name, e:i.el, x:i.x, y:i.y })) });
+  }, 400);
+}
+
+/* Photo */
+let photoData = null, photoType = "image/jpeg";
+const photoInput = $("photoInput");
+$("photoZone").addEventListener("click", () => photoInput.click());
+photoInput.addEventListener("change", () => {
+  const file = photoInput.files[0]; if (!file) return;
+  photoType = file.type || "image/jpeg";
+  const reader = new FileReader();
+  reader.onload = () => {
+    photoData = reader.result.split(",")[1];
+    const img = $("photoPreview");
+    img.src = reader.result;
+    img.style.display = "block";
+    $("photoLabel").textContent = "Photo added — tap Read my room.";
+  };
+  reader.readAsDataURL(file);
+});
+
+/* Read my room */
+const roomReply = $("roomReply"), roomReplyBody = $("roomReplyBody"), roomTools = $("roomTools");
+$("readRoom").addEventListener("click", async () => {
+  if (!items.length && !photoData){
+    roomReply.style.display = "block";
+    roomReplyBody.innerHTML = `<p>Add a few pieces to the plan first, or attach a photo. Even three or four items is enough to work with.</p>`;
+    roomTools.innerHTML = "";
+    return;
+  }
+  const placed = items.map(it => `${it.name} (${EL[it.el].name}) in the ${SECTORS[areaAt(it.x,it.y)].name} area`).join("; ");
+  const c = elementCounts();
+  const counts = CYCLE.map(k => `${EL[k].name} ${c[k]}`).join(", ");
+  const prompt =
+`Read this room using the bagua map and the five element cycles, then give practical feng shui suggestions.
+Room type: ${roomType}.
+Main door is in the ${doorWall} wall, so the bagua is oriented with its Career area along that wall.
+Placed items and their bagua areas: ${placed || "none listed"}.
+Element counts across the room: ${counts}.
+
+Give the reading as three short paragraphs, plain spoken, no markdown and no bullets:
+first what is already working, then the single change that would help most and why, then one small optional extra.
+Refer to the element balance only where it actually matters. Keep the whole thing under 170 words so it reads well aloud.`;
+
+  const content = photoData
+    ? [{ type:"image", source:{ type:"base64", media_type:photoType, data:photoData } },
+       { type:"text", text: prompt + "\nAlso use what you can see in the attached photo of the room." }]
+    : [{ type:"text", text: prompt }];
+
+  roomReply.style.display = "block";
+  roomReplyBody.innerHTML = thinkingHTML();
+  roomTools.innerHTML = "";
+  try {
+    const answer = await callClaude(content, false);
+    roomReplyBody.innerHTML = paragraphs(answer);
+    roomTools.innerHTML = `<button class="btn btn-quiet btn-tiny" data-a="s">Read aloud</button>
+                           <button class="btn btn-quiet btn-tiny" data-a="c">Copy</button>`;
+    roomTools.querySelector('[data-a="s"]').addEventListener("click", () => speak(answer));
+    roomTools.querySelector('[data-a="c"]').addEventListener("click", e => copyText(answer, e.target));
+    if ($("speakBack").checked) speak(answer);
+  } catch {
+    roomReplyBody.innerHTML = `<p>The reading didn't come back. Check your connection and tap Read my room again — your plan is still here.</p>`;
+  }
+});
+
+drawGrid();
+renderReadout();
+
+/* ══════════════════════════════════════════════════════════
+   14. QUIZ — eight drawn from twenty, options shuffled
+   ══════════════════════════════════════════════════════════ */
+const qProgress = $("qProgress"), qCount = $("qCount"), qText = $("qText"),
+      qOpts = $("qOpts"), qExplain = $("qExplain"), qNav = $("qNav");
+const ROUND = 8;
+let set = [], qi = 0, qScore = 0, marks = [], missed = [], best = null;
+
+function newRound(){
+  set = shuffle(POOL).slice(0, ROUND).map(q => {
+    const correct = q.o[q.a];
+    const o = shuffle(q.o);
+    return { q:q.q, o, a:o.indexOf(correct), e:q.e };
+  });
+  qi = 0; qScore = 0; marks = Array(ROUND).fill(""); missed = [];
+  renderQ();
+}
+function drawPips(){
+  qProgress.innerHTML = set.map((_,i) => {
+    let c = "q-pip";
+    if (marks[i] === "right") c += " done";
+    else if (marks[i] === "wrong") c += " wrong";
+    else if (i === qi) c += " now";
+    return `<span class="${c}"></span>`;
+  }).join("");
+}
+function renderQ(){
+  drawPips();
+  const q = set[qi];
+  qCount.innerHTML = `<span>Question ${qi+1} of ${ROUND}</span>${best !== null ? `<span>Best ${best}/${ROUND}</span>` : ""}`;
+  qText.textContent = q.q;
+  qExplain.classList.remove("show");
+  qNav.innerHTML = "";
+  qOpts.innerHTML = q.o.map((o,i) => `<button class="opt" data-i="${i}">${esc(o)}</button>`).join("");
+}
+qOpts.addEventListener("click", e => {
+  const b = e.target.closest(".opt"); if (!b || b.disabled) return;
+  const q = set[qi], chosen = Number(b.dataset.i), right = chosen === q.a;
+  marks[qi] = right ? "right" : "wrong";
+  if (right) qScore++; else missed.push(q);
+  [...qOpts.children].forEach((el,i) => {
+    el.disabled = true;
+    if (i === q.a) el.classList.add("correct");
+    else if (i === chosen) el.classList.add("wrong");
+  });
+  qExplain.innerHTML = `<b>${right ? "Right." : "Not quite."}</b> ${q.e}`;
+  qExplain.classList.add("show");
+  drawPips();
+  qNav.innerHTML = `<button class="btn" id="qNext">${qi < ROUND-1 ? "Next question" : "See your score"}</button>`;
+  $("qNext").addEventListener("click", () => { if (qi < ROUND-1){ qi++; renderQ(); } else finish(); });
+});
+function finish(){
+  drawPips();
+  const verdicts = [
+    "A fresh start. Read Principles and come back — it clicks quickly.",
+    "A fresh start. Read Principles and come back — it clicks quickly.",
+    "The basics are landing. The bagua map is the piece worth another look.",
+    "The basics are landing. The bagua map is the piece worth another look.",
+    "Solid ground. You've got chi and balance; the element cycles need one more pass.",
+    "Solid ground. You've got chi and balance; the element cycles need one more pass.",
+    "Strong. You could rearrange a friend's living room and explain why.",
+    "Very strong. You know the controlling cycle, which is where most people stop.",
+    "Full marks. Go and move some furniture."
+  ];
+  const isBest = best === null || qScore > best;
+  if (isBest){ best = qScore; store.set(K.best, best); }
+  qCount.innerHTML = `<span>Finished</span><span>Best ${best}/${ROUND}</span>`;
+  qText.textContent = "Your score";
+  qOpts.innerHTML =
+    `<p class="score">${qScore}<span style="font-size:34px;-webkit-text-fill-color:var(--ink-faint)">/${ROUND}</span></p>
+     <p style="margin:0;color:var(--ink-soft);font-size:16px">${verdicts[qScore]}${isBest && qScore > 0 ? " That's a new best." : ""}</p>
+     ${missed.length ? `<div class="q-missed"><h4>Worth revisiting</h4><ul>${
+        missed.map(m => `<li><b>${esc(m.q)}</b><br>${esc(m.o[m.a])}</li>`).join("")}</ul></div>` : ""}`;
+  qExplain.classList.remove("show");
+  qNav.innerHTML = `<button class="btn" id="qAgain">New set of eight</button>`;
+  $("qAgain").addEventListener("click", newRound);
+}
+
+/* ══════════════════════════════════════════════════════════
+   15. RESTORE
+   ══════════════════════════════════════════════════════════ */
+(async function restore(){
+  const p = await store.get(K.prefs);
+  if (p){
+    prefs = { ...prefs, ...p };
+    $("rate").value = prefs.rate;
+    $("rateVal").textContent = Number(prefs.rate).toFixed(2);
+    $("lang").value = prefs.lang;
+    $("speakBack").checked = prefs.speak !== false;
+    if (recog) recog.lang = prefs.lang;
+    loadVoices();
+  }
+  const t = await store.get(K.tips);
+  if (Array.isArray(t)){ savedTips = t; renderSaved(); }
+
+  const b = await store.get(K.best);
+  if (typeof b === "number") best = b;
+  newRound();
+
+  const plan = await store.get(K.plan);
+  if (plan && Array.isArray(plan.items) && plan.items.length){
+    doorWall = plan.doorWall || "bottom";
+    roomType = plan.roomType || "Bedroom";
+    [...$("doorSeg").children].forEach(x => x.setAttribute("aria-pressed", String(x.dataset.wall === doorWall)));
+    [...$("roomSeg").children].forEach(x => x.setAttribute("aria-pressed", String(x.dataset.room === roomType)));
+    drawGrid();
+    plan.items.forEach(i => addItem(i.n, i.e, i.x, i.y));
+    setStatus("Your saved room plan is back in the planner.");
+  }
+})();
+</script>
+</body>
+</html>

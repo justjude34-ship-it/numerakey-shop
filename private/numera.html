@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#05070C">
+<title>NumeraKey — Numera, the Birth Chart Decoder</title>
+<meta name="description" content="Numera reads your birth chart through two numerologists at once — David A. Phillips on the date, Matthew Oliver Goodwin on the name. Personal charts and business names.">
+<link rel="canonical" href="https://numerakey.com/">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NumeraKey">
+<meta property="og:title" content="Numera — The Birth Chart Decoder">
+<meta property="og:description" content="Two numerologists, one chart. Phillips reads your birth date; Goodwin reads your name. Personal readings and business names.">
+<meta property="og:url" content="https://numerakey.com/">
+<meta property="og:image" content="https://numerakey.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Numera — The Birth Chart Decoder">
+<meta name="twitter:description" content="Two numerologists, one chart. Personal readings and business names.">
+<meta name="twitter:image" content="https://numerakey.com/og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%2305070C'/%3E%3Cg fill='none' stroke='%233B82F6' stroke-width='1.6'%3E%3Ccircle cx='32' cy='32' r='21'/%3E%3Cpath d='M32 11 L46.8 46.8 L11 32 L53 32 L17.2 46.8 Z'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   NUMERAKEY.COM — the site around Numera
+   Single file. No build step, no dependencies, no back end.
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#05070C; --bg-2:#090D16;
+  --surface:rgba(255,255,255,.035); --surface-2:rgba(255,255,255,.06);
+  --hair:rgba(255,255,255,.08); --hair-2:rgba(255,255,255,.15);
+  --teal:#2DD4BF; --azure:#3B82F6; --violet:#A855F7;
+  --ink:#EEF2F9; --ink-2:#B9C2D4; --ink-3:#8892A8; --ink-4:#5A6478;
+  --grad:linear-gradient(100deg,var(--teal) 0%,var(--azure) 48%,var(--violet) 100%);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --wrap:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{background:var(--bg);color:var(--ink-2);font-family:var(--sans);
+  font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img,svg,iframe{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+
+/* ── ambient field ─────────────────────────────────────────── */
+#field{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55}
+.veil{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(ellipse 90% 55% at 50% -8%,rgba(59,130,246,.20),transparent 62%),
+             radial-gradient(ellipse 70% 45% at 88% 22%,rgba(168,85,247,.14),transparent 60%),
+             radial-gradient(ellipse 70% 50% at 6% 68%,rgba(45,212,191,.10),transparent 62%)}
+main,header,footer{position:relative;z-index:2}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 22px}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+h1,h2,h3{font-family:var(--serif);color:var(--ink);line-height:1.12;font-weight:400}
+h1{font-size:clamp(38px,7.4vw,68px);letter-spacing:-.015em}
+h2{font-size:clamp(27px,4.3vw,40px)}
+h3{font-size:19.5px;line-height:1.3}
+p{margin:0}
+.eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);font-weight:600}
+.lede{font-size:clamp(17px,2.1vw,20px);color:var(--ink-2);line-height:1.62}
+.small{font-size:13.5px;line-height:1.6}
+.faint{color:var(--ink-4)}
+.dim{color:var(--ink-3)}
+b,strong{color:var(--ink);font-weight:600}
+
+/* ── header ────────────────────────────────────────────────── */
+header{position:sticky;top:0;z-index:60;border-bottom:1px solid transparent;transition:.28s}
+header.stuck{background:rgba(5,7,12,.82);backdrop-filter:blur(20px) saturate(1.4);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);border-bottom-color:var(--hair)}
+.bar{display:flex;align-items:center;gap:14px;padding:13px 0}
+.logo{width:34px;height:34px;flex:none}
+.brand{display:flex;flex-direction:column;line-height:1}
+.brand .n{font-family:var(--serif);font-size:22px;letter-spacing:.02em;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand .s{font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-4);margin-top:4px}
+nav{margin-left:auto;display:flex;align-items:center;gap:5px}
+nav a{padding:8px 12px;border-radius:99px;font-size:13.5px;color:var(--ink-3);transition:.2s}
+nav a:hover{color:var(--ink);background:var(--surface-2)}
+.navhide{display:none}
+@media(min-width:860px){.navhide{display:inline-flex}}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 22px;border-radius:99px;font-size:15px;font-weight:600;letter-spacing:.01em;
+  background:var(--grad);color:#04070E;transition:.2s;border:0}
+.btn:hover{filter:brightness(1.09);transform:translateY(-1px)}
+.btn.sm{padding:9px 17px;font-size:13.5px}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--hair-2);font-weight:500}
+.btn.ghost:hover{background:var(--surface-2);border-color:var(--ink-4)}
+
+/* ── hero ──────────────────────────────────────────────────── */
+.hero{padding:clamp(52px,9vw,110px) 0 clamp(34px,5vw,54px);text-align:center}
+.pill{display:inline-flex;align-items:center;gap:9px;padding:7px 15px 7px 9px;border-radius:99px;
+  border:1px solid var(--hair-2);background:var(--surface);font-size:12.5px;color:var(--ink-3);
+  margin-bottom:26px}
+.pill i{display:block;width:7px;height:7px;border-radius:99px;background:var(--teal);
+  box-shadow:0 0 10px var(--teal)}
+.hero h1{margin-bottom:22px}
+.hero .lede{max-width:660px;margin:0 auto}
+.cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:34px}
+.marks{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:center;margin-top:40px;
+  font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4)}
+.marks span{display:flex;align-items:center;gap:8px}
+.marks svg{width:14px;height:14px;flex:none;opacity:.8}
+
+/* ── the embedded app ──────────────────────────────────────── */
+.stage{padding:8px 0 clamp(56px,8vw,96px)}
+.deep{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:20px}
+.chip{padding:8px 15px;border-radius:99px;border:1px solid var(--hair);background:var(--surface);
+  font-size:13px;color:var(--ink-3);transition:.2s}
+.chip:hover{color:var(--ink);border-color:var(--hair-2)}
+.chip.on{background:var(--grad);color:#04070E;border-color:transparent;font-weight:600}
+
+.device{position:relative;max-width:430px;margin:0 auto;border-radius:38px;padding:11px;
+  background:linear-gradient(160deg,rgba(255,255,255,.13),rgba(255,255,255,.03) 42%,rgba(255,255,255,.09));
+  box-shadow:0 40px 110px -30px rgba(59,130,246,.42),0 0 0 1px rgba(255,255,255,.05),
+             0 2px 60px rgba(168,85,247,.16)}
+.device .screen{position:relative;border-radius:28px;overflow:hidden;background:#04060B;
+  height:min(760px,82vh)}
+.device iframe{width:100%;height:100%;border:0;background:#04060B}
+.notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:104px;height:22px;
+  border-radius:99px;background:#04060B;z-index:3;pointer-events:none}
+@media(max-width:520px){
+  .device{padding:7px;border-radius:26px;max-width:none}
+  .device .screen{border-radius:20px;height:min(720px,80vh)}
+  .notch{display:none}
+}
+.loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:16px;background:#04060B;z-index:2;transition:opacity .5s;color:var(--ink-4)}
+.loading.gone{opacity:0;pointer-events:none}
+.spin{width:44px;height:44px;animation:sp 2.6s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.stage .under{text-align:center;margin-top:22px}
+.stage .under p{margin-top:12px;font-size:12.8px}
+
+.notice{display:none;max-width:620px;margin:0 auto 22px;padding:22px 26px;border-radius:18px;
+  border:1px solid rgba(251,191,36,.28);background:rgba(251,191,36,.06);text-align:left}
+.notice.on{display:block}
+.notice.plain{border-color:var(--hair);background:var(--surface);text-align:center}
+.notice .eyebrow{color:#FBBF24}
+.notice.plain .eyebrow{color:var(--teal)}
+.notice h3{margin:10px 0 8px;font-size:18px}
+.notice p{font-size:14px;color:var(--ink-3);line-height:1.6}
+.notice .btn{margin-top:18px}
+
+/* ── sections ──────────────────────────────────────────────── */
+section{padding:clamp(56px,8vw,104px) 0}
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--hair-2),transparent)}
+.head{max-width:660px;margin-bottom:44px}
+.head.mid{margin-left:auto;margin-right:auto;text-align:center}
+.head h2{margin:14px 0 16px}
+
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(258px,1fr))}
+.card{padding:28px;border-radius:20px;border:1px solid var(--hair);
+  background:linear-gradient(165deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+  transition:.25s}
+.card:hover{border-color:var(--hair-2);transform:translateY(-2px)}
+.card .no{font-family:var(--serif);font-size:15px;letter-spacing:.2em;text-transform:uppercase;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card h3{margin:12px 0 10px}
+.card p{font-size:14.8px;line-height:1.62;color:var(--ink-3)}
+.card .who{margin-top:16px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-4)}
+.card .who b{color:var(--teal);font-weight:600}
+.card .who.g b{color:var(--violet)}
+
+.split{display:grid;gap:40px;align-items:center;grid-template-columns:1fr}
+@media(min-width:900px){.split{grid-template-columns:1.05fr .95fr;gap:64px}
+  .split.flip>div:first-child{order:2}}
+
+.emb{display:grid;place-items:center;padding:34px;border-radius:24px;border:1px solid var(--hair);
+  background:radial-gradient(ellipse at 50% 40%,rgba(59,130,246,.14),transparent 70%),var(--surface)}
+.emb svg{width:min(300px,74vw);height:auto}
+
+.authors{display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:820px){.authors{grid-template-columns:1fr 1fr}}
+.author{padding:32px;border-radius:22px;border:1px solid var(--hair);background:var(--surface)}
+.author .tag{display:inline-block;padding:5px 12px;border-radius:99px;font-size:10.5px;
+  letter-spacing:.18em;text-transform:uppercase;font-weight:600;margin-bottom:18px}
+.author.p .tag{background:rgba(59,130,246,.15);color:#7FB0FF}
+.author.g .tag{background:rgba(168,85,247,.15);color:#C99BFF}
+.author h3{font-size:23px;margin-bottom:6px}
+.author .bk{font-style:italic;color:var(--ink-4);font-size:14px;margin-bottom:16px}
+.author ul{list-style:none;margin-top:18px;display:flex;flex-wrap:wrap;gap:7px}
+.author li{padding:6px 12px;border-radius:99px;border:1px solid var(--hair);
+  font-size:12.5px;color:var(--ink-3)}
+
+.claim{margin-top:22px;padding:26px 30px;border-radius:20px;text-align:center;
+  border:1px solid rgba(45,212,191,.28);
+  background:linear-gradient(120deg,rgba(45,212,191,.09),rgba(168,85,247,.09))}
+.claim p{font-family:var(--serif);font-size:clamp(19px,2.6vw,25px);line-height:1.35;color:var(--ink)}
+
+.steps{counter-reset:s;display:grid;gap:2px}
+.step{display:flex;gap:20px;padding:22px 0;border-bottom:1px solid var(--hair)}
+.step .n{font-family:var(--serif);font-size:30px;flex:none;width:46px;
+  background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.step h3{margin-bottom:6px}
+.step p{font-size:14.8px;color:var(--ink-3)}
+
+.notes{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.note{padding:24px;border-radius:18px;border:1px solid var(--hair);background:var(--surface)}
+.note h3{font-size:16.5px;margin-bottom:9px}
+.note p{font-size:13.8px;color:var(--ink-3);line-height:1.6}
+
+.tail{text-align:center;padding:clamp(64px,9vw,116px) 0}
+.tail h2{margin-bottom:18px}
+.tail p{max-width:560px;margin:0 auto}
+
+footer{border-top:1px solid var(--hair);padding:40px 0 54px;font-size:13px;color:var(--ink-4)}
+.frow{display:flex;flex-wrap:wrap;gap:16px 30px;align-items:center}
+.frow nav{margin-left:auto;gap:22px}
+.frow nav a{padding:0;font-size:13px}
+footer .fine{margin-top:26px;padding-top:22px;border-top:1px solid var(--hair);
+  font-size:12.3px;line-height:1.65;max-width:760px}
+
+/* ── reveal ────────────────────────────────────────────────── */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .rv{opacity:1;transform:none;transition:none} html{scroll-behavior:auto} .spin{animation:none}}
+</style>
+</head>
+<body>
+
+<canvas id="field"></canvas>
+<div class="veil"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#2DD4BF"/><stop offset=".5" stop-color="#3B82F6"/><stop offset="1" stop-color="#A855F7"/>
+  </linearGradient>
+</defs></svg>
+
+<header id="top">
+  <div class="wrap bar">
+    <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+      <circle cx="32" cy="32" r="29" fill="none" stroke="url(#g)" stroke-width="1" opacity=".45"/>
+      <circle cx="32" cy="32" r="22" fill="none" stroke="url(#g)" stroke-width=".8" opacity=".3"/>
+      <path id="logoStar" fill="none" stroke="url(#g)" stroke-width="1.4"/>
+      <circle cx="32" cy="32" r="2.6" fill="url(#g)"/>
+    </svg>
+    <a class="brand" href="#top"><span class="n">NumeraKey</span><span class="s">Home of Numera</span></a>
+    <nav>
+      <a class="navhide" href="#app">The app</a>
+      <a class="navhide" href="#reads">What it reads</a>
+      <a class="navhide" href="#business-name">Business names</a>
+      <a class="navhide" href="#authors">The two systems</a>
+      <a class="btn sm" href="#app">Open Numera</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ══ HERO ══════════════════════════════════════════════════ -->
+<div class="wrap hero">
+  <div class="pill rv"><i></i> Numera runs right here in the page — nothing to install</div>
+  <h1 class="rv">Two numerologists.<br><span class="grad">One chart.</span></h1>
+  <p class="lede rv">Most numerology tools follow a single teacher. <b>Numera runs two.</b>
+    Dr&nbsp;David&nbsp;A.&nbsp;Phillips reads your <b>birth date</b> — the square, the Arrows of Individuality,
+    the Ruling Number and the nine-year cycle. Matthew&nbsp;Oliver&nbsp;Goodwin reads your <b>name</b> —
+    Expression, Motivation, Inner Self and the Karmic Lessons. Both in full, each one labelled, so you always
+    know whose method is speaking.</p>
+  <div class="cta rv">
+    <a class="btn" href="#app">Open Numera
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    <a class="btn ghost" href="#business-name">Name a business</a>
+  </div>
+  <div class="marks rv">
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="url(#g)" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg>Free to use</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="url(#g)" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>Nothing leaves your phone</span>
+    <span><svg viewBox="0 0 24 24" fill="none" stroke="url(#g)" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M11 18h2"/></svg>Works on any device</span>
+  </div>
+</div>
+
+<!-- ══ THE APP ═══════════════════════════════════════════════ -->
+<div class="wrap stage" id="app">
+  <div class="deep" id="deep"></div>
+
+  <div class="notice" id="notice"></div>
+
+  <div class="device rv" id="device">
+    <div class="notch"></div>
+    <div class="screen">
+      <div class="loading" id="loading">
+        <svg class="spin" viewBox="0 0 64 64" fill="none" stroke="url(#g)" stroke-width="1.3">
+          <circle cx="32" cy="32" r="26" opacity=".35"/>
+          <path d="M32 6 A26 26 0 0 1 58 32"/>
+          <circle cx="32" cy="32" r="3" fill="url(#g)" stroke="none"/>
+        </svg>
+        <div class="small">Loading Numera…</div>
+      </div>
+      <iframe id="frame" title="Numera — the Birth Chart Decoder"
+        loading="lazy" allow="clipboard-write; fullscreen"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+
+  <div class="under">
+    <a class="btn ghost" id="popout" href="#" target="_blank" rel="noopener">Open Numera in its own tab
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></a>
+    <p class="small faint">Numera works either way — inside this page, or full screen in a window of its own.</p>
+  </div>
+</div>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<!-- ══ WHAT IT READS ═════════════════════════════════════════ -->
+<section id="reads">
+  <div class="wrap">
+    <div class="head mid rv">
+      <div class="eyebrow">What Numera reads</div>
+      <h2>Everything both systems can tell you<br class="navhide"> from a date and a name</h2>
+      <p class="lede">A date of birth and the name you actually go by. That is the whole input. What comes back
+        is a full reading rather than a fortune — the shape of a temperament, described honestly.</p>
+    </div>
+    <div class="grid">
+      <div class="card rv"><div class="no">One</div><h3>The Birth Chart</h3>
+        <p>Every digit of your date placed on the Pythagorean square. Nine cells, and what fills them — or
+          leaves them empty — is the foundation everything else is read from.</p>
+        <div class="who"><b>Phillips</b> · from the date</div></div>
+
+      <div class="card rv"><div class="no">Two</div><h3>The Arrows of Individuality</h3>
+        <p>Eight lines cross the square. A complete line is an Arrow of Strength — a faculty you never had to
+          build. An empty one names the work, and Phillips gives each a practical remedy.</p>
+        <div class="who"><b>Phillips</b> · from the date</div></div>
+
+      <div class="card rv"><div class="no">Three</div><h3>The Ruling Number</h3>
+        <p>The single most important figure in the system, and the longest reading in the app — strengths, the
+          central challenge, work, relationships and where the growth actually is.</p>
+        <div class="who"><b>Phillips</b> · from the date</div></div>
+
+      <div class="card rv"><div class="no">Four</div><h3>The 9-Year Cycle</h3>
+        <p>Life proceeds in nine-year seasons that turn on your birthday, not on 1 January. A 1 year plants, a
+          5 year disrupts, an 8 year pays, a 9 year clears the ground. Knowing which is coming is most of the
+          practical value of the system.</p>
+        <div class="who"><b>Phillips</b> · from the date</div></div>
+
+      <div class="card rv"><div class="no">Five</div><h3>Expression, Motivation, Inner Self</h3>
+        <p>All the letters give what you are equipped to do; the vowels give what you actually want; the
+          consonants give how you read to other people before anyone has spoken to you.</p>
+        <div class="who g"><b>Goodwin</b> · from the name</div></div>
+
+      <div class="card rv"><div class="no">Six</div><h3>Karmic Lessons &amp; Hidden Passion</h3>
+        <p>The numbers your name never uses, and the one it leans on hardest. The most practical reason to
+          look closely at a name — and the reason a change of name changes something.</p>
+        <div class="who g"><b>Goodwin</b> · from the name</div></div>
+
+      <div class="card rv"><div class="no">Seven</div><h3>Phases, Pyramids &amp; Personal Months</h3>
+        <p>Three long movements across a life, four periods of concentrated opportunity, and the twelve months
+          of the year you are standing in — each with its own number and its own weather.</p>
+        <div class="who"><b>Phillips</b> · from the date</div></div>
+
+      <div class="card rv"><div class="no">Eight</div><h3>Compatibility</h3>
+        <p>Two charts side by side. What they share, what each brings that the other lacks, and — more useful
+          than either — the blind spot neither of them is positioned to notice.</p>
+        <div class="who">Both systems</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<!-- ══ BUSINESS NAMES ════════════════════════════════════════ -->
+<section id="business-name">
+  <div class="wrap split">
+    <div class="rv">
+      <div class="eyebrow">Business names</div>
+      <h2 style="margin:14px 0 18px">The one number<br><span class="grad">you get to choose</span></h2>
+      <p class="lede">Your birth date is fixed and your name was chosen for you. A trading name is neither —
+        which makes it the most practical thing in the whole system, and the reason this section exists.</p>
+      <p style="margin-top:18px;color:var(--ink-3)">Numera runs the same method over the name above your door.
+        It asks whether the number suits <b>the work</b> — a 4 on a building firm, a 3 on a studio — whether it
+        suits <b>you</b>, the person who has to run it every day, and what the name leaves <b>empty</b>, because
+        an unfilled square shows up as the thing that always needs chasing.</p>
+      <p style="margin-top:18px;color:var(--ink-3)">A well-chosen name will not make a business succeed. It
+        removes friction, which is worth having and is all that is claimed.</p>
+      <p style="margin-top:28px"><a class="btn" href="#app" data-open="business-name">Try it on your name
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
+    </div>
+    <div class="emb rv">
+      <svg viewBox="0 0 300 300" fill="none" aria-hidden="true">
+        <g stroke="url(#g)" stroke-width="1" opacity=".22">
+          <rect x="30" y="30" width="80" height="80" rx="10"/><rect x="110" y="30" width="80" height="80" rx="10"/>
+          <rect x="190" y="30" width="80" height="80" rx="10"/><rect x="30" y="110" width="80" height="80" rx="10"/>
+          <rect x="110" y="110" width="80" height="80" rx="10"/><rect x="190" y="110" width="80" height="80" rx="10"/>
+          <rect x="30" y="190" width="80" height="80" rx="10"/><rect x="110" y="190" width="80" height="80" rx="10"/>
+          <rect x="190" y="190" width="80" height="80" rx="10"/>
+        </g>
+        <path d="M70 236 L150 156 L230 76" stroke="url(#g)" stroke-width="9" opacity=".22"
+              stroke-linecap="round"/>
+        <g font-family="Georgia,serif" font-size="34" fill="url(#g)" text-anchor="middle">
+          <text x="70" y="84">3</text><text x="150" y="84">6</text><text x="230" y="84">9</text>
+          <text x="70" y="164">2</text><text x="150" y="164">5</text><text x="230" y="164">8</text>
+          <text x="70" y="244">1</text><text x="150" y="244">4</text><text x="230" y="244">7</text>
+        </g>
+        <g fill="url(#g)" opacity=".9">
+          <circle cx="70" cy="264" r="3.5"/><circle cx="150" cy="184" r="3.5"/><circle cx="230" cy="104" r="3.5"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<!-- ══ THE TWO SYSTEMS ═══════════════════════════════════════ -->
+<section id="authors">
+  <div class="wrap">
+    <div class="head mid rv">
+      <div class="eyebrow">The two sources</div>
+      <h2>Kept side by side, never blended</h2>
+      <p class="lede">Where the two teachers disagree — on master numbers, on what a plane is, on how the Life
+        Path is worked — Numera shows both figures and says plainly that they differ. That is the whole point of
+        running two systems rather than quietly picking one.</p>
+    </div>
+
+    <div class="authors">
+      <div class="author p rv">
+        <span class="tag">Reads the date</span>
+        <h3>Dr David A. Phillips</h3>
+        <p class="bk">Secrets of the Inner Self — reissued as The Complete Book of Numerology</p>
+        <p class="small dim">The Pythagorean square, the count of each number, the eight Arrows, the planes of
+          Mind, Soul and Body, the Ruling Number, the Day Number, the nine-year cycle, the three phases and the
+          pyramids. Everything worked from the digits of a birth date is his.</p>
+        <ul><li>Birth Chart</li><li>Arrows</li><li>Ruling Number</li><li>Planes</li><li>Cycles</li><li>Pyramids</li></ul>
+      </div>
+      <div class="author g rv">
+        <span class="tag">Reads the name</span>
+        <h3>Matthew Oliver Goodwin</h3>
+        <p class="bk">Numerology: The Complete Guide</p>
+        <p class="small dim">Expression from all the letters, Motivation from the vowels, Inner Self from the
+          consonants, Balance from the initials, plus Karmic Lessons, Hidden Passion, the Planes of Expression
+          and his careful rules for when Y and W count as vowels.</p>
+        <ul><li>Expression</li><li>Motivation</li><li>Inner Self</li><li>Karmic Lessons</li><li>Hidden Passion</li><li>Maturity</li></ul>
+      </div>
+    </div>
+
+    <div class="claim rv"><p>The only numerology app that runs <span class="grad">both</span> teachers over the
+      same chart — and tells you which one is speaking.</p></div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<!-- ══ HOW IT WORKS ══════════════════════════════════════════ -->
+<section>
+  <div class="wrap split flip">
+    <div class="rv">
+      <div class="steps">
+        <div class="step"><div class="n">1</div><div>
+          <h3>Give it a date and a name</h3>
+          <p>Your full name as given at birth, the name you actually go by today, and your date of birth.
+            That is everything it needs.</p></div></div>
+        <div class="step"><div class="n">2</div><div>
+          <h3>Read the chart</h3>
+          <p>The square, the Arrows, the Ruling Number, the cycles, the name and — if you have a business —
+            the name above the door. Each section says which teacher it comes from.</p></div></div>
+        <div class="step"><div class="n">3</div><div>
+          <h3>Keep it</h3>
+          <p>Come back and the chart is still there. Nothing is uploaded, so there is no account to make and
+            nothing to cancel.</p></div></div>
+      </div>
+    </div>
+    <div class="rv">
+      <div class="eyebrow">How it works</div>
+      <h2 style="margin:14px 0 18px">Three minutes,<br><span class="grad">then hours of reading</span></h2>
+      <p class="lede">Numera is built to be read rather than skimmed. The calculation takes a moment; the
+        interpretation is long on purpose, because a chart described in six words is not a chart, it is a
+        horoscope.</p>
+      <p style="margin-top:18px;color:var(--ink-3)">There is a full course inside it as well — every part of
+        both systems taught on its own, so you can eventually read any chart, not only your own.</p>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<!-- ══ HONEST NOTES ══════════════════════════════════════════ -->
+<section>
+  <div class="wrap">
+    <div class="head mid rv">
+      <div class="eyebrow">Plainly stated</div>
+      <h2>What this is, and what it isn't</h2>
+    </div>
+    <div class="notes">
+      <div class="note rv"><h3>Symbolic, not scientific</h3>
+        <p>Numerology is a symbolic system with a long history and no empirical basis. Nothing here predicts
+          events. It is a way of describing a temperament, and it is useful in the way any good description
+          is useful.</p></div>
+      <div class="note rv"><h3>Not advice</h3>
+        <p>Nothing in Numera substitutes for medical, legal, financial or psychological advice. Where the older
+          books discuss health, that material is given as historical tradition and clearly marked as such.</p></div>
+      <div class="note rv"><h3>Your details stay yours</h3>
+        <p>Everything is worked out in your own browser. Names and dates are held on your device and are never
+          sent anywhere, because there is nowhere to send them.</p></div>
+      <div class="note rv"><h3>Written from scratch</h3>
+        <p>The methods are Phillips's and Goodwin's. Every word of interpretation is original writing —
+          no text from either author's books is reproduced.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ TAIL ══════════════════════════════════════════════════ -->
+<div class="wrap tail">
+  <h2 class="rv">Your chart is <span class="grad">three minutes away</span></h2>
+  <p class="lede rv">No account, no email, no payment. Put in a date and a name and read what comes back.</p>
+  <div class="cta rv"><a class="btn" href="#app">Open Numera
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="frow">
+      <div>
+        <div class="brand"><span class="n">NumeraKey</span><span class="s">Home of Numera</span></div>
+      </div>
+      <nav>
+        <a href="#app">The app</a><a href="#reads">What it reads</a>
+        <a href="#business-name">Business names</a><a href="#authors">The two systems</a>
+      </nav>
+    </div>
+    <p class="fine">Numera is built on the systems of Dr David A. Phillips, <i>Secrets of the Inner Self: The
+      Complete Book of Numerology</i>, and Matthew Oliver Goodwin, <i>Numerology: The Complete Guide</i>. The
+      methods are theirs; all writing here is original. Numerology is a symbolic system, not a science. Nothing
+      on this site predicts events or substitutes for professional advice. Charts are calculated in your browser
+      and your details are never transmitted.</p>
+    <p class="fine" style="border:0;padding-top:10px;margin-top:6px">© <span id="yr"></span> NumeraKey</p>
+  </div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   ⚙ THE ONE THING TO CHANGE
+   When Numera moves off the preview host, replace APP_URL with
+   its live address. Nothing else on this page needs touching.
+   ═══════════════════════════════════════════════════════════ */
+const APP_URL = 'https://preview-85c1d395--mystic-neon-cosmic.supercoolpreview.com/';
+
+/* 'embed' shows Numera inside this page. If the host ever refuses to be
+   framed, change this one word to 'link' and the panel becomes a large
+   Open-Numera card instead. Nothing else needs editing. */
+const MODE = 'embed';
+
+/* the in-app sections worth linking straight to */
+const DEEP = [
+  { hash:'',              label:'The reading' },
+  { hash:'business-name', label:'Business name' }
+];
+
+const $ = s => document.querySelector(s);
+const frame = $('#frame');
+const srcFor = h => APP_URL.replace(/#.*$/,'') + (h ? '#' + h : '');
+
+let current = null;
+function openApp(hash, scroll){
+  hash = hash || '';
+  const url = srcFor(hash);
+  $('#popout').href = url;
+  document.querySelectorAll('#deep .chip').forEach(c=>c.classList.toggle('on', c.dataset.h===hash));
+  if(MODE === 'embed' && current !== hash){ current = hash; frame.src = url; armWatchdog(); }
+  if(scroll) document.getElementById('app').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* deep-link chips */
+$('#deep').innerHTML = DEEP.map(d=>
+  `<button class="chip" data-h="${d.hash}">${d.label}</button>`).join('');
+$('#deep').addEventListener('click', e=>{
+  const c = e.target.closest('.chip'); if(c) openApp(c.dataset.h, false);
+});
+
+/* buttons elsewhere on the page that should land on a particular section */
+document.addEventListener('click', e=>{
+  const a = e.target.closest('[data-open]');
+  if(a){ e.preventDefault(); openApp(a.dataset.open, true); }
+});
+
+/* ── the notice ────────────────────────────────────────────────
+   One slot, above the panel. It never removes the panel or the
+   Open-in-a-tab button — whatever else is wrong, those stay put. */
+function notice(kind, title, body, plain){
+  const n = $('#notice');
+  if(n.dataset.kind === 'file' && kind !== 'file') return;   /* file:// outranks the rest */
+  n.dataset.kind = kind;
+  n.className = 'notice on' + (plain ? ' plain' : '');
+  n.innerHTML = `<div class="eyebrow">${kind==='file'?'Running from a file':'Heads up'}</div>
+    <h3>${title}</h3><p>${body}</p>`;
+}
+
+/* Opened by double-clicking the .html file rather than served from a web
+   address. Browsers will not let a file:// page embed a website, so the panel
+   stays blank however healthy the app is. Say so plainly — this is the single
+   likeliest reason for "it isn't opening". */
+const isFile = location.protocol === 'file:';
+if(isFile && MODE === 'embed'){
+  $('#device').style.display = 'none';
+  notice('file', 'Numera opens in its own tab from here',
+    'This page is being read from a file on your device, and browsers will not show a website ' +
+    'inside a page opened that way — so the panel is hidden rather than left blank. Nothing is ' +
+    'wrong with Numera: use the button below. Upload this page to numerakey.com and the app ' +
+    'appears in the page as intended.');
+}
+
+/* Cross-origin frames give no success signal — a blocked frame and a working
+   one look identical from out here. So the watchdog only ever *adds* a note. */
+let watchdog = null;
+function armWatchdog(){
+  $('#loading').classList.remove('gone');
+  clearTimeout(watchdog);
+  watchdog = setTimeout(()=>{
+    $('#loading').querySelector('.small').textContent = 'Still trying…';
+    notice('slow', 'Numera is slow to appear here',
+      'It may be that this host will not allow the app to be shown inside another page. ' +
+      'The <b>Open Numera in its own tab</b> button below always works.');
+  }, 9000);
+}
+frame.addEventListener('load', ()=>{
+  clearTimeout(watchdog);
+  $('#loading').classList.add('gone');
+});
+
+/* A no-cors fetch cannot see headers, but it does say whether the address
+   answers at all — which catches the likeliest real fault: APP_URL has gone
+   stale because the preview expired. */
+if(MODE === 'embed' && window.fetch && !isFile){
+  fetch(srcFor(''), {mode:'no-cors', cache:'no-store'}).catch(()=>{
+    notice('gone', 'Numera is not answering at that address',
+      'The address the site points at did not respond. If Numera has moved, update ' +
+      '<b>APP_URL</b> at the bottom of index.html to its current address.');
+  });
+}
+
+/* link mode: no frame at all, just the button */
+if(MODE !== 'embed'){
+  $('#device').style.display = 'none';
+  notice('link', 'Numera opens in its own window',
+    'A full-screen window of its own, with room for the whole reading.', true);
+}
+
+/* honour a hash the visitor arrived with, e.g. numerakey.com/#business-name */
+const arrived = location.hash.replace(/^#/,'');
+openApp(DEEP.some(d=>d.hash===arrived) ? arrived : '', false);
+if(arrived) setTimeout(()=>document.getElementById('app').scrollIntoView({block:'start'}), 60);
+
+/* a hash link followed while already on the page changes no document, so the
+   panel has to be told about it separately */
+addEventListener('hashchange', ()=>{
+  const h = location.hash.replace(/^#/,'');
+  if(DEEP.some(d=>d.hash===h)) openApp(h, false);
+});
+
+/* ── header, reveal, year ─────────────────────────────────── */
+const header = document.querySelector('header');
+addEventListener('scroll', ()=>header.classList.toggle('stuck', scrollY>12), {passive:true});
+header.classList.toggle('stuck', scrollY>12);
+
+const io = new IntersectionObserver(es=>es.forEach(x=>{
+  if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target); }
+}), {rootMargin:'0px 0px -8% 0px', threshold:.08});
+document.querySelectorAll('.rv').forEach((el,i)=>{
+  el.style.transitionDelay = Math.min(i%4,3)*60 + 'ms'; io.observe(el);
+});
+
+$('#yr').textContent = new Date().getFullYear();
+
+/* nine-pointed star in the logo */
+(()=>{
+  const pts=[], n=9, r=21, cx=32, cy=32;
+  for(let i=0;i<n;i++){ const a=-Math.PI/2 + i*2*Math.PI/n;
+    pts.push([cx+r*Math.cos(a), cy+r*Math.sin(a)]); }
+  let d='';
+  for(let i=0, k=0; i<n; i++, k=(k+4)%n) d += (i?'L':'M') + pts[k][0].toFixed(1)+' '+pts[k][1].toFixed(1)+' ';
+  document.getElementById('logoStar').setAttribute('d', d+'Z');
+})();
+
+/* ── the ambient star field ───────────────────────────────── */
+(()=>{
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c=document.getElementById('field'), x=c.getContext('2d');
+  let w,h,dots=[],t=0;
+  const size=()=>{ const d=Math.min(devicePixelRatio||1,2);
+    w=c.width=innerWidth*d; h=c.height=innerHeight*d; c.style.width='100%'; c.style.height='100%';
+    dots=[]; const n=Math.round(innerWidth*innerHeight/17000);
+    for(let i=0;i<n;i++) dots.push({x:Math.random()*w,y:Math.random()*h,
+      r:(Math.random()*1.5+.4)*d, s:Math.random()*.35+.06, p:Math.random()*6.3}); };
+  size(); addEventListener('resize', size, {passive:true});
+  const cols=['45,212,191','59,130,246','168,85,247'];
+  (function loop(){
+    t+=.006; x.clearRect(0,0,w,h);
+    dots.forEach((d,i)=>{
+      d.y -= d.s; if(d.y < -4) { d.y = h+4; d.x = Math.random()*w; }
+      const a = (Math.sin(t*2+d.p)*.5+.5)*.5+.12;
+      x.beginPath(); x.arc(d.x,d.y,d.r,0,6.29);
+      x.fillStyle='rgba('+cols[i%3]+','+a.toFixed(3)+')'; x.fill();
+    });
+    requestAnimationFrame(loop);
+  })();
+})();
+</script>
+</body>
+</html>
