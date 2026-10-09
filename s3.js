@@ -87,7 +87,7 @@ const AP3 = [
   inside:["A full reading from name and birth date","The Circle \u2014 every animal in the household","How each number was worked out, shown plainly","Readings kept on your device","Never a subscription"]
 },
 {
-  slug:"still-house", name:"Still House", cat:"home", price:39, status:"live", ready:true,
+  slug:"still-house", name:"Ask the Room", cat:"home", price:39, status:"live", ready:true,
   cover:"covers/still-house.jpg",
   desc:"Feng shui you can ask out loud \u2014 chi, the five elements, the bagua, and what this room actually needs.",
   tag:"Listen to your space.",
