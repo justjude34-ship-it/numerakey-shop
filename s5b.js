@@ -237,3 +237,15 @@ APPS.push({
   inside:["Ocean, rain and brown-noise beds","Delta, theta and alpha binaural tones","432 Hz tone, plus a no-headphones theta pulse","Sleep timer that fades out (15 to 90 min)","No voice, no narration","Works offline, nothing leaves your phone"]
 });
 artFor(APPS[APPS.length - 1]).motif = "wave";
+
+APPS.push({
+  slug:"room-to-breathe", name:"Room to Breathe", cat:"home", price:39, status:"live", ready:true,
+  cover:"covers/room-to-breathe.jpg",
+  desc:"Clearing away the clutter, one small thing at a time — Mira sits with you while you do it.",
+  tag:"I’ll sit with you while you do one small thing.",
+  body:[
+    "Clutter is easier to face with company. Room to Breathe pairs you with Mira, who stays with you while you do one small thing, and then another, until the room feels like somewhere you can breathe.",
+    "One file, yours forever, no subscription."
+  ],
+  inside:["Mira, beside you while you clear","One small thing at a time","One file. Yours forever."]
+});
