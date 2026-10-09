@@ -170,7 +170,7 @@ const AP1 = [
     "Most sound apps let you stack everything until it turns to mush. Vesper refuses: the binaural field and the bowls are exclusive, and starting one fully stops the other. Each ear gets a harmonic stack rather than a thin sine, so the field has some body to it.",
     "Delta near sleep, theta inward, alpha for open attention, beta for desk work, gamma as a short bright field \u2014 with the guide explaining what each one is for and why headphones are not optional. The bowls ring on their own timing rather than a loop, so it never settles into a pattern you can predict."
   ],
-  inside:["Binaural beats, five bands, headphones required","Tibetan bronze bowls, struck on their own timing","The two modes never mix","Gesture control and journeys","Timer and volume, set low by default","A guide that explains the method","20 KB \u2014 the whole app is one file"]
+  inside:["Binaural beats, five bands, headphones required","Tibetan bronze bowls, struck on their own timing","The two modes never mix","Gesture control and journeys","Sleep timer and volume","A guide that explains the method","20 KB \u2014 the whole app is one file"]
 },
 {
   slug:"binaural-studio", name:"Binaural Studio", cat:"sound", price:39, status:"live",

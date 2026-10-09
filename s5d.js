@@ -40,7 +40,8 @@ const FILES = {
   "lunara": "private/lunara.html",
   "daily-plate": "private/daily-plate.html",
   "auraflow": "private/auraflow.html",
-  "rise": "private/rise.html"
+  "rise": "private/rise.html",
+  "vesper": "private/vesper.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
