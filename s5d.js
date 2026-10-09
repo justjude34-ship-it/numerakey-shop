@@ -15,7 +15,8 @@ const FILES = {
   "wind-and-water": "private/wind-and-water.html",
   "synergy": "private/synergy.html",
   "numera": "private/numera.html",
-  "goodwin-readings": "private/goodwin-readings.html"
+  "goodwin-readings": "private/goodwin-readings.html",
+  "nest-light": "private/nest-light.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
