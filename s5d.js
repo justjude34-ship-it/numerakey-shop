@@ -32,7 +32,10 @@ const FILES = {
   "room-to-breathe": "private/room-to-breathe.html",
   "ember": "private/ember.html",
   "nova": "private/nova.html",
-  "stillwater": "private/stillwater.html"
+  "stillwater": "private/stillwater.html",
+  "rise-beyond": "private/rise-beyond.html",
+  "spirit-animal": "private/spirit-animal.html",
+  "aureole": "private/aureole.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
