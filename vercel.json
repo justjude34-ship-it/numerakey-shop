@@ -6,5 +6,12 @@
     "api/checkout.js": {
       "includeFiles": "s*.js"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/private/:path*",
+      "destination": "/",
+      "permanent": false
+    }
+  ]
 }
