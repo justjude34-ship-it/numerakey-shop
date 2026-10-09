@@ -120,19 +120,6 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"right-action-essentials", name:"Right Action Essentials", cat:"divine", price:39, status:"live", ready:true,
-  cover:"covers/right-action-essentials.jpg",
-  desc:"A personal-year numerology companion — what this year is for, this month, today, and the next useful step.",
-  tag:"Right action, not fortune-telling.",
-  body:[
-    "Enter a name and a birthday and Right Action places you in the nine-year cycle, then in the month and the day inside it. Each comes with a plain, constructive sentence about what the time is for and what not to start. Written in the spirit of Juno Jordan's calendar method, in original words.",
-    "Look back and ahead across the cycle, add the people you love and see their year too, or name a problem in one honest sentence and get the right action for this year and this month. Everything stays on your phone."
-  ],
-  inside:["Today, this year and every month inside it","The nine-year cycle, past and future years","Add people and read their years","Name a problem, get the right action for it","What to start and what not to start this year","Original wording, not a copy of any book","Lifeline 13 11 14 and 000 if you type something that sounds like a crisis","One file, works offline, stays on your device"]
-});
-artFor(APPS[APPS.length - 1]).motif = "orbits";
-
-APPS.push({
   slug:"palmistry-studio", name:"Palmistry Studio", cat:"divine", price:39, status:"live", ready:true,
   cover:"covers/palmistry-studio.jpg",
   desc:"A quiet studio for reading your own left palm — add a photo, see the major lines, and learn what each one means.",
