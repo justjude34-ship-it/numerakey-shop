@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#07060d" />
+<title>Deep Sleep Descent</title>
+<style>
+  :root {
+    --bg: #07060f;
+    --fg: #f3efe8;
+    --muted: #b7b0c2;
+    --subtle: #8b8496;
+    --line: #2a2438;
+    --teal: #5ed0c4;
+    --teal-ink: #08211f;
+    --card: #12101a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #05040a; color: var(--fg); }
+  body {
+    font-family: Georgia, "Iowan Old Style", Palatino, serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+  .phone {
+    width: min(430px, 100%);
+    min-height: 100vh;
+    background: radial-gradient(800px 420px at 80% 0%, rgba(94,208,196,.12), transparent 50%), var(--bg);
+    padding: 18px 16px 108px;
+    position: relative;
+  }
+  header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .moon {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: radial-gradient(circle at 40% 40%, #fff4, transparent 42%), #101826;
+    border: 1px solid #2c4158;
+    position: relative;
+  }
+  .moon:after {
+    content: "";
+    position: absolute; inset: 10px 8px 8px 14px;
+    border-radius: 50%;
+    box-shadow: 8px -2px 0 0 #f2d7a2;
+  }
+  header h1 { font-size: 1.35rem; font-weight: 500; margin: 0; letter-spacing: -.02em; }
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 28px;
+    border: 1px solid #2a2436;
+    min-height: 560px;
+    background: #0b0a12;
+    padding: 22px 18px 20px;
+  }
+  .spiral {
+    position: absolute; right: -70px; top: 36px; width: 340px; height: 340px;
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 50% 50%, #f3e2b8 0 18px, #1a120c 19px 28px, transparent 29px),
+      repeating-radial-gradient(circle at 50% 50%, #e07a4a 0 8px, #1c8f93 9px 16px, #d4a24a 17px 24px, #12343a 25px 34px);
+    filter: saturate(1.15);
+    opacity: .95;
+    box-shadow: 0 0 0 10px #0b0a1288;
+  }
+  .spiral:before {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 30%, #0b0a12 72%);
+  }
+  .wash {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(90deg, #0b0a12 0 42%, #0b0a12cc 58%, transparent 78%),
+      linear-gradient(#0b0a1200, #0b0a12 88%);
+  }
+  .badge {
+    position: relative;
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+    background: #12101ccc;
+    border: 1px solid #2e8f8a55;
+    color: var(--teal);
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-family: system-ui, sans-serif;
+    font-size: 13px;
+  }
+  .hero h2 {
+    position: relative;
+    font-weight: 500;
+    font-size: 3.15rem;
+    line-height: .9;
+    margin: 18px 0 10px;
+    letter-spacing: -.03em;
+    max-width: 11ch;
+  }
+  .hero h2 em { font-style: italic; color: var(--teal); font-weight: 500; }
+  .hero p {
+    position: relative;
+    color: #c9c2d2;
+    font-size: 1.12rem;
+    line-height: 1.35;
+    max-width: 16rem;
+    margin: 0 0 22px;
+  }
+  button { font-family: system-ui, sans-serif; cursor: pointer; }
+  .start, .browse {
+    position: relative;
+    display: flex;
+    width: min(250px, 100%);
+    border: 0;
+    border-radius: 999px;
+    padding: 16px 18px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .start { background: var(--teal); color: var(--teal-ink); }
+  .browse { background: #1a1824; color: white; border: 1px solid #3a3348; }
+  .stats {
+    position: relative;
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+    color: var(--muted);
+    font-family: system-ui, sans-serif;
+  }
+  .stats b { color: white; font-size: 1.15rem; }
+  .panel { display: none; margin-top: 16px; }
+  .panel.on { display: block; }
+  .grid { display: grid; gap: 10px; }
+  .card {
+    text-align: left;
+    width: 100%;
+    background: #14121c;
+    color: white;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 14px;
+  }
+  .card small { display: block; color: var(--subtle); margin-top: 4px; font-family: system-ui, sans-serif; }
+  nav {
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: 0; width: min(430px, 100%);
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    background: #0c0b12f2;
+    border-top: 1px solid #241f30;
+    padding: 8px 4px 14px;
+    font-family: system-ui, sans-serif;
+  }
+  nav button {
+    background: none; border: 0; color: #8d8798; font-size: 11px;
+  }
+  nav button.on { color: var(--teal); }
+  .player {
+    display: none;
+    position: fixed; left: 50%; transform: translateX(-50%);
+    bottom: 74px; width: min(400px, calc(100% - 20px));
+    background: #16131f; border: 1px solid var(--line); border-radius: 16px;
+    padding: 10px 12px; align-items: center; gap: 10px;
+    font-family: system-ui, sans-serif;
+  }
+  .player.on { display: flex; }
+  .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 12px var(--teal); }
+  .player b { display: block; }
+  .player span { color: var(--muted); font-size: 12px; }
+  .grow { flex: 1; }
+  label.boost { display: flex; gap: 8px; align-items: center; color: var(--muted); font-family: system-ui, sans-serif; font-size: 13px; margin: 8px 0 14px; }
+  input[type=range] { width: 120px; }
+</style>
+</head>
+<body>
+  <div class="phone">
+    <header>
+      <div class="moon" aria-hidden="true"></div>
+      <h1>Deep Sleep Descent</h1>
+    </header>
+    <section class="hero" id="home">
+      <div class="spiral" aria-hidden="true"></div>
+      <div class="wash" aria-hidden="true"></div>
+      <div class="badge">✦ Sleep · Sound · Frequencies</div>
+      <h2>Deep Sleep<br><em>Descent</em></h2>
+      <p>A long, rhythmic night of sleep sound and frequency tones — made to help you drift. No voice.</p>
+      <button class="start" id="tonight">☾ Start tonight's sleep</button>
+      <button class="browse" id="browse">Browse library</button>
+      <div class="stats"><span><b>37</b> min practiced</span><span><b>1</b> day streak</span><span><b>1</b> completed</span></div>
+    </section>
+    <label class="boost">Hearing boost <input id="vol" type="range" min="40" max="160" value="130"></label>
+    <section class="panel" id="library"></section>
+    <section class="panel" id="tones"></section>
+    <section class="panel" id="saved"><p>Nothing saved yet. Sound stays on this phone only.</p></section>
+    <section class="panel" id="settings">
+      <p>Voice is off. This copy is sound only, so there is no spoken guide and no hypnosis script.</p>
+      <p>Hearing boost is on by default. Start near the middle if it feels too strong, then raise it.</p>
+    </section>
+  </div>
+  <div class="player" id="player">
+    <div class="dot"></div>
+    <div class="grow"><b id="now">Deep Sleep Descent</b><span id="cue">Sound only</span></div>
+    <button id="stop">Stop</button>
+  </div>
+  <nav>
+    <button class="on" data-tab="home">Home</button>
+    <button data-tab="library">Library</button>
+    <button data-tab="tones">Tones</button>
+    <button data-tab="saved">Saved</button>
+    <button data-tab="settings">Settings</button>
+  </nav>
+<script>
+const ITEMS = [
+  { id: "sleep", title: "Deep Sleep Descent", blurb: "Ocean wash · 50 min", ambient: "ocean" },
+  { id: "rain", title: "Midnight Rain", blurb: "Rain bed · any speaker", ambient: "rain" },
+  { id: "brown", title: "Brown Noise Cocoon", blurb: "Deep masking", ambient: "brown" },
+  { id: "delta", title: "Delta Deep Sleep", blurb: "2 Hz · headphones", ambient: "delta", beat: 2, carrier: 100 },
+  { id: "theta", title: "Theta Twilight", blurb: "5 Hz · headphones", ambient: "theta", beat: 5, carrier: 140 },
+  { id: "alpha", title: "Alpha Ease", blurb: "10 Hz · headphones", ambient: "alpha", beat: 10, carrier: 200 },
+  { id: "hz432", title: "432 Hz Harmony", blurb: "Pure tone and pad", ambient: "432" },
+  { id: "iso", title: "Theta Pulse", blurb: "5 Hz · no headphones", ambient: "theta", beat: 5, carrier: 200, iso: true }
+];
+const engine = {
+  ctx: null, master: null, nodes: [], playing: false, boost: 1.3,
+  async ensure() {
+    if (!this.ctx) {
+      const ctx = new AudioContext();
+      const master = ctx.createGain();
+      const comp = ctx.createDynamicsCompressor();
+      comp.threshold.value = -8;
+      comp.knee.value = 6;
+      comp.ratio.value = 3;
+      comp.attack.value = 0.01;
+      comp.release.value = 0.2;
+      master.connect(comp);
+      comp.connect(ctx.destination);
+      this.ctx = ctx; this.master = master;
+    }
+    if (this.ctx.state === "suspended") await this.ctx.resume();
+    this.master.gain.value = this.boost;
+    return this.ctx;
+  },
+  stop() {
+    this.nodes.forEach(n => { try { n.stop?.(); n.disconnect?.(); } catch (e) {} });
+    this.nodes = [];
+    this.playing = false;
+    document.getElementById("player").classList.remove("on");
+  },
+  noise(ctx, type) {
+    const len = ctx.sampleRate * 3;
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    let last = 0, b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for (let i = 0; i < len; i++) {
+      const w = Math.random() * 2 - 1;
+      if (type === "brown") { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
+      else { b0=0.99886*b0+w*0.0555179; b1=0.99332*b1+w*0.0750759; b2=0.969*b2+w*0.153852; b3=0.8665*b3+w*0.3104856; b4=0.55*b4+w*0.5329522; b5=-0.7616*b5-w*0.016898; d[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.11; b6=w*0.115926; }
+    }
+    const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true; return src;
+  },
+  async start(item) {
+    await this.ensure();
+    this.stop();
+    const ctx = this.ctx;
+    const bus = ctx.createGain(); bus.gain.value = 1; bus.connect(this.master); this.nodes.push(bus);
+    const track = n => { this.nodes.push(n); return n; };
+    const bed = (type, level, cutoff) => {
+      const src = track(this.noise(ctx, type));
+      const f = track(ctx.createBiquadFilter()); f.type = "lowpass"; f.frequency.value = cutoff;
+      const g = track(ctx.createGain()); g.gain.value = level;
+      src.connect(f); f.connect(g); g.connect(bus); src.start();
+      return f;
+    };
+    if (item.ambient === "ocean") {
+      const f = bed("brown", 0.72, 900);
+      const lfo = track(ctx.createOscillator()); lfo.frequency.value = 0.08;
+      const lg = track(ctx.createGain()); lg.gain.value = 320; lfo.connect(lg); lg.connect(f.frequency); lfo.start();
+    } else if (item.ambient === "rain") bed("pink", 0.62, 5200);
+    else if (item.ambient === "brown") bed("brown", 0.7, 800);
+    else if (item.ambient === "432") {
+      const o = track(ctx.createOscillator()); o.frequency.value = 432;
+      const g = track(ctx.createGain()); g.gain.value = 0.28; o.connect(g); g.connect(bus); o.start();
+    }
+    if (item.beat) {
+      if (item.iso) {
+        const o = track(ctx.createOscillator()); o.frequency.value = item.carrier;
+        const amp = track(ctx.createGain()); amp.gain.value = 0.34;
+        const lfo = track(ctx.createOscillator()); lfo.frequency.value = item.beat;
+        const lg = track(ctx.createGain()); lg.gain.value = 0.22;
+        lfo.connect(lg); lg.connect(amp.gain); o.connect(amp); amp.connect(bus); o.start(); lfo.start();
+      } else {
+        const merger = track(ctx.createChannelMerger(2));
+        const L = track(ctx.createOscillator()), R = track(ctx.createOscillator());
+        L.frequency.value = item.carrier; R.frequency.value = item.carrier + item.beat;
+        const lg = track(ctx.createGain()), rg = track(ctx.createGain());
+        lg.gain.value = rg.gain.value = 0.32;
+        L.connect(lg); R.connect(rg); lg.connect(merger,0,0); rg.connect(merger,0,1); merger.connect(bus);
+        L.start(); R.start();
+      }
+    }
+    this.playing = true;
+    document.getElementById("player").classList.add("on");
+    document.getElementById("now").textContent = item.title;
+    document.getElementById("cue").textContent = "Sound only · hearing boost " + Math.round(this.boost * 100) + "%";
+  }
+};
+function card(item) {
+  const b = document.createElement("button");
+  b.className = "card";
+  b.innerHTML = "<strong>" + item.title + "</strong><small>" + item.blurb + "</small>";
+  b.onclick = () => engine.start(item);
+  return b;
+}
+const lib = document.getElementById("library");
+const tones = document.getElementById("tones");
+ITEMS.forEach(item => {
+  (item.beat || item.ambient === "432" ? tones : lib).appendChild(card(item));
+  if (!item.beat && item.ambient !== "432") tones.appendChild(card(item));
+});
+document.getElementById("tonight").onclick = () => engine.start(ITEMS[0]);
+document.getElementById("browse").onclick = () => show("library");
+document.getElementById("stop").onclick = () => engine.stop();
+document.getElementById("vol").oninput = e => { engine.boost = e.target.value / 100; if (engine.master) engine.master.gain.value = engine.boost; };
+function show(tab) {
+  document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.tab === tab));
+  document.getElementById("home").style.display = tab === "home" ? "block" : "none";
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("on", p.id === tab));
+}
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => show(b.dataset.tab));
+</script>
+</body>
+</html>

@@ -21,7 +21,9 @@ const FILES = {
   "first-light": "private/first-light.html",
   "pulse-plus": "private/pulse-plus.html",
   "sacred-address": "private/sacred-address.html",
-  "harbor": "private/harbor.html"
+  "harbor": "private/harbor.html",
+  "held": "private/held.html",
+  "unspoken": "private/unspoken.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
