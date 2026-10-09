@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#07060d" />
+<title>Lumina — Sleep, Hypnosis & Frequency Calm</title>
+<style>
+  :root {
+    --bg: #07060d;
+    --fg: #f4efe6;
+    --muted: #b7aebe;
+    --subtle: #7d7488;
+    --surface: #12101a;
+    --line: #2a2436;
+    --sleep: #8b7cff;
+    --calm: #6ec8c4;
+    --hyp: #d4a0ff;
+    --freq: #f0c27a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--fg); }
+  body {
+    font-family: "Iowan Old Style", Palatino, Georgia, serif;
+    min-height: 100vh;
+    background:
+      radial-gradient(900px 480px at 80% -10%, rgba(139,124,255,.22), transparent 60%),
+      radial-gradient(700px 420px at -10% 90%, rgba(110,200,196,.12), transparent 55%),
+      var(--bg);
+  }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 28px 18px 120px; }
+  .kicker { letter-spacing: .18em; text-transform: uppercase; font-size: 11px; color: var(--freq); font-family: system-ui, sans-serif; }
+  h1 { font-weight: 500; font-size: clamp(2.4rem, 7vw, 4.2rem); line-height: .95; margin: 10px 0 8px; }
+  h1 em { font-style: italic; color: var(--sleep); }
+  p.lead { color: var(--muted); font-size: 1.05rem; max-width: 36rem; }
+  .row { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 8px; }
+  button, .chip {
+    font-family: system-ui, sans-serif;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--fg);
+    border-radius: 999px;
+    padding: 10px 14px;
+    cursor: pointer;
+  }
+  button.primary { background: var(--sleep); color: #120f1c; border-color: transparent; font-weight: 650; }
+  button:disabled { opacity: .45; cursor: default; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+  @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    text-align: left;
+    border-radius: 18px;
+    padding: 16px;
+    background: rgba(18,16,26,.85);
+    border: 1px solid var(--line);
+    width: 100%;
+  }
+  .card small { display: block; color: var(--subtle); margin-top: 4px; font-family: system-ui, sans-serif; }
+  .card strong { display: block; font-size: 1.05rem; }
+  .player {
+    position: fixed; left: 12px; right: 12px; bottom: 12px;
+    background: #16131f; border: 1px solid var(--line); border-radius: 20px;
+    padding: 12px 14px; display: none; align-items: center; gap: 12px;
+    box-shadow: 0 16px 40px rgba(0,0,0,.45);
+  }
+  .player.on { display: flex; }
+  .disc {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: conic-gradient(from 40deg, var(--sleep), var(--hyp), var(--calm), var(--sleep));
+    animation: spin 8s linear infinite;
+    flex: 0 0 auto;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .player .meta { flex: 1; min-width: 0; }
+  .player .meta b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .player .meta span { color: var(--muted); font-size: 13px; font-family: system-ui, sans-serif; }
+  .note { margin-top: 22px; color: var(--subtle); font-size: 13px; font-family: system-ui, sans-serif; }
+  input[type=range] { width: 90px; }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker">Sleep · Hypnosis · Frequencies</div>
+    <h1>Deep Sleep<br><em>Descent</em></h1>
+    <p class="lead">A portable Lumina night. Sound is made in the browser — no account, no files to download. Headphones for binaural beats. Rain, ocean, and noise work on any speaker.</p>
+    <div class="row">
+      <button class="primary" id="tonight">Start tonight's sleep</button>
+      <button id="stop">Stop</button>
+      <label class="chip">Volume <input id="vol" type="range" min="0" max="100" value="55"></label>
+    </div>
+    <h2>How do you feel?</h2>
+    <div class="grid" id="quick"></div>
+    <h2>Frequencies</h2>
+    <div class="grid" id="freqs"></div>
+    <p class="note">This is the single-file Lumina you can save and send. Open it in Chrome or Safari, tap a session, and leave the screen on or locked with sound playing. Not a medical device.</p>
+  </div>
+  <div class="player" id="player">
+    <div class="disc"></div>
+    <div class="meta"><b id="now">—</b><span id="cue">Ready</span></div>
+    <button id="stop2">Stop</button>
+  </div>
+<script>
+const QUICK = [
+  { title: "Can't sleep", blurb: "Deep Sleep Descent · ocean", kind: "session", id: "deep-sleep-descent" },
+  { title: "Anxious now", blurb: "Soft Release · 10 Hz alpha", kind: "session", id: "anxiety-release" },
+  { title: "Need hypnosis", blurb: "Deep Calm · 5 Hz theta", kind: "session", id: "hypnosis-deep-calm" },
+  { title: "Just sound", blurb: "Ocean shore · 90 min", kind: "freq", id: "ocean-shore" }
+];
+const SESSIONS = {
+  "deep-sleep-descent": { title: "Deep Sleep Descent", ambient: "ocean", cues: [
+    [0, "Lie back. Warm. Safe. Let the eyes grow heavy, and rest."],
+    [45, "Nothing to solve. Nothing to hold. Only listen, and drift."],
+    [120, "Breathe in, two, three, four. And out, two, three, four, five, six."],
+    [240, "Weight in the body. Heavy. Heavier. Fully held."],
+    [420, "From crown to toe, a slow wave of rest, rolling down."],
+    [700, "Deeper and deeper. With every breath out, deeper still."],
+    [1000, "Ten, sinking. Nine, softer. Eight, quieter."],
+    [1300, "Four, drifting. Three, almost gone. Two. One. Sleep."]
+  ]},
+  "anxiety-release": { title: "Anxiety Soft Release", ambient: "alpha", beat: 10, carrier: 200, cues: [
+    [0, "You are here, now. Feel the ground, or the bed, holding you."],
+    [40, "No need to fix this moment. Only arrive, slowly."],
+    [100, "Breathe in for four. Hold for two. Out for six. Long and easy."],
+    [220, "Anxiety is energy, moving through. You let it pass, wave by wave."],
+    [400, "Soft jaw. Soft belly. Soft eyes. This breath is enough."]
+  ]},
+  "hypnosis-deep-calm": { title: "Hypnosis: Deep Calm", ambient: "theta", beat: 5, carrier: 150, cues: [
+    [0, "Settle in. Eyelids pleasantly heavy, whenever they are ready."],
+    [50, "Breath out. A warm wave of calm, head to toe."],
+    [140, "I count from ten down to one. Each number, twice as deep."],
+    [200, "Ten. Nine. Eight. Seven. Six."],
+    [280, "Five. Four. Three. Two. One. Completely relaxed."],
+    [400, "You may sleep now, or rest in this quiet, until you are ready."]
+  ]}
+};
+const FREQS = [
+  { id: "delta-2hz", title: "Delta Deep Sleep", blurb: "2 Hz binaural · headphones", ambient: "delta", beat: 2, carrier: 100 },
+  { id: "theta-5hz", title: "Theta Twilight", blurb: "5 Hz · edge of sleep", ambient: "theta", beat: 5, carrier: 140 },
+  { id: "alpha-10hz", title: "Alpha Ease", blurb: "10 Hz · calm alertness", ambient: "alpha", beat: 10, carrier: 200 },
+  { id: "solf-432", title: "432 Hz Harmony", blurb: "Pure tone and soft pad", ambient: "432" },
+  { id: "brown-noise", title: "Brown Noise Cocoon", blurb: "Deep masking for sleep", ambient: "brown" },
+  { id: "rain-loop", title: "Midnight Rain", blurb: "Any speaker", ambient: "rain" },
+  { id: "ocean-shore", title: "Ocean Shore", blurb: "Slow wave cycles", ambient: "ocean" },
+  { id: "iso-theta", title: "Isochronic Theta", blurb: "5 Hz pulse · no headphones", ambient: "theta", beat: 5, carrier: 200, iso: true }
+];
+
+const engine = {
+  ctx: null, master: null, nodes: [], timers: [], playing: false, volume: 0.55,
+  async ensure() {
+    if (!this.ctx) {
+      this.ctx = new AudioContext();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = this.volume;
+      this.master.connect(this.ctx.destination);
+    }
+    if (this.ctx.state === "suspended") await this.ctx.resume();
+    return this.ctx;
+  },
+  setVolume(v) {
+    this.volume = v;
+    if (this.master) this.master.gain.value = v;
+  },
+  stop() {
+    this.timers.forEach(clearTimeout);
+    this.timers = [];
+    this.nodes.forEach(n => { try { n.stop?.(); n.disconnect?.(); } catch (e) {} });
+    this.nodes = [];
+    this.playing = false;
+    speechSynthesis.cancel();
+    document.getElementById("player").classList.remove("on");
+  },
+  noise(ctx, type) {
+    const len = ctx.sampleRate * 3;
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    let last = 0, b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+    for (let i = 0; i < len; i++) {
+      const w = Math.random() * 2 - 1;
+      if (type === "brown") { last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
+      else { b0=0.99886*b0+w*0.0555179; b1=0.99332*b1+w*0.0750759; b2=0.969*b2+w*0.153852; b3=0.8665*b3+w*0.3104856; b4=0.55*b4+w*0.5329522; b5=-0.7616*b5-w*0.016898; d[i]=(b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.11; b6=w*0.115926; }
+    }
+    const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true; return src;
+  },
+  async start(cfg) {
+    await this.ensure();
+    this.stop();
+    const ctx = this.ctx;
+    const bus = ctx.createGain(); bus.gain.value = 0.9; bus.connect(this.master); this.nodes.push(bus);
+    const track = (n) => { this.nodes.push(n); return n; };
+    const binaural = (carrier, beat, iso) => {
+      if (iso) {
+        const osc = track(ctx.createOscillator()); osc.type = "sine"; osc.frequency.value = carrier;
+        const amp = track(ctx.createGain()); amp.gain.value = 0.12;
+        const lfo = track(ctx.createOscillator()); lfo.frequency.value = beat;
+        const lg = track(ctx.createGain()); lg.gain.value = 0.08;
+        lfo.connect(lg); lg.connect(amp.gain); osc.connect(amp); amp.connect(bus); osc.start(); lfo.start();
+        return;
+      }
+      const merger = track(ctx.createChannelMerger(2));
+      const L = track(ctx.createOscillator()), R = track(ctx.createOscillator());
+      L.frequency.value = carrier; R.frequency.value = carrier + beat;
+      const lg = track(ctx.createGain()), rg = track(ctx.createGain());
+      lg.gain.value = rg.gain.value = 0.12;
+      L.connect(lg); R.connect(rg); lg.connect(merger,0,0); rg.connect(merger,0,1); merger.connect(bus);
+      L.start(); R.start();
+    };
+    const pad = () => {
+      [110, 164.81, 220].forEach(f => {
+        const o = track(ctx.createOscillator()); o.type = "sine"; o.frequency.value = f;
+        const g = track(ctx.createGain()); g.gain.value = 0.05; o.connect(g); g.connect(bus); o.start();
+      });
+    };
+    if (cfg.ambient === "ocean" || cfg.ambient === "brown" || cfg.ambient === "rain") {
+      const src = track(this.noise(ctx, cfg.ambient === "rain" ? "pink" : "brown"));
+      const f = track(ctx.createBiquadFilter()); f.type = "lowpass"; f.frequency.value = cfg.ambient === "rain" ? 5000 : 700;
+      const g = track(ctx.createGain()); g.gain.value = cfg.ambient === "ocean" ? 0.35 : 0.28;
+      src.connect(f); f.connect(g); g.connect(bus); src.start();
+      if (cfg.ambient === "ocean") {
+        const lfo = track(ctx.createOscillator()); lfo.frequency.value = 0.08;
+        const lg = track(ctx.createGain()); lg.gain.value = 280; lfo.connect(lg); lg.connect(f.frequency); lfo.start();
+      }
+    }
+    if (cfg.ambient === "432" || cfg.ambient === "528") {
+      const hz = cfg.ambient === "432" ? 432 : 528;
+      const o = track(ctx.createOscillator()); o.frequency.value = hz;
+      const g = track(ctx.createGain()); g.gain.value = 0.12; o.connect(g); g.connect(bus); o.start();
+      pad();
+    }
+    if (cfg.ambient === "delta" || cfg.ambient === "theta" || cfg.ambient === "alpha") {
+      binaural(cfg.carrier || 140, cfg.beat || 5, cfg.iso); pad();
+    }
+    this.playing = true;
+    document.getElementById("player").classList.add("on");
+    document.getElementById("now").textContent = cfg.title;
+    document.getElementById("cue").textContent = "Playing · " + (cfg.ambient || "sound");
+    (cfg.cues || []).forEach(([at, text]) => {
+      this.timers.push(setTimeout(() => {
+        if (!this.playing) return;
+        document.getElementById("cue").textContent = text;
+        const u = new SpeechSynthesisUtterance(text);
+        u.rate = 0.82; u.pitch = 0.8; u.volume = 0.9;
+        speechSynthesis.speak(u);
+      }, at * 1000));
+    });
+  }
+};
+
+function card(title, blurb, onClick) {
+  const b = document.createElement("button");
+  b.className = "card";
+  b.innerHTML = "<strong>" + title + "</strong><small>" + blurb + "</small>";
+  b.onclick = onClick;
+  return b;
+}
+const q = document.getElementById("quick");
+QUICK.forEach(item => q.appendChild(card(item.title, item.blurb, () => {
+  if (item.kind === "session") startSession(item.id); else startFreq(item.id);
+})));
+const fbox = document.getElementById("freqs");
+FREQS.forEach(f => fbox.appendChild(card(f.title, f.blurb, () => startFreq(f.id))));
+function startSession(id) {
+  const s = SESSIONS[id];
+  engine.start({ title: s.title, ambient: s.ambient, beat: s.beat, carrier: s.carrier, cues: s.cues });
+}
+function startFreq(id) {
+  const f = FREQS.find(x => x.id === id);
+  engine.start({ title: f.title, ambient: f.ambient, beat: f.beat, carrier: f.carrier, iso: f.iso, cues: [] });
+}
+document.getElementById("tonight").onclick = () => startSession("deep-sleep-descent");
+document.getElementById("stop").onclick = () => engine.stop();
+document.getElementById("stop2").onclick = () => engine.stop();
+document.getElementById("vol").oninput = (e) => engine.setVolume(e.target.value / 100);
+</script>
+</body>
+</html>
