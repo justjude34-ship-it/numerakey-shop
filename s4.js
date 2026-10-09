@@ -35,13 +35,13 @@ const AP4 = [
 {
   slug:"reclaim", name:"Reclaim", cat:"wellness", price:59, status:"live", ready:true,
   cover:"covers/reclaim.jpg",
-  desc:"Someone to sit with who answers out loud \u2014 and asks for one small thing, not the whole mountain.",
+  desc:"Someone to sit with \u2014 who asks for one small thing, not the whole mountain.",
   tag:"One gentle day at a time.",
   body:[
-    "Type or press Talk and she answers that line, aloud \u2014 not a recording played back at you. Then the only question that matters on a hard day: name the one thing that would make today feel a little lighter.",
-    "Small steps, kept where you left them. The voice runs on your browser's own speech, so there is no key to buy, no account, and nothing to pay per use."
+    "Type what's on your mind and she answers that line. Then the only question that matters on a hard day: name the one thing that would make today feel a little lighter.",
+    "Small steps, kept where you left them."
   ],
-  inside:["Speak or type \u2014 she answers that line","Replay anything she said","One small thing, rather than a plan","What you keep stays kept","Voice runs in your browser, no key needed","One file, works offline"]
+  inside:["Type a line \u2014 she answers it","One small thing, rather than a plan","What you keep stays kept"]
 },
 {
   slug:"kindling", name:"Kindling", cat:"wellness", price:59, status:"live", ready:true,
