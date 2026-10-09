@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Nomen">
+<meta name="description" content="Nomen — your name is a number. Read it, then find one that carries you further. After the system of Matthew Oliver Goodwin.">
+<title>Nomen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect fill='%23000' width='64' height='64'/%3E%3Ccircle cx='32' cy='32' r='4' fill='%23e8c44a'/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #000;
+  --ink: #e8e4f0;
+  --muted: #9a96b0;
+  --label: #c5c0d4;
+  --line: rgba(180,170,210,.18);
+  --field: #141218;
+  --field-border: #2a2733;
+  --soft: #b7b3c9;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+body { padding: 0 0 env(safe-area-inset-bottom); }
+.page {
+  max-width: 430px;
+  margin: 0 auto;
+  padding: 2.4rem 1.35rem 4.5rem;
+}
+.logo-wrap {
+  display: flex;
+  justify-content: center;
+  margin: .2rem 0 1.55rem;
+}
+.logo-wrap svg {
+  width: 168px;
+  height: 168px;
+  display: block;
+}
+.ring { transform-origin: 100px 100px; animation: spin 42s linear infinite; }
+.hex { transform-origin: 100px 100px; animation: spin 56s linear infinite reverse; }
+.tri { transform-origin: 100px 100px; animation: spin 38s linear infinite; }
+.core { transform-origin: 100px 100px; animation: breathe 3.4s ease-in-out infinite; }
+h1.wordmark {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+  font-size: 3.15rem;
+  letter-spacing: .01em;
+  text-align: center;
+  line-height: 1;
+  color: #2ee6c5;
+  animation: hueword 8s linear infinite;
+}
+.tag {
+  font-family: "Playfair Display", Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.08rem;
+  line-height: 1.45;
+  color: #a8a3bb;
+  text-align: center;
+  margin: .95rem auto 0;
+  max-width: 22.5rem;
+}
+.rule {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(180,170,210,.28), transparent);
+  margin: 1.55rem 0 1.45rem;
+}
+h2.lead {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+  font-size: 1.72rem;
+  line-height: 1.22;
+  letter-spacing: -.01em;
+  margin: 0 0 .7rem;
+  color: #2ee6c5;
+  animation: hueword 8s linear infinite;
+}
+@keyframes hueword {
+  0%   { color: #2ee6c5; }
+  16%  { color: #4adf78; }
+  33%  { color: #e8c04a; }
+  50%  { color: #f0819a; }
+  66%  { color: #b57cf0; }
+  83%  { color: #6aa0f5; }
+  100% { color: #2ee6c5; }
+}
+@keyframes wash {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+@keyframes logohue {
+  0% { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+.blurb {
+  color: #b4afc6;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  margin-bottom: 1.45rem;
+}
+label.field {
+  display: block;
+  color: #c9c4d6;
+  font-size: .92rem;
+  font-weight: 400;
+  margin: 1.05rem 0 .38rem;
+}
+input[type="text"], input[type="date"] {
+  width: 100%;
+  background: var(--field);
+  color: #ece8f4;
+  border: 1px solid var(--field-border);
+  border-radius: 10px;
+  padding: .78rem .9rem;
+  font: inherit;
+  font-size: 1.02rem;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+input[type="date"] {
+  min-height: 3rem;
+  color-scheme: dark;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(.7);
+  opacity: .7;
+  cursor: pointer;
+}
+input::placeholder { color: #6d687c; }
+input:focus { border-color: #6b6480; }
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.35rem;
+  padding: .72rem 1.25rem;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: "Source Sans 3", system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #101018;
+  background: linear-gradient(90deg, #5eead4, #86efac, #f5c542, #fb7185, #c084fc, #5eead4);
+  background-size: 300% 100%;
+  animation: wash 5s linear infinite;
+  min-width: 148px;
+}
+.cta:active { transform: translateY(1px); }
+.foot {
+  margin-top: 2.6rem;
+  color: #7a758c;
+  font-size: .82rem;
+}
+.err {
+  color: #f9a8d4;
+  font-size: .9rem;
+  margin-top: .7rem;
+  min-height: 1.2em;
+}
+
+/* results */
+#results { display: none; margin-top: 2.4rem; }
+#results.show { display: block; }
+.kicker {
+  font-size: .68rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #c4b5fd;
+  margin: 0 0 .35rem;
+}
+h3 {
+  font-family: "Playfair Display", Georgia, serif;
+  font-weight: 500;
+  font-size: 1.45rem;
+  margin: 0 0 .35rem;
+}
+.who {
+  color: var(--muted);
+  font-size: .95rem;
+  margin-bottom: .85rem;
+}
+.card {
+  background: #0c0b10;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 1rem 1rem 1.1rem;
+  margin: 0 0 1rem;
+}
+.nums {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .45rem;
+  margin: .2rem 0 .85rem;
+}
+.num {
+  background: #121018;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  text-align: center;
+  padding: .55rem .2rem .5rem;
+}
+.num b {
+  display: block;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.7rem;
+  font-weight: 500;
+  line-height: 1.1;
+  background: linear-gradient(90deg, #5eead4, #f5c542, #c084fc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.num span {
+  display: block;
+  font-size: .62rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: .12rem;
+}
+.life {
+  display: flex;
+  align-items: baseline;
+  gap: .55rem;
+  margin: .15rem 0 .7rem;
+  color: #d5d0e4;
+}
+.life strong {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 500;
+  color: #f5c542;
+}
+.mean p { color: #cfcadb; font-size: .95rem; line-height: 1.5; margin: .35rem 0; }
+.mean em { color: #ddd7ee; font-style: normal; font-weight: 600; }
+.inc {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: .22rem;
+  margin: .55rem 0 .35rem;
+}
+.inc i {
+  display: block;
+  text-align: center;
+  font-style: normal;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: .28rem 0 .22rem;
+  font-size: .72rem;
+  color: var(--muted);
+}
+.inc i b { display: block; font-family: "Playfair Display", Georgia, serif; font-size: 1rem; color: #e8e4f0; font-weight: 500; }
+.inc i.zero { border-color: rgba(249,168,212,.4); color: #f9a8d4; }
+.inc i.zero b { color: #f9a8d4; }
+.inc i.hot { border-color: rgba(94,234,212,.4); }
+.inc i.hot b { color: #5eead4; }
+.note { color: var(--muted); font-size: .86rem; line-height: 1.45; margin-top: .35rem; }
+.pick {
+  border-color: rgba(94,234,212,.28);
+  background: linear-gradient(180deg, rgba(94,234,212,.06), #0c0b10);
+}
+.pick .banner {
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #5eead4;
+  margin-bottom: .3rem;
+}
+.compare {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .86rem;
+  margin: .4rem 0 .2rem;
+}
+.compare th, .compare td {
+  text-align: left;
+  padding: .38rem .2rem;
+  border-bottom: 1px solid var(--line);
+  color: #d8d3e6;
+}
+.compare th { color: var(--muted); font-weight: 500; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+.compare td.n {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.05rem;
+  color: #f5c542;
+}
+.try label.field { margin-top: .2rem; }
+.live {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .4rem;
+  margin-top: .75rem;
+}
+.back {
+  display: inline-block;
+  margin-top: 1.1rem;
+  color: var(--muted);
+  font-size: .9rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.parts { color: #8f8aa0; font-size: .8rem; margin: .15rem 0 .6rem; letter-spacing: .02em; }
+.sugs { display: flex; flex-direction: column; gap: .45rem; margin-top: .65rem; }
+.sug {
+  display: block; width: 100%; text-align: left;
+  background: #121018; border: 1px solid var(--line);
+  border-radius: 12px; padding: .7rem .8rem; cursor: pointer;
+  color: inherit; font: inherit;
+}
+.sug:hover, .sug:focus { border-color: rgba(94,234,212,.45); outline: none; }
+.sug .sn {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.12rem; font-weight: 500; color: #f3eefc;
+}
+.sug .sm { color: var(--muted); font-size: .82rem; margin-top: .12rem; }
+.sug .sw { color: #cfcadb; font-size: .86rem; line-height: 1.4; margin-top: .28rem; }
+.sug .sv { color: #5eead4; font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: .2rem; }
+@media (prefers-reduced-motion: reduce) {
+  .wordmark, .lead, .cta, .logo-wrap svg, .ring, .hex, .tri, .core { animation: none; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="logo-wrap" aria-hidden="true">
+      <svg viewBox="0 0 200 200" fill="none">
+        <defs>
+          <linearGradient id="g1" x1="30" y1="10" x2="170" y2="190">
+            <stop offset="0%" stop-color="#5b9dff"/>
+            <stop offset="35%" stop-color="#2ee6c5"/>
+            <stop offset="70%" stop-color="#9aa3ad"/>
+            <stop offset="100%" stop-color="#d7d7d7"/>
+          </linearGradient>
+          <linearGradient id="g2" x1="20" y1="20" x2="180" y2="170">
+            <stop offset="0%" stop-color="#f3a26a"/>
+            <stop offset="45%" stop-color="#f08aa8"/>
+            <stop offset="100%" stop-color="#7ec8ff"/>
+          </linearGradient>
+          <linearGradient id="g3" x1="40" y1="30" x2="160" y2="160">
+            <stop offset="0%" stop-color="#f3b27a"/>
+            <stop offset="55%" stop-color="#e56b8a"/>
+            <stop offset="100%" stop-color="#6ec3ff"/>
+          </linearGradient>
+          <linearGradient id="g4" x1="70" y1="70" x2="130" y2="130">
+            <stop offset="0%" stop-color="#3ad0c8"/>
+            <stop offset="100%" stop-color="#4aa3e8"/>
+          </linearGradient>
+        </defs>
+        <g class="ring">
+          <circle cx="100" cy="100" r="92" stroke="url(#g1)" stroke-width="1.2" stroke-dasharray="1.6 6.2" stroke-linecap="round"/>
+        </g>
+        <circle cx="100" cy="100" r="78" stroke="url(#g1)" stroke-width="1.35"/>
+        <g class="hex">
+          <polygon points="100,30 160.6,65 160.6,135 100,170 39.4,135 39.4,65" stroke="url(#g2)" stroke-width="1.45"/>
+        </g>
+        <g class="tri">
+          <polygon points="100,48 155,132 45,132" stroke="url(#g3)" stroke-width="1.35" transform="rotate(-18 100 100)"/>
+        </g>
+        <circle cx="100" cy="100" r="22" stroke="url(#g4)" stroke-width="1.4"/>
+        <g class="core">
+          <circle cx="100" cy="100" r="4.2" fill="#e8c44a"/>
+        </g>
+      </svg>
+    </div>
+    <h1 class="wordmark">Nomen</h1>
+    <p class="tag">Your name is a number. Read it, then<br>find one that carries you further.</p>
+  </header>
+
+  <div class="rule"></div>
+
+  <section id="intake">
+    <h2 class="lead">Begin with the name<br>you were given</h2>
+    <p class="blurb">The full name on your birth certificate is the blueprint — it never changes. The name you go by now sits on top of it, and that one is yours to adjust.</p>
+
+    <label class="field" for="birth">Full name at birth</label>
+    <input id="birth" type="text" autocomplete="name" autocapitalize="words" placeholder="">
+
+    <label class="field" for="dob">Date of birth</label>
+    <input id="dob" type="date">
+
+    <label class="field" for="current">Name you use today — leave blank to use your birth name</label>
+    <input id="current" type="text" autocomplete="off" autocapitalize="words" placeholder="">
+
+    <label class="field" for="extra">Another surname open to you — optional: a maiden name, a partner's name</label>
+    <input id="extra" type="text" autocomplete="off" autocapitalize="words" placeholder="">
+
+    <button class="cta" id="readBtn" type="button">Read my name</button>
+    <p class="err" id="err"></p>
+  </section>
+
+  <div id="results"></div>
+
+  <p class="foot">Nomen · after the system of Matthew Oliver Goodwin</p>
+</div>
+
+<script>
+(function () {
+  const MAP = {
+    A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
+    J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
+    S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
+  };
+
+  const MEAN = {
+    1: "Independence, the pioneer, original force. A 1 wants to begin things and stand on its own feet.",
+    2: "Cooperation, sensitivity, the diplomat. A 2 works through partnership and the quiet reading of other people.",
+    3: "Self-expression, joy, the artist of words and company. A 3 wants to be seen and to lift the room.",
+    4: "Form, work, the builder. A 4 makes what lasts and grows restless where there is no structure.",
+    5: "Freedom, change, the senses. A 5 needs movement and learns by living, not by sitting still.",
+    6: "Responsibility, home, the one who tends the circle. A 6 is pulled toward care — and can take on too much of it.",
+    7: "The inner life, analysis, the specialist. A 7 wants truth more than company, and time alone to find it.",
+    8: "Authority, organisation, the material world handled well. An 8 is built for large affairs and honest power.",
+    9: "The wide view, compassion, completion. A 9 is asked to give without keeping score.",
+    11: "Illumination — the 11 is a 2 raised to a high voltage. Vision, nervous intensity, the messenger.",
+    22: "The master builder — a 4 raised to a great scale. The dream that has to be made real."
+  };
+
+  const GROWTH = {
+    1: "A first name of 1 grows by daring to lead and by starting what others only talk about.",
+    2: "A first name of 2 grows through patience, partnership, and the courage to stay sensitive.",
+    3: "A first name of 3 grows by speaking, making, and letting joy be useful.",
+    4: "A first name of 4 grows through steady work and by trusting the long foundation.",
+    5: "A first name of 5 grows by welcoming change without losing the centre.",
+    6: "A first name of 6 grows by loving well — and by learning where the duty ends.",
+    7: "A first name of 7 grows in study, silence, and a faith that does not need an audience.",
+    8: "A first name of 8 grows by taking on real responsibility in the world of affairs.",
+    9: "A first name of 9 grows by giving the gift away and not asking that it come back as praise.",
+    11: "A first name of 11 grows by trusting the vision and grounding it so it does not burn the nerves.",
+    22: "A first name of 22 grows by building something larger than a private life."
+  };
+
+  function lettersOf(word) {
+    return (word || "").toUpperCase().replace(/[^A-Z]/g, "");
+  }
+  function prevLetter(word, i) {
+    for (let k = i - 1; k >= 0; k--) {
+      const c = word[k].toUpperCase();
+      if (/[A-Z]/.test(c)) return c;
+    }
+    return "";
+  }
+  function nextLetter(word, i) {
+    for (let k = i + 1; k < word.length; k++) {
+      const c = word[k].toUpperCase();
+      if (/[A-Z]/.test(c)) return c;
+    }
+    return "";
+  }
+  function hasPlainVowel(word) {
+    return /[AEIOU]/i.test(word);
+  }
+  function isVowelChar(ch, word, i) {
+    const L = ch.toUpperCase();
+    if ("AEIOU".indexOf(L) >= 0) return true;
+    if (L === "Y") {
+      const prev = prevLetter(word, i);
+      const next = nextLetter(word, i);
+      if (!hasPlainVowel(word)) return true;
+      if (prev && "AEIOU".indexOf(prev) >= 0) return true;
+      if (next && "AEIOU".indexOf(next) >= 0) return false;
+      return true;
+    }
+    if (L === "W") {
+      const prev = prevLetter(word, i);
+      return !!(prev && "AEIOU".indexOf(prev) >= 0);
+    }
+    return false;
+  }
+  function reduce(n, keepMasters) {
+    n = Number(n) || 0;
+    while (n > 9) {
+      if (keepMasters && (n === 11 || n === 22)) return n;
+      n = String(n).split("").reduce(function (a, d) { return a + Number(d); }, 0);
+    }
+    return n;
+  }
+  function digit(n) {
+    if (n === 11) return 2;
+    if (n === 22) return 4;
+    return n;
+  }
+  function partsOf(name) {
+    return (name || "")
+      .replace(/['’]/g, "")
+      .split(/[\s\-]+/)
+      .map(function (p) { return p.trim(); })
+      .filter(Boolean);
+  }
+  function sumLetters(word, pred) {
+    let total = 0;
+    const raw = word || "";
+    for (let i = 0; i < raw.length; i++) {
+      const L = raw[i].toUpperCase();
+      if (!MAP[L]) continue;
+      if (pred && !pred(raw[i], raw, i)) continue;
+      total += MAP[L];
+    }
+    return total;
+  }
+  function nameNumber(name, pred) {
+    const parts = partsOf(name);
+    if (!parts.length) return { value: 0, behind: 0, parts: [] };
+    const reducedParts = parts.map(function (p) {
+      const raw = sumLetters(p, pred);
+      return { part: p, raw: raw, value: reduce(raw, true) };
+    });
+    const behind = reducedParts.reduce(function (a, p) { return a + p.value; }, 0);
+    return { value: reduce(behind, true), behind: behind, parts: reducedParts };
+  }
+  function firstNameOf(name) {
+    const p = partsOf(name);
+    return p[0] || "";
+  }
+  function lastNameOf(name) {
+    const p = partsOf(name);
+    return p.length ? p[p.length - 1] : "";
+  }
+  function givenOf(name) {
+    const p = partsOf(name);
+    if (p.length <= 1) return p[0] || "";
+    return p.slice(0, -1).join(" ");
+  }
+  function inclusion(name) {
+    const counts = {1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+    lettersOf(name).split("").forEach(function (L) {
+      if (MAP[L]) counts[MAP[L]]++;
+    });
+    return counts;
+  }
+  function chart(name) {
+    const n = (name || "").trim();
+    if (!n) return null;
+    const exp = nameNumber(n, null);
+    const soul = nameNumber(n, function (ch, word, i) { return isVowelChar(ch, word, i); });
+    const pers = nameNumber(n, function (ch, word, i) { return !isVowelChar(ch, word, i); });
+    const growth = nameNumber(firstNameOf(n), null);
+    const inc = inclusion(n);
+    let hidden = 1, hiddenCount = -1;
+    const lessons = [];
+    for (let k = 1; k <= 9; k++) {
+      if (inc[k] === 0) lessons.push(k);
+      if (inc[k] > hiddenCount) { hiddenCount = inc[k]; hidden = k; }
+    }
+    return {
+      name: n,
+      expression: exp.value, expressionBehind: exp.behind,
+      soul: soul.value, soulBehind: soul.behind,
+      personality: pers.value, personalityBehind: pers.behind,
+      growth: growth.value,
+      inclusion: inc,
+      lessons: lessons,
+      hidden: hiddenCount > 0 ? hidden : 0,
+      hiddenCount: hiddenCount
+    };
+  }
+  function lifePath(iso) {
+    if (!iso) return null;
+    const bits = iso.split("-");
+    if (bits.length !== 3) return null;
+    const y = Number(bits[0]), m = Number(bits[1]), d = Number(bits[2]);
+    if (!y || !m || !d) return null;
+    const yr = reduce(String(y).split("").reduce(function (a, n) { return a + Number(n); }, 0), true);
+    const mo = reduce(m, true);
+    const dy = reduce(d, true);
+    const behind = mo + dy + yr;
+    return { value: reduce(behind, true), behind: behind, birthday: reduce(d, true) };
+  }
+  function friction(a, b) {
+    return Math.abs(digit(a) - digit(b));
+  }
+  function loadScore(c, lp) {
+    if (!c) return 99;
+    if (!lp) return friction(c.expression, c.soul);
+    return friction(c.expression, lp) + friction(c.soul, lp) * 0.65 + friction(c.personality, lp) * 0.25;
+  }
+  function uniqueNames(arr) {
+    const seen = {};
+    const out = [];
+    arr.forEach(function (n) {
+      const t = (n || "").trim();
+      if (!t) return;
+      const key = t.toLowerCase();
+      if (seen[key]) return;
+      seen[key] = 1;
+      out.push(t);
+    });
+    return out;
+  }
+  function initialOf(word) {
+    const L = lettersOf(word).charAt(0);
+    return L ? L + "." : "";
+  }
+  function nicknamesFor(first) {
+    const f = (first || "").toLowerCase();
+    const map = {
+      judith: ["Jude","Judy","Judi"],
+      jennifer: ["Jen","Jenny"],
+      elizabeth: ["Eliza","Beth","Liz","Ellie"],
+      margaret: ["Meg","Maggie","Greta"],
+      catherine: ["Kate","Cate"],
+      katherine: ["Kate","Kitty"],
+      victoria: ["Vita","Tori"],
+      patricia: ["Pat","Trish"],
+      philippa: ["Pippa","Pip"],
+      josephine: ["Josie","Jo"],
+      frances: ["Fran","Frankie"],
+      eleanor: ["Nell","Nora","Ellie"],
+      isabella: ["Bella","Isabel"],
+      charlotte: ["Lottie","Charlie"],
+      matilda: ["Tilly"],
+      william: ["Will","Bill"],
+      alexander: ["Alex"],
+      benjamin: ["Ben"],
+      nicholas: ["Nick"],
+      thomas: ["Tom"],
+      matthew: ["Matt"],
+      robert: ["Rob"],
+      james: ["Jamie"],
+      joseph: ["Joe"],
+      samuel: ["Sam"],
+      daniel: ["Dan"],
+      andrew: ["Drew"],
+      christopher: ["Chris","Kit"]
+    };
+    return map[f] || [];
+  }
+  function givenPartsOf(name) {
+    const parts = partsOf(name);
+    if (parts.length <= 1) return parts.slice();
+    return parts.slice(0, -1);
+  }
+  function joinName(bits) {
+    return bits.filter(Boolean).join(" ").replace(/\s+/g, " ").trim();
+  }
+  function describeForm(full, givenParts, surnames, extraSur, nicks) {
+    const low = full.toLowerCase().replace(/\./g, "");
+    const last = lastNameOf(full);
+    const given = givenOf(full) || firstNameOf(full);
+    const givenLow = given.toLowerCase().replace(/\./g, "");
+    const bits = [];
+    if (extraSur && last.toLowerCase() === extraSur.toLowerCase()) {
+      bits.push("Uses " + extraSur);
+    } else if (last) {
+      bits.push("Keeps " + last);
+    }
+    const hasInit = /\b[A-Za-z]\./.test(full);
+    const allInit = given.split(/\s+/).every(function (p) { return /^[A-Za-z]\.?$/.test(p); });
+    const firstTok = (givenParts[0] || "").toLowerCase();
+    const middleToks = givenParts.slice(1).map(function (p) { return p.toLowerCase(); });
+    if (allInit && hasInit) bits.push("Initials only");
+    else if (hasInit && givenLow.indexOf(firstTok) === 0) bits.push("Middle as initial");
+    else if (hasInit) bits.push("Uses an initial");
+    else if (middleToks.some(function (m) { return givenLow === m; })) bits.push("Middle name first");
+    else if (givenParts.length > 1 && givenLow === givenParts.map(function (p) { return p.toLowerCase(); }).join(" ")) bits.push("Full given name");
+    else if (givenLow === firstTok) bits.push("Drops the middle name");
+    else if (nicks.some(function (n) { return givenLow.indexOf(n.toLowerCase()) === 0; })) bits.push("Familiar form of " + (givenParts[0] || firstNameOf(full)));
+    return bits.join(" · ");
+  }
+  function whySuggest(c, lp, birth) {
+    const bits = [];
+    if (lp) {
+      if (c.expression === lp) bits.push("Expression matches the Life Path.");
+      else if (friction(c.expression, lp) <= 1) bits.push("Expression sits close to the Life Path.");
+      else if (digit(c.expression) + digit(lp) === 9) bits.push("Expression complements the Life Path.");
+    }
+    if (birth && c.soul === birth.soul) bits.push("Soul Urge stays " + fmt(c.soul) + ".");
+    if (birth && c.expression !== birth.expression) {
+      bits.push("Moves Expression from " + fmt(birth.expression) + " to " + fmt(c.expression) + ".");
+    } else if (birth && c.expression === birth.expression) {
+      bits.push("Expression stays " + fmt(c.expression) + ".");
+    }
+    return bits.join(" ");
+  }
+  function suggestNames(birth, used, extraSur, lp) {
+    const birthParts = partsOf(birth.name);
+    const usedParts = partsOf(used.name);
+    const birthGiven = givenPartsOf(birth.name);
+    const usedGiven = givenPartsOf(used.name);
+    const givenParts = uniqueNames(birthGiven.concat(usedGiven.length ? usedGiven : []));
+    const firstsOnly = uniqueNames([firstNameOf(birth.name), firstNameOf(used.name)].filter(Boolean));
+    const nicks = [];
+    const surnames = uniqueNames([
+      lastNameOf(birth.name),
+      lastNameOf(used.name),
+      extraSur
+    ]);
+    const ideas = [];
+    function add(bits) {
+      const nm = joinName(bits);
+      if (nm) ideas.push(nm);
+    }
+    surnames.forEach(function (sn) {
+      if (birthGiven.length) add(birthGiven.concat([sn]));
+      if (usedGiven.length) add(usedGiven.concat([sn]));
+      firstsOnly.forEach(function (fn) { add([fn, sn]); });
+      birthGiven.slice(1).forEach(function (mid) { add([mid, sn]); });
+      if (birthGiven.length >= 2) {
+        add([birthGiven[0]].concat(birthGiven.slice(1).map(initialOf)).concat([sn]));
+        add([initialOf(birthGiven[0])].concat(birthGiven.slice(1)).concat([sn]));
+        add(birthGiven.map(initialOf).concat([sn]));
+      }
+      firstsOnly.forEach(function (fn) {
+        add([initialOf(fn), sn]);
+      });
+      nicks.forEach(function (nk) {
+        add([nk, sn]);
+        if (birthGiven.length >= 2) {
+          add([nk].concat(birthGiven.slice(1)).concat([sn]));
+          add([nk].concat(birthGiven.slice(1).map(initialOf)).concat([sn]));
+        }
+      });
+    });
+    const skip = {};
+    skip[birth.name.toLowerCase()] = 1;
+    const pool = [];
+    uniqueNames(ideas).forEach(function (full) {
+      if (skip[full.toLowerCase()]) return;
+      const ch = chart(full);
+      if (!ch) return;
+      let score = loadScore(ch, lp || null);
+      if (lp && ch.expression === lp) score -= 1.4;
+      if (lp && digit(ch.expression) + digit(lp) === 9) score -= 0.6;
+      if (ch.soul === birth.soul) score -= 0.25;
+      pool.push({
+        c: ch,
+        score: score,
+        form: describeForm(full, birthGiven, surnames, extraSur, nicks)
+      });
+    });
+    pool.sort(function (a, b) { return a.score - b.score; });
+    return pool.slice(0, 12);
+  }
+
+  function fmt(n) { return n === 11 || n === 22 ? String(n) : String(n); }
+  function meaning(n) { return MEAN[n] || ""; }
+  function esc(s) {
+    return String(s || "").replace(/[&<>"']/g, function (c) {
+      return ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" })[c];
+    });
+  }
+  function numRow(c) {
+    return (
+      '<div class="nums">' +
+        '<div class="num"><b>' + fmt(c.expression) + '</b><span>Expression</span></div>' +
+        '<div class="num"><b>' + fmt(c.soul) + '</b><span>Soul Urge</span></div>' +
+        '<div class="num"><b>' + fmt(c.personality) + '</b><span>Personality</span></div>' +
+      '</div>'
+    );
+  }
+  function incRow(inc) {
+    let max = 0;
+    for (let k = 1; k <= 9; k++) if (inc[k] > max) max = inc[k];
+    let html = '<div class="inc">';
+    for (let k = 1; k <= 9; k++) {
+      const cls = inc[k] === 0 ? "zero" : (inc[k] === max && max > 1 ? "hot" : "");
+      html += '<i class="' + cls + '"><b>' + inc[k] + '</b>' + k + '</i>';
+    }
+    return html + '</div>';
+  }
+
+  const birthEl = document.getElementById("birth");
+  const dobEl = document.getElementById("dob");
+  const currentEl = document.getElementById("current");
+  const extraEl = document.getElementById("extra");
+  const errEl = document.getElementById("err");
+  const resultsEl = document.getElementById("results");
+
+  try {
+    const saved = JSON.parse(localStorage.getItem("nomen.v1") || "null");
+    if (saved) {
+      birthEl.value = saved.birth || "";
+      dobEl.value = saved.dob || "";
+      currentEl.value = saved.current || "";
+      extraEl.value = saved.extra || "";
+    }
+  } catch (e) {}
+
+  function persist() {
+    try {
+      localStorage.setItem("nomen.v1", JSON.stringify({
+        birth: birthEl.value,
+        dob: dobEl.value,
+        current: currentEl.value,
+        extra: extraEl.value
+      }));
+    } catch (e) {}
+  }
+  ["birth","dob","current","extra"].forEach(function (id) {
+    document.getElementById(id).addEventListener("change", persist);
+    document.getElementById(id).addEventListener("blur", persist);
+  });
+
+  function recommend(cands, lp) {
+    const scored = cands.filter(Boolean).map(function (c) {
+      return { c: c, score: loadScore(c, lp) };
+    });
+    scored.sort(function (a, b) { return a.score - b.score; });
+    return scored;
+  }
+
+  function whyCarries(best, birth, lp) {
+    const bits = [];
+    if (lp) {
+      const d = friction(best.expression, lp);
+      if (best.expression === lp) {
+        bits.push("Its Expression matches the Life Path — the name you wear walks the same road as the life you were given.");
+      } else if (d <= 1) {
+        bits.push("Its Expression sits close to the Life Path, so the name you use and the life you are living pull in the same direction.");
+      } else if (digit(best.expression) + digit(lp) === 9) {
+        bits.push("Expression and Life Path complement one another (they complete a 9). That pairing often feels like help rather than friction.");
+      } else {
+        bits.push("Among the names on this page, this one asks the least of the Life Path — it does not fight the road.");
+      }
+    }
+    if (best.name !== birth.name && best.expression !== birth.expression) {
+      bits.push("It changes the Expression from " + fmt(birth.expression) + " to " + fmt(best.expression) + ", which is the overlay Goodwin treats as adjustable.");
+    } else if (best.name === birth.name) {
+      bits.push("In this set, the birth name itself is already the smoothest load. Adjust only if a different name is lived so fully that it has become the true overlay.");
+    }
+    if (best.soul === birth.soul) {
+      bits.push("The Soul Urge stays " + fmt(best.soul) + " — the inner want does not have to be rewritten.");
+    }
+    return bits.join(" ");
+  }
+
+  function renderCard(title, kicker, c, lp, extraHtml) {
+    let life = "";
+    if (lp) {
+      life = '<div class="life">Life Path <strong>' + fmt(lp.value) + '</strong><span class="note" style="margin:0">from the birth date — this number does not change with the name</span></div>';
+    }
+    return (
+      '<article class="card">' +
+        (kicker ? '<p class="kicker">' + esc(kicker) + '</p>' : '') +
+        '<h3>' + esc(title) + '</h3>' +
+        '<p class="who">' + esc(c.name) + '</p>' +
+        numRow(c) +
+        (title.indexOf("blueprint") >= 0 || kicker === "The blueprint" ? life : "") +
+        '<div class="mean">' +
+          '<p><em>Expression ' + fmt(c.expression) + '</em> — ' + meaning(c.expression) + '</p>' +
+          '<p><em>Soul Urge ' + fmt(c.soul) + '</em> — ' + meaning(c.soul) + '</p>' +
+          '<p><em>Personality ' + fmt(c.personality) + '</em> — how the name meets the world. ' + meaning(c.personality) + '</p>' +
+        '</div>' +
+        (extraHtml || "") +
+      '</article>'
+    );
+  }
+
+  function render() {
+    errEl.textContent = "";
+    const birthName = birthEl.value.trim();
+    if (!birthName || lettersOf(birthName).length < 2) {
+      errEl.textContent = "Begin with the full name on the birth certificate.";
+      resultsEl.classList.remove("show");
+      return;
+    }
+    persist();
+    const usedName = (currentEl.value.trim() || birthName);
+    const extraSur = extraEl.value.trim();
+    const birth = chart(birthName);
+    const used = chart(usedName);
+    const lpFull = lifePath(dobEl.value);
+    const lp = lpFull ? lpFull.value : 0;
+
+    const variants = [{ label: "Birth name — the blueprint", c: birth, kind: "birth" }];
+    if (used.name.toLowerCase() !== birth.name.toLowerCase()) {
+      variants.push({ label: "Name you use today", c: used, kind: "used" });
+    }
+    const extraCharts = [];
+    if (extraSur) {
+      const givenNow = givenOf(usedName) || firstNameOf(usedName);
+      const givenBirth = givenOf(birthName);
+      const comboA = (givenNow + " " + extraSur).trim();
+      const comboB = (givenBirth + " " + extraSur).trim();
+      const comboC = (firstNameOf(usedName) + " " + extraSur).trim();
+      [comboA, comboB, comboC].forEach(function (nm) {
+        const ch = chart(nm);
+        if (!ch) return;
+        if (extraCharts.some(function (x) { return x.name.toLowerCase() === ch.name.toLowerCase(); })) return;
+        extraCharts.push(ch);
+        variants.push({ label: "Open with " + extraSur, c: ch, kind: "extra" });
+      });
+    }
+
+    const ranked = recommend(variants.map(function (v) { return v.c; }), lp || null);
+    const best = ranked[0] && ranked[0].c;
+
+    let html = "";
+    html += renderCard("The blueprint", "It never changes", birth, lpFull, (function () {
+      let block = '<p class="note">Inclusion — how often each number appears in the birth name. A zero is a karmic lesson. The highest count is the hidden passion.</p>';
+      block += incRow(birth.inclusion);
+      const lessonTxt = birth.lessons.length
+        ? "Karmic lesson" + (birth.lessons.length > 1 ? "s" : "") + ": " + birth.lessons.join(", ") + "."
+        : "No missing numbers — the inclusion is full.";
+      const hiddenTxt = birth.hidden
+        ? " Hidden passion: " + birth.hidden + " (appears " + birth.hiddenCount + " time" + (birth.hiddenCount === 1 ? "" : "s") + ")."
+        : "";
+      block += '<p class="note">' + lessonTxt + hiddenTxt + '</p>';
+      block += '<p class="note">Growth number (first name ' + esc(firstNameOf(birth.name)) + '): <strong style="color:#e8e4f0">' + fmt(birth.growth) + '</strong>. ' + (GROWTH[birth.growth] || "") + '</p>';
+      if (lpFull) block += '<p class="note">Birthday number: ' + fmt(lpFull.birthday) + ' — a modifier of the Life Path.</p>';
+      return block;
+    })());
+
+    if (used.name.toLowerCase() !== birth.name.toLowerCase()) {
+      html += renderCard("The name you wear", "Yours to adjust", used, null,
+        '<p class="note">This overlay sits on top of the blueprint. Goodwin keeps the birth name as the character you were given; the name you live by is the one you may tune.</p>'
+      );
+    }
+
+    extraCharts.forEach(function (ch) {
+      html += renderCard(ch.name, "A surname open to you", ch, null, "");
+    });
+
+    html += '<article class="card"><p class="kicker">Side by side</p><h3>What each name carries</h3>';
+    html += '<table class="compare"><thead><tr><th>Name</th><th>Exp</th><th>Soul</th><th>Pers</th>' + (lp ? "<th>Fit</th>" : "") + "</tr></thead><tbody>";
+    ranked.forEach(function (row) {
+      const fit = lp ? (row.score < 2.2 ? "smooth" : row.score < 4 ? "workable" : "heavier") : "";
+      html += "<tr><td>" + esc(row.c.name) + '</td><td class="n">' + fmt(row.c.expression) + '</td><td class="n">' +
+        fmt(row.c.soul) + '</td><td class="n">' + fmt(row.c.personality) + "</td>" +
+        (lp ? "<td>" + fit + "</td>" : "") + "</tr>";
+    });
+    html += "</tbody></table>";
+    html += '<p class="note">Fit is a simple reading of how close Expression and Soul Urge sit to the Life Path. It is a compass, not a verdict.</p></article>';
+
+    if (best) {
+      html += '<article class="card pick"><p class="banner">The name that carries you further — on this page</p>';
+      html += "<h3>" + esc(best.name) + "</h3>";
+      html += numRow(best);
+      html += '<div class="mean"><p>' + whyCarries(best, birth, lp || null) + "</p></div></article>";
+    }
+
+    const ideas = suggestNames(birth, used, extraSur, lp || null);
+    if (ideas.length) {
+      html += '<article class="card"><p class="kicker">Suggestions</p><h3>Ways to use the name you were given</h3>';
+      html += '<p class="who">Only the names on this page — first, middle, initials, the name you already use, and the extra surname if you gave one. Ranked by how the Expression sits with ' +
+        (lp ? ('Life Path ' + fmt(lp)) : 'the blueprint') +
+        '. Tap one to try it.</p>';
+      html += '<div class="sugs">';
+      ideas.forEach(function (row, i) {
+        const tag = (lp && row.c.expression === lp) ? 'Matches the Life Path' : (i === 0 ? 'Closest of these forms' : '');
+        html += '<button class="sug" type="button" data-name="' + esc(row.c.name) + '">';
+        if (tag) html += '<div class="sv">' + tag + '</div>';
+        html += '<div class="sn">' + esc(row.c.name) + '</div>';
+        html += '<div class="sm">Expression ' + fmt(row.c.expression) + ' · Soul Urge ' + fmt(row.c.soul) + ' · Personality ' + fmt(row.c.personality) + '</div>';
+        html += '<div class="sw">' + esc(whySuggest(row.c, lp || null, birth, row.how)) + '</div>';
+        html += '</button>';
+      });
+      html += '</div></article>';
+    }
+
+    html += '<article class="card"><p class="kicker">Keep looking</p><h3>Try another name</h3>';
+    html += '<p class="who">Type any spelling. The numbers rebuild as you go. Leave the surname off, or add the one you are testing.</p>';
+    html += '<label class="field" for="tryName">Name to test</label>';
+    html += '<input id="tryName" type="text" autocapitalize="words" placeholder="A name you might live in">';
+    html += '<div class="live" id="tryLive"></div>';
+    html += '<p class="note" id="tryNote"></p></article>';
+
+    html += '<button class="back" type="button" id="backBtn">Begin again with the name you were given</button>';
+
+    resultsEl.innerHTML = html;
+    resultsEl.classList.add("show");
+    resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    const tryName = document.getElementById("tryName");
+    const tryLive = document.getElementById("tryLive");
+    const tryNote = document.getElementById("tryNote");
+    function paintTry() {
+      const ch = chart(tryName.value);
+      if (!ch) {
+        tryLive.innerHTML = "";
+        tryNote.textContent = "";
+        return;
+      }
+      tryLive.innerHTML = numRow(ch);
+      let line = "Expression " + fmt(ch.expression) + " · Soul Urge " + fmt(ch.soul) + " · Personality " + fmt(ch.personality) + ".";
+      if (lp) {
+        const sc = loadScore(ch, lp);
+        const word = sc < 2.2 ? "This sits easily with the Life Path." : sc < 4 ? "This can work with the Life Path — there is a little stretch." : "This is a heavier overlay on the Life Path.";
+        line += " " + word;
+      }
+      if (ch.expression !== birth.expression) {
+        line += " It moves the Expression from the blueprint’s " + fmt(birth.expression) + " to " + fmt(ch.expression) + ".";
+      }
+      tryNote.textContent = line;
+    }
+    tryName.addEventListener("input", paintTry);
+    Array.prototype.forEach.call(resultsEl.querySelectorAll(".sug"), function (btn) {
+      btn.addEventListener("click", function () {
+        tryName.value = btn.getAttribute("data-name") || "";
+        paintTry();
+        tryName.scrollIntoView({ behavior: "smooth", block: "center" });
+        tryName.focus();
+      });
+    });
+    document.getElementById("backBtn").addEventListener("click", function () {
+      resultsEl.classList.remove("show");
+      birthEl.focus();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  document.getElementById("readBtn").addEventListener("click", render);
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && document.activeElement && document.activeElement.tagName === "INPUT") {
+      e.preventDefault();
+      render();
+    }
+  });
+})();
+</script>
+</body>
+</html>

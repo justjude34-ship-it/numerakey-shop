@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lunara — Binaural Beats & Singing Bowls</title>
+  <meta name="description" content="Lunara is a private relaxation app with two exclusive sound modes: binaural beats and singing bowls. One file. Works offline. Buy once, own forever." />
+  <meta name="author" content="Lunara" />
+  <meta name="theme-color" content="#120a1c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Lunara" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23120a1c'/%3E%3Cpath d='M46 34a18 18 0 1 1-16-22 14 14 0 0 0 16 22z' fill='none' stroke='%230E7490' stroke-width='3'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg: #07040f;
+      --surface: #120a1c;
+      --surface-2: #1a1028;
+      --fg: #f5f3ff;
+      --muted: #c4b5fd;
+      --subtle: #a78bfa;
+      --border: #3b1d6e;
+      --deep-purple: #a855f7;
+      --deep-teal: #0E7490;
+      --rich-purple: #c084fc;
+      --rich-teal: #0891B2;
+      --purple-soft: rgba(168, 85, 247, 0.28);
+      --teal-soft: rgba(14, 116, 144, 0.3);
+      --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      min-height: 100dvh;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background:
+        radial-gradient(ellipse 90% 55% at 50% -5%, rgba(168, 85, 247, 0.45), transparent 55%),
+        radial-gradient(ellipse 70% 50% at 95% 85%, rgba(14, 116, 144, 0.32), transparent 50%),
+        radial-gradient(ellipse 60% 45% at 5% 75%, rgba(192, 132, 252, 0.28), transparent 50%),
+        radial-gradient(ellipse 40% 30% at 70% 30%, rgba(14, 116, 144, 0.15), transparent 60%),
+        var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* Ambient atmosphere orbs */
+    .ambience {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .ambience span {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: 0.45;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    .ambience span:nth-child(1) {
+      width: 12rem; height: 12rem; top: 8%; left: -4%;
+      background: rgba(168, 85, 247, 0.55);
+    }
+    .ambience span:nth-child(2) {
+      width: 10rem; height: 10rem; top: 55%; right: -3%;
+      background: rgba(14, 116, 144, 0.45);
+      animation-duration: 22s; animation-delay: -4s;
+    }
+    .ambience span:nth-child(3) {
+      width: 8rem; height: 8rem; bottom: 12%; left: 20%;
+      background: rgba(232, 121, 249, 0.35);
+      animation-duration: 26s; animation-delay: -8s;
+    }
+    .ambience span:nth-child(4) {
+      width: 6rem; height: 6rem; top: 30%; right: 18%;
+      background: rgba(8, 145, 178, 0.3);
+      animation-duration: 20s; animation-delay: -2s;
+    }
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(12px, -18px) scale(1.08); }
+    }
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+    }
+    button:disabled { opacity: 0.4; cursor: default; }
+
+    .wrap {
+      position: relative;
+      z-index: 1;
+      max-width: 40rem;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.35rem;
+      min-height: 100dvh;
+    }
+
+    /* Brand — solid colour first (works on all mobile browsers) */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #0E7490 !important;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(14, 116, 144, 0.6);
+    }
+    .brand svg {
+      width: 1.1rem;
+      height: 1.1rem;
+      stroke: #0E7490 !important;
+      filter: drop-shadow(0 0 6px rgba(14, 116, 144, 0.6));
+    }
+
+    /* Hero — solid purple (always visible); gradient where supported */
+    .hero {
+      font-size: clamp(1.95rem, 5.5vw, 2.75rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1.12;
+      color: #c084fc !important;
+      text-shadow:
+        0 0 18px rgba(192, 132, 252, 0.8),
+        0 0 36px rgba(14, 116, 144, 0.45);
+    }
+    @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+      .hero {
+        background: linear-gradient(135deg, #e879f9 0%, #a855f7 40%, #0E7490 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent !important;
+        text-shadow: none;
+        filter:
+          drop-shadow(0 0 14px rgba(232, 121, 249, 0.65))
+          drop-shadow(0 0 28px rgba(14, 116, 144, 0.4));
+      }
+    }
+
+    .lede {
+      color: #ddd6fe !important;
+      font-size: 0.92rem;
+      line-height: 1.55;
+      max-width: 28rem;
+    }
+
+    /* Hero illustration */
+    .moon-wrap {
+      position: relative;
+      width: 12.5rem;
+      height: 12.5rem;
+      margin: 0.35rem auto 0.75rem;
+      display: grid;
+      place-items: center;
+    }
+    .moon-glow {
+      position: absolute;
+      inset: -0.8rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,121,249,0.5), rgba(168,85,247,0.35) 35%, rgba(14,116,144,0.28) 55%, transparent 72%);
+      filter: blur(22px);
+      transition: opacity 0.5s;
+    }
+    .moon-glow.playing { opacity: 1; animation: breathe 5s ease-in-out infinite; }
+    .moon-glow:not(.playing) { opacity: 0.75; }
+    .hero-art {
+      width: 11.5rem;
+      height: 11.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-art .orbit {
+      transform-origin: 80px 80px;
+      animation: orbit-spin 48s linear infinite;
+    }
+    .hero-art .orbit-slow {
+      transform-origin: 80px 80px;
+      animation: orbit-spin 72s linear infinite reverse;
+    }
+    .moon-wrap.playing .hero-art .pulse-ring {
+      animation: pulse-ring 3.5s ease-in-out infinite;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+    @keyframes orbit-spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    @keyframes pulse-ring {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.85; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-art .orbit, .hero-art .orbit-slow, .moon-wrap.playing .hero-art .pulse-ring { animation: none !important; }
+    }
+
+    /* Mode illustration cards */
+    .mode-illust {
+      width: 100%;
+      height: 5rem;
+      border-radius: 0.85rem;
+      margin-bottom: 0.55rem;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+    .mode[data-mode="binaural"] .mode-illust {
+      background: linear-gradient(145deg, rgba(14,116,144,0.4), rgba(15, 40, 50, 0.7));
+    }
+    .mode[data-mode="bowls"] .mode-illust {
+      background: linear-gradient(145deg, rgba(168,85,247,0.4), rgba(40, 15, 55, 0.7));
+    }
+    .mode-illust svg {
+      width: 100%;
+      height: 5rem;
+    }
+    .mode.selected .wave-a { animation: wave-shift 4s ease-in-out infinite; }
+    .mode.selected .wave-b { animation: wave-shift 4s ease-in-out infinite reverse; }
+    .mode.selected .res-ring { animation: res-expand 3.5s ease-out infinite; }
+    @keyframes wave-shift {
+      0%, 100% { transform: translateY(0); opacity: 0.85; }
+      50% { transform: translateY(-2px); opacity: 1; }
+    }
+    @keyframes res-expand {
+      0% { opacity: 0.55; transform: scale(0.92); }
+      70% { opacity: 0; transform: scale(1.15); }
+      100% { opacity: 0; transform: scale(1.15); }
+    }
+
+    /* Panel visual header */
+    .panel-art {
+      width: 100%;
+      height: 3.25rem;
+      border-radius: 0.75rem;
+      margin-bottom: 0.85rem;
+      overflow: hidden;
+    }
+    .panel-art svg { width: 100%; height: 3.25rem; display: block; }
+
+    /* Player orbital stage */
+    .play-stage {
+      position: relative;
+      width: 7.5rem;
+      height: 7.5rem;
+      display: grid;
+      place-items: center;
+    }
+    .play-stage .orbits {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .play-stage .orbits circle {
+      fill: none;
+      stroke-linecap: round;
+    }
+    .player.playing .play-stage .spin {
+      animation: orbit-spin 12s linear infinite;
+      transform-origin: 60px 60px;
+    }
+    .player.playing .play-stage .spin-rev {
+      animation: orbit-spin 18s linear infinite reverse;
+      transform-origin: 60px 60px;
+    }
+    .player.playing .play-stage .breathe-ring {
+      animation: breathe 3.2s ease-in-out infinite;
+      transform-origin: 60px 60px;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      margin-bottom: 0.65rem;
+      color: #c084fc !important;
+      text-shadow: 0 0 8px rgba(168, 85, 247, 0.45);
+    }
+
+    /* Mode cards — always colourful frames + stronger selected state */
+    .modes {
+      display: grid;
+      gap: 0.75rem;
+    }
+    @media (min-width: 560px) {
+      .modes { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    .mode {
+      text-align: left;
+      padding: 1rem;
+      border-radius: 1.1rem;
+      border: 2px solid;
+      min-height: 6.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, transform 0.15s;
+    }
+    .mode:focus-visible {
+      outline: 2px solid #e879f9;
+      outline-offset: 2px;
+    }
+
+    /* Always-on solid colour per mode — works even if gradients fail */
+    .mode[data-mode="binaural"] {
+      border-color: #0E7490 !important;
+      background-color: #0C4A5C !important;
+      background-image: linear-gradient(160deg, rgba(14,116,144,0.35), rgba(10, 40, 45, 0.95));
+    }
+    .mode[data-mode="bowls"] {
+      border-color: #c084fc !important;
+      background-color: #2a1545 !important;
+      background-image: linear-gradient(160deg, rgba(168,85,247,0.35), rgba(40, 20, 60, 0.95));
+    }
+    .mode[data-mode="binaural"].selected {
+      border-color: #0891B2 !important;
+      background-color: #155E75 !important;
+      background-image: linear-gradient(160deg, rgba(14,116,144,0.55), rgba(15, 60, 55, 0.95));
+      box-shadow: 0 0 0 1px rgba(14,116,144,0.5), 0 0 28px rgba(14,116,144,0.4), 0 12px 32px -12px rgba(14,116,144,0.55);
+      transform: translateY(-1px);
+    }
+    .mode[data-mode="bowls"].selected {
+      border-color: #e9d5ff !important;
+      background-color: #3b1d6e !important;
+      background-image: linear-gradient(160deg, rgba(168,85,247,0.55), rgba(50, 25, 80, 0.95));
+      box-shadow: 0 0 0 1px rgba(192,132,252,0.5), 0 0 28px rgba(168,85,247,0.4), 0 12px 32px -12px rgba(168,85,247,0.55);
+      transform: translateY(-1px);
+    }
+
+    .mode-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    .mode-icon {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 0.65rem;
+      display: grid;
+      place-items: center;
+      border: 1.5px solid;
+    }
+    .mode[data-mode="binaural"] .mode-icon {
+      border-color: rgba(14,116,144,0.5);
+      background: rgba(14,116,144,0.2);
+      color: #0891B2;
+    }
+    .mode[data-mode="bowls"] .mode-icon {
+      border-color: rgba(192,132,252,0.5);
+      background: rgba(168,85,247,0.22);
+      color: #e9d5ff;
+    }
+    .mode[data-mode="binaural"].selected .mode-icon {
+      border-color: #0E7490;
+      background: rgba(14,116,144,0.35);
+      color: #67E8F9;
+      box-shadow: 0 0 12px rgba(14,116,144,0.4);
+    }
+    .mode[data-mode="bowls"].selected .mode-icon {
+      border-color: #c084fc;
+      background: rgba(168,85,247,0.35);
+      color: #f3e8ff;
+      box-shadow: 0 0 12px rgba(168,85,247,0.4);
+    }
+
+    .live-pill {
+      display: none;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+    }
+    .mode.live .live-pill { display: inline-flex; }
+    .mode[data-mode="binaural"] .live-pill {
+      background: rgba(14,116,144,0.35);
+      color: #67E8F9;
+      box-shadow: 0 0 8px rgba(14,116,144,0.3);
+    }
+    .mode[data-mode="bowls"] .live-pill {
+      background: rgba(168,85,247,0.35);
+      color: #e9d5ff;
+      box-shadow: 0 0 8px rgba(168,85,247,0.3);
+    }
+    .live-dot {
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .mode-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .mode[data-mode="binaural"] .mode-name { color: #0891B2 !important; }
+    .mode[data-mode="bowls"] .mode-name { color: #e9d5ff !important; }
+    .mode[data-mode="binaural"].selected .mode-name {
+      color: #67E8F9 !important;
+      text-shadow: 0 0 12px rgba(14,116,144,0.55);
+    }
+    .mode[data-mode="bowls"].selected .mode-name {
+      color: #f5d0fe !important;
+      text-shadow: 0 0 12px rgba(168,85,247,0.55);
+    }
+
+    .mode-tag {
+      font-size: 0.72rem;
+      color: #c4b5fd;
+      line-height: 1.4;
+    }
+    .mode[data-mode="binaural"] .mode-tag { color: #67E8F9; opacity: 0.85; }
+    .mode[data-mode="bowls"] .mode-tag { color: #e9d5ff; opacity: 0.85; }
+
+    /* Panel */
+    .panel {
+      border-radius: 1.2rem;
+      border: 2px solid rgba(168, 85, 247, 0.5);
+      background:
+        linear-gradient(165deg, rgba(168,85,247,0.28) 0%, rgba(14,116,144,0.18) 45%, rgba(20, 10, 35, 0.95) 100%);
+      padding: 1.15rem 1.15rem;
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.25), 0 16px 40px -20px rgba(168, 85, 247, 0.4);
+    }
+    .panel-desc {
+      font-size: 0.875rem;
+      color: #ddd6fe;
+      line-height: 1.55;
+      margin-bottom: 0.75rem;
+    }
+    .panel-note {
+      font-size: 0.75rem;
+      color: #67E8F9;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-bottom: 1.1rem;
+    }
+    .preset {
+      min-height: 2.6rem;
+      padding: 0.4rem 0.85rem;
+      border-radius: 999px;
+      border: 1.5px solid rgba(168, 85, 247, 0.4);
+      background: rgba(168, 85, 247, 0.12);
+      text-align: left;
+      transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+    }
+    .preset:hover {
+      border-color: rgba(232, 121, 249, 0.6);
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
+    }
+    .preset.active {
+      border-color: #c084fc;
+      background: rgba(168, 85, 247, 0.35);
+      box-shadow: 0 0 14px rgba(168, 85, 247, 0.35);
+    }
+    .mode-binaural-active .preset {
+      border-color: rgba(14, 116, 144, 0.4);
+      background: rgba(14, 116, 144, 0.1);
+    }
+    .mode-binaural-active .preset.active {
+      border-color: #0E7490;
+      background: rgba(14, 116, 144, 0.32);
+      box-shadow: 0 0 14px rgba(14, 116, 144, 0.35);
+    }
+    .preset-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #f5f3ff;
+    }
+    .preset-blurb {
+      display: block;
+      font-size: 0.65rem;
+      color: #c4b5fd;
+    }
+    .mode-binaural-active .preset-blurb { color: #67E8F9; }
+
+    .range-block { margin-top: 0.35rem; }
+    .range-row { margin-bottom: 0.9rem; }
+    .range-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.4rem;
+    }
+    .range-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #c4b5fd;
+    }
+    .range-val {
+      font-size: 0.8rem;
+      font-variant-numeric: tabular-nums;
+      color: #e9d5ff;
+      font-weight: 600;
+    }
+    .mode-binaural-active .range-val { color: #67E8F9; }
+    input[type="range"] {
+      width: 100%;
+      accent-color: #a855f7;
+      height: 0.4rem;
+    }
+    .mode-binaural-active input[type="range"] { accent-color: #0E7490; }
+    .range-ends {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.62rem;
+      color: #a78bfa;
+      font-variant-numeric: tabular-nums;
+      margin-top: 0.25rem;
+    }
+
+    /* Player */
+    .player {
+      border-radius: 1.4rem;
+      border: 2px solid #0E7490 !important;
+      background-color: #0C4A5C !important;
+      background-image: linear-gradient(165deg, rgba(14,116,144,0.35) 0%, rgba(168,85,247,0.28) 50%, rgba(20, 10, 35, 0.95) 100%);
+      padding: 1.4rem 1.15rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 0 32px rgba(14, 116, 144, 0.3), 0 16px 40px -18px rgba(168, 85, 247, 0.4);
+    }
+
+    .play-btn {
+      width: 4.5rem;
+      height: 4.5rem;
+      border-radius: 50%;
+      background-color: #a855f7 !important;
+      background-image: linear-gradient(135deg, #e879f9 0%, #a855f7 40%, #0E7490 100%);
+      color: #fff !important;
+      display: grid;
+      place-items: center;
+      box-shadow:
+        0 0 0 4px rgba(168, 85, 247, 0.4),
+        0 0 28px rgba(232, 121, 249, 0.5),
+        0 12px 32px -6px rgba(14, 116, 144, 0.55);
+      transition: transform 0.15s, box-shadow 0.2s;
+    }
+    .play-btn:hover {
+      transform: scale(1.05);
+      box-shadow:
+        0 0 0 5px rgba(14, 116, 144, 0.4),
+        0 0 36px rgba(168, 85, 247, 0.5),
+        0 14px 36px -6px rgba(14, 116, 144, 0.55);
+    }
+    .play-btn:active { transform: scale(0.97); }
+    .play-btn svg { width: 1.7rem; height: 1.7rem; }
+    .play-btn .icon-pause { display: none; }
+    .play-btn.playing .icon-play { display: none; }
+    .play-btn.playing .icon-pause { display: block; }
+
+    .timer {
+      font-size: 2.15rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      color: #c084fc !important;
+      text-shadow: 0 0 14px rgba(168, 85, 247, 0.55), 0 0 24px rgba(14, 116, 144, 0.35);
+    }
+    .timer-note {
+      font-size: 0.75rem;
+      color: #67E8F9;
+      margin-top: -0.35rem;
+    }
+
+    .session-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem;
+      width: 100%;
+    }
+    .session-btn {
+      min-height: 2.4rem;
+      min-width: 2.8rem;
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      border: 1.5px solid rgba(168, 85, 247, 0.4);
+      background: rgba(168, 85, 247, 0.12);
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: #ddd6fe;
+    }
+    .session-btn.active {
+      border-color: #0E7490;
+      background: rgba(14, 116, 144, 0.3);
+      color: #CCFBF1;
+      box-shadow: 0 0 12px rgba(14, 116, 144, 0.35);
+    }
+
+    .vol-row {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      width: 100%;
+      max-width: 22rem;
+    }
+    .vol-row svg { width: 1rem; height: 1rem; color: #0891B2; flex-shrink: 0; }
+    .vol-row input { flex: 1; accent-color: #0E7490; }
+    .vol-val {
+      width: 2.1rem;
+      text-align: right;
+      font-size: 0.72rem;
+      color: #67E8F9;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .footer {
+      margin-top: auto;
+      padding-top: 1rem;
+      text-align: center;
+      font-size: 0.7rem;
+      color: #a78bfa;
+      line-height: 1.5;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .moon-glow.playing, .live-dot { animation: none !important; }
+    }
+  </style>
+</head>
+<body style="background:#07040f;color:#f5f3ff;margin:0;font-family:system-ui,sans-serif;">
+  <div class="ambience" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <div class="wrap">
+    <header>
+      <div class="brand" style="color:#0E7490;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;font-size:0.75rem;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0E7490" stroke-width="1.75" style="width:1.1rem;height:1.1rem;">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        Lunara
+      </div>
+      <h1 class="hero" style="margin-top:0.55rem;color:#c084fc;font-size:2rem;font-weight:600;text-shadow:0 0 18px rgba(192,132,252,0.8);">Find still water</h1>
+      <p class="lede" style="margin-top:0.5rem;color:#ddd6fe;">
+        One sound at a time — binaural beats or singing bowls.
+        Deep purple and deep teal. Never layered.
+      </p>
+    </header>
+
+    <div class="moon-wrap" id="moonWrap" aria-hidden="true">
+      <div class="moon-glow" id="moonGlow"></div>
+      <svg class="hero-art" viewBox="0 0 160 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="moonFill" cx="38%" cy="35%" r="60%">
+            <stop offset="0%" stop-color="#f5e8ff"/>
+            <stop offset="45%" stop-color="#d8b4fe"/>
+            <stop offset="100%" stop-color="#67E8F9"/>
+          </radialGradient>
+          <radialGradient id="moonShade" cx="70%" cy="70%" r="55%">
+            <stop offset="0%" stop-color="rgba(80,40,120,0)" />
+            <stop offset="100%" stop-color="rgba(60,20,90,0.35)" />
+          </radialGradient>
+          <linearGradient id="orbitGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#e879f9" stop-opacity="0.7"/>
+            <stop offset="50%" stop-color="#0E7490" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#a855f7" stop-opacity="0.2"/>
+          </linearGradient>
+          <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- outer orbital rings -->
+        <circle class="orbit-slow" cx="80" cy="80" r="72" stroke="url(#orbitGrad)" stroke-width="0.8" stroke-dasharray="3 8" opacity="0.55"/>
+        <circle class="orbit" cx="80" cy="80" r="62" stroke="#c084fc" stroke-width="0.6" stroke-dasharray="2 10" opacity="0.4"/>
+        <circle class="pulse-ring" cx="80" cy="80" r="52" stroke="#0E7490" stroke-width="1.2" opacity="0.35"/>
+        <!-- stars -->
+        <circle cx="28" cy="36" r="1.2" fill="#e9d5ff" opacity="0.9"/>
+        <circle cx="130" cy="42" r="1" fill="#67E8F9" opacity="0.85"/>
+        <circle cx="40" cy="120" r="0.9" fill="#f0abfc" opacity="0.75"/>
+        <circle cx="122" cy="118" r="1.1" fill="#0891B2" opacity="0.8"/>
+        <circle cx="18" cy="78" r="0.7" fill="#ddd6fe" opacity="0.7"/>
+        <circle cx="142" cy="88" r="0.8" fill="#c4b5fd" opacity="0.75"/>
+        <!-- moon body -->
+        <circle cx="80" cy="80" r="34" fill="url(#moonFill)" filter="url(#softGlow)"/>
+        <circle cx="80" cy="80" r="34" fill="url(#moonShade)"/>
+        <!-- soft craters -->
+        <circle cx="68" cy="72" r="5.5" fill="rgba(120,70,160,0.18)"/>
+        <circle cx="92" cy="88" r="4" fill="rgba(100,60,140,0.16)"/>
+        <circle cx="78" cy="96" r="2.8" fill="rgba(90,50,130,0.14)"/>
+        <circle cx="96" cy="68" r="3.2" fill="rgba(110,65,150,0.15)"/>
+        <!-- highlight crescent edge -->
+        <path d="M62 58 A28 28 0 0 1 108 70" stroke="rgba(255,255,255,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- floating particle on orbit -->
+        <g class="orbit">
+          <circle cx="80" cy="8" r="2.2" fill="#0E7490" opacity="0.9"/>
+          <circle cx="80" cy="8" r="4" fill="#0E7490" opacity="0.2"/>
+        </g>
+        <g class="orbit-slow">
+          <circle cx="80" cy="152" r="1.8" fill="#e879f9" opacity="0.85"/>
+        </g>
+      </svg>
+    </div>
+
+    <section>
+      <p class="section-label">Mode</p>
+      <div class="modes" role="radiogroup" aria-label="Relaxation mode">
+        <button type="button" class="mode selected" data-mode="binaural" role="radio" aria-checked="true"
+          style="border:2px solid #0E7490;background-color:#0C4A5C;border-radius:1.1rem;padding:0.85rem;color:#0891B2;text-align:left;">
+          <div class="mode-illust" aria-hidden="true">
+            <svg viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="waveTeal" x1="0" y1="0" x2="200" y2="0">
+                  <stop offset="0%" stop-color="#0E7490" stop-opacity="0"/>
+                  <stop offset="25%" stop-color="#0891B2" stop-opacity="1"/>
+                  <stop offset="75%" stop-color="#67E8F9" stop-opacity="1"/>
+                  <stop offset="100%" stop-color="#0E7490" stop-opacity="0"/>
+                </linearGradient>
+                <radialGradient id="coreTeal" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#A5F3FC"/>
+                  <stop offset="100%" stop-color="#0E7490"/>
+                </radialGradient>
+              </defs>
+              <!-- interference field -->
+              <path class="wave-a" d="M0 40 Q20 12 40 40 T80 40 T120 40 T160 40 T200 40" stroke="url(#waveTeal)" stroke-width="2.2" fill="none"/>
+              <path class="wave-b" d="M0 40 Q20 68 40 40 T80 40 T120 40 T160 40 T200 40" stroke="#0E7490" stroke-width="1.6" opacity="0.65" fill="none"/>
+              <path d="M0 40 Q20 28 40 40 T80 40 T120 40 T160 40 T200 40" stroke="#67E8F9" stroke-width="1" opacity="0.35" fill="none"/>
+              <!-- dual hemispheres -->
+              <circle cx="100" cy="40" r="14" fill="url(#coreTeal)" opacity="0.95"/>
+              <circle cx="100" cy="40" r="14" stroke="#0891B2" stroke-width="1.2" fill="none" opacity="0.6"/>
+              <circle cx="100" cy="40" r="22" stroke="#0E7490" stroke-width="1" opacity="0.3" fill="none"/>
+              <circle cx="100" cy="40" r="30" stroke="#67E8F9" stroke-width="0.7" opacity="0.18" fill="none"/>
+              <line x1="100" y1="26" x2="100" y2="54" stroke="rgba(7,4,15,0.35)" stroke-width="1"/>
+              <!-- L / R nodes -->
+              <circle cx="24" cy="40" r="5" fill="#0891B2" opacity="0.85"/>
+              <circle cx="176" cy="40" r="5" fill="#0891B2" opacity="0.85"/>
+              <circle cx="24" cy="40" r="9" stroke="#67E8F9" stroke-width="1" opacity="0.35" fill="none"/>
+              <circle cx="176" cy="40" r="9" stroke="#67E8F9" stroke-width="1" opacity="0.35" fill="none"/>
+              <text x="24" y="22" text-anchor="middle" fill="#67E8F9" font-size="9" font-family="system-ui" font-weight="600">L</text>
+              <text x="176" y="22" text-anchor="middle" fill="#67E8F9" font-size="9" font-family="system-ui" font-weight="600">R</text>
+            </svg>
+          </div>
+          <div class="mode-top">
+            <span class="live-pill"><span class="live-dot"></span>Live</span>
+          </div>
+          <div>
+            <p class="mode-name" style="color:#0891B2;font-weight:700;margin:0.15rem 0 0.15rem;">Binaural Beats</p>
+            <p class="mode-tag" style="color:#67E8F9;margin:0;font-size:0.72rem;">Stereo frequency entrainment</p>
+          </div>
+        </button>
+        <button type="button" class="mode" data-mode="bowls" role="radio" aria-checked="false"
+          style="border:2px solid #c084fc;background-color:#2a1545;border-radius:1.1rem;padding:0.85rem;color:#e9d5ff;text-align:left;">
+          <div class="mode-illust" aria-hidden="true">
+            <svg viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bowlMetal" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#f5d0fe"/>
+                  <stop offset="40%" stop-color="#c084fc"/>
+                  <stop offset="100%" stop-color="#6d28d9"/>
+                </linearGradient>
+                <linearGradient id="bowlShine" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="rgba(255,255,255,0)"/>
+                  <stop offset="45%" stop-color="rgba(255,255,255,0.45)"/>
+                  <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                </linearGradient>
+                <radialGradient id="bowlGlow" cx="50%" cy="40%" r="50%">
+                  <stop offset="0%" stop-color="rgba(232,121,249,0.35)"/>
+                  <stop offset="100%" stop-color="rgba(232,121,249,0)"/>
+                </radialGradient>
+              </defs>
+              <ellipse cx="100" cy="48" rx="70" ry="16" fill="url(#bowlGlow)"/>
+              <!-- expanding resonance -->
+              <ellipse class="res-ring" cx="100" cy="50" rx="50" ry="9" stroke="#e9d5ff" stroke-width="1" opacity="0.4" fill="none"/>
+              <ellipse class="res-ring" cx="100" cy="50" rx="64" ry="12" stroke="#c084fc" stroke-width="0.8" opacity="0.3" fill="none" style="animation-delay:1.1s"/>
+              <ellipse class="res-ring" cx="100" cy="50" rx="78" ry="15" stroke="#a855f7" stroke-width="0.6" opacity="0.2" fill="none" style="animation-delay:2.2s"/>
+              <!-- bowl -->
+              <path d="M52 30 Q52 56 100 62 Q148 56 148 30" fill="url(#bowlMetal)"/>
+              <path d="M52 30 Q100 40 148 30" stroke="#fce7f3" stroke-width="1.8" fill="none" opacity="0.85"/>
+              <path d="M60 34 Q100 44 140 34" stroke="url(#bowlShine)" stroke-width="2.5" fill="none"/>
+              <ellipse cx="100" cy="30" rx="48" ry="6" fill="rgba(255,255,255,0.08)"/>
+              <!-- mallet -->
+              <line x1="155" y1="10" x2="132" y2="32" stroke="#e9d5ff" stroke-width="2.2" stroke-linecap="round" opacity="0.8"/>
+              <circle cx="155" cy="10" r="5" fill="#f5d0fe"/>
+              <circle cx="155" cy="10" r="5" stroke="#c084fc" stroke-width="1" fill="none"/>
+              <!-- rising tone arcs -->
+              <path d="M100 22 Q112 8 124 14" stroke="#f0abfc" stroke-width="1.2" fill="none" opacity="0.55"/>
+              <path d="M100 20 Q118 0 136 10" stroke="#c084fc" stroke-width="1" fill="none" opacity="0.35"/>
+            </svg>
+          </div>
+          <div class="mode-top">
+            <span class="live-pill"><span class="live-dot"></span>Live</span>
+          </div>
+          <div>
+            <p class="mode-name" style="color:#e9d5ff;font-weight:700;margin:0.15rem 0 0.15rem;">Singing Bowls</p>
+            <p class="mode-tag" style="color:#e9d5ff;margin:0;font-size:0.72rem;">Resonant metallic strikes</p>
+          </div>
+        </button>
+        
+
+      </div>
+    </section>
+
+    <section class="panel" id="detailPanel">
+      <div class="panel-art" aria-hidden="true">
+        <svg viewBox="0 0 320 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="panelAurora" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#a855f7" stop-opacity="0"/>
+              <stop offset="25%" stop-color="#c084fc" stop-opacity="0.7"/>
+              <stop offset="50%" stop-color="#0E7490" stop-opacity="0.8"/>
+              <stop offset="75%" stop-color="#e879f9" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#a855f7" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M0 30 Q40 10 80 28 T160 28 T240 28 T320 30" stroke="url(#panelAurora)" stroke-width="2" fill="none"/>
+          <path d="M0 34 Q40 46 80 34 T160 34 T240 34 T320 34" stroke="#0E7490" stroke-width="1" opacity="0.35" fill="none"/>
+          <circle cx="80" cy="28" r="2.5" fill="#c084fc" opacity="0.8"/>
+          <circle cx="160" cy="26" r="3" fill="#0891B2" opacity="0.85"/>
+          <circle cx="240" cy="28" r="2.5" fill="#e879f9" opacity="0.8"/>
+          <circle cx="40" cy="18" r="1" fill="#e9d5ff" opacity="0.6"/>
+          <circle cx="200" cy="14" r="1.2" fill="#67E8F9" opacity="0.55"/>
+          <circle cx="280" cy="20" r="1" fill="#f0abfc" opacity="0.55"/>
+        </svg>
+      </div>
+      <p class="panel-desc" id="modeDesc">
+        Two pure tones — one per ear — create a perceived beat. Headphones required.
+      </p>
+      <p class="panel-note" id="modeNote">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 14v-4a2 2 0 0 1 2-2h1l3-3v14l-3-3H5a2 2 0 0 1-2-2z"/><path d="M16 8.5a5 5 0 0 1 0 7"/><path d="M18.5 6a8 8 0 0 1 0 12"/></svg>
+        <span>Use stereo headphones</span>
+      </p>
+
+      <p class="section-label" id="presetLabel">Beat band</p>
+      <div class="presets" id="presets"></div>
+
+      <p class="section-label">Frequency range</p>
+      <div class="range-block" id="ranges"></div>
+    </section>
+
+    <section class="player" id="playerSection" style="border:2px solid #0E7490;background-color:#0C4A5C;border-radius:1.4rem;padding:1.4rem 1.15rem;">
+      <div class="play-stage">
+        <svg class="orbits" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="spin" cx="60" cy="60" r="52" stroke="#c084fc" stroke-width="1" stroke-dasharray="4 10" opacity="0.45"/>
+          <circle class="spin-rev" cx="60" cy="60" r="44" stroke="#0E7490" stroke-width="1.2" stroke-dasharray="2 8" opacity="0.4"/>
+          <circle class="breathe-ring" cx="60" cy="60" r="36" stroke="#e879f9" stroke-width="1.5" opacity="0.3"/>
+          <circle cx="60" cy="8" r="2.5" fill="#0E7490" class="spin" opacity="0.9"/>
+          <circle cx="60" cy="112" r="2" fill="#e879f9" class="spin-rev" opacity="0.85"/>
+        </svg>
+        <button type="button" class="play-btn" id="playBtn" aria-label="Start session"
+          style="width:4.5rem;height:4.5rem;border-radius:50%;background-color:#a855f7;background-image:linear-gradient(135deg,#e879f9,#a855f7,#0E7490);color:#fff;border:none;box-shadow:0 0 0 4px rgba(168,85,247,0.4),0 0 28px rgba(232,121,249,0.5);display:grid;place-items:center;position:relative;z-index:1;">
+          <svg class="icon-play" viewBox="0 0 24 24" fill="#ffffff" width="27" height="27"><path d="M8 5.14v14l11-7-11-7z"/></svg>
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="#ffffff" width="27" height="27"><path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z"/></svg>
+        </button>
+      </div>
+      <div style="text-align:center">
+        <div class="timer" id="timer" style="color:#c084fc;font-size:2.15rem;font-weight:600;">15:00</div>
+        <p class="timer-note" id="timerNote" style="color:#67E8F9;">Use stereo headphones</p>
+      </div>
+      <div>
+        <p class="section-label" style="text-align:center">Session length</p>
+        <div class="session-row" id="sessions"></div>
+      </div>
+      <div class="vol-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 14v-4a2 2 0 0 1 2-2h1l3-3v14l-3-3H5a2 2 0 0 1-2-2z"/><path d="M16 8.5a5 5 0 0 1 0 7"/></svg>
+        <input type="range" id="volume" min="0" max="100" value="70" aria-label="Volume" />
+        <span class="vol-val" id="volVal">70</span>
+      </div>
+    </section>
+
+    <p class="footer">
+      Lunara 1.0 · Buy once, own forever · Works offline · No accounts · No tracking<br />
+      Two exclusive modes — binaural beats or singing bowls. Never mixed.<br />
+      Add to Home Screen from Chrome for a full-screen app on your phone.
+    </p>
+  </div>
+
+  <script>
+    // ——— Mode data ———
+    const MODES = {
+      binaural: {
+        name: "Binaural Beats",
+        desc: "Two pure tones — one per ear — create a perceived beat. Headphones required.",
+        note: "Use stereo headphones",
+        presetLabel: "Beat band",
+        presets: [
+          { id: "delta", label: "Delta", blurb: "Deep sleep · 2 Hz", beat: 2, carrier: 80 },
+          { id: "theta", label: "Theta", blurb: "Meditation · 6 Hz", beat: 6, carrier: 140 },
+          { id: "alpha", label: "Alpha", blurb: "Calm focus · 10 Hz", beat: 10, carrier: 200 },
+          { id: "beta", label: "Beta", blurb: "Alert ease · 18 Hz", beat: 18, carrier: 280 },
+          { id: "gamma", label: "Gamma", blurb: "High alert · 40 Hz", beat: 40, carrier: 360 },
+        ],
+        ranges: [
+          { key: "carrier", label: "Carrier", min: 40, max: 900, step: 1, unit: "Hz" },
+          { key: "beat", label: "Beat", min: 0.5, max: 40, step: 0.5, unit: "Hz" },
+        ],
+      },
+      bowls: {
+        name: "Singing Bowls",
+        desc: "Layered bowl harmonics with long decay. Soft, spaced strikes fill the space.",
+        note: "Speakers or headphones",
+        presetLabel: "Bowl set",
+        presets: [
+          { id: "deep", label: "Deep", blurb: "Sub-bass · long ring", root: 72, interval: 16 },
+          { id: "earth", label: "Earth", blurb: "Grounding · slow", root: 136, interval: 14 },
+          { id: "tibetan", label: "Tibetan", blurb: "Warm bronze · sustain", root: 220, interval: 12 },
+          { id: "crystal", label: "Crystal", blurb: "Bright · shimmer", root: 432, interval: 10 },
+        ],
+        ranges: [
+          { key: "root", label: "Root pitch", min: 40, max: 1200, step: 1, unit: "Hz" },
+        ],
+      },
+      };
+
+    const SESSIONS = [5, 10, 15, 20, 30, 45, 60, 90, 120];
+
+    // ——— State ———
+    const state = {
+      mode: "binaural",
+      playing: false,
+      volume: 0.7,
+      sessionMin: 15,
+      remaining: null,
+      carrier: 140,
+      beat: 6,
+      root: 256,
+      preset: "theta",
+      timerId: null,
+    };
+
+    // ——— Exclusive audio engine ———
+    class Engine {
+      constructor() {
+        this.ctx = null;
+        this.master = null;
+        this.fade = null;
+        this.cleanup = null;
+        this.active = null;
+      }
+      async ensure() {
+        if (!this.ctx) {
+          this.ctx = new AudioContext();
+          this.master = this.ctx.createGain();
+          this.fade = this.ctx.createGain();
+          this.fade.gain.value = 1;
+          this.master.gain.value = Math.pow(state.volume, 0.85) * 1.5;
+          this.fade.connect(this.master);
+          this.master.connect(this.ctx.destination);
+        }
+        if (this.ctx.state === "suspended") await this.ctx.resume();
+        return this.ctx;
+      }
+      setVolume(v) {
+        if (this.master && this.ctx) {
+          this.master.gain.setTargetAtTime(Math.pow(v, 0.85) * 1.5, this.ctx.currentTime, 0.05);
+        }
+      }
+      async stop(immediate = false) {
+        if (!this.cleanup && !this.active) return;
+        if (this.ctx && this.fade && !immediate) {
+          const t = this.ctx.currentTime;
+          this.fade.gain.cancelScheduledValues(t);
+          this.fade.gain.setValueAtTime(this.fade.gain.value, t);
+          this.fade.gain.linearRampToValueAtTime(0.0001, t + 0.18);
+          await new Promise((r) => setTimeout(r, 200));
+        }
+        if (this.cleanup) { this.cleanup(); this.cleanup = null; }
+        this.active = null;
+        if (this.fade && this.ctx) {
+          this.fade.gain.cancelScheduledValues(this.ctx.currentTime);
+          this.fade.gain.setValueAtTime(1, this.ctx.currentTime);
+        }
+      }
+      async playBinaural(carrier, beat) {
+        await this.stop(this.active === "binaural");
+        const ctx = await this.ensure();
+        this.fade.gain.setValueAtTime(0.0001, ctx.currentTime);
+        this.fade.gain.linearRampToValueAtTime(1, ctx.currentTime + 0.25);
+        const merger = ctx.createChannelMerger(2);
+        const L = ctx.createOscillator(), R = ctx.createOscillator();
+        const gL = ctx.createGain(), gR = ctx.createGain();
+        L.type = R.type = "sine";
+        L.frequency.value = carrier;
+        R.frequency.value = carrier + beat;
+        gL.gain.value = gR.gain.value = 0.7;
+        L.connect(gL); R.connect(gR);
+        gL.connect(merger, 0, 0); gR.connect(merger, 0, 1);
+        merger.connect(this.fade);
+        L.start(); R.start();
+        this.cleanup = () => { try { L.stop(); R.stop(); } catch(_){} L.disconnect(); R.disconnect(); gL.disconnect(); gR.disconnect(); merger.disconnect(); };
+        this.active = "binaural";
+      }
+      async playBowls(root, interval) {
+        // Authentic singing-bowl tone: soft mallet, long pure sustain, inharmonic partials — not a clang
+        await this.stop(this.active === "bowls");
+        const ctx = await this.ensure();
+        const t0 = ctx.currentTime;
+        this.fade.gain.setValueAtTime(0.0001, t0);
+        this.fade.gain.linearRampToValueAtTime(1, t0 + 0.4);
+
+        const master = ctx.createGain();
+        master.gain.value = 0.7;
+        master.connect(this.fade);
+
+        // Soft room around the bowl
+        const dry = ctx.createGain(); dry.gain.value = 0.85;
+        const wet = ctx.createGain(); wet.gain.value = 0.32;
+        const delay = ctx.createDelay(2.0); delay.delayTime.value = 0.22;
+        const fb = ctx.createGain(); fb.gain.value = 0.35;
+        const dlp = ctx.createBiquadFilter();
+        dlp.type = "lowpass";
+        dlp.frequency.value = 4500;
+        dry.connect(master);
+        delay.connect(fb); fb.connect(delay);
+        delay.connect(dlp); dlp.connect(wet); wet.connect(master);
+
+        // Measured-style singing bowl partial ratios (inharmonic, not clangy metal)
+        // Fundamental + singing overtones that bloom and shimmer
+        const partials = [
+          { ratio: 1.0,   amp: 1.0,  decay: 18 },
+          { ratio: 2.76,  amp: 0.55, decay: 14 },
+          { ratio: 5.40,  amp: 0.32, decay: 11 },
+          { ratio: 8.93,  amp: 0.18, decay: 8 },
+          { ratio: 12.22, amp: 0.1,  decay: 6 },
+          { ratio: 15.5,  amp: 0.05, decay: 4.5 },
+        ];
+
+        const oscs = [];
+        let cancelled = false;
+        let tid = null;
+
+        const strike = (when, pitchMul = 1) => {
+          if (cancelled) return;
+
+          // Soft wooden-mallet tick (very quiet, filtered noise — not a metal clang)
+          const malletDur = 0.04;
+          const noiseBuf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * malletDur), ctx.sampleRate);
+          const data = noiseBuf.getChannelData(0);
+          for (let i = 0; i < data.length; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (data.length * 0.15));
+          }
+          const noise = ctx.createBufferSource();
+          noise.buffer = noiseBuf;
+          const nFilter = ctx.createBiquadFilter();
+          nFilter.type = "bandpass";
+          nFilter.frequency.value = root * pitchMul * 2.2;
+          nFilter.Q.value = 1.2;
+          const nGain = ctx.createGain();
+          nGain.gain.setValueAtTime(0.12, when);
+          nGain.gain.exponentialRampToValueAtTime(0.0001, when + 0.08);
+          noise.connect(nFilter); nFilter.connect(nGain); nGain.connect(dry);
+          noise.start(when); noise.stop(when + malletDur + 0.05);
+
+          // Resonant bowl body — pure sines, soft attack, long singing sustain
+          partials.forEach(({ ratio, amp, decay }, i) => {
+            // Tiny detune between partials for natural shimmer / beating
+            const det = 1 + (Math.random() * 0.003 - 0.0015);
+            const f = root * ratio * pitchMul * det;
+            if (f < 25 || f > 12000) return;
+
+            const o = ctx.createOscillator();
+            const g = ctx.createGain();
+            o.type = "sine"; // pure tone — never triangle/saw
+            o.frequency.value = f;
+
+            // Soft attack so the tone blooms instead of clanging
+            const attack = 0.08 + i * 0.02;
+            const peak = amp * 0.55;
+            g.gain.setValueAtTime(0.0001, when);
+            g.gain.exponentialRampToValueAtTime(peak, when + attack);
+            g.gain.exponentialRampToValueAtTime(peak * 0.55, when + attack + decay * 0.35);
+            g.gain.exponentialRampToValueAtTime(0.0001, when + decay);
+
+            o.connect(g);
+            g.connect(dry);
+            g.connect(delay);
+
+            o.start(when);
+            o.stop(when + decay + 0.5);
+            oscs.push(o);
+          });
+        };
+
+        // First strike — fundamental bowl, then a gentle higher partial strike later
+        strike(t0 + 0.05, 1);
+        // Occasional soft second bowl (octave-ish feel) so the space keeps singing
+        const loop = () => {
+          if (cancelled) return;
+          // Mostly the main pitch; occasionally a soft fifth / octave for variety
+          const choices = [1, 1, 1, 1.5, 0.75];
+          const mul = choices[Math.floor(Math.random() * choices.length)];
+          strike(ctx.currentTime + 0.02, mul);
+          const gap = (interval || 12) * 1000 * (0.85 + Math.random() * 0.35);
+          tid = setTimeout(loop, gap);
+        };
+        tid = setTimeout(loop, (interval || 12) * 1000);
+
+        this.cleanup = () => {
+          cancelled = true;
+          if (tid) clearTimeout(tid);
+          oscs.forEach((o) => { try { o.stop(); o.disconnect(); } catch (_) {} });
+          try {
+            dry.disconnect(); wet.disconnect(); delay.disconnect();
+            fb.disconnect(); dlp.disconnect(); master.disconnect();
+          } catch (_) {}
+        };
+        this.active = "bowls";
+      }
+    }
+    const engine = new Engine();
+
+    // ——— UI helpers ———
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => [...document.querySelectorAll(sel)];
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${m}:${String(s).padStart(2, "0")}`;
+    }
+
+    function renderPresets() {
+      const m = MODES[state.mode];
+      $("#presetLabel").textContent = m.presetLabel;
+      const el = $("#presets");
+      el.innerHTML = "";
+      m.presets.forEach((p) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "preset" + (state.preset === p.id ? " active" : "");
+        b.innerHTML = `<span class="preset-label">${p.label}</span><span class="preset-blurb">${p.blurb}</span>`;
+        b.onclick = () => {
+          state.preset = p.id;
+          if (state.mode === "binaural") { state.carrier = p.carrier; state.beat = p.beat; }
+          if (state.mode === "bowls") { state.root = p.root; state.interval = p.interval; }
+          renderPresets();
+          renderRanges();
+          if (state.playing) startAudio();
+        };
+        el.appendChild(b);
+      });
+    }
+
+    function renderRanges() {
+      const m = MODES[state.mode];
+      const el = $("#ranges");
+      el.innerHTML = "";
+      m.ranges.forEach((r) => {
+        const val = state[r.key];
+        const row = document.createElement("div");
+        row.className = "range-row";
+        row.innerHTML = `
+          <div class="range-head">
+            <span class="range-label">${r.label}</span>
+            <span class="range-val">${val >= 100 ? Math.round(val) : val} ${r.unit}</span>
+          </div>
+          <input type="range" min="${r.min}" max="${r.max}" step="${r.step}" value="${val}" data-key="${r.key}" />
+          <div class="range-ends"><span>${r.min} ${r.unit}</span><span>${r.max} ${r.unit}</span></div>
+        `;
+        const input = row.querySelector("input");
+        let debounce;
+        input.oninput = () => {
+          state[r.key] = Number(input.value);
+          row.querySelector(".range-val").textContent = `${state[r.key] >= 100 ? Math.round(state[r.key]) : state[r.key]} ${r.unit}`;
+          clearTimeout(debounce);
+          debounce = setTimeout(() => { if (state.playing) startAudio(); }, 180);
+        };
+        el.appendChild(row);
+      });
+    }
+
+    function renderSessions() {
+      const el = $("#sessions");
+      el.innerHTML = "";
+      SESSIONS.forEach((m) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "session-btn" + (state.sessionMin === m ? " active" : "");
+        b.textContent = m + "m";
+        b.onclick = () => {
+          state.sessionMin = m;
+          if (state.playing) state.remaining = m * 60;
+          renderSessions();
+          updateTimer();
+        };
+        el.appendChild(b);
+      });
+    }
+
+    function updateTimer() {
+      const sec = state.remaining != null ? state.remaining : state.sessionMin * 60;
+      $("#timer").textContent = formatTime(sec);
+    }
+
+    function updateModeUI() {
+      $$(".mode").forEach((btn) => {
+        const on = btn.dataset.mode === state.mode;
+        btn.classList.toggle("selected", on);
+        btn.classList.toggle("live", state.playing && on);
+        btn.setAttribute("aria-checked", on ? "true" : "false");
+      });
+      const m = MODES[state.mode];
+      $("#modeDesc").textContent = m.desc;
+      $("#modeNote").querySelector("span").textContent = m.note;
+      $("#timerNote").textContent = m.note;
+      $("#detailPanel").classList.toggle("mode-binaural-active", state.mode === "binaural");
+      const wrap = $("#moonWrap");
+      if (wrap) wrap.classList.toggle("playing", state.playing);
+      $("#moonGlow").classList.toggle("playing", state.playing);
+      const player = $("#playerSection");
+      if (player) player.classList.toggle("playing", state.playing);
+      $("#playBtn").classList.toggle("playing", state.playing);
+      $("#playBtn").setAttribute("aria-label", state.playing ? "Pause session" : "Start session");
+    }
+
+    async function startAudio() {
+      if (state.mode === "binaural") {
+        await engine.playBinaural(state.carrier, state.beat);
+      } else {
+        const p = MODES.bowls.presets.find((x) => x.id === state.preset) || MODES.bowls.presets[2];
+        await engine.playBowls(state.root, p.interval || 12);
+      }
+    }
+
+    function clearTimer() {
+      if (state.timerId) clearInterval(state.timerId);
+      state.timerId = null;
+    }
+
+    async function stopAll() {
+      clearTimer();
+      await engine.stop();
+      state.playing = false;
+      state.remaining = null;
+      updateModeUI();
+      updateTimer();
+    }
+
+    async function togglePlay() {
+      if (state.playing) {
+        await stopAll();
+        return;
+      }
+      await startAudio();
+      state.playing = true;
+      state.remaining = state.sessionMin * 60;
+      clearTimer();
+      state.timerId = setInterval(() => {
+        if (state.remaining == null) return;
+        if (state.remaining <= 1) { stopAll(); return; }
+        state.remaining -= 1;
+        updateTimer();
+      }, 1000);
+      updateModeUI();
+      updateTimer();
+    }
+
+    // ——— Wire up ———
+    $$(".mode").forEach((btn) => {
+      btn.onclick = async () => {
+        if (btn.dataset.mode === state.mode) return;
+        await stopAll();
+        state.mode = btn.dataset.mode;
+        const first = MODES[state.mode].presets[0];
+        state.preset = first.id;
+        if (state.mode === "binaural") { state.carrier = first.carrier; state.beat = first.beat; }
+        if (state.mode === "bowls") { state.root = first.root; }
+        // default mid presets
+        if (state.mode === "binaural") { state.preset = "theta"; state.carrier = 140; state.beat = 6; }
+        if (state.mode === "bowls") { state.preset = "tibetan"; state.root = 220; }
+        updateModeUI();
+        renderPresets();
+        renderRanges();
+      };
+    });
+
+    $("#playBtn").onclick = () => togglePlay();
+    $("#volume").oninput = (e) => {
+      state.volume = Number(e.target.value) / 100;
+      $("#volVal").textContent = e.target.value;
+      engine.setVolume(state.volume);
+    };
+
+    // init defaults
+    state.interval = 10;
+    updateModeUI();
+    renderPresets();
+    renderRanges();
+    renderSessions();
+    updateTimer();
+  </script>
+</body>
+</html>
