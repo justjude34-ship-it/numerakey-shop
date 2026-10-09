@@ -99,7 +99,7 @@ const AP2 = [
   inside:["The moves named, one at a time","What each one is actually for","A line to hold onto after each","Grey rock, low contact and no contact","No forgiveness agenda, nothing to complete","One file, private to your device"]
 },
 {
-  slug:"goodwin-readings", name:"Meridian", cat:"divine", price:89, status:"live", ready:true,
+  slug:"goodwin-readings", name:"Keystone", cat:"divine", price:89, status:"live", ready:true,
   cover:"covers/goodwin-readings.jpg",
   desc:"The complete Goodwin reading \u2014 the Core, the karmic debts, the Pinnacles, and the year you are standing in.",
   tag:"The whole method, not the headline.",
