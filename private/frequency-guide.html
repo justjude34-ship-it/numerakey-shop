@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="Interactive Solfeggio and brainwave guide. Choose the right frequency for what you need right now.">
+<title>Frequency Guide</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='96' fill='%23000'/%3E%3Cpath d='M56 256 C96 160 136 160 176 256 S256 352 296 256 S376 160 416 256 S496 352 536 256' fill='none' stroke='%23FFD54A' stroke-width='16' stroke-linecap='round'/%3E%3Ccircle cx='256' cy='256' r='18' fill='%23FFD700'/%3E%3C/svg%3E">
+<style>
+:root {
+  --bg:#000; --card:#0d0d0d; --border:#1f1f1f; --text:#f2f2f2; --muted:#9a9a9a;
+  --gold:#ffd54a; --amber:#ffb300;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; min-height:100%; }
+body { padding:0 0 96px; }
+.app { max-width:920px; margin:0 auto; padding:0 16px 40px; }
+.hero {
+  margin:0 -16px 8px; border-radius:0 0 20px 20px; overflow:hidden;
+  background:#000; border-bottom:1px solid #1a1408;
+}
+.hero img { display:block; width:100%; height:auto; max-height:280px; object-fit:cover; }
+@media (min-width:700px) {
+  .hero { margin:16px 0 12px; border-radius:20px; border:1px solid #1a1408; }
+  .hero img { max-height:320px; }
+}
+.header { padding:12px 0 8px; text-align:center; }
+.logo {
+  font-family:Georgia,serif; font-size:clamp(1.6rem,5vw,2.2rem); font-weight:700;
+  letter-spacing:.08em; background:linear-gradient(90deg,#ffe082,#ffb300,#ff8f00);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.tagline { color:var(--muted); margin-top:6px; font-size:.95rem; }
+.global-controls {
+  display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap;
+  margin-top:14px; padding:10px 14px; background:var(--card); border:1px solid var(--border); border-radius:14px;
+}
+.global-controls label { display:flex; align-items:center; gap:10px; color:var(--muted); font-size:.9rem; }
+#volume { width:min(220px,50vw); accent-color:var(--gold); }
+.btn-stop, .np-stop {
+  background:#1a1a1a; color:#fff; border:1px solid #333; border-radius:999px;
+  padding:8px 18px; font-weight:600; cursor:pointer;
+}
+.btn-stop:hover, .np-stop:hover { border-color:var(--gold); color:var(--gold); }
+.hint {
+  text-align:center; color:var(--muted); font-size:.88rem; margin:14px 0 6px;
+  padding:10px 14px; background:#0a0a0a; border:1px solid #1a1a1a; border-radius:12px;
+}
+.hint strong { color:var(--gold); font-weight:600; }
+.section-title { font-size:1.05rem; margin:22px 0 12px; letter-spacing:.02em; }
+.needs-chips, .filters { display:flex; flex-wrap:wrap; gap:8px; }
+.need-chip, .filter-btn {
+  background:#121212; color:#ddd; border:1px solid #2a2a2a; border-radius:999px;
+  padding:9px 14px; font-size:.88rem; cursor:pointer; transition:.15s ease;
+}
+.need-chip:hover, .filter-btn:hover { border-color:#555; }
+.need-chip.active, .filter-btn.active {
+  background:linear-gradient(135deg,#3a2a08,#1a1408); border-color:var(--gold); color:var(--gold);
+}
+.recommendation {
+  margin-top:12px; padding:14px 16px; border-radius:14px; background:#101008;
+  border:1px solid #2a2208; color:#e8d9a8; font-size:.95rem; line-height:1.45;
+}
+.recommendation.hidden { display:none; }
+.recommendation .rec-hz { color:var(--gold); font-weight:700; }
+.filters { margin:18px 0 8px; }
+.cards-grid {
+  display:grid; grid-template-columns:1fr; gap:14px; margin-top:10px;
+}
+@media (min-width:640px) { .cards-grid { grid-template-columns:1fr 1fr; } }
+.card {
+  background:var(--card); border:1px solid var(--border); border-radius:18px;
+  padding:16px 16px 14px; display:flex; flex-direction:column; gap:10px;
+  transition:border-color .15s, box-shadow .15s;
+}
+.card.playing { border-color:var(--accent, var(--gold)); box-shadow:0 0 0 1px var(--accent, var(--gold)), 0 0 24px color-mix(in srgb, var(--accent, var(--gold)) 25%, transparent); }
+.card.hidden { display:none; }
+.hz {
+  font-family:Georgia,serif; font-size:1.85rem; font-weight:700; letter-spacing:.04em;
+  color:var(--accent, var(--gold));
+}
+.card-title { font-size:1.05rem; font-weight:650; }
+.card-use { color:var(--muted); font-size:.9rem; line-height:1.45; flex:1; }
+.card-meta { display:flex; gap:8px; flex-wrap:wrap; }
+.pill {
+  font-size:.72rem; text-transform:uppercase; letter-spacing:.06em;
+  padding:4px 8px; border-radius:999px; background:#161616; color:#aaa; border:1px solid #2a2a2a;
+}
+.play-btn {
+  margin-top:4px; width:100%; border:none; border-radius:14px; padding:14px 16px;
+  font-size:1.05rem; font-weight:700; cursor:pointer; color:#000;
+  background:linear-gradient(135deg, var(--accent, #ffd54a), color-mix(in srgb, var(--accent, #ffd54a) 55%, #000));
+}
+.play-btn:active { transform:scale(.98); }
+.play-btn.playing { background:#1a1a1a; color:var(--accent, var(--gold)); border:1px solid var(--accent, var(--gold)); }
+.section-block { margin-top:28px; }
+.section-block h2 {
+  font-family:Georgia,serif; font-size:1.25rem; margin-bottom:4px;
+  background:linear-gradient(90deg,#ffe082,#ffb300); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.section-block p.lead { color:var(--muted); font-size:.9rem; margin-bottom:12px; }
+.disclaimer { margin-top:28px; text-align:center; color:#666; font-size:.8rem; line-height:1.4; }
+.now-playing-bar {
+  position:fixed; left:12px; right:12px; bottom:12px; z-index:50;
+  display:flex; align-items:center; gap:12px; padding:12px 14px;
+  background:rgba(10,10,10,.94); border:1px solid #333; border-radius:16px;
+  backdrop-filter:blur(10px); box-shadow:0 10px 40px rgba(0,0,0,.55);
+}
+.now-playing-bar.hidden { display:none; }
+.np-hz { font-family:Georgia,serif; font-weight:700; color:var(--gold); min-width:72px; }
+.np-title { flex:1; font-size:.92rem; color:#ddd; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="hero">
+    <img src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201200%20420%22%20role%3D%22img%22%20aria-label%3D%22Frequency%20Guide%20%E2%80%94%20golden%20sound%20waves%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3CradialGradient%20id%3D%22bgGlow%22%20cx%3D%2250%25%22%20cy%3D%2245%25%22%20r%3D%2255%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%233a2808%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2245%25%22%20stop-color%3D%22%23120c04%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23000%22%2F%3E%0A%20%20%20%20%3C%2FradialGradient%3E%0A%20%20%20%20%3CradialGradient%20id%3D%22orb%22%20cx%3D%2250%25%22%20cy%3D%2250%25%22%20r%3D%2250%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23fff6d0%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2235%25%22%20stop-color%3D%22%23ffd54a%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2270%25%22%20stop-color%3D%22%23c9860a%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%235a3a00%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3C%2FradialGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22waveGold%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ffb300%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2220%25%22%20stop-color%3D%22%23ffd54a%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2250%25%22%20stop-color%3D%22%23ffe082%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2280%25%22%20stop-color%3D%22%23ffb300%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23ffb300%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22waveAmber%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%220%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%23ff8f00%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2250%25%22%20stop-color%3D%22%23ffc107%22%20stop-opacity%3D%220.85%22%2F%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%23ff8f00%22%20stop-opacity%3D%220%22%2F%3E%0A%20%20%20%20%3C%2FlinearGradient%3E%0A%20%20%20%20%3Cfilter%20id%3D%22softGlow%22%20x%3D%22-40%25%22%20y%3D%22-40%25%22%20width%3D%22180%25%22%20height%3D%22180%25%22%3E%0A%20%20%20%20%20%20%3CfeGaussianBlur%20stdDeviation%3D%228%22%20result%3D%22b%22%2F%3E%0A%20%20%20%20%20%20%3CfeMerge%3E%3CfeMergeNode%20in%3D%22b%22%2F%3E%3CfeMergeNode%20in%3D%22SourceGraphic%22%2F%3E%3C%2FfeMerge%3E%0A%20%20%20%20%3C%2Ffilter%3E%0A%20%20%3C%2Fdefs%3E%0A%20%20%3Crect%20width%3D%221200%22%20height%3D%22420%22%20fill%3D%22%23000%22%2F%3E%0A%20%20%3Crect%20width%3D%221200%22%20height%3D%22420%22%20fill%3D%22url%28%23bgGlow%29%22%2F%3E%0A%20%20%3C%21--%20faint%20sacred%20geometry%20--%3E%0A%20%20%3Cg%20opacity%3D%220.18%22%20stroke%3D%22%23c9a227%22%20fill%3D%22none%22%20stroke-width%3D%221.2%22%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22210%22%20r%3D%22150%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22210%22%20r%3D%2295%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22210%22%20r%3D%2255%22%2F%3E%0A%20%20%20%20%3Cpolygon%20points%3D%22600%2C60%20730%2C285%20470%2C285%22%2F%3E%0A%20%20%20%20%3Cpolygon%20points%3D%22600%2C360%20470%2C135%20730%2C135%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3C%21--%20concentric%20ripples%20--%3E%0A%20%20%3Cg%20fill%3D%22none%22%20stroke%3D%22%23ffd54a%22%20opacity%3D%220.35%22%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22210%22%20r%3D%2270%22%20stroke-width%3D%221.5%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22210%22%20r%3D%22110%22%20stroke-width%3D%221.2%22%20opacity%3D%220.7%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22210%22%20r%3D%22155%22%20stroke-width%3D%221%22%20opacity%3D%220.45%22%2F%3E%0A%20%20%20%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22210%22%20r%3D%22205%22%20stroke-width%3D%220.8%22%20opacity%3D%220.25%22%2F%3E%0A%20%20%3C%2Fg%3E%0A%20%20%3C%21--%20sound%20wave%20ribbons%20--%3E%0A%20%20%3Cpath%20d%3D%22M40%20210%20C140%20110%2C240%20110%2C340%20210%20S540%20310%2C640%20210%20S840%20110%2C940%20210%20S1040%20310%2C1160%20210%22%20fill%3D%22none%22%20stroke%3D%22url%28%23waveGold%29%22%20stroke-width%3D%223.5%22%20stroke-linecap%3D%22round%22%20filter%3D%22url%28%23softGlow%29%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M40%20240%20C140%20155%2C240%20155%2C340%20240%20S540%20325%2C640%20240%20S840%20155%2C940%20240%20S1040%20325%2C1160%20240%22%20fill%3D%22none%22%20stroke%3D%22url%28%23waveAmber%29%22%20stroke-width%3D%222.2%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.8%22%2F%3E%0A%20%20%3Cpath%20d%3D%22M40%20180%20C140%2090%2C240%2090%2C340%20180%20S540%20270%2C640%20180%20S840%2090%2C940%20180%20S1040%20270%2C1160%20180%22%20fill%3D%22none%22%20stroke%3D%22%23ffe082%22%20stroke-width%3D%221.6%22%20stroke-linecap%3D%22round%22%20opacity%3D%220.55%22%2F%3E%0A%20%20%3C%21--%20glowing%20orb%20--%3E%0A%20%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22210%22%20r%3D%2248%22%20fill%3D%22url%28%23orb%29%22%20filter%3D%22url%28%23softGlow%29%22%2F%3E%0A%20%20%3Ccircle%20cx%3D%22600%22%20cy%3D%22210%22%20r%3D%2214%22%20fill%3D%22%23fff8e1%22%20opacity%3D%220.95%22%2F%3E%0A%20%20%3C%21--%20Hz%20markers%20--%3E%0A%20%20%3Cg%20fill%3D%22%23c9a227%22%20font-family%3D%22Georgia%2C%20serif%22%20font-size%3D%2213%22%20letter-spacing%3D%222%22%20opacity%3D%220.7%22%3E%0A%20%20%20%20%3Ctext%20x%3D%22180%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%3E174%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22340%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%3E396%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22500%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%3E528%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22660%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%3E639%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22820%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%3E852%3C%2Ftext%3E%0A%20%20%20%20%3Ctext%20x%3D%22980%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%3E963%3C%2Ftext%3E%0A%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E" alt="Golden sound waves and glowing frequency orb on a dark field" width="1200" height="420">
+  </div>
+  <header class="header">
+    <h1 class="logo">Frequency Guide</h1>
+    <p class="tagline">Choose the right Solfeggio frequency</p>
+    <div class="global-controls">
+      <label>Volume <input id="volume" type="range" min="0" max="1" step="0.01" value="0.65" aria-label="Volume"></label>
+      <button id="stopAll" class="btn-stop" type="button">Stop</button>
+    </div>
+  </header>
+  <p class="hint"><strong>Pure tones.</strong> Tap Play for a Solfeggio or brainwave tone. Headphones recommended.</p>
+
+  <section class="recommender" aria-label="Need recommender">
+    <h2 class="section-title">What do you need right now?</h2>
+    <div class="needs-chips" id="needsChips">
+      <button class="need-chip" type="button" data-need="pain">Pain Relief</button>
+      <button class="need-chip" type="button" data-need="grounding">Grounding</button>
+      <button class="need-chip" type="button" data-need="fear">Release Fear / Guilt</button>
+      <button class="need-chip" type="button" data-need="change">Facilitate Change</button>
+      <button class="need-chip" type="button" data-need="love">Love and Transformation</button>
+      <button class="need-chip" type="button" data-need="relationships">Relationships</button>
+      <button class="need-chip" type="button" data-need="clarity">Clarity and Expression</button>
+      <button class="need-chip" type="button" data-need="intuition">Intuition</button>
+      <button class="need-chip" type="button" data-need="spiritual">Spiritual Connection</button>
+      <button class="need-chip" type="button" data-need="sleep">Rest and Sleep</button>
+    </div>
+    <div id="recommendation" class="recommendation hidden" role="status"></div>
+  </section>
+
+  <section class="filters" aria-label="Filters">
+    <button class="filter-btn active" type="button" data-filter="all">All</button>
+    <button class="filter-btn" type="button" data-filter="physical">Physical</button>
+    <button class="filter-btn" type="button" data-filter="emotional">Emotional</button>
+    <button class="filter-btn" type="button" data-filter="heart">Heart</button>
+    <button class="filter-btn" type="button" data-filter="clarity">Clarity</button>
+    <button class="filter-btn" type="button" data-filter="spiritual">Spiritual</button>
+    <button class="filter-btn" type="button" data-filter="brainwave">Brainwave</button>
+  </section>
+
+  <div class="section-block">
+    <h2>Solfeggio frequencies</h2>
+    <p class="lead">Traditional associations for focused listening and learning.</p>
+  </div>
+  <main class="cards-grid" id="cardsGrid"></main>
+
+  <div class="section-block">
+    <h2>Brainwave bands</h2>
+    <p class="lead">Pulsed tones near common EEG bands — educational illustration only.</p>
+  </div>
+  <main class="cards-grid" id="brainGrid"></main>
+
+  <footer class="disclaimer">
+    <p>Traditional sound-healing associations. Educational use only — not medical advice.</p>
+  </footer>
+</div>
+
+<div class="now-playing-bar hidden" id="nowPlayingBar">
+  <div class="np-hz" id="npHz"></div>
+  <div class="np-title" id="npTitle"></div>
+  <button class="np-stop" id="npStop" type="button">Stop</button>
+</div>
+
+<script>
+(function () {
+  const FREQUENCIES = [
+    { hz:174, title:"Pain Relief & Foundation", use:"Often linked with easing physical discomfort and a sense of safety in the body. A calm starting point when you feel raw or overwhelmed.", cats:["physical"], color:"#FF5252", needs:["pain","grounding","sleep"] },
+    { hz:285, title:"Tissue & Cellular Tone", use:"Associated with renewal and supporting the body's natural repair narrative. Gentle focus when you want to feel restored.", cats:["physical"], color:"#FF7043", needs:["pain","grounding"] },
+    { hz:396, title:"Liberation from Fear & Guilt", use:"Root-level release — traditionally used to soften fear, guilt, and the weight of old stories.", cats:["emotional","physical"], color:"#FF2D55", needs:["fear","grounding","change"] },
+    { hz:417, title:"Facilitating Change", use:"Supports clearing stuck patterns and opening space for new beginnings. Useful when you are mid-transition.", cats:["emotional"], color:"#FF9100", needs:["change","fear"] },
+    { hz:432, title:"Natural Harmony", use:"A widely loved tuning said to feel organic and settled. Many listeners use it for calm focus and ease.", cats:["emotional","heart"], color:"#FFC107", needs:["grounding","love","sleep"] },
+    { hz:528, title:"Love & Transformation", use:"The well-known 'miracle' tone — linked with love, DNA repair lore, and heart-centred shift. Warm and golden.", cats:["heart","emotional"], color:"#FFD54A", needs:["love","change","relationships"] },
+    { hz:639, title:"Connection & Relationships", use:"Heart-field harmony for relating — empathy, honesty, and reconnecting with others (and yourself).", cats:["heart","emotional"], color:"#69F0AE", needs:["relationships","love"] },
+    { hz:741, title:"Expression & Clarity", use:"Associated with clearing the voice and mind — expression, problem-solving, and cutting through fog.", cats:["clarity"], color:"#40C4FF", needs:["clarity","intuition"] },
+    { hz:852, title:"Intuition & Inner Sight", use:"Third-eye traditional tone — intuition, insight, and returning to your own knowing.", cats:["clarity","spiritual"], color:"#7C4DFF", needs:["intuition","clarity","spiritual"] },
+    { hz:963, title:"Crown & Oneness", use:"Highest classic Solfeggio — spiritual connection, unity, and quiet awe.", cats:["spiritual"], color:"#E040FB", needs:["spiritual","intuition"] }
+  ];
+
+  const BRAINWAVES = [
+    { hz:2, title:"Delta (~0.5–4 Hz)", use:"Deep sleep and restoration band. Played here as a soft low drone near 2 Hz (felt more than heard on some devices).", cats:["brainwave","physical"], color:"#5C6BC0", needs:["sleep"] },
+    { hz:6, title:"Theta (~4–8 Hz)", use:"Dreamy, meditative, creative twilight. Often linked with imagery and gentle introspection.", cats:["brainwave","spiritual"], color:"#7E57C2", needs:["sleep","intuition","spiritual"] },
+    { hz:10, title:"Alpha (~8–12 Hz)", use:"Relaxed alertness — calm focus, soft presence, the space between busy and asleep.", cats:["brainwave","emotional"], color:"#26A69A", needs:["grounding","clarity","sleep"] },
+    { hz:20, title:"Beta (~12–30 Hz)", use:"Active thinking and outward attention. Use briefly if you want a brighter, more alert tone.", cats:["brainwave","clarity"], color:"#29B6F6", needs:["clarity"] },
+    { hz:40, title:"Gamma (~30–100 Hz)", use:"High-band binding and peak awareness lore. Short sessions only; keep volume comfortable.", cats:["brainwave","spiritual"], color:"#AB47BC", needs:["intuition","spiritual","clarity"] }
+  ];
+
+  const NEED_COPY = {
+    pain: { hz:174, blurb:"For physical ease, start with 174 Hz — foundation and comfort. 285 Hz is a gentle follow-on." },
+    grounding: { hz:396, blurb:"Ground with 396 Hz (release) or 174 Hz (foundation). 432 Hz can feel naturally settling." },
+    fear: { hz:396, blurb:"396 Hz is the classic tone for softening fear and guilt. 417 Hz helps when fear is blocking change." },
+    change: { hz:417, blurb:"417 Hz supports clearing and transition. Pair with 528 Hz when the change is heart-led." },
+    love: { hz:528, blurb:"528 Hz — love and transformation. 639 Hz opens the relational field around it." },
+    relationships: { hz:639, blurb:"639 Hz is the relationships tone. 528 Hz warms the heart behind the connection." },
+    clarity: { hz:741, blurb:"741 Hz for expression and mental clarity. 852 Hz if you need quieter inner sight." },
+    intuition: { hz:852, blurb:"852 Hz for intuition. 963 Hz if you want the wider spiritual frame." },
+    spiritual: { hz:963, blurb:"963 Hz for crown / oneness. 852 Hz sits just beneath as inner sight." },
+    sleep: { hz:174, blurb:"For rest: soft 174 or 432 Hz, or try the Delta / Theta brainwave tones at low volume." }
+  };
+
+  let audioCtx = null;
+  let masterGain = null;
+  let current = null; // { osc, gain, hz, title, btn, card }
+  const volumeEl = document.getElementById('volume');
+  const recEl = document.getElementById('recommendation');
+  const npBar = document.getElementById('nowPlayingBar');
+  const npHz = document.getElementById('npHz');
+  const npTitle = document.getElementById('npTitle');
+
+  function readVolume() {
+    const v = parseFloat(volumeEl.value);
+    return Number.isFinite(v) ? Math.min(1, Math.max(0, v)) : 0.65;
+  }
+
+  // Chrome mobile: AudioContext starts suspended until resume() on a user gesture.
+  // Must await resume before starting oscillators or you get silence.
+  async function ensureCtx() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) throw new Error('Web Audio API not supported');
+    if (!audioCtx || audioCtx.state === 'closed') {
+      audioCtx = new AC();
+      masterGain = audioCtx.createGain();
+      masterGain.gain.value = readVolume();
+      masterGain.connect(audioCtx.destination);
+    }
+    if (audioCtx.state === 'suspended') {
+      await audioCtx.resume();
+    }
+    return audioCtx;
+  }
+
+  function stopTone() {
+    if (!current) {
+      npBar.classList.add('hidden');
+      return;
+    }
+    const prev = current;
+    current = null; // allow Play again immediately; do NOT close AudioContext
+    const { osc, gain, btn, card } = prev;
+    try {
+      const now = audioCtx ? audioCtx.currentTime : 0;
+      if (gain && audioCtx) {
+        try {
+          gain.gain.cancelScheduledValues(now);
+          gain.gain.setValueAtTime(Math.max(gain.gain.value, 0.0001), now);
+          gain.gain.linearRampToValueAtTime(0.0001, now + 0.05);
+        } catch (e) {}
+      }
+      if (osc) {
+        try { osc.stop(now + 0.06); } catch (e) {
+          try { osc.stop(); } catch (e2) {}
+        }
+      }
+      setTimeout(function () {
+        try { if (osc) osc.disconnect(); } catch (e) {}
+        try { if (gain) gain.disconnect(); } catch (e) {}
+      }, 80);
+    } catch (e) {}
+    if (btn) { btn.classList.remove('playing'); btn.textContent = 'Play'; }
+    if (card) card.classList.remove('playing');
+    npBar.classList.add('hidden');
+  }
+
+  async function playTone(item, btn, card) {
+    // Same card playing → toggle stop
+    if (current && current.hz === item.hz && current.btn === btn) {
+      stopTone();
+      return;
+    }
+    stopTone();
+
+    let ctx;
+    try {
+      ctx = await ensureCtx();
+    } catch (e) {
+      console.warn('Audio init failed', e);
+      return;
+    }
+    // Extra resume if still suspended after await (some mobile WebViews)
+    if (ctx.state !== 'running') {
+      try { await ctx.resume(); } catch (e) {}
+    }
+    if (!masterGain || masterGain.context !== ctx) {
+      masterGain = ctx.createGain();
+      masterGain.gain.value = readVolume();
+      masterGain.connect(ctx.destination);
+    }
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    // Listed Hz as pure sine (brainwave lows may be felt more than heard)
+    const freq = Math.max(item.hz, 1);
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+    // Volume lives on masterGain (slider); voice gain fades in to 1
+    masterGain.gain.setTargetAtTime(readVolume(), ctx.currentTime, 0.01);
+    const now = ctx.currentTime;
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.linearRampToValueAtTime(1, now + 0.1);
+
+    // Oscillator → gain → masterGain → destination
+    osc.connect(gain);
+    gain.connect(masterGain);
+    osc.start(now);
+
+    btn.classList.add('playing');
+    btn.textContent = 'Playing…';
+    card.classList.add('playing');
+    current = { osc: osc, gain: gain, hz: item.hz, title: item.title, btn: btn, card: card };
+    npHz.textContent = item.hz + ' Hz';
+    npTitle.textContent = item.title;
+    npBar.classList.remove('hidden');
+  }
+
+  volumeEl.addEventListener('input', function () {
+    const vol = readVolume();
+    if (masterGain && audioCtx) {
+      masterGain.gain.setTargetAtTime(vol, audioCtx.currentTime, 0.03);
+    }
+  });
+
+  function makeCard(item, grid) {
+    const card = document.createElement('article');
+    card.className = 'card';
+    card.style.setProperty('--accent', item.color);
+    card.dataset.cats = item.cats.join(' ');
+    card.dataset.hz = String(item.hz);
+    card.innerHTML =
+      '<div class="hz">' + item.hz + ' Hz</div>' +
+      '<div class="card-title">' + item.title + '</div>' +
+      '<p class="card-use">' + item.use + '</p>' +
+      '<div class="card-meta">' + item.cats.map(c => '<span class="pill">' + c + '</span>').join('') + '</div>';
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'play-btn';
+    btn.textContent = 'Play';
+    btn.addEventListener('click', function () { playTone(item, btn, card); });
+    card.appendChild(btn);
+    grid.appendChild(card);
+  }
+
+  const cardsGrid = document.getElementById('cardsGrid');
+  const brainGrid = document.getElementById('brainGrid');
+  FREQUENCIES.forEach(f => makeCard(f, cardsGrid));
+  BRAINWAVES.forEach(f => makeCard(f, brainGrid));
+
+  function applyFilter(name) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === name));
+    document.querySelectorAll('.card').forEach(card => {
+      const cats = card.dataset.cats.split(/\s+/);
+      const show = name === 'all' || cats.includes(name);
+      card.classList.toggle('hidden', !show);
+    });
+  }
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+  });
+
+  document.querySelectorAll('.need-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const need = chip.dataset.need;
+      document.querySelectorAll('.need-chip').forEach(c => c.classList.toggle('active', c === chip));
+      const info = NEED_COPY[need];
+      if (!info) return;
+      recEl.classList.remove('hidden');
+      recEl.innerHTML = 'Try <span class="rec-hz">' + info.hz + ' Hz</span> — ' + info.blurb +
+        ' <button type="button" class="need-chip" id="jumpRec" style="margin-left:6px">Jump to card</button>';
+      const jump = document.getElementById('jumpRec');
+      jump.addEventListener('click', () => {
+        applyFilter('all');
+        const target = document.querySelector('.card[data-hz="' + info.hz + '"]');
+        if (target) {
+          target.scrollIntoView({ behavior:'smooth', block:'center' });
+          target.style.transition = 'box-shadow .3s';
+          target.style.boxShadow = '0 0 0 2px ' + (target.style.getPropertyValue('--accent') || '#ffd54a');
+          setTimeout(() => { target.style.boxShadow = ''; }, 1200);
+        }
+      });
+    });
+  });
+
+  function hardStop() { stopTone(); }
+  document.getElementById('stopAll').addEventListener('click', hardStop);
+  document.getElementById('npStop').addEventListener('click', hardStop);
+  window.addEventListener('pagehide', hardStop);
+})();
+</script>
+</body>
+</html>
