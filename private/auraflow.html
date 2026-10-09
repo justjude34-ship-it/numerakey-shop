@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07060F">
+<title>Aura Flow</title>
+<meta name="description" content="A private studio for breath, tones, and quiet journeys. One file. Yours.">
+<style>
+:root {
+  --void:#07060f; --ink:#0c0b16; --panel:rgb(16 14 28 / .72); --line:rgb(232 184 109 / .18);
+  --sand:#f4ebdd; --mute:#b7a9c4; --gold:#e8b86d; --gold2:#f6d7a4; --teal:#3ee0c6; --purple:#8b6cff; --dusk:#c4a0ff; --ink2:#140e08;
+  --serif:Palatino,"Palatino Linotype","Iowan Old Style",Georgia,serif;
+  --sans:"Avenir Next","Segoe UI",sans-serif;
+}
+* { box-sizing:border-box; }
+html,body { margin:0; min-height:100%; background:var(--void); color:var(--sand); font-family:var(--sans); font-weight:400; }
+button,a { font:inherit; color:inherit; touch-action:manipulation; }
+button { cursor:pointer; background:none; border:0; -webkit-tap-highlight-color:transparent; }
+button:disabled { cursor:default; }
+.sky { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+  background:radial-gradient(900px 520px at 12% -8%, rgb(232 184 109 / .22), transparent 58%),
+    radial-gradient(820px 520px at 110% 6%, rgb(139 108 255 / .28), transparent 56%),
+    radial-gradient(700px 560px at 50% 120%, rgb(62 224 198 / .16), transparent 52%),
+    linear-gradient(180deg,#0b0914,#07060f 46%,#0a1014); }
+.blob { position:absolute; border-radius:50%; filter:blur(48px); opacity:.5; animation:drift 20s ease-in-out infinite alternate; }
+.blob.g { width:280px; height:280px; left:-70px; top:8%; background:var(--gold); }
+.blob.p { width:340px; height:340px; right:-80px; top:22%; background:var(--purple); animation-duration:26s; }
+.blob.t { width:240px; height:240px; left:30%; bottom:-50px; background:var(--teal); animation-duration:18s; }
+@keyframes drift { to { transform:translate3d(16px,-22px,0) scale(1.08); } }
+.app { position:relative; z-index:1; max-width:430px; margin:0 auto; min-height:100svh; }
+.gate { min-height:100svh; display:flex; flex-direction:column; align-items:center; justify-content:safe center; text-align:center; padding:max(12px,env(safe-area-inset-top)) 28px max(16px,env(safe-area-inset-bottom)); }
+h1.brand { font-family:var(--serif); font-size:clamp(2.6rem,12vw,3.5rem); line-height:.9; font-weight:600; margin:.15rem 0 0; letter-spacing:-.03em; }
+.lede { color:var(--mute); max-width:280px; line-height:1.5; }
+.hint { margin-top:18px; letter-spacing:.2em; text-transform:uppercase; color:var(--mute); font-size:.72rem; }
+.begin { background:linear-gradient(96deg,#f6d7a4,#e8b86d 36%,#3ee0c6 68%,#8b6cff); color:var(--ink2); border-radius:999px; height:58px; width:100%; max-width:280px; font-weight:600; margin-top:20px; position:relative; z-index:3; flex:none; }
+.head { display:flex; justify-content:space-between; align-items:center; padding:calc(14px + env(safe-area-inset-top)) 20px 0; }
+.page { padding:8px 20px calc(108px + env(safe-area-inset-bottom)); }
+.page.pad { padding-bottom:calc(158px + env(safe-area-inset-bottom)); }
+.enso { width:clamp(108px,24svh,220px); height:clamp(108px,24svh,220px); filter:drop-shadow(0 0 28px rgb(139 108 255 / .28)); }
+.kicker { letter-spacing:.22em; text-transform:uppercase; color:var(--mute); font-size:.72rem; margin:0; }
+h1.room { font-family:var(--serif); font-size:1.85rem; line-height:1; margin:2px 0 0; font-weight:600; }
+.ghost { min-height:44px; border:1px solid var(--line); border-radius:999px; padding:0 14px; color:var(--mute); }
+.moods { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:16px 0; }
+.mood { min-height:48px; border-radius:16px; border:1px solid var(--line); background:var(--panel); display:flex; align-items:center; justify-content:center; gap:6px; font-weight:600; font-size:.84rem; }
+.mood.on { border-color:var(--gold); }
+.dot { width:8px; height:8px; border-radius:50%; display:inline-block; }
+.stage { display:flex; flex-direction:column; align-items:center; text-center; }
+.orb { --orb:.82; --glow:rgb(139 108 255 / .35); width:min(48vw,210px); height:min(48vw,210px); display:grid; place-items:center; position:relative; margin-bottom:10px; }
+.ring,.core { position:absolute; border-radius:50%; }
+.ring { inset:8%; background:conic-gradient(from 200deg,var(--gold),var(--teal),var(--purple),var(--gold));
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 10px),#000 calc(100% - 8px));
+  mask:radial-gradient(farthest-side,transparent calc(100% - 10px),#000 calc(100% - 8px));
+  transform:scale(var(--orb)); filter:drop-shadow(0 0 18px var(--glow)); }
+.core { width:14%; height:14%; z-index:1; opacity:.55; background:radial-gradient(circle at 35% 30%,#fff,var(--gold2) 40%,var(--purple)); transform:scale(calc(var(--orb) * .7)); }
+.orb.idle .ring { animation:pulse 5.8s ease-in-out infinite; }
+.orb.idle .core { animation:pulse-core 5.8s ease-in-out infinite; }
+@keyframes pulse { 50% { transform:scale(.94); } }
+@keyframes pulse-core { 50% { transform:scale(.86); } }
+.word { position:relative; z-index:3; margin:0; font-family:var(--serif); letter-spacing:.14em; text-transform:uppercase; font-size:clamp(1.45rem,6vw,2rem); text-shadow:0 2px 18px rgb(7 6 15 / .95); }
+.hz { position:relative; z-index:3; font-family:var(--serif); font-size:2.4rem; line-height:1; color:var(--gold2); }
+.unit { position:relative; z-index:3; letter-spacing:.18em; font-size:.72rem; text-transform:uppercase; }
+.count { min-height:1.1em; letter-spacing:.16em; color:var(--mute); font-variant-numeric:tabular-nums; }
+.pattern,.clock { color:var(--gold2); font-variant-numeric:tabular-nums; }
+.clock { font-family:var(--serif); font-size:1.35rem; }
+.guide { color:var(--mute); max-width:300px; line-height:1.5; }
+.chips { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:16px; }
+.chip { min-height:44px; border-radius:999px; border:1px solid var(--line); background:rgb(12 11 22 / .6); padding:0 14px; }
+.chip.on { background:linear-gradient(96deg,#f6d7a4,#e8b86d 36%,#3ee0c6 68%,#8b6cff); color:var(--ink2); border-color:transparent; font-weight:600; }
+.modes { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:16px; }
+.modes .chip { width:100%; padding:0 4px; font-size:.78rem; }
+.label { letter-spacing:.18em; text-transform:uppercase; color:var(--mute); font-size:.72rem; margin:18px 0 8px; }
+.row { display:flex; justify-content:space-between; color:var(--mute); font-size:.88rem; }
+input[type=range] { width:100%; accent-color:var(--purple); height:28px; }
+.cards { display:grid; gap:10px; }
+.card { text-align:left; border:1px solid var(--line); background:var(--panel); border-radius:20px; padding:14px 16px; width:100%; }
+.card b { font-family:var(--serif); font-size:1.35rem; font-weight:600; }
+.card small { color:var(--gold2); }
+.top { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+.muted { color:var(--mute); line-height:1.5; }
+.hour { letter-spacing:.16em; text-transform:uppercase; color:var(--gold); font-size:.72rem; }
+.stat { font-family:var(--serif); font-size:4.2rem; line-height:.9; color:var(--gold2); margin:0; font-variant-numeric:tabular-nums; }
+.days { display:flex; align-items:flex-end; gap:8px; margin-top:18px; }
+.day { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; font-size:.75rem; color:var(--mute); }
+.day.today { color:var(--gold2); }
+.bar { width:100%; max-width:18px; height:72px; border-radius:99px; background:rgb(232 184 109 / .12); display:flex; align-items:flex-end; overflow:hidden; }
+.bar i { display:block; width:100%; border-radius:99px; background:linear-gradient(180deg,var(--gold2),var(--purple)); }
+.own { margin-top:28px; border:1px solid var(--line); border-radius:20px; padding:16px; background:var(--panel); }
+nav { position:fixed; z-index:5; left:50%; bottom:0; transform:translateX(-50%); width:min(430px,100%); display:grid; grid-template-columns:repeat(4,1fr); gap:6px;
+  padding:8px 12px calc(10px + env(safe-area-inset-bottom)); background:linear-gradient(to bottom,transparent,rgb(7 6 15 / .92) 28%,var(--void)); }
+nav button { min-height:56px; border-radius:16px; border:1px solid var(--line); background:rgb(12 11 22 / .9); color:var(--mute); font-size:.74rem; font-weight:600; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; }
+nav button.on { color:var(--gold2); border-color:transparent; background:linear-gradient(to bottom,rgb(232 184 109 / .2),rgb(139 108 255 / .3)); }
+.strip { position:fixed; z-index:5; left:50%; transform:translateX(-50%); bottom:calc(74px + env(safe-area-inset-bottom)); width:min(430px,100%); padding:0 16px; }
+.strip div { display:flex; justify-content:space-between; align-items:center; border:1px solid var(--line); background:rgb(12 11 22 / .95); border-radius:999px; padding:4px 16px; }
+.sheet { position:fixed; inset:0; z-index:8; background:rgb(7 6 15 / .7); display:flex; align-items:flex-end; }
+.panel { width:min(430px,100%); margin:0 auto; background:linear-gradient(#161326,var(--ink)); border-top:1px solid var(--line); border-radius:24px 24px 0 0; padding:20px 18px calc(18px + env(safe-area-inset-bottom)); }
+h2 { font-family:var(--serif); font-weight:600; font-size:1.7rem; margin:0 0 12px; }
+.linkish { min-height:44px; color:var(--mute); }
+@media (prefers-reduced-motion:reduce) {
+  .blob,.orb.idle .ring,.orb.idle .core { animation:none !important; }
+}
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"><i class="blob g"></i><i class="blob p"></i><i class="blob t"></i></div>
+<div id="app" class="app"></div>
+<script>
+"use strict";
+const WORD = { inhale:"Inhale", hold:"Hold", exhale:"Exhale" };
+const SHORT = { inhale:"In", hold:"Hold", exhale:"Out" };
+const MOODS = [
+  { id:"soft", name:"Soft", blurb:"Warm gold. A gentle landing.", color:"#E8B86D", tech:"sigh" },
+  { id:"clear", name:"Clear", blurb:"Teal water. Even and bright.", color:"#3EE0C6", tech:"box" },
+  { id:"deep", name:"Deep", blurb:"Violet dusk. Slow and held.", color:"#8B6CFF", tech:"coherent" },
+  { id:"night", name:"Night", blurb:"Gold into purple. Toward sleep.", color:"#C4A0FF", tech:"478" }
+];
+const COPY = { sigh:"Two sips in, then a long pour out.", box:"Four even sides. In, hold, out, hold.", coherent:"A matched tide. In and out, the same length.", "478":"In for four, hold for seven, out for eight." };
+const TECH = {
+  sigh:[{p:"inhale",d:1.6},{p:"inhale",d:1.1},{p:"exhale",d:5.2}],
+  box:[{p:"inhale",d:4},{p:"hold",d:4},{p:"exhale",d:4},{p:"hold",d:4}],
+  coherent:[{p:"inhale",d:5.5},{p:"exhale",d:5.5}],
+  "478":[{p:"inhale",d:4},{p:"hold",d:7},{p:"exhale",d:8}]
+};
+const BEDS = [
+  { id:"dusk", name:"Dusk lagoon", beat:7 },
+  { id:"temple", name:"Temple drone", beat:5 },
+  { id:"violet", name:"Violet hush", beat:4 },
+  { id:"still", name:"Still gold", beat:9 }
+];
+const TONES = [
+  { hz:174, name:"Ease", line:"A low tone, traditionally sat with when the body feels loud." },
+  { hz:285, name:"Mend", line:"People sit with this one when they feel frayed at the edges." },
+  { hz:396, name:"Release", line:"Traditionally paired with setting a weight down." },
+  { hz:417, name:"Shift", line:"A tone for the moment something is ready to move." },
+  { hz:432, name:"Warm", line:"A rounder concert pitch. Softer than the usual 440." },
+  { hz:528, name:"Heart", line:"The tone many call the heart frequency. Warm, and a little bright." },
+  { hz:639, name:"Bond", line:"Traditionally sat with when you want to feel less alone." },
+  { hz:741, name:"Clear", line:"Brighter. Useful when the mind is crowded." },
+  { hz:852, name:"Rise", line:"Higher and more spacious. A little waking." },
+  { hz:963, name:"Still", line:"The thinnest of the set. Quiet, and quite high." },
+  { hz:136.1, name:"Om", line:"The earth-year tone. Deep enough to feel like a hum." }
+];
+const MODES = [
+  { id:"bowl", name:"Bowl", line:"A round tone with soft overtones, close to a singing bowl." },
+  { id:"pure", name:"Pure", line:"One clean tone. Nothing else in the room." },
+  { id:"binaural", name:"Binaural", line:"Headphones help. Each ear hears a slightly different pitch." },
+  { id:"pulse", name:"Pulse", line:"The tone brightens and softens. Speakers are fine." }
+];
+const BEATS = [
+  { id:"delta", name:"Delta", hz:2, line:"Very slow. Near sleep." },
+  { id:"theta", name:"Theta", hz:6, line:"Dreamy. The edges soften." },
+  { id:"schumann", name:"Schumann", hz:7.83, line:"The earth's hum, used here as a pulse." },
+  { id:"alpha", name:"Alpha", hz:10, line:"Awake, without pushing." },
+  { id:"steady", name:"Steady", hz:14, line:"Calm and alert." },
+  { id:"beta", name:"Beta", hz:20, line:"Brighter, for one clear task." },
+  { id:"gamma", name:"Gamma", hz:40, line:"Fast and fine. Keep this one quiet." }
+];
+const JOURNEYS = [
+  { id:"ground", name:"Ground", line:"Three minutes. Feet first, then the breath.", minutes:3, moodId:"deep", bedId:"temple", toneHz:174, mode:"bowl", soft:1.12 },
+  { id:"landing", name:"Soft landing", line:"A warm place to arrive. Double sip, long pour, heart tone.", minutes:8, moodId:"soft", bedId:"still", toneHz:528, mode:"bowl" },
+  { id:"clear", name:"Clear water", line:"Even sides, and a bright still tone.", minutes:10, moodId:"clear", bedId:"dusk", toneHz:639, mode:"pure" },
+  { id:"heart", name:"Heart tide", line:"Matched breath, with a slow binaural wash. Headphones, if you have them.", minutes:12, moodId:"deep", bedId:"violet", toneHz:528, mode:"binaural", beatHz:10 },
+  { id:"release", name:"Let it go", line:"A long exhale, rain, and the release tone.", minutes:10, moodId:"soft", bedId:"temple", toneHz:396, mode:"bowl", rain:true },
+  { id:"night", name:"Night gate", line:"Toward sleep. Four, seven, eight — low and slow, with rain.", minutes:20, moodId:"night", bedId:"still", toneHz:174, mode:"bowl", rain:true, soft:1.08 },
+  { id:"focus", name:"Quiet focus", line:"One task. A steady pulse under a warm tone.", minutes:12, moodId:"clear", bedId:"temple", toneHz:432, mode:"pulse", beatHz:14 }
+];
+const ROOMS = [
+  { id:"breathe", label:"Breathe" },
+  { id:"tones", label:"Tones" },
+  { id:"journeys", label:"Journeys" },
+  { id:"practice", label:"Practice" }
+];
+const ICONS = {
+  breathe:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 8c2 0 2 8 4 8s2-8 4-8 2 8 4 8 2-8 4-8"/></svg>',
+  tones:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4"/></svg>',
+  journeys:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="8"/><path d="M12 12l4-5"/></svg>',
+  practice:'<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 4h11a2 2 0 0 1 2 2v14H8a2 2 0 0 0-2 2V4z"/><path d="M6 4a2 2 0 0 0-2 2v14"/></svg>'
+};
+
+const read = (k, f) => { try { const v = JSON.parse(localStorage.getItem(k) || ""); return v == null ? f : v; } catch (e) { return f; } };
+const write = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "\u0026amp;", "<": "\u0026lt;", ">": "\u0026gt;", '"': "\u0026quot;", "'": "\u0026#39;" }[c]));
+const clock = (ms) => { const s = Math.max(0, Math.ceil(ms / 1000)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+const hzText = (n) => Number.isInteger(n) ? String(n) : String(Math.round(n * 100) / 100);
+const moodOf = (id) => MOODS.find((m) => m.id === id) || MOODS[0];
+const bedOf = (id) => BEDS.find((b) => b.id === id) || BEDS[0];
+const toneOf = (hz) => TONES.find((t) => t.hz === hz) || TONES[5];
+const modeOf = (id) => MODES.find((m) => m.id === id) || MODES[0];
+const pattern = (tech, soft) => TECH[tech].map((s) => { const d = Math.round(s.d * soft * 10) / 10; return SHORT[s.p] + " " + (Number.isInteger(d) ? d : d.toFixed(1)); }).join(" · ");
+const dayKey = (at) => { const d = new Date(at); return d.getFullYear() + "-" + d.getMonth() + "-" + d.getDate(); };
+const when = (at) => new Date(at).toLocaleString("en-AU", { weekday:"short", hour:"numeric", minute:"2-digit" });
+
+const pref = read("af-tone", null) || {};
+const S = {
+  screen:"gate", room:"breathe", mood:"soft", minutes:10, bed:"dusk",
+  vol:Math.min(1, Math.max(0.2, parseFloat(localStorage.getItem("af-vol") || "0.85") || 0.85)),
+  running:false, paused:false, phase:"idle", word:"Ready", count:"", clock:"10:00",
+  soft:1, rain:false,
+  toneHz:typeof pref.hz === "number" ? pref.hz : 528,
+  mode:MODES.some((m) => m.id === pref.mode) ? pref.mode : "bowl",
+  beat:pref.beat > 0 ? pref.beat : 10,
+  toneMin:[0,10,20,30].indexOf(pref.minutes) >= 0 ? pref.minutes : 10,
+  toneOn:false, toneClock:"10:00", sheet:null,
+  guide:COPY.sigh, journal:Array.isArray(read("af-journal", [])) ? read("af-journal", []) : [],
+  stars:Array.isArray(read("af-stars", [])) ? read("af-stars", []) : [],
+  confirm:false, hour:new Date().getHours(), orb:0.82
+};
+S.toneClock = S.toneMin ? clock(S.toneMin * 60000) : "Open";
+S.clock = clock(S.minutes * 60000);
+
+const run = { on:false, paused:false, start:0, total:0, left:0 };
+const toneRun = { on:false, start:0, total:0, held:false };
+let journey = null;
+let ctx, breathGain, toneGain, toneFilter, comp;
+const breathNodes = [];
+let rainNode = null;
+const toneOsc = [];
+const toneNodes = [];
+let toneAlive = false;
+let toneHzLive = 528;
+let air = null;
+let airNow = 0.0001;
+const timers = { clock:0, tone:0, phase:0, orb:0 };
+
+function levelTone(hz) {
+  const tilt = Math.min(1, 240 / Math.max(80, hz));
+  return Math.max(0.0008, S.vol * 0.16 * (0.62 + 0.38 * tilt));
+}
+function openAudio() {
+  const C = window.AudioContext || window.webkitAudioContext;
+  if (!C) return;
+  if (!ctx) ctx = new C();
+  if (!breathGain) {
+    breathGain = ctx.createGain(); breathGain.gain.value = 0.0001;
+    comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -10; comp.knee.value = 10; comp.ratio.value = 3.5; comp.attack.value = 0.01; comp.release.value = 0.18;
+    breathGain.connect(comp); comp.connect(ctx.destination);
+    toneGain = ctx.createGain(); toneGain.gain.value = 0.0001;
+    toneFilter = ctx.createBiquadFilter(); toneFilter.type = "lowpass"; toneFilter.frequency.value = 1680; toneFilter.Q.value = 0.45;
+    toneFilter.connect(toneGain); toneGain.connect(ctx.destination);
+  }
+  if (ctx.state === "suspended") ctx.resume();
+}
+async function unlock() {
+  openAudio();
+  if (ctx && ctx.state === "suspended") await ctx.resume();
+}
+function stopNode(n) { try { n.stop && n.stop(); n.disconnect(); } catch (e) {} }
+function killBreath() {
+  const dying = breathNodes.splice(0);
+  if (rainNode) { stopNode(rainNode); rainNode = null; }
+  setTimeout(() => dying.forEach(stopNode), 400);
+}
+function startBed() {
+  if (!ctx || !breathGain) return;
+  killBreath();
+  const now = ctx.currentTime;
+  const bed = bedOf(S.bed);
+  const loud = Math.max(0.0001, S.vol * 0.88);
+  const merge = ctx.createChannelMerger(2);
+  const add = (f, type, v, dest) => {
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type = type; o.frequency.value = f; g.gain.value = v; o.connect(g); g.connect(dest); o.start();
+    breathNodes.push(o, g);
+  };
+  add(184, "sine", 0.14, merge);
+  const R = ctx.createOscillator(); const gR = ctx.createGain();
+  R.type = "sine"; R.frequency.value = 184 + bed.beat; gR.gain.value = 0.14;
+  R.connect(gR); gR.connect(merge, 0, 1); merge.connect(breathGain); R.start();
+  breathNodes.push(R, gR, merge);
+  add(110, "sine", 0.07, breathGain);
+  add(220, "triangle", 0.045, breathGain);
+  add(330, "sine", 0.028, breathGain);
+  breathGain.gain.cancelScheduledValues(now);
+  breathGain.gain.setValueAtTime(0.0001, now);
+  breathGain.gain.exponentialRampToValueAtTime(loud, now + 0.9);
+  if (S.rain) rainOn();
+}
+function rainOn() {
+  if (!ctx || !breathGain || rainNode) return;
+  const buf = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+  const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 1600; bp.Q.value = 0.55;
+  const g = ctx.createGain(); g.gain.value = 0.08 * S.vol;
+  src.connect(bp); bp.connect(g); g.connect(breathGain); src.start();
+  rainNode = src; breathNodes.push(bp, g);
+}
+function rainOff() { if (rainNode) { stopNode(rainNode); rainNode = null; } }
+function stopBed() {
+  if (!breathGain || !ctx) { killBreath(); return; }
+  try { breathGain.gain.setTargetAtTime(0.0001, ctx.currentTime, 0.25); } catch (e) {}
+  killBreath();
+}
+function breathCurve(p) { return p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; }
+function ensureAir() {
+  openAudio();
+  if (!ctx || air) return;
+  const rate = ctx.sampleRate;
+  const len = rate * 2;
+  const buf = ctx.createBuffer(1, len, rate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+  const fade = Math.floor(rate * 0.04);
+  for (let i = 0; i < fade; i++) { const w = i / fade; data[i] *= w; data[len - 1 - i] *= w; }
+  const src = ctx.createBufferSource(); src.buffer = buf; src.loop = true;
+  const hp = ctx.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 340; hp.Q.value = 0.7;
+  const bp = ctx.createBiquadFilter(); bp.type = "bandpass"; bp.frequency.value = 900; bp.Q.value = 0.85;
+  const env = ctx.createGain(); env.gain.value = 0.0001;
+  const vol = ctx.createGain(); vol.gain.value = Math.max(0.0001, S.vol * 0.34);
+  const lfo = ctx.createOscillator(); const depth = ctx.createGain();
+  lfo.frequency.value = 2.2; depth.gain.value = 0;
+  src.connect(hp); hp.connect(bp); bp.connect(env); env.connect(vol); vol.connect(ctx.destination);
+  lfo.connect(depth); depth.connect(env.gain);
+  src.start(); lfo.start();
+  air = { src, hp, bp, env, vol, lfo, depth };
+  airNow = 0.0001;
+}
+function breath(ph, seconds, fromScale, toScale) {
+  ensureAir();
+  if (!ctx || !air) return;
+  const now = ctx.currentTime;
+  const g = air.env.gain;
+  const f = air.bp.frequency;
+  g.cancelScheduledValues(now);
+  f.cancelScheduledValues(now);
+  air.vol.gain.setTargetAtTime(Math.max(0.0001, S.vol * 0.34), now, 0.05);
+  if (ph === "hold") {
+    air.lfo.frequency.setTargetAtTime(0.4, now, 0.1);
+    air.depth.gain.setTargetAtTime(0, now, 0.08);
+    g.setValueAtTime(Math.max(0.0001, airNow), now);
+    g.linearRampToValueAtTime(0.0001, now + Math.min(0.22, Math.max(0.08, seconds * 0.25)));
+    airNow = 0.0001;
+    return;
+  }
+  const inhale = ph === "inhale";
+  const dur = Math.max(0.25, seconds);
+  const steps = 16;
+  air.bp.Q.setTargetAtTime(inhale ? 1.15 : 0.62, now, 0.08);
+  air.lfo.frequency.setTargetAtTime(inhale ? 2.6 : 1.7, now, 0.1);
+  air.depth.gain.setTargetAtTime(0.035, now, 0.12);
+  const sample = (p) => {
+    const scale = fromScale + (toScale - fromScale) * breathCurve(p);
+    const n = Math.min(1, Math.max(0, (scale - 0.68) / (1.16 - 0.68)));
+    return { amount: inhale ? 0.04 + n * 0.96 : 0.03 + n * 0.97, freq: inhale ? 640 + n * 1560 : 460 + n * 1080 };
+  };
+  const first = sample(0);
+  g.setValueAtTime(first.amount, now);
+  f.setValueAtTime(first.freq, now);
+  for (let i = 1; i <= steps; i++) {
+    const s = sample(i / steps);
+    g.linearRampToValueAtTime(s.amount, now + dur * (i / steps));
+    f.linearRampToValueAtTime(s.freq, now + dur * (i / steps));
+  }
+  airNow = sample(1).amount;
+}
+function setAirVol() {
+  if (!air || !ctx) return;
+  air.vol.gain.setTargetAtTime(Math.max(0.0001, S.vol * 0.34), ctx.currentTime, 0.12);
+}
+function hushAir(release) {
+  if (!air || !ctx) return;
+  const now = ctx.currentTime;
+  const g = air.env.gain;
+  g.cancelScheduledValues(now);
+  g.setValueAtTime(Math.max(0.0001, airNow), now);
+  g.linearRampToValueAtTime(0.0001, now + 0.16);
+  air.depth.gain.setTargetAtTime(0, now, 0.05);
+  airNow = 0.0001;
+  if (!release) return;
+  const dying = air;
+  air = null;
+  setTimeout(() => { stopNode(dying.lfo); stopNode(dying.src); }, 240);
+}
+function swellBed(up) {
+  if (!breathGain || !ctx || !run.on || run.paused) return;
+  const base = Math.max(0.0001, S.vol * 0.88);
+  breathGain.gain.setTargetAtTime(up ? base : base * 0.72, ctx.currentTime, 0.28);
+}
+function killTone() {
+  toneOsc.splice(0).forEach(stopNode);
+  toneNodes.splice(0).forEach(stopNode);
+}
+function toneVoice(hz, type, gain, dest) {
+  const o = ctx.createOscillator(); const g = ctx.createGain();
+  o.type = type; o.frequency.value = hz; g.gain.value = gain;
+  o.connect(g); g.connect(dest); o.start();
+  toneOsc.push(o); toneNodes.push(g);
+}
+function playTone(hz, mode, beat) {
+  if (!ctx || !toneGain || !toneFilter) return;
+  killTone();
+  toneAlive = true; toneHzLive = hz;
+  const now = ctx.currentTime;
+  const safe = Math.min(40, Math.max(0.4, beat));
+  const dest = toneFilter;
+  if (mode === "pure") {
+    toneVoice(hz, "sine", 0.72, dest);
+    if (hz > 200) toneVoice(hz / 2, "sine", 0.08, dest);
+  } else if (mode === "binaural") {
+    const merge = ctx.createChannelMerger(2);
+    const L = ctx.createOscillator(); const R = ctx.createOscillator();
+    const gL = ctx.createGain(); const gR = ctx.createGain();
+    L.type = R.type = "sine"; L.frequency.value = hz; R.frequency.value = hz + safe;
+    gL.gain.value = gR.gain.value = 0.48;
+    L.connect(gL); R.connect(gR); gL.connect(merge, 0, 0); gR.connect(merge, 0, 1); merge.connect(dest);
+    L.start(); R.start();
+    toneOsc.push(L, R); toneNodes.push(gL, gR, merge);
+    toneVoice(hz, "sine", 0.06, dest);
+  } else if (mode === "pulse") {
+    const o = ctx.createOscillator(); const g = ctx.createGain();
+    o.type = "sine"; o.frequency.value = hz; g.gain.value = 0.42;
+    const lfo = ctx.createOscillator(); const depth = ctx.createGain();
+    lfo.frequency.value = safe; depth.gain.value = 0.2;
+    lfo.connect(depth); depth.connect(g.gain); o.connect(g); g.connect(dest); o.start(); lfo.start();
+    toneOsc.push(o, lfo); toneNodes.push(g, depth);
+  } else {
+    const voice = ctx.createGain(); voice.gain.value = 1; voice.connect(dest); toneNodes.push(voice);
+    toneVoice(hz, "sine", 0.5, voice);
+    toneVoice(hz * 1.004, "sine", 0.16, voice);
+    toneVoice(hz * 2.003, "triangle", 0.07, voice);
+    toneVoice(hz * 2.99, "sine", 0.025, voice);
+    const lfo = ctx.createOscillator(); const depth = ctx.createGain();
+    lfo.frequency.value = 0.11; depth.gain.value = 0.08;
+    lfo.connect(depth); depth.connect(voice.gain); lfo.start();
+    toneOsc.push(lfo); toneNodes.push(depth);
+  }
+  const target = levelTone(hz);
+  toneGain.gain.cancelScheduledValues(now);
+  toneGain.gain.setTargetAtTime(0.0008, now, 0.04);
+  toneGain.gain.setValueAtTime(0.0008, now + 0.1);
+  toneGain.gain.exponentialRampToValueAtTime(target, now + 1.25);
+}
+function swellTone(up) {
+  if (!toneAlive || !toneGain || !ctx) return;
+  const base = levelTone(toneHzLive);
+  toneGain.gain.setTargetAtTime(up ? base : base * 0.74, ctx.currentTime, 0.36);
+}
+function setToneVol() {
+  if (!toneAlive || !toneGain || !ctx) return;
+  toneGain.gain.setTargetAtTime(levelTone(toneHzLive), ctx.currentTime, 0.18);
+}
+function stopToneAudio() {
+  toneAlive = false;
+  if (toneGain && ctx) { try { toneGain.gain.cancelScheduledValues(ctx.currentTime); toneGain.gain.setTargetAtTime(0.0008, ctx.currentTime, 0.28); } catch (e) {} }
+  const osc = toneOsc.splice(0); const nodes = toneNodes.splice(0);
+  setTimeout(() => { osc.forEach(stopNode); nodes.forEach(stopNode); }, 650);
+}
+function tap(ph) {
+  if (!navigator.vibrate) return;
+  if (ph === "inhale") navigator.vibrate([50, 40, 80]);
+  else if (ph === "hold") navigator.vibrate(40);
+  else navigator.vibrate([90, 50, 90]);
+}
+function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+function paintOrb(v) {
+  S.orb = v;
+  const el = document.getElementById("orb");
+  if (el) el.style.setProperty("--orb", v.toFixed(3));
+}
+function runOrb(from, to, ms) {
+  cancelAnimationFrame(timers.orb);
+  const t0 = Date.now();
+  const frame = () => {
+    if (!run.on || run.paused) return;
+    const p = ms <= 0 ? 1 : Math.min(1, (Date.now() - t0) / ms);
+    paintOrb(from + (to - from) * ease(p));
+    if (p < 1) timers.orb = requestAnimationFrame(frame);
+  };
+  timers.orb = requestAnimationFrame(frame);
+}
+function remember(title, minutes, detail) {
+  S.journal = [{ id:String(Date.now()), at:Date.now(), title, minutes, detail }, ...S.journal].slice(0, 80);
+  write("af-journal", S.journal);
+}
+function stopTone(done) {
+  const was = toneRun.on;
+  const elapsed = was ? Date.now() - toneRun.start : 0;
+  const held = toneRun.held;
+  const j = journey;
+  toneRun.on = false; toneRun.held = false;
+  clearTimeout(timers.tone);
+  stopToneAudio();
+  S.toneOn = false;
+  S.toneClock = S.toneMin ? clock(S.toneMin * 60000) : "Open";
+  if (!was || j || held) return;
+  if (done || elapsed >= 45000) {
+    const t = toneOf(S.toneHz);
+    const pulse = (S.mode === "binaural" || S.mode === "pulse") ? " · " + hzText(S.beat) + " Hz pulse" : "";
+    remember(t.name + " · " + hzText(t.hz) + " Hz", Math.max(1, Math.round(elapsed / 60000)), modeOf(S.mode).name + pulse);
+  }
+}
+function stopSession(done) {
+  const was = run.on;
+  if (was && !run.paused) run.left = Math.max(0, run.total - (Date.now() - run.start));
+  const elapsed = was ? run.total - run.left : 0;
+  const j = journey;
+  run.on = false; run.paused = false;
+  S.running = false; S.paused = false;
+  clearTimeout(timers.clock);
+  cancelAnimationFrame(timers.phase);
+  cancelAnimationFrame(timers.orb);
+  hushAir(true);
+  stopBed();
+  S.phase = "idle"; S.word = done ? "Welcome back" : "Ready"; S.count = "";
+  S.guide = done ? "Rest here, or breathe again." : COPY[moodOf(S.mood).tech];
+  S.clock = clock(S.minutes * 60000);
+  paintOrb(0.82);
+  if (!was) return;
+  if (j) {
+    stopTone(false);
+    journey = null;
+    if (done || elapsed >= 45000) {
+      const t = toneOf(j.toneHz);
+      remember(j.name, Math.max(1, Math.round(elapsed / 60000)), t.name + " · " + hzText(t.hz) + " Hz · " + modeOf(j.mode).name);
+    }
+    return;
+  }
+  if (done || elapsed >= 45000) {
+    const m = moodOf(S.mood);
+    remember(m.name + " breath", Math.max(1, Math.round(elapsed / 60000)), pattern(m.tech, S.soft) + " · " + bedOf(S.bed).name);
+  }
+}
+function playPhase(ph, dur, done) {
+  const t0 = Date.now(); const ms = dur * 1000;
+  S.word = WORD[ph]; S.phase = ph; S.count = String(Math.ceil(dur));
+  const now = S.orb;
+  let from = now, to = now;
+  if (ph === "inhale") { from = now < 0.72 ? 0.7 : now; to = 1.16; runOrb(from, to, ms); }
+  else if (ph === "exhale") { to = 0.7; runOrb(from, to, ms); }
+  swellBed(ph === "inhale");
+  if (toneRun.on) swellTone(ph === "inhale");
+  breath(ph, dur, from, to); tap(ph);
+  const tick = () => {
+    if (!run.on || run.paused) return;
+    const left = Math.max(0, ms - (Date.now() - t0));
+    S.count = left > 0 ? String(Math.ceil(left / 1000)) : "";
+    const el = document.getElementById("count"); if (el) el.textContent = S.count;
+    const w = document.getElementById("word"); if (w) { w.textContent = S.word; w.style.color = ph === "inhale" ? "var(--gold2)" : ph === "hold" ? "var(--dusk)" : "var(--teal)"; }
+    if (left > 0) timers.phase = requestAnimationFrame(tick);
+    else done();
+  };
+  cancelAnimationFrame(timers.phase);
+  timers.phase = requestAnimationFrame(tick);
+  render();
+}
+function cycle() {
+  let i = 0;
+  const step = () => {
+    if (!run.on || run.paused) return;
+    if (Date.now() - run.start >= run.total) { stopSession(true); render(); return; }
+    const seq = TECH[moodOf(S.mood).tech];
+    const s = seq[i % seq.length];
+    playPhase(s.p, s.d * S.soft, () => { i += 1; step(); });
+  };
+  step();
+}
+function tickClock() {
+  if (!run.on) return;
+  if (!run.paused) {
+    run.left = Math.max(0, run.total - (Date.now() - run.start));
+    S.clock = clock(run.left);
+    const el = document.getElementById("clock"); if (el) el.textContent = S.clock;
+    if (run.left <= 0) { stopSession(true); render(); return; }
+  }
+  timers.clock = setTimeout(tickClock, 250);
+}
+function tickTone() {
+  clearTimeout(timers.tone);
+  if (!toneRun.on) return;
+  const elapsed = Date.now() - toneRun.start;
+  if (toneRun.held) S.toneClock = "With the breath";
+  else if (toneRun.total > 0) {
+    const left = Math.max(0, toneRun.total - elapsed);
+    S.toneClock = clock(left);
+    if (left <= 0) { stopTone(true); render(); return; }
+  } else S.toneClock = clock(elapsed);
+  const el = document.getElementById("toneClock"); if (el) el.textContent = S.toneClock;
+  timers.tone = setTimeout(tickTone, 250);
+}
+async function startBreath() {
+  const total = S.minutes * 60000;
+  run.on = true; run.paused = false; run.total = total; run.left = total; run.start = Date.now();
+  S.running = true; S.paused = false;
+  S.guide = "Follow the ring. The air moves with it.";
+  S.clock = clock(total);
+  openAudio();
+  cycle();
+  tickClock();
+  render();
+  try { await unlock(); if (run.on && !run.paused) startBed(); } catch (e) {}
+}
+async function resumeBreath() {
+  run.paused = false; run.on = true;
+  run.start = Date.now() - (run.total - run.left);
+  S.paused = false; S.running = true;
+  S.guide = "Follow the ring. The air moves with it.";
+  openAudio();
+  cycle();
+  render();
+  try { await unlock(); if (run.on && !run.paused) startBed(); } catch (e) {}
+}
+function pauseBreath() {
+  run.left = Math.max(0, run.total - (Date.now() - run.start));
+  run.paused = true; S.paused = true;
+  stopBed();
+  hushAir(true);
+  cancelAnimationFrame(timers.phase);
+  cancelAnimationFrame(timers.orb);
+  S.phase = "idle"; S.word = "Paused"; S.count = "";
+  paintOrb(0.82);
+  render();
+}
+async function beginTone(held) {
+  clearTimeout(timers.tone);
+  toneRun.on = true; toneRun.start = Date.now();
+  toneRun.total = held ? 0 : S.toneMin * 60000;
+  toneRun.held = held;
+  S.toneOn = true;
+  S.toneClock = held ? "With the breath" : (S.toneMin ? clock(S.toneMin * 60000) : "0:00");
+  try { await unlock(); if (!toneRun.on) return; playTone(S.toneHz, S.mode, S.beat); } catch (e) {}
+  tickTone();
+}
+function saveTone() { write("af-tone", { hz:S.toneHz, mode:S.mode, beat:S.beat, minutes:S.toneMin }); }
+function suggest() {
+  const h = S.hour;
+  const id = (h >= 21 || h < 5) ? "night" : h < 10 ? "ground" : (h >= 14 && h < 17) ? "focus" : "heart";
+  return JOURNEYS.find((j) => j.id === id) || JOURNEYS[0];
+}
+function chip(on, act, label, extra) {
+  return '<button class="chip' + (on ? " on" : "") + '" data-act="' + act + '"' + (extra || "") + ">" + label + "</button>";
+}
+function colorWord() {
+  return S.phase === "inhale" ? "var(--gold2)" : S.phase === "hold" ? "var(--dusk)" : S.phase === "exhale" ? "var(--teal)" : "var(--sand)";
+}
+function render() {
+  const root = document.getElementById("app");
+  const sc = document.querySelector(".page");
+  const top = sc ? sc.scrollTop : 0;
+  if (S.screen === "gate") {
+    root.innerHTML = '<section class="gate"><svg class="enso" viewBox="0 0 200 200" fill="none" aria-hidden="true"><defs><linearGradient id="enso" x1="20" y1="20" x2="180" y2="170"><stop offset="0" stop-color="#E8B86D"/><stop offset=".45" stop-color="#3EE0C6"/><stop offset="1" stop-color="#8B6CFF"/></linearGradient></defs><path d="M42 108c6-46 48-74 92-62 38 10 62 52 46 88-14 32-58 50-94 36-28-10-48-38-44-62 3-18 22-30 40-26" stroke="url(#enso)" stroke-width="11" stroke-linecap="round"/></svg><h1 class="brand">Aura Flow</h1><p class="lede">Breath, tones, and journeys you can come back to.</p><button type="button" class="begin" data-act="enter">Begin</button><p class="hint">Breathe · Tones · Journeys · Practice</p><p class="muted" style="margin-top:12px;font-size:.82rem">This file is the whole studio.</p></section>';
+    return;
+  }
+  const room = ROOMS.find((r) => r.id === S.room);
+  const pad = S.toneOn && S.room !== "tones" ? " pad" : "";
+  let body = "";
+  if (S.room === "breathe") {
+    const mcur = moodOf(S.mood);
+    body = '<div class="moods">' + MOODS.map((m) => '<button class="mood' + (m.id === S.mood ? " on" : "") + '" data-act="mood" data-id="' + m.id + '"><i class="dot" style="background:' + m.color + ';box-shadow:0 0 10px ' + m.color + '"></i>' + m.name + "</button>").join("") + "</div>";
+    body += '<div class="stage"><div class="orb' + (S.phase === "idle" ? " idle" : "") + '" id="orb" style="--orb:' + S.orb.toFixed(3) + ";--glow:" + mcur.color + '"><span class="ring"></span><span class="core"></span><h2 class="word" id="word" style="color:' + colorWord() + '">' + esc(S.word) + '</h2></div><div class="count" id="count">' + esc(S.count) + '</div><p class="pattern">' + esc(pattern(mcur.tech, S.soft)) + '</p><p class="guide">' + esc(S.guide) + '</p><div class="clock" id="clock">' + esc(S.clock) + '</div><button class="begin" data-act="breathe">' + (S.running && S.paused ? "Resume" : S.running ? "Pause" : "Breathe") + "</button>";
+    if (S.running) body += '<button class="linkish" data-act="end-sit">End sitting</button>';
+    body += '</div><div class="chips">' + chip(false, "sheet-timer", S.minutes + " min") + chip(false, "sheet-bed", esc(bedOf(S.bed).name)) + chip(S.soft > 1, "soft", "Softer") + chip(S.rain, "rain", "Rain") + '</div><p class="guide" style="margin:16px auto 0">' + esc(mcur.blurb) + "</p>";
+  } else if (S.room === "tones") {
+    const t = toneOf(S.toneHz);
+    const mode = modeOf(S.mode);
+    const beat = BEATS.find((b) => b.hz === S.beat) || BEATS[3];
+    body = '<div class="stage"><div class="orb idle' + (S.toneOn ? " is-live" : "") + '" style="--glow:#E8B86D"><span class="ring"></span><span class="core"></span><div><div class="hz">' + hzText(t.hz) + '</div><div class="unit">Hz</div></div></div><h2 class="room" style="font-size:1.8rem">' + esc(t.name) + '</h2><button class="linkish" data-act="star" style="color:var(--gold2)">' + (S.stars.indexOf(t.hz) >= 0 ? "Kept on this phone" : "Keep this tone") + '</button><p class="guide">' + esc(t.line) + "</p></div>";
+    body += '<div class="modes">' + MODES.map((m) => chip(S.mode === m.id, "mode", esc(m.name), ' data-id="' + m.id + '"')).join("") + '</div><p class="guide" style="margin:8px auto 0">' + esc(mode.line) + "</p>";
+    body += '<div class="chips">' + [0, 10, 20, 30].map((n) => chip(S.toneMin === n, "tmin", n === 0 ? "Open" : n + " min", ' data-n="' + n + '"')).join("") + '</div><div class="clock" id="toneClock" style="text-align:center;margin-top:8px">' + esc(S.toneOn ? S.toneClock : (S.toneMin ? clock(S.toneMin * 60000) : "Open")) + '</div><div class="row" style="margin-top:8px"><span>Volume</span><b id="volLabel" style="color:var(--gold2)">' + Math.round(S.vol * 100) + '%</b></div><input id="vol" type="range" min="20" max="100" value="' + Math.round(S.vol * 100) + '" aria-label="Volume"><button class="begin" style="max-width:none;margin-top:12px" data-act="play-tone">' + (S.toneOn ? "Let it rest" : "Play the tone") + "</button>";
+    body += '<p class="label">Frequencies</p><div class="chips" style="justify-content:flex-start">' + TONES.map((item) => chip(item.hz === S.toneHz, "tone", hzText(item.hz) + " " + esc(item.name), ' data-hz="' + item.hz + '"')).join("") + "</div>";
+    if (S.mode === "binaural" || S.mode === "pulse") {
+      body += '<p class="label">Pulse rate</p><div class="chips" style="justify-content:flex-start">' + BEATS.map((b) => chip(b.hz === S.beat, "beat", esc(b.name), ' data-hz="' + b.hz + '"')).join("") + '</div><p class="guide">' + esc(beat.line) + (S.mode === "binaural" ? " Left ear holds the tone. Right ear sits just above it." : "") + "</p>";
+    }
+    body += '<p class="guide" style="margin-top:16px">If a tone feels sharp, lower the volume. A listening practice, not a treatment.</p>';
+  } else if (S.room === "journeys") {
+    const sug = suggest();
+    const list = [sug, ...JOURNEYS.filter((j) => j.id !== sug.id)];
+    body = '<p class="muted">A breath and a tone, already paired. Begin one and the studio will carry both.</p><div class="cards">' + list.map((j) => {
+      const t = toneOf(j.toneHz); const m = moodOf(j.moodId);
+      return '<button class="card" data-act="journey" data-id="' + j.id + '"><span class="top"><b>' + esc(j.name) + "</b><small>" + j.minutes + ' min</small></span>' + (j.id === sug.id ? '<span class="hour">For this hour</span>' : "") + '<span class="muted" style="display:block;margin-top:4px">' + esc(j.line) + '</span><span style="display:block;margin-top:8px;font-size:.82rem">' + esc(m.name) + " · " + hzText(t.hz) + " Hz " + esc(t.name) + " · " + esc(modeOf(j.mode).name) + (j.rain ? " · Rain" : "") + "</span></button>";
+    }).join("") + "</div>";
+  } else {
+    const start = new Date(); start.setHours(0, 0, 0, 0); start.setDate(start.getDate() - 6);
+    const week = S.journal.filter((e) => e.at >= start.getTime()).reduce((s, e) => s + (e.minutes || 0), 0);
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+      const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - i);
+      const key = dayKey(d.getTime());
+      days.push({ label:d.toLocaleDateString("en-AU", { weekday:"narrow" }), mins:S.journal.filter((e) => dayKey(e.at) === key).reduce((s, e) => s + e.minutes, 0), today:i === 0 });
+    }
+    const max = Math.max(1, ...days.map((d) => d.mins));
+    const kept = TONES.filter((t) => S.stars.indexOf(t.hz) >= 0);
+    let streak = 0; const set = new Set(S.journal.map((e) => dayKey(e.at)));
+    const cursor = new Date(); cursor.setHours(12, 0, 0, 0);
+    if (!set.has(dayKey(cursor.getTime()))) cursor.setDate(cursor.getDate() - 1);
+    while (set.has(dayKey(cursor.getTime()))) { streak += 1; cursor.setDate(cursor.getDate() - 1); }
+    const note = streak <= 0 ? "Finish a sitting and this page will remember it, only on this phone." : streak === 1 ? "One day kept. That is a beginning." : "A " + streak + "-day return.";
+    body = '<p class="kicker">This week</p><p class="stat">' + week + '</p><p class="muted" style="margin-top:-4px">minutes sat</p><div class="days">' + days.map((d) => '<div class="day' + (d.today ? " today" : "") + '"><div class="bar"><i style="height:' + (d.mins ? Math.max(8, (d.mins / max) * 100) : 0) + '%"></i></div>' + esc(d.label) + "</div>").join("") + '</div><p class="muted">' + esc(note) + '</p><h2 style="font-size:1.45rem;margin-top:24px">Recent</h2>';
+    body += S.journal.length ? '<div class="cards">' + S.journal.slice(0, 12).map((e) => '<div class="card"><span class="top"><b style="font-family:var(--sans);font-size:1rem">' + esc(e.title) + "</b><small>" + e.minutes + ' min</small></span><span class="muted" style="display:block;margin-top:4px;font-size:.82rem">' + esc(e.detail || "") + '</span><span class="muted" style="display:block;margin-top:4px;font-size:.78rem">' + esc(when(e.at)) + "</span></div>").join("") + "</div>" : '<p class="muted">Nothing saved yet. Finish a breath, a tone, or a journey and it will land here.</p>';
+    if (kept.length) body += '<h2 style="font-size:1.45rem;margin-top:24px">Kept tones</h2><div class="chips" style="justify-content:flex-start">' + kept.map((t) => chip(false, "kept", hzText(t.hz) + " " + esc(t.name), ' data-hz="' + t.hz + '"')).join("") + "</div>";
+    body += '<div class="own"><h2 style="font-size:1.45rem">Yours, in this file</h2><p class="muted">Breath, tones, and journeys live in this one file. No account. No subscription. Keep it, or sell it as it is.</p></div>';
+    if (S.journal.length) body += '<button class="linkish" data-act="clear" style="width:100%">' + (S.confirm ? "Yes, clear this phone’s history" : "Clear history") + "</button>";
+  }
+  let sheet = "";
+  if (S.sheet === "timer") {
+    sheet = '<div class="sheet" data-act="close-sheet"><div class="panel" data-act="stop"><h2>Timer</h2><div class="chips" style="justify-content:flex-start">' + [5, 10, 15, 20, 30].map((n) => chip(S.minutes === n, "minutes", n + " min", ' data-n="' + n + '"')).join("") + '</div><button class="begin" style="max-width:none;margin-top:12px" data-act="set-timer">Set timer</button></div></div>';
+  } else if (S.sheet === "bed") {
+    sheet = '<div class="sheet" data-act="close-sheet"><div class="panel" data-act="stop"><h2>Bed</h2><div class="chips" style="justify-content:flex-start">' + BEDS.map((b) => chip(S.bed === b.id, "bed", esc(b.name), ' data-id="' + b.id + '"')).join("") + '</div><div class="row" style="margin-top:12px"><span>Volume</span><b id="volLabel" style="color:var(--gold2)">' + Math.round(S.vol * 100) + '%</b></div><input id="vol" type="range" min="20" max="100" value="' + Math.round(S.vol * 100) + '" aria-label="Volume"><p class="muted">The bed sits under the breath. Air follows the ring. The phone can also tap each phase.</p><button class="begin" style="max-width:none" data-act="close-sheet">Done</button></div></div>';
+  }
+  const strip = (S.toneOn && S.room !== "tones") ? '<div class="strip"><div><button data-act="go" data-id="tones"><b style="color:var(--gold2)">' + esc(toneOf(S.toneHz).name) + "</b> · " + hzText(S.toneHz) + ' Hz</button><button class="linkish" data-act="rest">Rest</button></div></div>' : "";
+  const nav = "<nav>" + ROOMS.map((r) => '<button data-act="go" data-id="' + r.id + '"' + (r.id === S.room ? ' class="on"' : "") + ">" + ICONS[r.id] + r.label + "</button>").join("") + "</nav>";
+  root.innerHTML = '<header class="head"><div><p class="kicker">Aura Flow</p><h1 class="room">' + room.label + '</h1></div><button class="ghost" data-act="close">Close</button></header><main class="page' + pad + '">' + body + "</main>" + strip + nav + sheet;
+  const page = root.querySelector(".page");
+  if (page) page.scrollTop = top;
+}
+document.getElementById("app").addEventListener("click", (e) => {
+  const el = e.target.closest("[data-act]");
+  if (!el || el.dataset.act === "stop") { if (el && el.dataset.act === "stop") e.stopPropagation(); return; }
+  const act = el.dataset.act;
+  if (act === "enter") { S.screen = "app"; render(); return; }
+  if (act === "close") { stopSession(false); stopTone(false); S.sheet = null; S.screen = "gate"; render(); return; }
+  if (act === "go") { S.room = el.dataset.id; S.sheet = null; render(); return; }
+  if (act === "mood") { S.mood = el.dataset.id; if (!run.on) S.guide = COPY[moodOf(S.mood).tech]; render(); return; }
+  if (act === "breathe") {
+    if (!run.on) startBreath();
+    else if (!run.paused) pauseBreath();
+    else resumeBreath();
+    return;
+  }
+  if (act === "end-sit") { stopSession(false); render(); return; }
+  if (act === "sheet-timer") { S.sheet = "timer"; render(); return; }
+  if (act === "sheet-bed") { S.sheet = "bed"; render(); return; }
+  if (act === "close-sheet") { S.sheet = null; render(); return; }
+  if (act === "minutes") { S.minutes = Number(el.dataset.n); if (!run.on) S.clock = clock(S.minutes * 60000); render(); return; }
+  if (act === "set-timer") {
+    S.clock = clock(S.minutes * 60000);
+    if (run.on && !run.paused) { run.total = S.minutes * 60000; run.left = run.total; run.start = Date.now(); }
+    S.sheet = null; render(); return;
+  }
+  if (act === "bed") {
+    S.bed = el.dataset.id;
+    if (run.on && !run.paused) { unlock().then(() => { if (run.on && !run.paused) startBed(); }); }
+    render(); return;
+  }
+  if (act === "soft") { S.soft = S.soft > 1 ? 1 : 1.25; render(); return; }
+  if (act === "rain") {
+    S.rain = !S.rain;
+    if (run.on && !run.paused) { if (S.rain) rainOn(); else rainOff(); }
+    render(); return;
+  }
+  if (act === "mode") {
+    S.mode = el.dataset.id; saveTone();
+    if (toneRun.on && !toneRun.held) beginTone(false);
+    render(); return;
+  }
+  if (act === "tone") {
+    S.toneHz = Number(el.dataset.hz); saveTone();
+    if (toneRun.on && !toneRun.held) beginTone(false);
+    render(); return;
+  }
+  if (act === "beat") {
+    S.beat = Number(el.dataset.hz); saveTone();
+    if (toneRun.on && !toneRun.held) beginTone(false);
+    render(); return;
+  }
+  if (act === "tmin") {
+    S.toneMin = Number(el.dataset.n); saveTone();
+    if (!toneRun.on) S.toneClock = S.toneMin ? clock(S.toneMin * 60000) : "Open";
+    render(); return;
+  }
+  if (act === "star") {
+    const hz = toneOf(S.toneHz).hz;
+    S.stars = S.stars.indexOf(hz) >= 0 ? S.stars.filter((n) => n !== hz) : S.stars.concat(hz);
+    write("af-stars", S.stars); render(); return;
+  }
+  if (act === "play-tone") {
+    if (toneRun.on) stopTone(false);
+    else { if (!run.on) journey = null; beginTone(false); }
+    render(); return;
+  }
+  if (act === "rest") { stopTone(false); render(); return; }
+  if (act === "journey") {
+    const j = JOURNEYS.find((item) => item.id === el.dataset.id);
+    if (!j) return;
+    S.mood = j.moodId; S.bed = j.bedId; S.minutes = j.minutes; S.soft = j.soft || 1; S.rain = !!j.rain;
+    S.toneHz = j.toneHz; S.mode = j.mode; if (j.beatHz) S.beat = j.beatHz;
+    S.room = "breathe"; S.screen = "app"; S.clock = clock(j.minutes * 60000);
+    if (run.on || run.paused) stopSession(false);
+    stopTone(false);
+    journey = j; saveTone();
+    beginTone(true); startBreath();
+    return;
+  }
+  if (act === "kept") { S.toneHz = Number(el.dataset.hz); S.room = "tones"; saveTone(); render(); return; }
+  if (act === "clear") {
+    if (!S.confirm) { S.confirm = true; render(); return; }
+    S.journal = []; S.confirm = false; write("af-journal", []); render();
+  }
+});
+document.getElementById("app").addEventListener("input", (e) => {
+  if (e.target.id !== "vol") return;
+  S.vol = Number(e.target.value) / 100;
+  localStorage.setItem("af-vol", String(S.vol));
+  const label = document.getElementById("volLabel");
+  if (label) label.textContent = Math.round(S.vol * 100) + "%";
+  swellBed(true); setToneVol(); setAirVol();
+});
+render();
+</script>
+</body>
+</html>
