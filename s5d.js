@@ -26,7 +26,8 @@ const FILES = {
   "unspoken": "private/unspoken.html",
   "spirit-breath": "private/spirit-breath.html",
   "paws-of-destiny": "private/paws-of-destiny.html",
-  "accord": "private/accord.html"
+  "accord": "private/accord.html",
+  "unwritten": "private/unwritten.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
