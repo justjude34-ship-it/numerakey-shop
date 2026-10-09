@@ -18,7 +18,8 @@ const FILES = {
   "goodwin-readings": "private/goodwin-readings.html",
   "nest-light": "private/nest-light.html",
   "night-garden": "private/night-garden.html",
-  "first-light": "private/first-light.html"
+  "first-light": "private/first-light.html",
+  "pulse-plus": "private/pulse-plus.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;

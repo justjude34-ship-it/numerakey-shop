@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Pulse Plus</title>
+<style>
+  :root {
+    --bg:#050508; --surface:#0e0e14; --s2:#16161f; --s3:#1e1e2a;
+    --fg:#f4f0ff; --muted:#9b94b0; --faint:#6b6480;
+    --line:#2a2438; --teal:#2dd4bf; --mag:#e879f9;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+    font-family: "Segoe UI", system-ui, sans-serif; }
+  button, input { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  #app { display:flex; height:100dvh; overflow:hidden; }
+  aside { width:250px; flex:none; background:var(--surface); border-right:1px solid var(--line);
+    display:flex; flex-direction:column; padding:18px 12px 12px; }
+  .brand { font-size:22px; font-weight:700; letter-spacing:-.03em; padding:0 8px 4px;
+    background: linear-gradient(90deg, var(--teal), var(--mag));
+    -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .tag { color:var(--muted); font-size:12px; padding:0 8px 14px; }
+  .navbtn, .pl { width:100%; text-align:left; border:0; background:transparent; border-radius:12px;
+    padding:10px 12px; color:var(--muted); display:flex; gap:8px; align-items:center; }
+  .navbtn.on, .pl.on { background:linear-gradient(90deg, rgba(45,212,191,.18), rgba(232,121,249,.12));
+    color:var(--fg); box-shadow: inset 0 0 0 1px rgba(45,212,191,.28); }
+  .navbtn:hover, .pl:hover { background:var(--s2); color:var(--fg); }
+  .plwrap { flex:1; overflow:auto; margin-top:8px; }
+  .hlabel { display:flex; justify-content:space-between; align-items:center; padding:8px 8px 4px;
+    font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--faint); }
+  .iconbtn { width:36px; height:36px; border-radius:999px; border:0; background:transparent; color:var(--teal); }
+  main { flex:1; min-width:0; display:flex; flex-direction:column; }
+  header { display:flex; gap:10px; align-items:center; padding:12px 16px; border-bottom:1px solid var(--line); }
+  #q { flex:1; height:44px; border-radius:12px; border:1px solid var(--line); background:rgba(14,14,20,.8);
+    padding:0 12px; outline:none; }
+  #q:focus { border-color:rgba(45,212,191,.5); }
+  .add { height:44px; border:0; border-radius:12px; padding:0 14px; font-weight:700; color:#050508;
+    background:linear-gradient(90deg, var(--teal), #14b8a6); white-space:nowrap; }
+  .menu { display:none; width:44px; height:44px; border-radius:12px; border:0; background:transparent; }
+  #scroll { flex:1; overflow:auto; padding:16px; }
+  .hero { display:flex; gap:16px; align-items:center; padding:14px; border-radius:18px; border:1px solid #3d3554;
+    background:radial-gradient(circle at 20% 20%, rgba(45,212,191,.22), transparent 45%),
+               radial-gradient(circle at 80% 0%, rgba(232,121,249,.22), transparent 42%), var(--surface);
+    margin-bottom:16px; }
+  .disc { width:72px; height:72px; border-radius:16px; flex:none;
+    background:
+      radial-gradient(circle at 50% 50%, #120818 0 18%, transparent 19%),
+      conic-gradient(from 200deg, #2dd4bf, #a78bfa, #e879f9, #2dd4bf);
+    box-shadow:0 8px 24px rgba(232,121,249,.25); }
+  h1 { margin:0 0 4px; font-size:26px; letter-spacing:-.03em; }
+  .sub { margin:0 0 10px; color:var(--muted); font-size:14px; }
+  .kicker { font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:0 0 4px; }
+  .row { display:grid; grid-template-columns: 28px 1fr auto auto auto; gap:8px; align-items:center;
+    padding:8px; border-radius:12px; }
+  .row:hover, .row.on { background:var(--s2); }
+  .t { font-weight:600; font-size:14px; }
+  .a { color:var(--muted); font-size:12px; }
+  .heart, .more { border:0; background:transparent; color:var(--faint); width:36px; height:36px; border-radius:999px; }
+  .heart.on { color:var(--mag); }
+  .empty { text-align:center; color:var(--muted); padding:28px 12px; border:1px dashed #3d3554; border-radius:16px; }
+  #bar { display:grid; grid-template-columns: 1fr auto; gap:12px; align-items:center;
+    padding:10px 14px 14px; border-top:1px solid var(--line); background:rgba(8,8,12,.94); }
+  .ctrls { display:flex; flex-direction:column; align-items:center; gap:4px; min-width:220px; }
+  .ctrls .btns { display:flex; gap:6px; align-items:center; }
+  .ctrls button { border:0; background:transparent; color:var(--fg); width:40px; height:40px; border-radius:999px; }
+  .go { background:var(--fg) !important; color:#050508 !important; width:44px !important; height:44px !important; font-weight:800; }
+  input[type=range] { width:100%; accent-color: var(--teal); }
+  .time { display:flex; justify-content:space-between; width:100%; font-size:11px; color:var(--faint); }
+  .now { min-width:0; }
+  .backdrop { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:20; }
+  .modal { display:none; position:fixed; inset:0; z-index:30; align-items:flex-end; justify-content:center; }
+  .modal.on, .backdrop.on { display:flex; }
+  .sheet { width:min(420px, 100%); background:var(--surface); border:1px solid #3d3554; border-radius:18px 18px 0 0; padding:16px; }
+  .sheet input, .sheet select { width:100%; height:44px; border-radius:12px; border:1px solid var(--line); background:var(--s2); padding:0 12px; margin-top:8px; }
+  .sheet .ok { margin-top:12px; width:100%; height:44px; border:0; border-radius:12px; font-weight:700; color:#050508;
+    background:linear-gradient(90deg, var(--mag), #d946ef); }
+  @media (max-width: 860px) {
+    aside { position:fixed; z-index:30; inset:0 auto 0 0; transform:translateX(-105%); transition:transform .2s; }
+    aside.open { transform:none; }
+    .backdrop.on { display:block; }
+    .menu { display:inline-flex; align-items:center; justify-content:center; }
+    h1 { font-size:22px; }
+    .add span { display:none; }
+    #bar { grid-template-columns: 1fr; }
+    .ctrls { min-width:0; width:100%; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="backdrop" id="back"></div>
+  <aside id="side">
+    <div class="brand">Pulse Plus</div>
+    <div class="tag">Your music. On this device.</div>
+    <button class="navbtn on" data-view="library">Library</button>
+    <button class="navbtn" data-view="liked">Liked</button>
+    <div class="hlabel">Playlists <button class="iconbtn" id="newpl" type="button" aria-label="New playlist">+</button></div>
+    <div class="plwrap" id="pls"></div>
+  </aside>
+  <main>
+    <header>
+      <button class="menu" id="menu" type="button" aria-label="Menu">☰</button>
+      <input id="q" placeholder="Search your songs…" />
+      <button class="add" id="add" type="button">+ <span>Add songs</span></button>
+    </header>
+    <div id="scroll"></div>
+    <div id="bar"></div>
+  </main>
+</div>
+<input id="pick" type="file" accept="audio/*,.mp3,.m4a,.aac,.wav,.ogg,.flac,.opus" multiple hidden />
+<div class="modal" id="modal"><div class="sheet">
+  <p class="kicker" id="mlabel">New playlist</p>
+  <input id="mname" placeholder="Playlist name" />
+  <button class="ok" id="msave" type="button">Save</button>
+</div></div>
+<audio id="audio" preload="auto"></audio>
+<script>
+const DB = "pulse-plus";
+const KEY = "pulse-plus-real-v1";
+const audio = document.getElementById("audio");
+const urls = new Map();
+let songs = [];
+let state = Object.assign({
+  view: "library",
+  playlistId: null,
+  liked: [],
+  playlists: [],
+  queue: [],
+  index: 0,
+  playing: false,
+  shuffle: false,
+  repeat: "off",
+  volume: 0.85,
+  q: "",
+  modal: null
+}, JSON.parse(localStorage.getItem(KEY) || "null") || {});
+
+function save() {
+  const { view, playlistId, liked, playlists, volume } = state;
+  localStorage.setItem(KEY, JSON.stringify({ view, playlistId, liked, playlists, volume }));
+}
+function uid() { return "s_" + Math.random().toString(36).slice(2, 10); }
+function openDb() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open(DB, 1);
+    req.onupgradeneeded = () => {
+      if (!req.result.objectStoreNames.contains("songs")) req.result.createObjectStore("songs", { keyPath: "id" });
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+function parseName(filename) {
+  const base = filename.replace(/\.[^.]+$/, "").replace(/_/g, " ").trim();
+  const parts = base.split(/\s+-\s+/);
+  if (parts.length >= 2) return { artist: parts[0].trim() || "Unknown", title: parts.slice(1).join(" - ").trim() || base };
+  return { title: base || "Untitled", artist: "Unknown" };
+}
+function fmt(s) { s = Math.floor(s || 0); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+function byId(id) { return songs.find((s) => s.id === id); }
+function visible() {
+  let list = songs;
+  if (state.view === "liked") list = state.liked.map(byId).filter(Boolean);
+  if (state.view === "playlist") {
+    const pl = state.playlists.find((p) => p.id === state.playlistId);
+    list = pl ? pl.trackIds.map(byId).filter(Boolean) : [];
+  }
+  const q = state.q.trim().toLowerCase();
+  if (!q) return list;
+  return list.filter((t) => (t.title + " " + t.artist).toLowerCase().includes(q));
+}
+function current() { return byId(state.queue[state.index]); }
+
+async function loadSongs() {
+  const db = await openDb();
+  const rows = await new Promise((resolve, reject) => {
+    const tx = db.transaction("songs", "readonly");
+    const req = tx.objectStore("songs").getAll();
+    req.onsuccess = () => resolve(req.result || []);
+    req.onerror = () => reject(req.error);
+  });
+  db.close();
+  songs = rows.map((row) => {
+    const url = URL.createObjectURL(new Blob([row.data], { type: row.mime || "audio/mpeg" }));
+    urls.set(row.id, url);
+    return row;
+  });
+  render();
+}
+async function addFiles(list) {
+  const files = [...list];
+  const db = await openDb();
+  for (const file of list) {
+    const ok = (file.type || "").startsWith("audio/") || /\.(mp3|m4a|aac|wav|ogg|flac|opus)$/i.test(file.name);
+    if (!ok) continue;
+    const names = parseName(file.name);
+    const data = await file.arrayBuffer();
+    const row = { id: uid(), title: names.title, artist: names.artist, mime: file.type || "audio/mpeg", data };
+    await new Promise((resolve, reject) => {
+      const tx = db.transaction("songs", "readwrite");
+      tx.objectStore("songs").put(row);
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+    urls.set(row.id, URL.createObjectURL(new Blob([data], { type: row.mime })));
+    songs.push(row);
+  }
+  db.close();
+  render();
+}
+async function removeSong(id) {
+  const db = await openDb();
+  await new Promise((resolve, reject) => {
+    const tx = db.transaction("songs", "readwrite");
+    tx.objectStore("songs").delete(id);
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+  });
+  db.close();
+  if (urls.get(id)) URL.revokeObjectURL(urls.get(id));
+  urls.delete(id);
+  songs = songs.filter((s) => s.id !== id);
+  state.liked = state.liked.filter((x) => x !== id);
+  state.playlists.forEach((p) => { p.trackIds = p.trackIds.filter((x) => x !== id); });
+  state.queue = state.queue.filter((x) => x !== id);
+  if (state.index >= state.queue.length) state.index = 0;
+  save();
+  render();
+}
+function playSong(id, ids) {
+  state.queue = (ids && ids.length ? ids.slice() : songs.map((s) => s.id));
+  if (state.shuffle) state.queue.sort(() => Math.random() - 0.5);
+  const i = state.queue.indexOf(id);
+  state.index = i < 0 ? 0 : i;
+  state.playing = true;
+  start();
+  render();
+}
+function start() {
+  const song = current();
+  if (!song) return;
+  const url = urls.get(song.id);
+  if (!url) return;
+  if (audio.dataset.id !== song.id) {
+    audio.src = url;
+    audio.dataset.id = song.id;
+  }
+  audio.volume = state.volume;
+  const play = audio.play();
+  if (play) play.catch(() => { state.playing = false; render(); });
+}
+function toggle() {
+  if (!current()) {
+    const list = visible();
+    if (list[0]) playSong(list[0].id, list.map((s) => s.id));
+    return;
+  }
+  state.playing = !state.playing;
+  if (state.playing) start();
+  else audio.pause();
+  render();
+}
+function step(dir) {
+  if (!state.queue.length) return;
+  if (dir < 0 && audio.currentTime > 3) { audio.currentTime = 0; render(); return; }
+  state.index = (state.index + dir + state.queue.length) % state.queue.length;
+  if (state.playing) start();
+  else { audio.dataset.id = ""; }
+  render();
+}
+audio.addEventListener("timeupdate", () => {
+  const seek = document.getElementById("seek");
+  if (!seek || document.activeElement === seek) return;
+  seek.max = Number.isFinite(audio.duration) ? audio.duration : 0;
+  seek.value = audio.currentTime || 0;
+  const times = document.querySelectorAll(".time span");
+  if (times[0]) times[0].textContent = fmt(audio.currentTime);
+  if (times[1]) times[1].textContent = fmt(audio.duration);
+});
+audio.addEventListener("ended", () => {
+  if (state.repeat === "one") { audio.currentTime = 0; audio.play(); return; }
+  if (state.index < state.queue.length - 1) { state.index++; start(); render(); return; }
+  if (state.repeat === "all" && state.queue.length) { state.index = 0; start(); render(); return; }
+  state.playing = false;
+  render();
+});
+function render() {
+  document.querySelectorAll(".navbtn").forEach((b) => b.classList.toggle("on", b.dataset.view === state.view));
+  const pls = document.getElementById("pls");
+  pls.innerHTML = state.playlists.map((p) => `<button class="pl ${state.view === "playlist" && state.playlistId === p.id ? "on" : ""}" data-pl="${p.id}" type="button">${p.name}</button>`).join("") || `<p class="tag">No playlists yet.</p>`;
+  const list = visible();
+  const cur = current();
+  const title = state.view === "liked" ? "Liked songs" : state.view === "playlist" ? ((state.playlists.find((p) => p.id === state.playlistId) || {}).name || "Playlist") : "Your library";
+  const sub = state.view === "library"
+    ? (songs.length ? songs.length + " songs on this device" : "No sample songs. Add your own.")
+    : list.length + " songs";
+  document.getElementById("scroll").innerHTML = `
+    <section class="hero">
+      <div class="disc" aria-hidden="true"></div>
+      <div>
+        <p class="kicker">Pulse Plus</p>
+        <h1>${title}</h1>
+        <p class="sub">${sub}</p>
+        <button class="add" id="add2" type="button">Add songs</button>
+      </div>
+    </section>
+    ${list.length ? list.map((t, i) => `<div class="row ${cur && cur.id === t.id ? "on" : ""}" data-id="${t.id}">
+      <span style="color:var(--faint);font-size:12px">${i + 1}</span>
+      <div><div class="t">${escapeHtml(t.title)}</div><div class="a">${escapeHtml(t.artist)}</div></div>
+      <button class="heart ${state.liked.includes(t.id) ? "on" : ""}" data-like="${t.id}" type="button" aria-label="Like">♥</button>
+      <button class="more" data-add="${t.id}" type="button" aria-label="Add to playlist">+</button>
+      <button class="more" data-del="${t.id}" type="button" aria-label="Remove">✕</button>
+    </div>`).join("") : `<div class="empty"><p><strong>No songs yet</strong></p><p>Tap Add songs and choose music saved on this phone. The songs stay in this file’s library.</p></div>`}`;
+  const dur = Number.isFinite(audio.duration) ? audio.duration : 0;
+  document.getElementById("bar").innerHTML = `
+    <div class="now"><div class="t">${cur ? escapeHtml(cur.title) : "Nothing playing"}</div><div class="a">${cur ? escapeHtml(cur.artist) : "Add a song to begin"}</div></div>
+    <div class="ctrls">
+      <div class="btns">
+        <button id="prev" type="button" aria-label="Previous">⏮</button>
+        <button class="go" id="pp" type="button" aria-label="Play">${state.playing ? "❚❚" : "▶"}</button>
+        <button id="next" type="button" aria-label="Next">⏭</button>
+      </div>
+      <input id="seek" type="range" min="0" max="${dur || 0}" step="0.1" value="${audio.currentTime || 0}" />
+      <div class="time"><span>${fmt(audio.currentTime)}</span><span>${fmt(dur)}</span></div>
+    </div>`;
+  const add2 = document.getElementById("add2");
+  if (add2) add2.onclick = () => document.getElementById("pick").click();
+  document.getElementById("modal").classList.toggle("on", !!state.modal);
+}
+function escapeHtml(value) {
+  const amp = String.fromCharCode(38);
+  return String(value)
+    .replaceAll(amp, amp + "amp;")
+    .replaceAll("<", amp + "lt;")
+    .replaceAll(">", amp + "gt;")
+    .replaceAll('"', amp + "quot;")
+    .replaceAll("'", amp + "#39;");
+}
+document.getElementById("scroll").addEventListener("click", (e) => {
+  const like = e.target.closest("[data-like]");
+  const del = e.target.closest("[data-del]");
+  const add = e.target.closest("[data-add]");
+  const row = e.target.closest(".row");
+  if (like) {
+    const id = like.dataset.like;
+    state.liked = state.liked.includes(id) ? state.liked.filter((x) => x !== id) : state.liked.concat(id);
+    save(); render(); return;
+  }
+  if (add) {
+    state.modal = { kind: "add", trackId: add.dataset.add };
+    document.getElementById("mlabel").textContent = "Add to playlist";
+    document.getElementById("mname").value = state.playlists[0] ? state.playlists[0].name : "My mix";
+    render();
+    return;
+  }
+  if (del) {
+    if (state.view === "playlist") {
+      const pl = state.playlists.find((p) => p.id === state.playlistId);
+      if (pl) pl.trackIds = pl.trackIds.filter((x) => x !== del.dataset.del);
+      save(); render();
+    } else {
+      removeSong(del.dataset.del);
+    }
+    return;
+  }
+  if (row && !e.target.closest("button")) {
+    const list = visible();
+    playSong(row.dataset.id, list.map((s) => s.id));
+  }
+});
+document.getElementById("bar").addEventListener("click", (e) => {
+  if (e.target.id === "pp") toggle();
+  if (e.target.id === "next") step(1);
+  if (e.target.id === "prev") step(-1);
+});
+document.getElementById("bar").addEventListener("input", (e) => {
+  if (e.target.id === "seek") audio.currentTime = Number(e.target.value);
+});
+document.getElementById("side").addEventListener("click", (e) => {
+  const v = e.target.closest("[data-view]");
+  const pl = e.target.closest("[data-pl]");
+  if (v) { state.view = v.dataset.view; save(); closeSide(); render(); }
+  if (pl) { state.view = "playlist"; state.playlistId = pl.dataset.pl; save(); closeSide(); render(); }
+});
+document.getElementById("add").onclick = () => document.getElementById("pick").click();
+document.getElementById("pick").onchange = (e) => {
+  const files = [...(e.target.files || [])];
+  e.target.value = "";
+  if (files.length) addFiles(files);
+};
+document.getElementById("newpl").onclick = () => {
+  state.modal = { kind: "new" };
+  document.getElementById("mlabel").textContent = "New playlist";
+  document.getElementById("mname").value = "";
+  render();
+};
+document.getElementById("msave").onclick = () => {
+  const name = document.getElementById("mname").value.trim() || "Untitled";
+  if (state.modal && state.modal.kind === "add") {
+    let pl = state.playlists.find((p) => p.name.toLowerCase() === name.toLowerCase());
+    if (!pl) {
+      pl = { id: "pl_" + Math.random().toString(36).slice(2, 8), name, trackIds: [] };
+      state.playlists.push(pl);
+    }
+    if (!pl.trackIds.includes(state.modal.trackId)) pl.trackIds.push(state.modal.trackId);
+  } else {
+    const id = "pl_" + Math.random().toString(36).slice(2, 8);
+    state.playlists.push({ id, name, trackIds: [] });
+    state.view = "playlist";
+    state.playlistId = id;
+  }
+  state.modal = null;
+  save();
+  render();
+};
+document.getElementById("modal").addEventListener("click", (e) => { if (e.target.id === "modal") { state.modal = null; render(); } });
+document.getElementById("q").addEventListener("input", (e) => { state.q = e.target.value; render(); });
+function closeSide() { document.getElementById("side").classList.remove("open"); document.getElementById("back").classList.remove("on"); }
+document.getElementById("menu").onclick = () => { document.getElementById("side").classList.add("open"); document.getElementById("back").classList.add("on"); };
+document.getElementById("back").onclick = closeSide;
+document.getElementById("scroll").addEventListener("click", (e) => {
+  const row = e.target.closest(".row");
+  if (!row || e.target.closest("button")) return;
+});
+loadSongs().catch((err) => { console.error(err); render(); });
+render();
+</script>
+</body>
+</html>
