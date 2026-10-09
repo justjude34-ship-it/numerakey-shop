@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sacred Address</title>
+<meta name="description" content="Discover the vibration of the place that has chosen you — house and apartment number numerology after Thomas Muldoon.">
+<meta name="color-scheme" content="only dark">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-title" content="Sacred Address">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='Georgia,serif' font-size='18' fill='%23e8c57a'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:only dark;
+  --bg:#000;
+  --fg:#f3ebe0;
+  --muted:#b7aa98;
+  --subtle:#7a7166;
+  --gold:#e8c57a;
+  --rose:#e392a8;
+  --card:#141210;
+  --line:rgba(243,235,224,.1);
+  --display:"Cormorant Garamond",ui-serif,Georgia,"Times New Roman",serif;
+  --sans:"Figtree",ui-sans-serif,system-ui,sans-serif;
+  --glow:0 0 40px rgba(232,197,122,.22),0 10px 40px rgba(167,139,219,.12);
+}
+html,body{margin:0;min-height:100dvh;background:#000!important;color:var(--fg);color-scheme:only dark;font-family:var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+button:not(:disabled){cursor:pointer}
+h1,h2{text-wrap:balance;margin:0}
+p{text-wrap:pretty}
+input,textarea,select,button{color-scheme:dark}
+input{background:rgba(0,0,0,.6);color:var(--fg);caret-color:var(--gold)}
+input::placeholder{color:var(--subtle)}
+input:-webkit-autofill{ -webkit-text-fill-color:#f3ebe0;box-shadow:0 0 0 1000px #141210 inset }
+@media (prefers-color-scheme:light){
+  html,body{background:#000;color:#f3ebe0;color-scheme:only dark}
+}
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;background:#000}
+.orb{position:absolute;border-radius:9999px;filter:blur(80px);opacity:.34}
+.orb-gold{width:42vw;height:42vw;min-width:280px;min-height:280px;top:-12vw;right:-10vw;background:radial-gradient(circle,rgba(232,197,122,.55),transparent 68%)}
+.orb-violet{width:48vw;height:48vw;min-width:300px;min-height:300px;bottom:-16vw;left:-14vw;background:radial-gradient(circle,rgba(167,139,219,.5),transparent 70%)}
+.orb-blue{width:36vw;height:36vw;min-width:240px;min-height:240px;top:38%;left:42%;background:radial-gradient(circle,rgba(90,140,210,.38),transparent 70%)}
+.grain{position:absolute;inset:0;opacity:.11;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:180px 180px}
+.shell{position:relative;z-index:1;display:flex;min-height:100dvh;flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 16px 0}
+.brand{background:none;border:0;padding:0;font-family:var(--display);font-size:1.25rem;letter-spacing:.02em}
+.main{flex:1;padding:24px 16px 64px}
+.foot{padding:0 16px max(1.5rem,env(safe-area-inset-bottom));text-align:center}
+.foot p{margin:0 auto;max-width:28rem;font-size:.72rem;line-height:1.5;color:var(--subtle)}
+.wrap{margin:0 auto;display:flex;width:100%;max-width:36rem;flex-direction:column;gap:2rem}
+.wrap-wide{max-width:48rem}
+.center{text-align:center}
+.eyebrow{margin:0;font-size:.7rem;font-weight:500;letter-spacing:.32em;text-transform:uppercase;color:rgba(232,197,122,.85)}
+.gradient-text{background-image:linear-gradient(115deg,#e8c57a 0%,#e392a8 32%,#a78bdb 66%,#7ed4d9 100%);background-size:180% 180%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 10s ease-in-out infinite}
+.hero-title{margin-top:12px;font-family:var(--display);font-weight:500;font-size:clamp(3rem,12vw,5.4rem);line-height:.9}
+.tagline{margin:16px auto 0;max-width:28rem;font-family:var(--display);font-style:italic;font-size:1.15rem;line-height:1.3;color:var(--muted)}
+.glass{background:color-mix(in oklab,#141210 78%,transparent);backdrop-filter:blur(22px) saturate(1.15);-webkit-backdrop-filter:blur(22px) saturate(1.15);border:1px solid transparent;background-image:linear-gradient(color-mix(in oklab,#141210 78%,transparent),color-mix(in oklab,#141210 78%,transparent)),linear-gradient(135deg,rgba(232,197,122,.5),rgba(227,146,168,.28),rgba(167,139,219,.42),rgba(126,212,217,.32));background-origin:border-box;background-clip:padding-box,border-box;box-shadow:0 20px 60px rgba(0,0,0,.45);border-radius:28px}
+.card-pad{padding:20px}
+.stack{display:flex;flex-direction:column;gap:20px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field label{font-size:.9rem;font-weight:500}
+.field input{height:48px;border:0;border-radius:14px;padding:0 16px;font-size:1rem;box-shadow:0 0 0 1px rgba(243,235,224,.16);outline:none}
+.field input:focus{box-shadow:0 0 0 1px rgba(232,197,122,.55)}
+.note{margin:16px 0 0;font-size:.9rem;color:var(--subtle)}
+.err{margin:16px 0 0;font-size:.9rem;color:var(--rose)}
+.btn-primary{margin-top:24px;display:flex;height:48px;width:100%;align-items:center;justify-content:center;border:0;border-radius:999px;padding:0 24px;font-size:.9rem;font-weight:600;letter-spacing:.02em;color:#140f0a;background-image:linear-gradient(115deg,#e8c57a 0%,#e392a8 34%,#a78bdb 68%,#7ed4d9 100%);background-size:160% 160%;box-shadow:var(--glow)}
+.btn-primary:hover{filter:brightness(1.06)}
+.btn-primary:active{transform:scale(.98)}
+.examples{margin-top:20px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.btn-ghost{background:transparent;color:var(--fg);box-shadow:0 0 0 1px rgba(243,235,224,.22);border:0;border-radius:999px;min-height:44px;padding:0 16px;font-size:.85rem}
+.btn-ghost:hover{background:rgba(243,235,224,.05)}
+.btn-ghost.sm{font-size:.75rem;letter-spacing:.02em;height:40px;min-height:40px}
+.method-toggle{display:flex;min-height:48px;width:100%;align-items:center;justify-content:space-between;gap:12px;padding:16px 20px;background:none;border:0;text-align:left;font-family:var(--display);font-size:1.25rem}
+.chev{width:20px;height:20px;color:var(--muted);transition:transform .2s}
+.chev.open{transform:rotate(180deg)}
+.method-body{border-top:1px solid var(--line);padding:16px 20px 20px;font-size:.9rem;line-height:1.6;color:var(--muted)}
+.method-body p{margin:0 0 16px}
+.method-body ul{margin:0 0 16px;padding:0;list-style:none}
+.method-body li{margin:8px 0}
+.em{color:var(--fg)}
+.gold{color:var(--gold)}
+.section-label{margin:0 0 12px;font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--subtle)}
+.history{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.history button{display:flex;min-height:48px;width:100%;align-items:center;justify-content:space-between;padding:12px 16px;background:inherit;border:0;text-align:left;border-radius:22px}
+.history .label{font-family:var(--display);font-size:1.15rem}
+.history .open{font-size:.75rem;letter-spacing:.04em;text-transform:uppercase;color:var(--subtle)}
+.linkish{background:none;border:0;color:var(--muted);font-size:.9rem;text-underline-offset:4px}
+.linkish:hover{color:var(--fg);text-decoration:underline}
+.row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.row-actions{display:flex;flex-wrap:wrap;gap:8px}
+.result-title{margin-top:12px;font-family:var(--display);font-size:clamp(1.8rem,5vw,2.4rem);color:var(--fg)}
+.lede{margin:12px auto 0;max-width:32rem;font-size:.9rem;line-height:1.6;color:var(--muted)}
+.layers{display:flex;flex-direction:column;gap:48px}
+.rule{margin:0;text-align:center;font-size:.72rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(232,197,122,.7)}
+.role{margin:0;font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--subtle)}
+.numeral-wrap{position:relative;display:inline-flex;flex-direction:column;align-items:center;margin-top:8px}
+.halo{position:absolute;top:50%;left:50%;width:11rem;height:11rem;transform:translate(-50%,-50%);border-radius:999px;background:radial-gradient(circle,rgba(232,197,122,.2),transparent 68%);pointer-events:none}
+.numeral{position:relative;font-family:var(--display);font-weight:500;font-size:clamp(5.5rem,22vw,8.5rem);line-height:1;filter:drop-shadow(0 0 28px rgba(232,197,122,.32)) drop-shadow(0 0 64px rgba(167,139,219,.18))}
+.reduce-note{margin:8px 0 0;font-family:var(--display);font-style:italic;font-size:1.25rem;color:var(--muted)}
+.role-note{margin:12px auto 0;max-width:28rem;font-size:.9rem;color:var(--muted)}
+.steps{margin:0;padding:20px 24px;list-style:none}
+.steps li,.solo{font-size:.9rem;color:rgba(243,235,224,.9);margin:8px 0}
+.steps .muted,.solo{color:var(--muted)}
+.meaning{padding:20px 24px}
+.kicker{margin:0;font-size:.68rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--subtle)}
+.meaning-head{margin-top:12px;display:flex;align-items:flex-end;gap:16px}
+.meaning-n{font-family:var(--display);font-weight:500;font-size:clamp(3rem,8vw,3.6rem);line-height:1}
+.meaning-title{padding-bottom:4px;font-family:var(--display);font-size:clamp(1.4rem,4vw,1.7rem);line-height:1.15;font-weight:500}
+.meaning p{margin:16px 0 0;font-size:.975rem;line-height:1.65;color:var(--muted)}
+.watch{font-size:.9rem;color:var(--subtle)}
+.watch span{color:rgba(232,197,122,.8)}
+.keywords{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0;padding:0;list-style:none}
+.keywords li{border-radius:999px;padding:4px 12px;font-size:.7rem;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:rgba(232,197,122,.9);box-shadow:0 0 0 1px rgba(232,197,122,.28)}
+.attracts{margin:16px 0 0;font-size:.9rem;line-height:1.6;color:rgba(243,235,224,.85)}
+.attracts span{color:var(--subtle)}
+.grid-gap{display:grid;gap:16px}
+.lib-head{font-family:var(--display);font-size:clamp(2.2rem,6vw,3rem);font-weight:500}
+.nums{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;padding:12px}
+.nums button{height:40px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-family:var(--display);font-size:.9rem}
+.nums button.on{background:var(--gold);color:#000}
+.nums button:hover:not(.on){background:rgba(243,235,224,.1);color:var(--fg)}
+.rise{animation:rise .52s cubic-bezier(.22,1,.36,1) both}
+.step-in{animation:step .42s cubic-bezier(.22,1,.36,1) both}
+@keyframes shimmer{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes rise{from{opacity:0;transform:translateY(16px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes step{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (min-width:640px){
+  .top,.main{padding-left:24px;padding-right:24px}
+  .card-pad{padding:28px}
+  .tagline{font-size:1.25rem}
+  .nums{grid-template-columns:repeat(12,1fr);padding:16px}
+}
+@media (prefers-reduced-motion:reduce){
+  .gradient-text,.rise,.step-in,.orb{animation:none!important}
+  .rise,.step-in{opacity:1;transform:none;filter:none}
+}
+</style>
+</head>
+<body>
+<div class="ambient" aria-hidden="true">
+  <div class="orb orb-gold"></div>
+  <div class="orb orb-violet"></div>
+  <div class="orb orb-blue"></div>
+  <div class="grain"></div>
+</div>
+<div class="shell">
+  <header class="top">
+    <button type="button" class="brand" id="brand"><span class="gradient-text">Sacred Address</span></button>
+  </header>
+  <main class="main" id="app"></main>
+  <footer class="foot">
+    <p>Interpretations drawn from the teachings of Australian numerologist Thomas Muldoon. A contemplative reading of place — not legal, financial or real-estate advice. © <span id="year"></span> Sacred Address</p>
+  </footer>
+</div>
+<script type="application/json" id="meanings">[{"n":1,"title":"The Sovereign Flame","text":"A number One address is a house of beginnings. It favours a single clear will, independent work, and the courage to start again on your own terms. The rooms want a leader — not a committee. Life here often feels like a first chapter: bright, self-directed, occasionally lonely at the top.","keywords":["initiative","independence","leadership","new chapters"],"shadow":"Pride, isolation, or the need to win every conversation under this roof.","attracts":["Leo"]},{"n":2,"title":"The Quiet Pair","text":"A number Two address is a house of partnership and tact. It softens hard edges, asks for listening, and gathers people two by two. Moods move like tides. It is a fine place for a couple, a collaborator, or anyone who does their best work beside another person.","keywords":["partnership","sensitivity","diplomacy","receptivity"],"shadow":"Over-adaptation, indecision, or absorbing the household’s feelings as your own.","attracts":["Cancer"]},{"n":3,"title":"The Open Voice","text":"A number Three address is a house of speech, colour and company. Visitors come easily. Ideas want to be said aloud, written, sung or hung on the wall. It is a social, creative current — restless if the rooms stay silent, generous when they are used as a small stage.","keywords":["expression","sociability","creativity","visitors"],"shadow":"Scattered projects, gossip, or a home that never quite settles.","attracts":["Sagittarius"]},{"n":4,"title":"The Foundation Stone","text":"A number Four address is a house of work, order and the long build. Walls here remember effort. It rewards honesty, routine and things made to last — and it will expose shortcuts. A practical, square, enduring current. Good for craft, study with a timetable, and anyone prepared to put the bones of a life in place.","keywords":["structure","work","endurance","honesty"],"shadow":"Rigidity, overwork, or a home that feels like a task list.","attracts":["Aquarius","those born to the number Four"]},{"n":5,"title":"The Open Gate","text":"A number Five address is a house of movement. Doors open, plans change, people come and go. It loves travel, variety and the unexpected guest. Freedom is the gift; restlessness is the rent. Roots here have to be chosen — they will not grow by habit alone.","keywords":["change","freedom","travel","variety"],"shadow":"Restlessness, excess, or a household that cannot keep a promise to itself.","attracts":["Gemini","Virgo"]},{"n":6,"title":"The Hearth","text":"A number Six address is a house of care, beauty and duty. Family — chosen or blood — gathers here. The rooms ask to be made lovely and to be of use. Love is practical under this roof: meals, mending, the quiet labour of looking after people. Harmony is the aim; obligation is the shadow that walks beside it.","keywords":["home","responsibility","beauty","care"],"shadow":"Martyrdom, interference, or becoming the house’s servant rather than its inhabitant.","attracts":["Taurus","Libra"]},{"n":7,"title":"The Inner Room","text":"A number Seven address is a house of retreat. It favours study, analysis, prayer, research — any work that needs a closed door. The street can feel far away. Silence is a resource here, not an absence. People who need to think, or to be with the unseen, recognise this vibration at once.","keywords":["retreat","study","insight","privacy"],"shadow":"Isolation, suspicion, or a home that forgets how to receive a friend.","attracts":["Pisces"]},{"n":8,"title":"The Threshold of Means","text":"A number Eight address is a house of resource, authority and worldly current. Reputation matters here. Money, organisation and the management of power move through the rooms. It can be a substantial, ambitious address — a place from which things are run. Integrity is not optional; the house notices how you handle what you hold.","keywords":["authority","resource","ambition","stewardship"],"shadow":"Status-seeking, control, or confusing the house with a balance sheet.","attracts":["Capricorn"]},{"n":9,"title":"The Wide Door","text":"A number Nine address is a house of completion and the wider world. People pass through. Old stories end. Compassion, art and a public-facing life belong here. It is a generous, dramatic current — a place that asks you to give something back, and to let go of what has finished. Endings under this roof are part of its work.","keywords":["compassion","completion","the world","release"],"shadow":"Emotional drain, unfinished farewells, or saving everyone except yourself.","attracts":["Aries","Scorpio"]},{"n":10,"title":"The Returning One","text":"Ten is a full cycle that immediately begins again. A 10 house carries independence after experience — a beginner’s courage with an old soul’s memory. New chapters start here, but they are never quite naïve.","keywords":["cycle","independence","renewal"],"attracts":["Leo"]},{"n":11,"title":"The Twin Light","text":"Eleven is a high, dual current — inspiration beside tension. A 11 house can feel charged, intuitive, a little sleepless. It asks for honesty between two poles: the public self and the private one, the couple, the calling and the cost.","keywords":["inspiration","tension","vision"],"attracts":["Cancer"]},{"n":12,"title":"The Creative Order","text":"Twelve gathers expression into a usable shape. A 12 house wants art with a timetable — words, music or guests that still leave the rooms in order. The voice is strong; the frame must be stronger.","keywords":["craft","voice","shape"],"attracts":["Sagittarius"]},{"n":13,"title":"The Rebuilder","text":"Thirteen is not a curse in this teaching — it is demolition in service of a truer structure. A 13 house asks you to take something apart and lay it again, honestly. Change here is structural, not cosmetic.","keywords":["rebuild","honesty","transformation"],"attracts":["Aquarius","those born to the number Four"]},{"n":14,"title":"The Working Freedom","text":"Fourteen wants movement with a backbone. A 14 house is a good base for travel, trade or changing work — provided someone keeps the keys and the bills. Freedom that refuses all form becomes noise.","keywords":["movement","trade","discipline"],"attracts":["Gemini","Virgo"]},{"n":15,"title":"The Changing Hearth","text":"Fifteen is a family current that will not sit still. A 15 house often sees people arrive, leave, return. Care is real here, but so is restlessness. Beauty helps; clinging does not.","keywords":["family","flux","charm"],"attracts":["Taurus","Libra"]},{"n":16,"title":"The Tested Tower","text":"Sixteen is the sudden correction — a tower that must be true or it will not stand. A 16 house can bring abrupt clarity: what is false in the household becomes obvious. Rebuild on bedrock, not on appearance.","keywords":["awakening","humility","truth"],"attracts":["Pisces"]},{"n":17,"title":"The Secluded Star","text":"Seventeen is a private light. A 17 house favours the person who works alone toward something visible later — research, art, a long skill. The world may not understand the hours kept here. That is part of the design.","keywords":["vocation","solitude","hope"],"attracts":["Capricorn"]},{"n":18,"title":"The Material Harvest","text":"Eighteen draws the wide world into matters of means. A 18 house can be prosperous, public, and emotionally expensive. Handle money and influence as a trust. What you gather here is meant to circulate.","keywords":["means","public life","circulation"],"attracts":["Aries","Scorpio"]},{"n":19,"title":"The Completed Self","text":"Nineteen is independence after a long road. A 19 house often marks a chapter in which you stand on your own — wiser, less willing to pretend. Endings here make room for a cleaner beginning.","keywords":["self-reliance","closure","dignity"],"attracts":["Leo"]},{"n":20,"title":"The Cooperative Field","text":"Twenty is partnership raised to a principle. A 20 house wants two (or a small circle) working in concert. Decisions made alone can feel wrong here. Diplomacy is not weakness — it is the native language.","keywords":["alliance","patience","diplomacy"],"attracts":["Cancer"]},{"n":21,"title":"The Social Crown","text":"Twenty-one is a sociable success. A 21 house likes to be seen: dinners, conversation, a little theatre. Recognition comes more easily when the household is generous with its voice.","keywords":["recognition","company","ease"],"attracts":["Sagittarius"]},{"n":22,"title":"The Master Builder","text":"Twenty-two is a large practical vision. A 22 house can carry more than a private life — a project, a practice, a structure meant to outlast the occupants. Dream in stone, not in slogans.","keywords":["vision","foundation","scale"],"attracts":["Aquarius","those born to the number Four"]},{"n":23,"title":"The Talking Traveller","text":"Twenty-three is wit in motion. A 23 house collects stories, guests and sudden plans. It is a poor place for a closed routine and a fine one for anyone whose work is language, sales, teaching or the road.","keywords":["wit","travel","exchange"],"attracts":["Gemini","Virgo"]},{"n":24,"title":"The Steady Partnership","text":"Twenty-four is two people (or two roles) building something that lasts. A 24 house rewards shared labour and a fair division of the practical. Romance here is shown in what gets fixed, paid and kept.","keywords":["loyalty","labour","home craft"],"attracts":["Taurus","Libra"]},{"n":25,"title":"The Curious Pair","text":"Twenty-five is companionship with a passport. A 25 house wants conversation and change in the same week. Study, short trips, and a refusal to ossify keep this address kind.","keywords":["curiosity","companionship","change"],"attracts":["Pisces"]},{"n":26,"title":"The Responsible Bond","text":"Twenty-six ties partnership to duty. A 26 house often holds family business, care of relatives, or a reputation two people share. Love and labour are hard to separate here — name the load, or it will name you.","keywords":["duty","kin","shared name"],"attracts":["Capricorn"]},{"n":27,"title":"The Quiet Counsel","text":"Twenty-seven is a listening house. A 27 address favours advice given carefully, study shared with one other, and a contemplative pair. Noise is a guest, not a resident.","keywords":["counsel","study","depth"],"attracts":["Aries","Scorpio"]},{"n":28,"title":"The Allied Enterprise","text":"Twenty-eight is partnership in the world of means. A 28 house can launch a practice, a firm, or a household that handles other people’s affairs. Contracts matter. So does the mood after the meeting.","keywords":["enterprise","contracts","alliance"],"attracts":["Leo"]},{"n":29,"title":"The Sensitive Horizon","text":"Twenty-nine is a fine-strung, compassionate current. A 29 house feels the neighbourhood. Idealism lives here; so does disappointment when the world is not gentle. Guard the nervous system as you would the door.","keywords":["empathy","ideal","thin skin"],"attracts":["Cancer"]},{"n":30,"title":"The Spoken Path","text":"Thirty is creative life given a direction. A 30 house wants the work of the voice — writing, teaching, performance — to go somewhere, not merely to decorate the week. Finish things. Then speak again.","keywords":["voice","direction","finish"],"attracts":["Sagittarius"]},{"n":31,"title":"The Original Speaker","text":"Thirty-one is self-expression with a spine. A 31 house favours the person who will say the unpopular true thing. It is a poor address for hiding, and a good one for a signature style.","keywords":["originality","speech","signature"],"attracts":["Aquarius","those born to the number Four"]},{"n":32,"title":"The Gracious Exchange","text":"Thirty-two is charm in conversation. A 32 house eases introductions and softens conflict. Use the gift to tell the truth, not to paper it. Guests remember how they felt here.","keywords":["charm","tact","welcome"],"attracts":["Gemini","Virgo"]},{"n":33,"title":"The Teaching Hearth","text":"Thirty-three is a high six — care raised to a calling. A 33 house often becomes a place people come to learn, heal or be held. The gift is real; so is fatigue. You are not required to be the neighbourhood’s chapel.","keywords":["teaching","care","devotion"],"attracts":["Taurus","Libra"]},{"n":34,"title":"The Crafted Word","text":"Thirty-four puts expression to work. A 34 house is excellent for a studio with office hours, a workshop that also talks, a life in which making and saying are the same job. Talent without a bench will fret here.","keywords":["craft","deadline","studio"],"attracts":["Pisces"]},{"n":35,"title":"The Lively Salon","text":"Thirty-five is a sociable, changeable current. A 35 house fills easily and empties just as fast. It is a salon, a landing place, a week of different faces. Keep one quiet corner or the household frays.","keywords":["salon","variety","spark"],"attracts":["Capricorn"]},{"n":36,"title":"The Hospitable House","text":"Thirty-six is creativity in service of home. A 36 address wants beauty that people can sit in — cooking, music, a table that is actually used. Art that never meets a guest will feel unfinished here.","keywords":["hospitality","beauty","table"],"attracts":["Aries","Scorpio"]},{"n":37,"title":"The Private Studio","text":"Thirty-seven is a creative retreat. A 37 house wants a door that closes on the work. Inspiration comes in quiet; it leaves if the rooms become a thoroughfare. Guard the hours.","keywords":["studio","privacy","muse"],"attracts":["Leo"]},{"n":38,"title":"The Public Voice","text":"Thirty-eight puts speech into the marketplace. A 38 house can support a public-facing practice, a brand, a reputation made of words. Integrity of message is the load-bearing wall.","keywords":["public","message","reputation"],"attracts":["Cancer"]},{"n":39,"title":"The Generous Stage","text":"Thirty-nine is expression with a wide heart. A 39 house likes to give its art away — benefits, open doors, a life in culture. Know when the performance ends, or the house will never sleep.","keywords":["generosity","art","audience"],"attracts":["Sagittarius"]},{"n":40,"title":"The Settled Work","text":"Forty is labour that has found its form. A 40 house favours the long project, the reliable craft, the life that is built rather than improvised. Excitement is not the point. Continuity is.","keywords":["form","continuity","labour"],"attracts":["Aquarius","those born to the number Four"]},{"n":41,"title":"The Independent Builder","text":"Forty-one is self-directed work. A 41 house suits the person who will not be managed. It rewards a private standard of excellence and punishes borrowed plans. Build what you can stand behind.","keywords":["autonomy","standard","build"],"attracts":["Gemini","Virgo"]},{"n":42,"title":"The Shared Foundation","text":"Forty-two is a structure two people hold. A 42 house wants a fair ledger — of money, of chores, of credit. Partnership here is architectural. If one person carries the joists, the house lists.","keywords":["fairness","structure","two"],"attracts":["Taurus","Libra"]},{"n":43,"title":"The Practical Studio","text":"Forty-three is creativity with tools in the drawer. A 43 house likes making that can be used: furniture, code, a curriculum, a garden that feeds. Fancy without function will not thrive.","keywords":["use","making","tools"],"attracts":["Pisces"]},{"n":44,"title":"The Double Foundation","text":"Forty-four is work upon work — a dense, enduring current. A 44 house can feel heavy, reliable, and slow to change. It is a fortress for those with a long task. Rest must be scheduled or it will not occur.","keywords":["endurance","density","task"],"attracts":["Capricorn"]},{"n":45,"title":"The Ordered Journey","text":"Forty-five wants change that still keeps the books. A 45 house is a good base for a travelling trade or a life of planned variety. Impulse is welcome; chaos is not.","keywords":["plan","travel","order"],"attracts":["Aries","Scorpio"]},{"n":46,"title":"The Working Home","text":"Forty-six is family and labour in the same rooms. A 46 house often holds a home business, care work, or a household that runs like a small firm. Draw a line between evening and invoice.","keywords":["household","work","care"],"attracts":["Leo"]},{"n":47,"title":"The Thoughtful Structure","text":"Forty-seven is analysis applied to the practical. A 47 house suits research, accounting, architecture of ideas, any life that thinks in systems. It is quiet, exacting, and unimpressed by display.","keywords":["analysis","systems","quiet skill"],"attracts":["Cancer"]},{"n":48,"title":"The Established Means","text":"Forty-eight is structure in the world of resource. A 48 house can accumulate, organise and represent solidity. It asks for clean books and a reputation that can be audited. Display without substance will not last.","keywords":["establishment","resource","audit"],"attracts":["Sagittarius"]},{"n":49,"title":"The Serving Foundation","text":"Forty-nine is work offered outward. A 49 house often becomes useful to more than its occupants — a practice, a cause, a table that feeds others. Do not confuse usefulness with self-erasure.","keywords":["service","use","offering"],"attracts":["Aquarius","those born to the number Four"]},{"n":50,"title":"The Open Road","text":"Fifty is freedom given a number. A 50 house does not like to be pinned. It is a launch point, a pied-à-terre, a life in transit. If you need a nest, you will have to build the ritual yourself.","keywords":["freedom","transit","unstuck"],"attracts":["Gemini","Virgo"]},{"n":51,"title":"The Pioneer Gate","text":"Fifty-one is change led from the front. A 51 house favours the first to try, the one who leaves town, the experiment. Followers may arrive later. Do not wait for permission that will not come.","keywords":["pioneer","experiment","lead"],"attracts":["Taurus","Libra"]},{"n":52,"title":"The Companionable Journey","text":"Fifty-two is travel or change taken with another. A 52 house wants a fellow passenger. Solo restlessness here can turn sharp; shared curiosity stays kind.","keywords":["companion","journey","adapt"],"attracts":["Pisces"]},{"n":53,"title":"The Talking Road","text":"Fifty-three is movement plus voice. A 53 house collects anecdotes. It is a natural address for writers on the move, teachers, connectors. Write things down — the house will not keep your stories for you.","keywords":["stories","motion","connect"],"attracts":["Capricorn"]},{"n":54,"title":"The Portable Craft","text":"Fifty-four is skill you can take with you. A 54 house supports a trade that travels, a practice that survives a change of city. Mastery is the anchor when the postcode is not.","keywords":["skill","portability","trade"],"attracts":["Aries","Scorpio"]},{"n":55,"title":"The Double Current","text":"Fifty-five is change upon change — a fast, electric house. A 55 address can feel like living in a corridor. Brilliant for a short, vivid chapter; exhausting as a forever home unless you love weather.","keywords":["velocity","risk","weather"],"attracts":["Leo"]},{"n":56,"title":"The Travelling Hearth","text":"Fifty-six is family that will not stay put — or a home that hosts the world’s wanderers. A 56 house needs rituals that travel: the same meal, the same hour of talk, wherever the suitcases are.","keywords":["ritual","kin","wander"],"attracts":["Cancer"]},{"n":57,"title":"The Seeking Mind","text":"Fifty-seven is inquiry on the move. A 57 house suits research trips, spiritual search, the student who will not sit in one library. Depth still matters — do not confuse mileage with wisdom.","keywords":["search","study","quest"],"attracts":["Sagittarius"]},{"n":58,"title":"The Venturing Means","text":"Fifty-eight is resource in motion — trade, investment, a life that makes money by moving. A 58 house can be exciting and unstable. Diversify. Do not bet the roof on one roll.","keywords":["venture","trade","risk"],"attracts":["Aquarius","those born to the number Four"]},{"n":59,"title":"The Worldly Passage","text":"Fifty-nine is a house with a wide door and loose hinges. People from everywhere pass through. A 59 address is a crossing, not a fortress. Bless the departures; they are part of its work.","keywords":["passage","world","release"],"attracts":["Gemini","Virgo"]},{"n":60,"title":"The Settled Care","text":"Sixty is responsibility that has found its home. A 60 house wants to look after people properly — not as a crisis, as a climate. Beauty and duty share the same cupboard.","keywords":["care","climate","duty"],"attracts":["Taurus","Libra"]},{"n":61,"title":"The Devoted Lead","text":"Sixty-one is care with a backbone. A 61 house often has one person who holds the family line. Leadership here is domestic and real. Ask for help before the spine complains.","keywords":["devotion","lead","line"],"attracts":["Pisces"]},{"n":62,"title":"The Mutual Hearth","text":"Sixty-two is two people keeping a home. A 62 house thrives on reciprocity. If care flows only one way, the rooms grow cold. Name what you need. Hear what is named.","keywords":["reciprocity","home","two"],"attracts":["Capricorn"]},{"n":63,"title":"The Living Room","text":"Sixty-three is a sociable, beautiful domestic current. A 63 house wants music, food, children or friends — life in the front rooms. A silent 63 is a house waiting for its purpose.","keywords":["living","beauty","company"],"attracts":["Aries","Scorpio"]},{"n":64,"title":"The Crafted Home","text":"Sixty-four is a household built by hand. A 64 house loves renovation, gardens, the slow improvement of rooms. Do not postpone living until the project is finished — it never is.","keywords":["renovate","craft","dwell"],"attracts":["Leo"]},{"n":65,"title":"The Flexible Family","text":"Sixty-five is care that allows movement. A 65 house must not become a beautiful cage. People grow; the address should let them. Loyalty and liberty have to share a key.","keywords":["loyalty","liberty","grow"],"attracts":["Cancer"]},{"n":66,"title":"The Double Hearth","text":"Sixty-six is home upon home — an intense domestic current. A 66 house can be deeply loving and slightly airless. Beauty helps. So does a door that opens onto the street.","keywords":["intensity","home","love"],"attracts":["Sagittarius"]},{"n":67,"title":"The Contemplative Home","text":"Sixty-seven is a caring house that also needs silence. A 67 address suits a family of readers, a spiritual household, anyone who loves people and still requires an inner room. Schedule solitude.","keywords":["silence","care","inner"],"attracts":["Aquarius","those born to the number Four"]},{"n":68,"title":"The Provided House","text":"Sixty-eight is a home concerned with provision — money, status, the decent roof. A 68 house can be generous and proud. Provide without turning love into an account.","keywords":["provision","pride","roof"],"attracts":["Gemini","Virgo"]},{"n":69,"title":"The Open Family","text":"Sixty-nine is a household with the world at the table. A 69 house often fosters, hosts, or lives a public kind of private life. Know who is family and who is a guest, or the distinction dissolves.","keywords":["welcome","world","table"],"attracts":["Taurus","Libra"]},{"n":70,"title":"The Closed Study","text":"Seventy is retreat given form. A 70 house is a cell, a library, a thinking place. It will not entertain for sport. Those who need to go inward recognise it; those who need a party will feel the door.","keywords":["study","inward","form"],"attracts":["Pisces"]},{"n":71,"title":"The Private Authority","text":"Seventy-one is a solitary command. A 71 house suits the specialist, the researcher who leads from the desk. The world may not see the work until late. That delay is not failure.","keywords":["specialist","command","desk"],"attracts":["Capricorn"]},{"n":72,"title":"The Quiet Alliance","text":"Seventy-two is two minds in a still house. A 72 address favours the scholarly pair, the counselling couple, anyone who thinks better with one witness. Crowds will feel like weather.","keywords":["minds","stillness","witness"],"attracts":["Aries","Scorpio"]},{"n":73,"title":"The Articulated Insight","text":"Seventy-three wants the inner life spoken. A 73 house is a good place to write what you have understood — memoir, theory, a careful letter. Insight that never leaves the room will press on the walls.","keywords":["insight","writing","speech"],"attracts":["Leo"]},{"n":74,"title":"The Methodical Mind","text":"Seventy-four is thought with a filing system. A 74 house rewards research that can be checked. Mysteries are welcome; sloppiness is not. Build a method, then trust it.","keywords":["method","research","check"],"attracts":["Cancer"]},{"n":75,"title":"The Restless Scholar","text":"Seventy-five is a mind that will not stay in one chair. A 75 house mixes study with restlessness — courses, questions, sudden departures. Finish one inquiry before opening five.","keywords":["inquiry","restless","course"],"attracts":["Sagittarius"]},{"n":76,"title":"The Devoted Study","text":"Seventy-six is inner life in a caring house. A 76 address can hold a counsellor, a priest of no church, a parent who thinks. Do not use analysis to avoid the people you live with.","keywords":["devotion","analysis","hold"],"attracts":["Aquarius","those born to the number Four"]},{"n":77,"title":"The Inner Sanctum","text":"Seventy-seven is retreat upon retreat — a deep, private current. A 77 house can be a sanctuary or a cave. Choose which. Bring one trusted person across the threshold or the silence hardens.","keywords":["sanctum","depth","threshold"],"attracts":["Gemini","Virgo"]},{"n":78,"title":"The Strategic Quiet","text":"Seventy-eight is worldly skill practiced in private. A 78 house suits the advisor, the quiet operator, the person whose influence is not advertised on the letterbox. Power here is better unseen.","keywords":["strategy","influence","unseen"],"attracts":["Taurus","Libra"]},{"n":79,"title":"The Compassionate Cell","text":"Seventy-nine is solitude with a wide heart. A 79 house may pray, study or grieve for more than itself. Keep a practice that returns you to the body. Compassion without ground becomes fog.","keywords":["compassion","solitude","practice"],"attracts":["Pisces"]},{"n":80,"title":"The Seat of Affairs","text":"Eighty is authority given an address. An 80 house can run things — a practice, a family name, a reputation. It is a poor place for pretending you have no power. Use what you have cleanly.","keywords":["affairs","authority","name"],"attracts":["Capricorn"]},{"n":81,"title":"The Commanding One","text":"Eighty-one is self-directed power. An 81 house favours the person who will not share the chair at the head of the table. Leadership here is lonely unless you invite equals, not an audience.","keywords":["command","self","equals"],"attracts":["Aries","Scorpio"]},{"n":82,"title":"The Executive Pair","text":"Eighty-two is two people running a worldly life. An 82 house can be a strong base for a shared practice or a marriage that also does business. Keep one room that is not a meeting.","keywords":["executive","pair","practice"],"attracts":["Leo"]},{"n":83,"title":"The Public Means","text":"Eighty-three puts resource into voice. An 83 house can support a public career, a brand, a life that speaks for a firm. The danger is becoming only a spokesperson. Keep a private sentence.","keywords":["public","means","voice"],"attracts":["Cancer"]},{"n":84,"title":"The Organised Fortune","text":"Eighty-four is wealth or influence that must be administered. An 84 house likes systems: ledgers, staff, a building that works. Fortune without organisation leaks.","keywords":["organise","fortune","systems"],"attracts":["Sagittarius"]},{"n":85,"title":"The Speculative House","text":"Eighty-five is means in motion — deals, travel, risk. An 85 house can feel like a trading floor with a kettle. Exhilarating. Sleep and a second plan are not optional.","keywords":["speculate","deal","motion"],"attracts":["Aquarius","those born to the number Four"]},{"n":86,"title":"The Provided Hearth","text":"Eighty-six is a substantial home with a duty of care. An 86 house often looks after people and looks the part. Generosity is the high note; control dressed as provision is the low.","keywords":["provision","care","substance"],"attracts":["Gemini","Virgo"]},{"n":87,"title":"The Private Fortune","text":"Eighty-seven is resource held quietly. An 87 house does not advertise. It suits the discreet professional, the careful investor, the person whose work is confidential. Silence here is a form of wealth.","keywords":["discretion","resource","quiet"],"attracts":["Taurus","Libra"]},{"n":88,"title":"The Double Threshold","text":"Eighty-eight is power upon power — a dense worldly current. An 88 house can amplify ambition and appetite. It will not hide what you do with influence. Choose a clean game.","keywords":["power","appetite","amplify"],"attracts":["Pisces"]},{"n":89,"title":"The Philanthropic Seat","text":"Eighty-nine is means offered outward. An 89 house wants its surplus to travel — patronage, causes, a public good. Give from overflow, not from a hole you refuse to name.","keywords":["patronage","surplus","good"],"attracts":["Capricorn"]},{"n":90,"title":"The Completed World","text":"Ninety is a wide, finishing current. A 90 house often marks a chapter of harvest and release — a life that has seen enough to be kind. It is a poor address for hoarding the past.","keywords":["harvest","release","kindness"],"attracts":["Aries","Scorpio"]},{"n":91,"title":"The Final Initiative","text":"Ninety-one is a last beginning. A 91 house can launch one more independent chapter after much life has already been lived. Do not wait for a perfect readiness. The house has already chosen the hour.","keywords":["late start","will","hour"],"attracts":["Leo"]},{"n":92,"title":"The Last Partnership","text":"Ninety-two is companionship at a mature frequency. A 92 house favours the bond that has been tested, the second chapter of two. Gentleness is strength here, not a consolation prize.","keywords":["mature bond","gentleness","two"],"attracts":["Cancer"]},{"n":93,"title":"The Farewell Voice","text":"Ninety-three is expression at the edge of completion. A 93 house wants the story told before the door closes — memoir, teaching, a last exhibition. Say the thing.","keywords":["story","teaching","threshold"],"attracts":["Sagittarius"]},{"n":94,"title":"The Lasting Work","text":"Ninety-four is labour offered as a legacy. A 94 house wants something built that will stand when you have left. Pace yourself. Legacy is a long brick, not a weekend.","keywords":["legacy","labour","stand"],"attracts":["Aquarius","those born to the number Four"]},{"n":95,"title":"The Released Traveller","text":"Ninety-five is freedom after duty. A 95 house often arrives when the children have gone or the old job has ended. Travel, experiment, a lighter kit. Do not invent a new prison out of habit.","keywords":["release","travel","light"],"attracts":["Gemini","Virgo"]},{"n":96,"title":"The Elder Hearth","text":"Ninety-six is a home that holds more than its occupants — elders, memory, a family centre of gravity. A 96 house can be deeply kind. Let the next generation rearrange a chair.","keywords":["elder","memory","centre"],"attracts":["Taurus","Libra"]},{"n":97,"title":"The Last Silence","text":"Ninety-seven is a contemplative completion. A 97 house wants fewer words and truer ones. It is a fine address for the end of a search, or the beginning of a quieter faith.","keywords":["silence","faith","fewer"],"attracts":["Pisces"]},{"n":98,"title":"The Bequeathed Means","text":"Ninety-eight is worldly power in its late form — estates, succession, the handing-on of a name. A 98 house asks for clean papers and a clean conscience. What you leave is also a vibration.","keywords":["succession","name","papers"],"attracts":["Capricorn"]},{"n":99,"title":"The Double Horizon","text":"Ninety-nine is compassion at full stretch — a house that belongs, in some way, to the world. A 99 address can be a sanctuary, a last open door. Bless it, then keep a small room that is only yours.","keywords":["horizon","compassion","sanctuary"],"attracts":["Aries","Scorpio"]}]</script>
+<script>
+(function () {
+  "use strict";
+  var MEANINGS = JSON.parse(document.getElementById("meanings").textContent);
+  var BY_N = {};
+  for (var i = 0; i < MEANINGS.length; i++) BY_N[MEANINGS[i].n] = MEANINGS[i];
+  var EXAMPLES = [
+    { label: "47", unit: "47", building: "" },
+    { label: "12B", unit: "12B", building: "" },
+    { label: "3/156", unit: "3/156", building: "" },
+    { label: "Unit 8", unit: "Unit 8", building: "" },
+    { label: "8A", unit: "8A", building: "" },
+    { label: "13/4329", unit: "13/4329", building: "" }
+  ];
+  var KEY = "sacred-address:recent";
+  var MAX = 8;
+  var MAX_DIGITS = 12;
+  var state = {
+    screen: "home",
+    unit: "",
+    building: "",
+    error: null,
+    touched: false,
+    reading: null,
+    history: loadHistory(),
+    libraryReturn: "home",
+    selected: 1,
+    methodOpen: false,
+    copied: false
+  };
+
+  document.getElementById("year").textContent = String(new Date().getFullYear());
+  document.getElementById("brand").addEventListener("click", function () {
+    state.screen = "home";
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  function esc(s) {
+    return String(s)
+      .replace(/\u0026/g, "\u0026amp;")
+      .replace(/\u003c/g, "\u0026lt;")
+      .replace(/\u003e/g, "\u0026gt;")
+      .replace(/\u0022/g, "\u0026quot;");
+  }
+  function extractDigits(value) { return String(value).replace(/\D/g, ""); }
+  function normalizeDigits(digits) {
+    if (!digits) return "";
+    return digits.replace(/^0+/, "") || "";
+  }
+  function formatShort(input, digits) {
+    var cleaned = String(input).replace(/\s+/g, " ").trim();
+    if (!cleaned || /^unit\s+/i.test(cleaned)) return digits;
+    return cleaned;
+  }
+  function formatHouseLabel(input, digits) {
+    var cleaned = String(input).replace(/\s+/g, " ").trim();
+    if (/^unit\s+/i.test(cleaned)) return "Unit " + digits;
+    if (cleaned && /[a-z]/i.test(cleaned) && extractDigits(cleaned) === digits) return "No. " + cleaned;
+    return "No. " + digits;
+  }
+  function parseAddress(unitRaw, buildingRaw) {
+    var unitTrim = String(unitRaw || "").trim();
+    var buildingTrim = String(buildingRaw || "").trim();
+    if (!unitTrim && !buildingTrim) return { error: "Enter a house, unit or apartment number." };
+    var unitSource = unitTrim;
+    var buildingSource = buildingTrim;
+    if (unitTrim.indexOf("/") !== -1) {
+      var slash = unitTrim.indexOf("/");
+      unitSource = unitTrim.slice(0, slash).trim();
+      if (!buildingTrim) buildingSource = unitTrim.slice(slash + 1).trim();
+    }
+    var unitDigits = normalizeDigits(extractDigits(unitSource));
+    var buildingDigits = normalizeDigits(extractDigits(buildingSource));
+    if (unitDigits.length > MAX_DIGITS || buildingDigits.length > MAX_DIGITS) {
+      return { error: "That number is longer than this tool can read. Use the posted house or unit numerals." };
+    }
+    if (!unitDigits && !buildingDigits) {
+      return { error: "This tool reads the numerals of an address. Letters are set aside — enter a house, unit or building number." };
+    }
+    if (!unitDigits && buildingDigits) {
+      return { kind: "house", unitInput: buildingSource, unitDigits: buildingDigits, label: formatHouseLabel(buildingSource, buildingDigits) };
+    }
+    if (unitDigits && buildingDigits) {
+      return {
+        kind: "apartment",
+        unitInput: unitSource,
+        buildingInput: buildingSource,
+        unitDigits: unitDigits,
+        buildingDigits: buildingDigits,
+        label: "Unit " + formatShort(unitSource, unitDigits) + "  ·  Building " + formatShort(buildingSource, buildingDigits)
+      };
+    }
+    return { kind: "house", unitInput: unitSource, unitDigits: unitDigits, label: formatHouseLabel(unitSource, unitDigits) };
+  }
+  function partsOf(value) { return String(value).split("").map(function (d) { return Number(d); }); }
+  function sumParts(parts) { return parts.reduce(function (a, n) { return a + n; }, 0); }
+  function reduceDigits(digits) {
+    var steps = [];
+    if (digits.length === 1) return { original: digits, display: digits, compound: null, single: Number(digits), steps: steps };
+    if (digits.length === 2) {
+      var compound = Number(digits);
+      var value = compound;
+      while (value > 9) {
+        var parts = partsOf(String(value));
+        var sum = sumParts(parts);
+        steps.push({ from: String(value), parts: parts, sum: sum });
+        value = sum;
+      }
+      return { original: digits, display: digits, compound: compound, single: value, steps: steps };
+    }
+    var current = digits;
+    var firstParts = partsOf(current);
+    var firstSum = sumParts(firstParts);
+    steps.push({ from: current, parts: firstParts, sum: firstSum });
+    current = String(firstSum);
+    while (Number(current) > 99) {
+      var p2 = partsOf(current);
+      var s2 = sumParts(p2);
+      steps.push({ from: current, parts: p2, sum: s2 });
+      current = String(s2);
+    }
+    if (Number(current) <= 9) return { original: digits, display: digits, compound: null, single: Number(current), steps: steps };
+    var compound2 = Number(current);
+    var value2 = compound2;
+    while (value2 > 9) {
+      var p3 = partsOf(String(value2));
+      var s3 = sumParts(p3);
+      steps.push({ from: String(value2), parts: p3, sum: s3 });
+      value2 = s3;
+    }
+    return { original: digits, display: digits, compound: compound2, single: value2, steps: steps };
+  }
+  function buildReading(parsed) {
+    var layers = [];
+    if (parsed.kind === "apartment" && parsed.buildingDigits) {
+      layers.push({ role: "dwelling", roleLabel: "Your dwelling", roleNote: "This number moves you and anyone who lives with you.", reduction: reduceDigits(parsed.unitDigits) });
+      layers.push({ role: "building", roleLabel: "The building", roleNote: "This number moves everyone who lives in the block — including you.", reduction: reduceDigits(parsed.buildingDigits) });
+    } else {
+      layers.push({ role: "house", roleLabel: "This address", roleNote: "A single house or unit number — read its own vibration, nothing added from the street or suburb.", reduction: reduceDigits(parsed.unitDigits) });
+    }
+    return { parsed: parsed, layers: layers, createdAt: Date.now() };
+  }
+  function formatStep(step) { return step.parts.join(" + ") + " = " + step.sum; }
+  function formatReadingText(reading) {
+    var lines = ["Sacred Address", reading.parsed.label, ""];
+    reading.layers.forEach(function (layer) {
+      var r = layer.reduction;
+      lines.push(layer.roleLabel.toUpperCase());
+      lines.push(layer.roleNote);
+      lines.push("Number: " + r.display);
+      if (r.compound) lines.push("Compound vibration: " + r.compound);
+      lines.push("Single vibration: " + r.single);
+      if (r.steps.length) lines.push("Reduction: " + r.steps.map(function (s) { return s.parts.join("+") + "=" + s.sum; }).join(" → "));
+      lines.push("");
+    });
+    lines.push("Interpretations drawn from the teachings of Australian numerologist Thomas Muldoon.");
+    return lines.join("\n");
+  }
+  function loadHistory() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (!raw) return [];
+      var parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed.slice(0, MAX) : [];
+    } catch (e) { return []; }
+  }
+  function pushHistory(reading) {
+    var entry = { label: reading.parsed.label, unit: reading.parsed.unitInput, building: reading.parsed.buildingInput || "", createdAt: reading.createdAt };
+    var prev = loadHistory().filter(function (h) { return !(h.unit === entry.unit && h.building === entry.building); });
+    var next = [entry].concat(prev).slice(0, MAX);
+    try { localStorage.setItem(KEY, JSON.stringify(next)); } catch (e) {}
+    return next;
+  }
+  function meaningCard(n, kind, delay) {
+    var m = BY_N[n];
+    if (!m) return "";
+    var keywords = (m.keywords || []).map(function (k) { return "<li>" + esc(k) + "</li>"; }).join("");
+    var attracts = kind === "single" && m.attracts && m.attracts.length
+      ? '<p class="attracts"><span>Attracts </span>' + esc(m.attracts.join(" · ")) + "</p>"
+      : "";
+    var shadow = m.shadow ? '<p class="watch"><span>Watch: </span>' + esc(m.shadow) + "</p>" : "";
+    return '<article class="glass meaning rise" style="animation-delay:' + delay + 'ms">' +
+      '<p class="kicker">' + (kind === "compound" ? "Double-digit vibration" : "Single-digit vibration") + "</p>" +
+      '<div class="meaning-head"><span class="numeral-glow gradient-text meaning-n">' + n + "</span>" +
+      '<h3 class="meaning-title">' + esc(m.title) + "</h3></div>" +
+      "<p>" + esc(m.text) + "</p>" + shadow +
+      (keywords ? '<ul class="keywords">' + keywords + "</ul>" : "") +
+      attracts + "</article>";
+  }
+  function reductionHtml(reduction) {
+    if (reduction.display.length === 1) {
+      return '<p class="solo">A single-digit address — read number ' + reduction.single + " as it stands.</p>";
+    }
+    var items = '<li class="step-in muted" style="animation-delay:40ms">Posted number <span class="em">' + esc(reduction.display) + "</span>" +
+      (reduction.compound && reduction.display.length === 2 ? " — read the double digit <span class=\"gold\">" + reduction.compound + "</span>" : "") +
+      "</li>";
+    reduction.steps.forEach(function (step, i) {
+      var extra = "";
+      if (step.sum === reduction.compound && reduction.display.length > 2) extra = '<span class="muted"> — read the double digit</span>';
+      if (step.sum === reduction.single) extra = '<span class="muted"> — read the single digit</span>';
+      items += '<li class="step-in" style="animation-delay:' + (120 + i * 90) + 'ms"><span style="color:var(--subtle)">' + (i + 1) + ".</span> " + esc(formatStep(step)) + extra + "</li>";
+    });
+    return '<ol class="steps">' + items + "</ol>";
+  }
+  function runRead(unit, building) {
+    var parsed = parseAddress(unit, building);
+    if (parsed.error) {
+      state.error = parsed.error;
+      state.reading = null;
+      state.screen = "home";
+      render();
+      return;
+    }
+    var next = buildReading(parsed);
+    state.error = null;
+    state.reading = next;
+    state.history = pushHistory(next);
+    state.screen = "result";
+    state.copied = false;
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  function homeHtml() {
+    var examples = EXAMPLES.map(function (ex, i) {
+      return '<button type="button" class="btn-ghost sm" data-ex="' + i + '">' + esc(ex.label) + "</button>";
+    }).join("");
+    var history = "";
+    if (state.history.length) {
+      history = '<section class="rise" style="animation-delay:160ms"><h2 class="section-label">Recent readings</h2><ul class="history">' +
+        state.history.map(function (h, i) {
+          return '<li><button type="button" class="glass" data-hist="' + i + '"><span class="label">' + esc(h.label) + '</span><span class="open">Open</span></button></li>';
+        }).join("") + "</ul></section>";
+    }
+    var msg = state.error && state.touched
+      ? '<p class="err" role="alert">' + esc(state.error) + "</p>"
+      : '<p class="note">Letters fall away. Only the numerals are read — and a unit is never added to its building.</p>';
+    var method = state.methodOpen
+      ? '<div class="method-body"><p>This tool follows Thomas Muldoon’s house and apartment method only. It does not read a birth date, a birth name, a ruling number, or a personal year.</p><ul><li><span class="em">One digit</span> — read numbers 1 to 9 as they stand.</li><li><span class="em">Two digits</span> — read the double digit (10–99), then reduce to a single digit and read that too.</li><li><span class="em">Three or more digits</span> — add the numerals to a double digit, read it, then reduce to a single digit. Example: 129 → 1+2+9 = <span class="gold">12</span>, then 1+2 = <span class="gold">3</span>.</li></ul><p><span class="em">Apartments.</span> If the address is written in the Australian form <span class="em">13/4329</span>, the unit (13) moves you and anyone who lives with you. The building (4329) moves <span class="em">everyone</span> in the block. Read them separately. Never add 1+3+4+3+2+9 as one sum.</p><p>Letters and punctuation are set aside. <span class="em">12B</span> is read as 12; <span class="em">Unit 8</span> is read as 8.</p></div>'
+      : "";
+    return '<div class="wrap"><header class="rise center"><p class="eyebrow">After Thomas Muldoon</p><h1 class="gradient-text hero-title">Sacred Address</h1><p class="tagline">Discover the vibration of the place that has chosen you — after Thomas Muldoon</p></header>' +
+      '<form class="glass card-pad rise" id="form" style="animation-delay:80ms"><div class="stack">' +
+      '<div class="field"><label for="unit">House or unit number</label><input id="unit" autocomplete="street-address" placeholder="47, 12B, 3/156, Unit 8, 8A" value="' + esc(state.unit) + '"></div>' +
+      '<div class="field"><label for="building">Building or block</label><input id="building" placeholder="Optional. Leave empty if you typed a slash address." value="' + esc(state.building) + '"></div>' +
+      "</div>" + msg +
+      '<button type="submit" class="btn-primary">Read the vibration</button><div class="examples">' + examples + "</div></form>" +
+      '<div class="glass"><button type="button" class="method-toggle" id="method" aria-expanded="' + (state.methodOpen ? "true" : "false") + '"><span>How Muldoon reads an address</span><svg class="chev' + (state.methodOpen ? " open" : "") + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></button>' + method + "</div>" +
+      history +
+      '<div class="center"><button type="button" class="linkish" id="open-lib">Browse numbers 1–99</button></div></div>';
+  }
+  function resultHtml() {
+    var reading = state.reading;
+    var layers = reading.layers.map(function (layer, i) {
+      var r = layer.reduction;
+      var hero = r.compound != null ? r.compound : r.single;
+      var rule = reading.parsed.kind === "apartment" && i === 1
+        ? '<p class="rule">Building current — not added to the unit</p>' : "";
+      var cards = "";
+      if (r.compound != null) cards += meaningCard(r.compound, "compound", 180);
+      cards += meaningCard(r.single, "single", 260);
+      return '<section class="grid-gap">' + rule +
+        '<div class="rise center" style="animation-delay:' + (i * 60) + 'ms"><p class="role">' + esc(layer.roleLabel) + '</p><div class="numeral-wrap"><div class="halo"></div><span class="numeral gradient-text">' + hero + "</span>" +
+        (r.compound != null ? '<p class="reduce-note">reducing to ' + r.single + "</p>" : "") +
+        '</div><p class="role-note">' + esc(layer.roleNote) + "</p></div>" +
+        '<div class="glass">' + reductionHtml(r) + "</div>" +
+        '<div class="grid-gap">' + cards + "</div></section>";
+    }).join("");
+    var lede = reading.parsed.kind === "apartment"
+      ? "Two currents, never added together. The unit moves the household. The building moves everyone who lives in the block."
+      : "A house or unit standing on its own number. Read the double digit if there is one, then the single digit it becomes.";
+    return '<div class="wrap wrap-wide"><div class="row"><button type="button" class="btn-ghost" id="back">← Another address</button><div class="row-actions"><button type="button" class="btn-ghost" id="copy">' + (state.copied ? "Copied" : "Copy reading") + '</button><button type="button" class="btn-ghost" id="lib">Library</button></div></div>' +
+      '<header class="rise center"><p class="eyebrow">After Thomas Muldoon</p><h1 class="result-title">' + esc(reading.parsed.label) + '</h1><p class="lede">' + lede + "</p></header><div class=\"layers\">" + layers + "</div></div>";
+  }
+  function libraryHtml() {
+    var buttons = "";
+    for (var n = 1; n <= 99; n++) {
+      buttons += '<button type="button" data-n="' + n + '" class="' + (state.selected === n ? "on" : "") + '" aria-pressed="' + (state.selected === n ? "true" : "false") + '">' + n + "</button>";
+    }
+    var kind = state.selected <= 9 ? "single" : "compound";
+    return '<div class="wrap wrap-wide"><div class="row"><button type="button" class="btn-ghost" id="lib-back">← Back</button><p class="section-label" style="margin:0">Numbers 1–99</p></div>' +
+      '<header class="rise"><h1 class="lib-head">The library</h1><p class="lede" style="margin-left:0">Single digits 1–9 are the root vibrations of a place. Double digits 10–99 are read as themselves, then reduced. Choose a number.</p></header>' +
+      '<div class="glass nums">' + buttons + "</div>" + meaningCard(state.selected, kind, 0) + "</div>";
+  }
+  function render() {
+    var app = document.getElementById("app");
+    if (state.screen === "result" && state.reading) app.innerHTML = resultHtml();
+    else if (state.screen === "library") app.innerHTML = libraryHtml();
+    else app.innerHTML = homeHtml();
+    bind();
+  }
+  function bind() {
+    var form = document.getElementById("form");
+    if (form) {
+      var unit = document.getElementById("unit");
+      var building = document.getElementById("building");
+      unit.addEventListener("input", function () { state.unit = unit.value; });
+      building.addEventListener("input", function () { state.building = building.value; });
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        state.touched = true;
+        state.unit = unit.value;
+        state.building = building.value;
+        runRead(state.unit, state.building);
+      });
+      form.querySelectorAll("[data-ex]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var ex = EXAMPLES[Number(btn.getAttribute("data-ex"))];
+          state.touched = true;
+          state.unit = ex.unit;
+          state.building = ex.building;
+          runRead(ex.unit, ex.building);
+        });
+      });
+    }
+    var method = document.getElementById("method");
+    if (method) method.addEventListener("click", function () {
+      state.methodOpen = !state.methodOpen;
+      var unitEl = document.getElementById("unit");
+      var bldEl = document.getElementById("building");
+      if (unitEl) state.unit = unitEl.value;
+      if (bldEl) state.building = bldEl.value;
+      render();
+    });
+    document.querySelectorAll("[data-hist]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var h = state.history[Number(btn.getAttribute("data-hist"))];
+        state.unit = h.unit;
+        state.building = h.building;
+        state.touched = true;
+        runRead(h.unit, h.building);
+      });
+    });
+    var openLib = document.getElementById("open-lib");
+    if (openLib) openLib.addEventListener("click", function () {
+      state.libraryReturn = "home";
+      state.screen = "library";
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    var back = document.getElementById("back");
+    if (back) back.addEventListener("click", function () {
+      state.screen = "home";
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    var copy = document.getElementById("copy");
+    if (copy) copy.addEventListener("click", function () {
+      var text = formatReadingText(state.reading);
+      var done = function () { state.copied = true; render(); setTimeout(function () { state.copied = false; if (state.screen === "result") render(); }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(done).catch(function () { fallbackCopy(text, done); });
+      } else fallbackCopy(text, done);
+    });
+    var lib = document.getElementById("lib");
+    if (lib) lib.addEventListener("click", function () {
+      state.libraryReturn = "result";
+      state.screen = "library";
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    var libBack = document.getElementById("lib-back");
+    if (libBack) libBack.addEventListener("click", function () {
+      state.screen = state.libraryReturn === "result" && state.reading ? "result" : "home";
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    document.querySelectorAll("[data-n]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        state.selected = Number(btn.getAttribute("data-n"));
+        render();
+      });
+    });
+  }
+  function fallbackCopy(text, done) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.left = "-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand("copy"); } catch (e) {}
+    document.body.removeChild(ta);
+    done();
+  }
+  render();
+})();
+</script>
+</body>
+</html>

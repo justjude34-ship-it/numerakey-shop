@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#0c0a09"/>
+<title>Teach Me the I Ching</title>
+<style>
+:root{--bg:#1c1917;--ink:#f5f0e8;--card:#292524;--text:#f5f0e8;--muted:#a8a29e;--gold:#d4a574;--gold2:#e0c090;--line:#f5f0e8;--char:#44403c}
+*{box-sizing:border-box}
+html{background:#1c1917}
+body{margin:0;min-height:100%;background:#1c1917;color:#f5f0e8;font:18px/1.45 Palatino, "Palatino Linotype", Georgia, serif}
+header,main,section{background:transparent;color:#f5f0e8}
+header,main{max-width:640px;margin:0 auto;padding:16px}
+header{padding-bottom:0}
+.hero{position:relative;margin:0 0 14px;border-radius:18px;overflow:hidden;border:1px solid var(--gold);box-shadow:0 0 0 1px rgba(212,165,116,.4), 0 14px 32px rgba(0,0,0,.4);line-height:0;background:#0c0a09}
+.hero img{display:block;width:100%;height:auto}
+h1{font-size:1.65rem;margin:0 0 4px;font-weight:650;letter-spacing:.01em;color:#f5f0e8}
+.sub{color:var(--muted);margin:0 0 12px}
+nav{display:flex;gap:8px;position:sticky;top:0;background:rgba(28,25,23,.96);padding:8px 0 12px;z-index:2}
+button,select{font:inherit;color:#f5f0e8;background:#292524;border:1px solid #44403c;border-radius:12px;min-height:44px;padding:8px 14px}
+nav button.active,button.primary{background:var(--gold);color:#1c1917;border-color:var(--gold);font-weight:650}
+.card{background:var(--card);border:1px solid #44403c;border-radius:16px;padding:16px;margin:0 0 12px}
+h2{font-size:1.25rem;margin:0 0 8px;color:#f5f0e8}
+.muted{color:var(--muted)}
+.tri{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tri div{background:#1c1917;border:1px solid #44403c;border-radius:12px;padding:10px}
+.bars{display:flex;flex-direction:column-reverse;gap:6px;align-items:center;margin:12px 0}
+.bar{height:10px;width:140px;background:var(--line);border-radius:3px}
+.bar.yin{background:transparent;display:flex;justify-content:space-between}
+.bar.yin i{display:block;width:62px;height:10px;background:var(--line);border-radius:3px}
+.bar.chg{outline:2px solid var(--gold);outline-offset:3px}
+.row{display:flex;gap:8px;align-items:center;margin:6px 0}
+.grow{flex:1}
+.coins{display:flex;gap:8px;justify-content:center;margin:8px 0}
+.coin{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-weight:700}
+.coin.h{background:var(--gold2);color:#1c1917}
+.coin.t{background:#44403c;color:#f5f0e8}
+ol{padding-left:1.2rem}
+li{margin:6px 0}
+.hide{display:none}
+</style>
+</head>
+<body>
+<header>
+<div class="hero">
+<img alt="Ink-wash mountains and water on parchment, a charcoal and gold taiji in a hexagram ring, calligraphy for the I Ching" src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDACQZGyAbFyQgHiApJyQrNls7NjIyNm9PVEJbhHSKiIF0f32Ro9GxkZrFnX1/tve4xdje6uzqja////7j/9Hl6uH/2wBDAScpKTYwNms7O2vhln+W4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eH/wgARCAFTAPADASIAAhEBAxEB/8QAGQAAAwEBAQAAAAAAAAAAAAAAAAECAwQF/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/9oADAMBAAIQAxAAAAHVzWKDATBMAAAChgBizQGIaBMEMhDBDRKtDaKYmDAAAAAAADB0RbCgAEwQwQwQSMCACioBnOV1AQAAADESMGAAAAAAAgcXBQAmkPLWDE0mzcxuXUTAQBIUZkaEo0JKoAAABDmkNNEsBKkKB2K1Uo1MULCt8+cOk5mdT56NibhvOyhOkMCGFJoTSLU0SWEpyPJ8pUDsGusjW3nUFIkpCaB1NIwKIuRgGdZyBDs61LllVzGck6mk3BXbw9Gb0OCXRZssbM1cCBpTToTQ1FmeXQGU7Z0XNRPH18dg1dEtCqdYVmks6SRtedLWekEiaOk6cUjOyTRZ5HVLZKuTDm6uWxUiqTkdxcR0TvLeGuUulxZc1JlU2k6TQ0ykmHGpdmm86SuKRnydvNZixVbm4i82b68mkurLldqhZgRcaINVTyvnOox1OEVWPbn1NnFSzh0ScqHqRZJZFAmD6+PrzdWiWU8x0NGm6idIIdlnMaUYuoNaxo1gcueHXlZg2qBWStdYz65M2pmFoWiJtVNpD5tJs0rCzasFLePRNma6MAaoGEsY9IclbxZNyi2tJZt0CdQmFTGiMbosg52RUM6NOTpNYw1l0YGRYSmBNMBkJtk0wQKiVBV5TYESKk6hyFXmRrWOo9cQ10xctoRU8fVZVBK3lRolJYmGekGCvOwEqrTK4zaKqHURUMbl1rplrCy0wF28PpCZzS4dPN22cZpJ1NOVpszz2k58+nPUzbpJnozlyWhUmhGej0Hospa5XNhrFHTgXLzbY9lmFYo21eZdYhpCgtSWUZB1K4zqKi7KFMulqgi0Z82rquJdSdE6ZS8fZLrmOkTDRMloCWqIcoOGdxms6vK9SNUFCBRqCYEU0JjJGCVZihzYBIKWOSjMFZ0EVLrUuVznJ1Pn1LJY4oJtMU0DzpkDgUNWEOA1W8uEaZ2SnNa1m4u8aNs3oZ6ky25CnDKIClnJssXZUxICVaQriqxApSIVUAFahCsC0EoACCiQTNhUWBkgEAOgJAKzAGCf/8QAJBAAAQQCAgMAAwEBAAAAAAAAAQACEBEgIRIxAzBBEyIyQFD/2gAIAQEAAQUC/wCYBs9/P9Y7I2Ovceh7KKIN+s4FCCaQN+l3Q9jsCm9F1ImyNH0j2OvAwdzegb/yE5FVHwY2h2e/p7v1HD58RK+YGCQuYXNc1cj0HA9DojHqCaRdhSC6wGIR9FSEXUrkC0GoCNKpKGLsHIdd4EJxpGfrW+msSZtA2nnbO4KugTARTcqx6wrC6HcXFJ53gE1ytWrV4fftY3hWJgd4WrKvEyJMXFI6mrT9NyAXNNNkhDERWdoqo+u/mBg5dFlueYGAQQyJ0MKT9NOTuvGNB1gwJK+hVlaaVW29Ip38nAwE3StHAz8+wXbn6114VpfUMeSBtBDD6gId0m93IK2hL9GbipBTeoKPs7A6gjR1NYGG9SUFU0rF0qkoQJcPQ0Iai0XICbQKcdJrtlyKpHK05uFLigyl1JKDcnbwqHegttETa5FcpqKkqopHu6XNfk3py47I0gFWPFcFxXEoNK456VLtE0jOoaY4oI4Uj0j39+hVhUcleiaXLWAV0ORvnNKvZatbMWjFYDau1pCytgyVSqbVq8aRct4d4fbQ7vfJc1UHSJKNtcw8hSpOdxQ2FYuCiFWFq4KpfcA6kHWvJ/DfJxa825gpsPdyc0FjD5HFcCh1hSIwqe8QE0Ly/wAhwom3R5XppDVzHHl+hCAoYlVj3FSAgI8hFM4hWOZ8jgmO5B3j/agT5B+rtt/tjA5pVxatXg7riqQCpVutVpeR/FBnINFub+/k8x34QvLdBv7A/q59hjScLRwJypUqktBTmlyeUK8bOy0UHu4gWTya1PdyTX8R+T1naCulas3N0i4vX46avGyHt5Dxs4p3jDiGNCItHxhVQPr42WjHiJAEE0vt7vMI7ON0Lr2VNeil3Bn6NRau8h2O0E2GoQY3ANHx9vG9nAGp+2htWJtWri1auLwuGgAJ/dhfJ5JqKIpV+/otWrVolOj4gRXML6UchJxtWrVq1erzKOHyR6DPz6f6PchfbXa+z//EABURAQEAAAAAAAAAAAAAAAAAAHAB/9oACAEDAQE/AR6Fn//EABoRAQACAwEAAAAAAAAAAAAAAAEwYBEgQFD/2gAIAQIBAT8BoWO5kJzRjNMcDSWhPg//xAApEAAABAUDBAEFAAAAAAAAAAAAAREhECAwMUACElBBUWCRYTJwcYHR/9oACAEBAAY/AuMsfsWP3m2L2LF7zeg6fZRi5huVTyZiCHfFKdIbjolUKgeoLX7Q/gem2Cwe8qc4meuK1JuRTDeuzB81428CYlHzK0EXAedQUztikHk2kFuY3CzmC0BMRwuoKRC0FVh2IEn0gtRMHuHth/I3ajC9CggUMEP9hUCIhBsRx2IbdNopBAiwsLVkmTSD7wU4uFxbyWkTh2fNcGfQfmk74W44FR04aGGD+Af/xAAoEAADAAICAgEEAwEAAwAAAAAAAREhMRBBUWFxIIGRoTCx8MFA0fH/2gAIAQEAAT8hX/mNfzvRgCTIC0/8t6YigCrBo/nww2NV/G9CU1j8RpnPvFhL+N2tCyrwj0MlwhKxOn8KN4eTWZ/kZqQ6zwh2lgZvJ8TMGD/Cyu/H1fblW5LHx4PBmZ3whosCeKzNk8iRgrIPpbL/AKGfZn2Z/wAil/hgueh6OjJC7sayy1F4MSl4Uu/wbRT+xns39z/NZ/37H6P9jaz+0OLb4v16c9DXAnOKbMSglOP+lX0Lfr8HdZAKKM/DE1br4Hl1fo2xgxZ9D0LK415XAmHA/BonDw/2D+xaZjY9lzzVwUV7CdL5/I1+/wBlNf8ATX0ZFzH0PWBa4auUIQ1rY3TFYBvsr5GPJghEuh0ONEdPnTGwktDdfgX0Ri3lGiH7CayTvGkfIy+SKIbhKfAsiCvfgSHxsnh8eaLGGU//AH9MHIJ1XjBZ4lfAPJ88M2l1/Y6/0UdNb2RRmYIWUdcxcIPA1+DMnaFl9DRiU5f3RkTwLBeS9v5HemXhdDiXvmYGLYf0BQJ8MrQeKP1+huITXPEGm2YaOxD1PZpN+hq3xkNsZ1wm4kwhPAjsXseqbS/B2z7FwxBCcG8B7oujBvoyPb58w/sfCnl6MMFjuCbxwQhjVRoxKpoUPYhsQ544olbiMh04SQaw+3GeuGj+R8L7jRIJwa6E8QNeSFoZs+GzfH9C3wyEPCY2cpTwJ44fRk78C/A4ITnHYhKjEUKwxbA+BCc+AuBOmvsLf05ZvwIjbHTYZuNh9fJUx4FrL39BeT+nDD+5Po+JQkISrGh/Y/B2+BX9hcRhaFnXGyy8BC5cHoauvJdfBu/ga4ePklRBFEyorg9i4HkXbNuxKr7jFv4EYOQaCKPGCN3FEJr0VlllpZP/AIZ2/wDeRMnQ3gmKuEd5KY1keyQ1HsTuz9DSCzg7qMzOx9eh5WSDWeFl+BRdUZdIzWQyV0U+yCBeBrvgr2JmxqxZcNPseMGkdZH/ACY7Ovg742o8BvPNJlk7F7Wh4oN00h6NP2Uw0TilaL7Lg3sbREKuEGUdNmkNjF7J44ZvPZaGdQSnXwhci740J03sy+Ds4dPzwr0L/UIyYomCsb9niO57LNaMbIQ0MITIsmhBVuGnkj70LDyXOCkNIRpsauFVos8D/JQmRiVZYo8Q9v8A6b4hqcJkQZewaBI+n7PVgTRUP7BAZbGNlLiCWay3a/8AY1eUNiuDpf0LuxhaX5GrkSmzY2kipkG1Ymm0J2Y1zb8lqEyo1G4yxSCyRPubHTbEihiqKcwaELfj9DPt/Qm+39Dfl+z4/qC9vwLwuM8HgwZPQe1WGZlus6GKyDK9qPY6FmdCaxwvJYhxqMfjxsKuKf7R9v0Z9kJxRr4HjjZQk2Kx7ojeRMucoRMyWV0PHB8j34E4n/ZmFzvJcGXI0WC5FLxKNEq6Q0mNsf6kG5gy1EovYhIWcMoUY16MEJrOGfax5awX0JMha8IUw9vPRvGGVe1yImrYys2CMlgX6FeOisovLhjEwxPDMFuMav8AYWMRGE8H9hZYskEZ3Imf3mBldKUSkF6JxotdDg5XuGJWPg7nSPyJFVvsnEGh2zAyGBGGTHQu2xtJCRwWj2X2Ua7GTKRir2KIkqTs8lp+WLXGD8h+MCEzqQ6dymxQZKe3WS0ei8vjTQxBIfsUTGIxXKNJMzsrPIiiUEXWfo2D4RsJ+htlF9hNlvtFWeN2LaxGN2oydSxCNMLxZMA2fkJ+h5DD+h0GxgqPYnHwK+4JGkg5kC8iuhmdEdNLZRfAZX00K6ZTuF9BIarDpeh2IBnWk7GMovgN/kUpZDwC1GyDXgepRLzg2NxQTh+mmjEiiLU/YlT3/Y27dsjhfuej5rsavg6LsaGxSF9jDVRBxaG6fcqHv0L2PRUlkwNp69Gy2xq0KsKOYYkw0/zsWeWmzMUY8kpb4ZpfHGuw0Np7GYI+zpL8ifRHRosJHyEn8EzswP8AI/oeUL0OB+V+xHxOvBtZ5cawLOt35FFoTTGW3NpcxIqfwXBeeBt94XMo4Ph4JdmCdMRIa8MlIUbae76FZe2JFSFnP8KUIqNHsmaRUi3hsfEuytYHF3+C2q3/AEV4UaSWNG14u2Lw6F066FEQK1eF0J1X6bWRdUzm/YqulV0zm/YRp58F5o76GN4MEN4+RFUqMtQSsNffHrh64CY3B9ngVtIdN+w6quFwnjf0TB8FzODeRl0NIPXDVNNJrQ+ASpU/oX0bYyxk+xan5NZ5MY6evRvaJNcUvFKiCB8LBhZQvsXZ3jP/AE8aexoUzLa7bPY8CYFg3lGkvAm1RvZtr0NWejodcUox6DYY0GDgre9Fvg0x5FJ6QspshNeCJPwaReSeS5nXGz+Ts6/gW74J81el9B5aiZIrbJ49Dd47P//aAAwDAQACAAMAAAAQPzfvPdhB5VdHDnzN9hBBBNj1FRxxpr5okRt9ka9t5BEMFlmZSw5xvHd1xlRBp6dK/BeCNv79tYVFRidKaBScEezh51mjBkMQikYUQ/xtUa4MxQAqiLUU/ZiG6stlkEJuK8IzjYca2J5oeCaW0I/RySqR8c4oo82omjJCttHBehwAzLGbVmi/KpxVQ6pFqNTYmNTSt6u629Hbn5ed2wgunJGi9qGONqu86ofyUtlZIJrd1i8r3ECLOdnSBTFF7xdihOJBEXsQ9HqIB72atNxt1Z5kddPqPhaiCtxxVdGbe21sGPZ+856+Z2gtNLgci9+ecd888gcc8/8A/8QAHhEAAgICAwEBAAAAAAAAAAAAAREAMBAgIUBBMVD/2gAIAQMBAT8Q/AfQfScdhOAHFcDWIciw58gFIwdAdjqay1IyoAo9DHHqopzOdna7jQJ7BgaEQjVaeQZcJp+4EXXdQEP2lxx5ZuGn/8QAHhEAAwADAQEAAwAAAAAAAAAAAAERECAwMSFAQWH/2gAIAQIBAT8Q/OWJ2WJ3bxLhCc0rhuDfCZSuU43D0Nj4TY/RhcHqaGPNUiYYxfNywsUuJhPNQ3SaIhBaJwqPh81pMMmZvCcJquDF5gvo9ExPFy2e4/Z4xkPSCXBfDwQ2myradP6eaQnBDCszNYQhMeEV7PCx/8QAKBABAAICAgIBBAIDAQEAAAAAAQARITFBUWFxgRCRobHB0SDh8PEw/9oACAEBAAE/EMoZleZqVKlRJUrED6hKlMSpX1frUqJ1NErH0PBAmvrXf0Nf5i1txxEFqztsEdW+3ZSGgpMaW0gVKrU39a+uokpqOYmIGPobnv8Ax9Tf+HS45hqTyZLpEKu3to/aCioMaGz6V/lx9HX0Y4IajUfR7nM2mH3Kz/8AEgtBVpzHJMHjKCBxdjMCJAQ41/g/5VMebxl6irwz1EzfM9omjkoRtqjl19L810dw/Yenf/xBHRLiQG+T/wCdS6KjNwtGjzE5+gC73LHY2/ELELdzVaNBHlvO56/+F7KuqddwAMtLvv8Ax5i0hZv6i6xXFG4kBGnFy4hrjaGDDtUfoRUW9RK7KziBt0Il2DZMgcHEAroPvCvCvH+Cg5c9SnivbUs8/a0/4ommcvFSxy/MDuqH0yutPnH/AMarFqxiwatMkXXmCB6qESh8zHg+Y2/GKYJhxFmdLHifeBrz1LXB9j+4kwy5IViBuuVFAyOEH4iLFm/+KmMMX5f+IpRBDQP0wAVOtxfzqOnAPeSFjY0fchwcP4fqr1cLzb6hfP0sims5+oXSUKi2OmKa0SxkiVVFQbgZ3EfiewM2YxUKEFp4csYyfTR8v8QoEweXD4IJVU6uiCaA9ExWoHVwRRUqUNtXkhcDbth+IVMh5ZPY4YXfS81r5HUXDw7p0wa7r8kfo0SbjQUq+OvowCl+mcRgxAXu63KQHRKskyTpApXEyqtENUalwaL7dQWuLVs0vl6PEGNBzUXbsvRzL6cywG1+J7L6uA7XzO8s/U70eGpjWU8JBGcrxTcQwgixwL+GbpcaWH0w+zk6/wAE2VavAlSoWCcZ+hvHEuvZja2ZrMaW2GHBUZL4ljF/MWlUwwPB3L9iVdvB2w19yvPuMytXUWcb5Y+8R/A8SnhviCAGCCqgYEvsg9ErtY9kGih4GNQZYzp8PUShOeTt8MXFUcf4YuxxOD1GUiSi98ShKwO2HUhfEq5R4JjaDv8AggLGS/nj4ISsK7e3uOoDZ+43Yu3mJRROzzAM8GYJO8L8IaqxDjjxzKK1nq4vIJ9p3Ka5ElWBVeSJaFnMGNuPy6fcUVp8Phg2Z+hKihK5iDTc4gL/AP1Kze47HA3LakjiPR1lisAWuef9IylTgPB38xUW+JWedMBLC0qmuplF0HEBY8swDxcHCvzMVkROpV5ZurE28xxbz6gsWKdHEpaG1+IKY7A78SuRxVfHF/qCjn0/Vm24AA0SomHuJg3AJe3m4IbwRhuTKArQbMEPJY/LmZoA0/iEBflzEVMQx4o3LIVjn8niUhKQw9kLZPxHHZFpfHUqCNywEmWG2szcFzADKNq07+zx95h03x8kGwe/pmOeIaiw9y45eo6QhWcyPDUNb5yRCU0P4GZa6inDtb/qXpzbxKsDNXuC1xUac6/LLV1Dp8zImxg9XHnzmMP2RqdkuB947Kuwji147iGHzMyM1uJvUWq+n/cXCyhh3p/U1TpgVLnEFeZRh3DHMKviWgOEFSOKauIDRsfeHEbUZ4367ltFOZgaVQqZDYLctbdzJpz+oYvQ3G2kezLPSGsx6qZ7DxMjGI7o53HSPc5S5Mx4n1KIaUwwLOV495ip9gxKgrKR0Q25gNSgWtBtZZxXd1h+YKVMA4nI8/qckfPzHt6X8wY6y47nF9MTuNpg71gi2VVzLj5EoZj7ErGCjo5VV+JnZIY2u4slbmAY9xOfiPK+NTI+GZD6YXQyrcU+A/uUSzgmPmcq5iiRDsagCrIvLL6hIOQ0tpCrub/L9RQlKr8I4FyK/MoUAbsf4itSvJLHYyxvNqYiVaDOfzKj+YG5NTqCQIuqZSD5gznn7xDmbTGP3OjmIVHG2Gul3DeOaYwWYfwKmj0/v6NfVpUFWBzEWN0BZdvUGvAC/c44Nt5nJGFntrsSeEFz3mH3VXHY/Mushc3Bku4AtKe0sKZTY5HcsqjaUMMUlh75ldczGv5iA6CcaC/KKku3dvqNtO8D2xCqtWvjARU/AQcZiKAjD2xAFWOfoZAktwSUUMnimarnyzJniVSmANeHcoJS0a7InQTPl4hivA7o1NDXEZtqMYurEz3FC3hvUTya35gxvmOYGGaCrqAz2ZpIMnaORIlvRMLH3AUHBguKOuXupc8qB55YDL24iwOcS26zCDziJ0XMoQAvbBCRTpr7Skb5J3FEItwOPzDU4wxi67fqCUeky34x/aY0ZdQ+N3z1Ep2fzCzFJXMYwsazPFXUEbsOiU0H4YEV2S6Lq8zOLdMS6DliCssSnHKqnEcOSMQDwMctLDGN0b/MEG1g/LL4Gob+hA877lH4S7THuBF6YX9xAgFyrDV6b5JQXbn3LSA8cRXS4vD/ABF0kzS+E/slHNhZ6ipOOfEVhbBmqmUHJYdxV2FMAaCnqUJQjrMuzy6PE/We4PkTcM+UWA3uWLwvEaoYLxM9G3HRAAVS4IUUN4/Y/wB5gXlxl9zfcEJfEPSnLogOdQuq4uVvkXRKIJKvLxBCzylgmuSBUaXh/wBTCxOo5FKXyfucmM8HA9fMMU2uP4ihc4lNK5D8S9G77hiCh1Mt38QJTfiA2fhGkSu3kgFPBiILu2OVYPcCirdTYPbFN8Yo9de2DiduX+o3A13U00URivY7mWtbNy6585eZR2cqR2Bi2picsGoNvMLQ5Jmmym5mquGLoe5QrHFe43atcd/78TRmHMeuZoEbSlRMxmUF/ctc18oAKFa5mQO+SPB92UNCe5a0LXRGuy+3EGj/ANO31EVE3kxz3LLE1Z95h3fFxUWVWKhnhyTDSoEZv3CyzniGFcQxTLuZBWXmDZCKDCPXmYk+cLMbZDezvz7ileFd3gZfuHI5IjkxEI0t5hciZ5qdRXQ1BsNW9M7W/DggjQ0dzGAXy8yquh1/f9Qou5eu39eICr4gccRIt7qKqivF7nK34nPpZQAsZeMQg1V0ZhAoVscQdxZxrbDzWcktHAc+ZYI748zKvRGIGLxGzZiGTGohzdP79xijVef09RDS561/tMyeMlMLRVhxUy5APUuc6lHhBnIN8yxMDxTPwSoAb1jf+oNMLMgaIHK6/csTqUaGN2MMoJMS4jrhgSEOrpYqsn3wihNA3UK7tKjmEs3s7i8dPIlr8R4sIZtuCbRLTHEp8LIL+2yGlrUUXBXmaMmH7RQoaOnJA0BTmi/3EAB6Vb+ENQR4H+UwqqvV/wDqUIbeLP4IUEsD/wAdwNcuOftlAoA6P7ld14lrFhHlthTeCNAAe4EkS8kQWJ1qLsWlMFSiQA6IhR53AhRzBseoZV+XT3AyfbuDGSuGOKGwKJsfhjEF3+IVlQKlqM1FKmIZunxLukr9MEGb/cw5QfcHdBgf/CoJ3XzmUdtziJHMyKSylZQgyOftABdoGxVO6gu7WO1mVl5WUC4I5d3BzZnvxGoWAbYuQvEKBEBcStsZc19oALu2C1McAHu0wNzfWDieQricI58wZeM9zxc8RBtYMYF+hpBPEtUyiw5r+CKEQeIWDLOcVFqeSIrX3gsmKCWjYvU2WLg4Q8OpYbPmJ1ZtIUgPRzECnB4RZwORiYVct1pmVYwaSM0R+8dmJve4hbTcRXbAuU3GC0/uBFoMqPcvTkpe5kMKRi6nIgC4p5GNwLqst1mDncNlWPxC6RWS8EbLefmFDepatFzMZYhkP8QEjzbgqmTlg7QBk4uBdk6OxlsiL51K+BLRFAMFqXHCGo75E03cLH+YmK8iVV9yrwBMoKDDxiBoHL6MBbQHMay1cCLxu4XUypV43+8KDVxW5x0leUPCV9/UUmNR9UQgUzzFwFV1DC2GGbg8wsySUi0qR3b1vFy2gt09RyjpgVHydxEQV65IgwIvbqmWhH0SmI+xamAGP6x2yQHLzKvK1EFErRUqEJMu5x4mTjymA8y57DZ56l4KVDKQVeI34BeId8A3e5Z5ll6YU6Fj7IuO4lRo8wxovJmiFXmoRx+IK0oYMMx+4XI+fE3URLEV1coAvinEMANXj3LA6ZgkHXWIY1D6E65S5Va0lr5YDR92Pv4gT1qsxZgGziMMNk5IyXtly/7hL4Lox8wBsWlq11G6LuVjuJeDq7L8RTogl+yMiK8wsBrwEyZbmCXerlf9U1lcQXQZZcVvEXiYWWFxBqi73K0cktjlb1OfQuooHqIQxRdugjQN6sqRSDyhjr3KlKG1cBolXcbfbDddSG5VsOXUZlo2r0S1KSUe0SnAXQSkYrlH/wAxFqtwSXiUOS3kuW7OOFRXj7RpV78MSgrTz1MNNrvuOri9tuCZOSJT0nIFbj3apXuCKbIp0zuANVe5StECWNX/AJmUF6N9sHszLe0cVK29uojWX/MI7gzNJu6n8wiC078vcsoXjQtgkXDmq5lyrNqrmDOKvDUUyWJ3EPIfMVGDXJZFRkvubcjPmJDVtcpAt1y1fMQN78eJVtbXbGwQHmO8xyGx+ZZfYYsqvmUjlwBFsw2TmZHvFA+EfkPSZ+pykVMxh7XMpQtN/wBRXTeOI4K3R/f0rxCrFjKhZRXEykbgbgn5soRQHJjMUZB93CC6juXvksBlbRDks7yESiC/CMClGm639p7TrXzMt5+IVfmK87ElyyubpPGIumzI5whqQskVy8RCgXNENxYQHZMon5RFSAiCCKb8QSgEXW6jnuIC/MACXQd7tqNKOi36/wDYG6KR+53CyA1Y3zEFgurqLsRYwxTu2Uy5/wC1GpFl1Wv9sdOgjzX8w4I31T+pTnEHL+mIzN99/wC4UbwsKCIw3Q7VzXhhudqURbW4zUYQ0lYphW+4NsWE4g/ULUbbfcUsmaqIqLspzEIRksJiNZGx6joM3fz3GbLl4PL6iRhS68dESUbzQm3/AFFsB4F/mFHgbKoTBYB2uF8P9wQlBt8Xh+NQ3gq+PMsPcFk1pPEFuggp8eCVE27248Q6AL2Qou8Cw0bpcsChg8lQR036lxvivmF818QsGuMXeZWI3m/nEMsFXp1CUyzi1gIjzcGuDbh1/cT0faUA97lWoQ6maDb/ADL2CnHq/wDyUXNqjwQpRuIaMuwHzAI629wUVK4X3j+Is78P8QbOpcQLVfeFUc913BaRu4I76O2BLuBozliakVRrb5P4lrRR2x9iJ6S6LqXqLMCrhw1NG9X/AN9pSwpy1E2mbFuJgOdLALMtF4laX1+YjyVeomrp0sGm7YzN6lS12FOIqgNiXG18KM2FtwVcoJsYohdsywgWCr+7G1nGMTBiFiZu26jkHburihOIdYgA0Vy1uBhZYPFw0N+XcRUwdo5EMKJebNwL4HUHzCzKEvGo/ZHxSraQa/6gjzEKVOliI4W+/EbT1j4iOBo/kfzHbRrPCHWe2AalOLGgKCZSrbI/UIlUV0n5fjUSVouU/UHktR5NaaIt9QbXcRY+CTRqpiNOXOo5LyuZB2rI1VQmcdwRCag1k+0AzvEDIzPCquKhMJV95iXikizpE0r3EANl/MWtsOOI0Ufwl8hfJKApa/f+4m+dwn7P5IS4StFn8wWyq2KfxNh1YD+OJixyfvx6llvl5jkzOB6iYcGpbZkWkXXqYAagcoQ8eGGBDVzzLUiuM8zRiACYYp2rSOzGBmAaurjbl4HETB0eY6I2w4WmYPINRACU7xEjavFQAr4a7iK1m0PMTCf/2Q=="/>
+</div>
+<h1>Teach Me the I Ching</h1>
+<p class="sub">A short path. One idea at a time.</p>
+<nav>
+<button class="active" data-tab="learn">Learn</button>
+<button data-tab="cast">Cast</button>
+<button data-tab="book">64</button>
+</nav>
+</header>
+<main>
+<section id="learn">
+<div class="card" id="lesson"></div>
+<button class="primary" id="next">Next</button>
+</section>
+<section id="cast" class="hide">
+<div class="card">
+<h2>Three coins</h2>
+<p>Ask one clear question. Throw three coins, six times. The first throw is the bottom line.</p>
+<p class="muted">Heads = 3, tails = 2. Total 6 changing yin, 7 stable yang, 8 stable yin, 9 changing yang.</p>
+<div class="coins" id="coins"></div>
+<p id="thrown">Throw 1 of 6 — bottom line</p>
+<button class="primary" id="throw">Throw</button>
+<button id="reset">Start over</button>
+<div id="reading"></div>
+</div>
+</section>
+<section id="book" class="hide">
+<div class="card">
+<h2>The 64</h2>
+<label class="muted" for="pick">Pick a number</label>
+<select id="pick" class="grow"></select>
+<div id="entry"></div>
+</div>
+</section>
+</main>
+<script>
+const lessons=[
+["What it is","The I Ching, the Book of Changes, is an old Chinese book of situations. It does not tell you what will happen. It gives a picture of the moment and a way to meet it. A reading is six lines. You read the picture, then only the lines that are changing."],
+["Yin and yang","A solid line is yang: active, firm, outward. A broken line is yin: open, receptive, inward. Neither is better. Change happens when they stack."],
+["Eight trigrams","Three lines make a trigram. Eight of them name the basic pictures: Heaven, Earth, Thunder, Wind, Water, Fire, Mountain, Lake. A hexagram is two trigrams, lower then upper."],
+["Six lines","Six lines, bottom first, make a hexagram. There are 64. The lower three lines are the inner picture. The upper three are the outer picture."],
+["How to cast","Use three coins. Heads counts 3, tails counts 2. Add them. 6 is a changing yin line. 7 is a stable yang line. 8 is a stable yin line. 9 is a changing yang line. Throw six times, bottom line first."],
+["How to read","Read the name and the short picture first. If a line is 6 or 9, it is changing: read that line, then flip it. Flipping the changing lines makes a second hexagram, the direction things are moving. Stable lines stay as they are."],
+["Practice","Ask one question you can act on. Cast. Read the first picture, then only the changing lines, then the second picture. Write one sentence: what this asks of me today."]
+];
+const trigrams=[
+["Qian","Heaven","Creative, firm"],["Kun","Earth","Receptive, holding"],["Zhen","Thunder","Movement, shock"],["Xun","Wind","Gentle, entering"],["Kan","Water","Depth, risk"],["Li","Fire","Clarity, clinging"],["Gen","Mountain","Still, stopping"],["Dui","Lake","Open, joyful"]
+];
+const hex=[
+["Qian","Creative","Keep going with a clear effort."],["Kun","Receptive","Support the work. Do not force the lead."],["Zhun","Difficulty at the start","It is messy. Gather help and start small."],["Meng","Youthful folly","You are still learning. Ask, then listen."],["Xu","Waiting","The time is not ripe. Nourish yourself and wait."],["Song","Conflict","A dispute is here. Seek fair terms, not a win."],["Shi","The army","Order and a steady lead matter now."],["Bi","Holding together","Join with people you trust."],["Xiao Chu","Small taming","A small restraint shapes a larger force."],["Lu","Treading","Watch your step. Conduct matters more than speed."],["Tai","Peace","Heaven and earth meet. Use the ease while it lasts."],["Pi","Standstill","The way is blocked. Do not push a closed door."],["Tong Ren","Fellowship","Work with others who share the aim."],["Da You","Great possession","You have much. Share it and stay modest."],["Qian","Modesty","Lower yourself a little. It makes room."],["Yu","Enthusiasm","Energy is up. Point it at one real task."],["Sui","Following","Follow what is sound, not what is loud."],["Gu","Repair","Something has spoiled. Clean the root of it."],["Lin","Approach","A chance is nearing. Meet it prepared."],["Guan","Contemplation","Look before you act. See the whole."],["Shi He","Biting through","A hard knot. Cut through it cleanly."],["Bi","Grace","Beauty helps, but do not hide behind it."],["Bo","Splitting apart","Support is thinning. Do not add weight."],["Fu","Return","A turn back toward the start. Begin again."],["Wu Wang","Innocence","Act simply. Do not scheme."],["Da Chu","Great taming","Hold a strong force with care."],["Yi","Nourishment","Watch what you take in, and what you say."],["Da Guo","Great excess","The load is too heavy. Shore it up."],["Kan","The abyss","Danger repeats. Move through, do not freeze."],["Li","The clinging","Stay with what gives light."],["Xian","Influence","A quiet pull between two sides."],["Heng","Duration","Keep a steady pace you can hold."],["Dun","Retreat","Step back on purpose. It is not defeat."],["Da Zhuang","Great power","Strength is high. Do not misuse it."],["Jin","Progress","Advance in the open, a step at a time."],["Ming Yi","Darkening","Light is hidden. Protect it."],["Jia Ren","The family","Set the tone at home first."],["Kui","Opposition","Difference is real. Do not pretend it away."],["Jian","Obstruction","The path is blocked. Find another way around."],["Xie","Release","The knot loosens. Do not re-tie it."],["Sun","Decrease","Give a little up. The loss can clarify."],["Yi","Increase","Help arrives. Use it on what matters."],["Guai","Breakthrough","Speak the hard thing plainly, then stop."],["Gou","Coming to meet","An encounter. Notice it before it grows."],["Cui","Gathering","People collect. Give them a clear center."],["Sheng","Pushing upward","Grow by small pushes, not a leap."],["Kun","Oppression","You feel stuck. Keep one small duty."],["Jing","The well","The source is there. Do not neglect it."],["Ge","Revolution","The old form no longer fits. Change it."],["Ding","The cauldron","Cook what you have into something useful."],["Zhen","Thunder","A shock. After it, set things back in order."],["Gen","Keeping still","Stop. Stillness is the move."],["Jian","Gradual progress","Slow steps. Like a tree, not a spark."],["Gui Mei","The marrying maiden","Know your place in the bond. Do not rush rank."],["Feng","Abundance","Fullness. Share it before it peaks."],["Lu","The wanderer","You are passing through. Travel light."],["Xun","The gentle","Enter softly and repeat. Wind shapes stone."],["Dui","The joyous","Openness helps. Do not be careless with it."],["Huan","Dispersion","Scatter what is stuck. Then gather again."],["Jie","Limitation","A boundary protects. Set one you can keep."],["Zhong Fu","Inner truth","Trust the quiet center, then speak."],["Xiao Guo","Small excess","Mind the small things. Do not overreach."],["Ji Ji","After completion","It is in order. Stay careful so it holds."],["Wei Ji","Before completion","Nearly there. Finish with care."]
+];
+const lines=[
+"111111","000000","100010","010001","111010","010111","010000","000010","111011","110111","111000","000111","101111","111101","001000","000100","100110","011001","110000","000011","100101","101001","000001","100000","100111","111001","100001","011110","010010","101101","001110","011100","001111","111100","000101","101000","101011","110101","001010","010100","110001","100011","111110","011111","000110","011000","010110","011010","101110","011101","100100","001001","001011","110100","101100","001101","011011","110110","010011","110010","110011","001100","101010","010101"
+];
+let casts=[], lessonAt=0;
+const $=(s)=>document.querySelector(s);
+function bars(bits, ch){
+ return "<div class='bars'>"+[...bits].map((b,i)=>{
+  const c=ch&&ch[i]?" chg":"";
+  return b==="1"?"<div class='bar"+c+"'></div>":"<div class='bar yin"+c+"'><i></i><i></i></div>";
+ }).join("")+"</div>";
+}
+function showLesson(){
+ const [t,b]=lessons[lessonAt];
+ let extra="";
+ if(lessonAt===2) extra="<div class='tri'>"+trigrams.map(t=>"<div><strong>"+t[0]+"</strong><br>"+t[1]+"<br><span class='muted'>"+t[2]+"</span></div>").join("")+"</div>";
+ if(lessonAt===3) extra=bars("101010")+"<p class='muted'>Example: solid, broken, solid, broken, solid, broken. Bottom line is the first one you cast.</p>";
+ $("#lesson").innerHTML="<p class='muted'>Lesson "+(lessonAt+1)+" of 7</p><h2>"+t+"</h2><p>"+b+"</p>"+extra;
+ $("#next").textContent=lessonAt===6?"Start again":"Next";
+}
+function tab(name){
+ document.querySelectorAll("nav button").forEach(b=>b.classList.toggle("active", b.dataset.tab===name));
+ ["learn","cast","book"].forEach(id=>$("#"+id).classList.toggle("hide", id!==name));
+}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>tab(b.dataset.tab));
+$("#next").onclick=()=>{ lessonAt=(lessonAt+1)%7; showLesson(); };
+function coin(){ return Math.random()<0.5?3:2; }
+function drawCoins(vals){
+ $("#coins").innerHTML=vals.map(v=>"<div class='coin "+(v===3?"h":"t")+"'>"+(v===3?"H":"T")+"</div>").join("");
+}
+function renderReading(){
+ if(casts.length<6){ $("#reading").innerHTML=""; return; }
+ const bits=casts.map(c=> (c===7||c===9)?"1":"0").join("");
+ const ch=casts.map(c=>c===6||c===9);
+ const idx=lines.indexOf(bits);
+ const rel=bits.split("").map((b,i)=>ch[i]?(b==="1"?"0":"1"):b).join("");
+ const idx2=lines.indexOf(rel);
+ const h=idx>=0?hex[idx]:null, h2=idx2>=0?hex[idx2]:null;
+ let html="<h2>"+(h?(idx+1)+". "+h[0]+" — "+h[1]:"Unknown figure")+"</h2>"+bars(bits,ch);
+ html+="<p>"+(h?h[2]:"")+"</p><ol>"+casts.map((c,i)=>"<li>Line "+(i+1)+": "+c+(c===6||c===9?" changing":" stable")+"</li>").join("")+"</ol>";
+ if(ch.some(Boolean)&&h2) html+="<h2>Moving toward "+(idx2+1)+". "+h2[0]+" — "+h2[1]+"</h2>"+bars(rel)+"<p>"+h2[2]+"</p>";
+ else if(!ch.some(Boolean)) html+="<p class='muted'>No changing lines. Read this picture only.</p>";
+ $("#reading").innerHTML=html;
+}
+$("#throw").onclick=()=>{
+ if(casts.length>=6) return;
+ const vals=[coin(),coin(),coin()];
+ drawCoins(vals);
+ casts.push(vals.reduce((a,b)=>a+b,0));
+ $("#thrown").textContent=casts.length<6?("Throw "+(casts.length+1)+" of 6"):"Done";
+ renderReading();
+};
+$("#reset").onclick=()=>{ casts=[]; $("#coins").innerHTML=""; $("#thrown").textContent="Throw 1 of 6 — bottom line"; $("#reading").innerHTML=""; };
+const pick=$("#pick");
+hex.forEach((h,i)=>{ const o=document.createElement("option"); o.value=i; o.textContent=(i+1)+". "+h[0]+" — "+h[1]; pick.appendChild(o); });
+function showEntry(){ const i=+pick.value; const h=hex[i]; $("#entry").innerHTML=bars(lines[i])+"<p><strong>"+h[0]+"</strong> — "+h[1]+"</p><p>"+h[2]+"</p><p class='muted'>Lines, bottom to top: "+lines[i].replace(/1/g,"solid ").replace(/0/g,"broken ")+"</p>"; }
+pick.onchange=showEntry;
+showLesson(); showEntry();
+
+</script>
+</body>
+</html>

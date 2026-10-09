@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c1014">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="MS Companion — a calm companion for people living with multiple sclerosis. Talk, listen, check in, and learn. Not medical advice.">
+<title>MS Companion</title>
+<link rel="icon" href="/og.jpg">
+<meta property="og:title" content="MS Companion">
+<meta property="og:description" content="A calm companion for people living with multiple sclerosis.">
+<meta property="og:image" content="/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<style>
+  :root {
+    --bg: #12161c;
+    --surface: #1a2028;
+    --fg: #f4f6f8;
+    --muted: #a8b3be;
+    --subtle: #7d8994;
+    --line: #2c3540;
+    --accent: #c5d0da;
+    --accent-2: #2a3340;
+    --ink: #0e141a;
+    --radius: 14px;
+    --safe-b: max(12px, env(safe-area-inset-bottom));
+    --safe-t: max(8px, env(safe-area-inset-top));
+    --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, textarea, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  button:disabled { opacity: 0.45; cursor: default; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .app {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    max-width: 760px;
+    margin: 0 auto;
+  }
+  header {
+    padding: var(--safe-t) 16px 12px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: #1c2632;
+    color: #f4f6f8;
+    font-weight: 650;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    box-shadow: inset 0 0 0 1px #3d4a58;
+  }
+  h1, h2, .breath strong {
+    background: linear-gradient(105deg, #e7f6ff 0%, #6eb8d6 46%, #1a7eab 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  h1 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+  .sub { margin: 2px 0 0; color: var(--subtle); font-size: 12px; }
+  main {
+    flex: 1;
+    padding: 14px 14px calc(78px + var(--safe-b));
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .panel { display: none; flex-direction: column; gap: 12px; min-height: 0; flex: 1; }
+  .panel.on { display: flex; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px;
+    box-shadow: inset 0 0 0 1px rgba(110, 168, 212, 0.06);
+  }
+  .hero {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .orb {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    flex: none;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    padding-bottom: 16px;
+    background: #10161c;
+    box-shadow: 0 0 0 1px #2a3a48;
+  }
+  .orb.live { box-shadow: 0 0 0 1px var(--accent), 0 0 24px rgba(110, 168, 212, 0.28); }
+  .bar {
+    width: 4px;
+    border-radius: 4px;
+    background: var(--accent);
+    height: 10px;
+  }
+  .orb.live .bar { animation: wave 0.9s ease-in-out infinite; }
+  .bar:nth-child(2) { height: 16px; animation-delay: .08s; }
+  .bar:nth-child(3) { height: 22px; animation-delay: .16s; }
+  .bar:nth-child(4) { height: 14px; animation-delay: .04s; }
+  .bar:nth-child(5) { height: 9px; animation-delay: .12s; }
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.45); }
+    50% { transform: scaleY(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .orb.live .bar { animation: none; }
+  }
+  h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.15rem;
+  }
+  .status { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+
+  .btn {
+    border: 1px solid var(--line);
+    background: #12181e;
+    color: var(--fg);
+    border-radius: 12px;
+    min-height: 40px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .btn.primary {
+    background: #2a3340;
+    color: #f4f6f8;
+    border-color: #3d4a58;
+  }
+  .btn.soft {
+    background: #1a2028;
+    color: #d5dee6;
+    border-color: #3d4a58;
+  }
+  .btn.icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    padding: 0;
+    font-size: 20px;
+  }
+  .btn.on { background: #2a3340; color: #f4f6f8; border-color: #3d4a58; }
+
+  .thread {
+    flex: 1;
+    min-height: 220px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 4px 2px 8px;
+  }
+  .msg {
+    max-width: 92%;
+    padding: 10px 12px;
+    border-radius: 16px;
+    font-size: 14.5px;
+    white-space: pre-wrap;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: #2a3340;
+    color: #f4f6f8;
+    border-bottom-right-radius: 6px;
+  }
+  .msg.bot {
+    align-self: flex-start;
+    background: #141a21;
+    border: 1px solid var(--line);
+    border-bottom-left-radius: 6px;
+  }
+  .play {
+    margin-top: 8px;
+    background: none;
+    border: 0;
+    color: var(--accent);
+    padding: 0;
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .composer {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    border-top: 1px solid var(--line);
+    padding-top: 10px;
+  }
+  textarea {
+    flex: 1;
+    min-height: 48px;
+    max-height: 120px;
+    resize: none;
+    background: #10161c;
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 12px;
+  }
+  .hint {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 8px;
+    color: var(--subtle);
+    font-size: 11px;
+  }
+  .hint button { background: none; border: 0; color: var(--subtle); padding: 0; font-size: 11px; }
+  .chips { display: flex; gap: 8px; overflow: auto; padding-bottom: 2px; }
+  .chip {
+    flex: none;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #10161c;
+    color: var(--muted);
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  label.field { display: block; margin-bottom: 14px; }
+  label.field span { display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; }
+  label.field b { color: var(--accent); font-weight: 600; font-size: 1.05rem; }
+  input[type="range"] { width: 100%; accent-color: var(--accent); }
+  .ends { display: flex; justify-content: space-between; color: var(--subtle); font-size: 11px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill {
+    border-radius: 999px;
+    border: 1px solid #333;
+    background: #10161c;
+    color: var(--muted);
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+  .pill.on { background: #222932; color: #f4f6f8; border-color: #3d4a58; }
+  .history { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 8px; margin-top: 8px; }
+
+  .voice-list { display: grid; gap: 8px; margin-top: 8px; max-height: 240px; overflow: auto; }
+  .voice {
+    text-align: left;
+    border-radius: 12px;
+    border: 1px solid #2e2e2e;
+    background: #10161c;
+    padding: 10px 12px;
+  }
+  .voice.on { border-color: var(--accent); background: #15202a; }
+  .voice small { display: block; color: var(--subtle); font-size: 11px; }
+
+  .breath {
+    width: 148px;
+    height: 148px;
+    margin: 8px auto;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: radial-gradient(circle at 40% 35%, #1c2a36, #0c1014 72%);
+    box-shadow: 0 0 0 1px #2a3a48;
+    text-align: center;
+  }
+  .breath strong { font-size: 2rem; display: block; font-weight: 600; }
+  .breath em { font-style: normal; color: var(--muted); font-size: 12px; }
+  ul.clean { margin: 8px 0 0; padding-left: 18px; color: var(--muted); }
+  ul.clean li { margin: 6px 0; }
+
+  nav {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--line);
+    padding-bottom: var(--safe-b);
+    z-index: 6;
+  }
+  nav .inner {
+    max-width: 760px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  nav button {
+    background: none;
+    border: 0;
+    color: var(--subtle);
+    min-height: 56px;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+  }
+  nav button.on { color: #f4f6f8; }
+  .ico { font-size: 16px; line-height: 1; }
+
+  select.rate {
+    background: #10161c;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 8px;
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">
+      <div class="mark" aria-hidden="true">MS</div>
+      <div>
+        <h1>MS Companion</h1>
+        <p class="sub">Supportive companion for MS</p>
+      </div>
+    </div>
+  </header>
+  <main>
+    <section class="panel on" id="tab-companion" aria-label="Companion">
+      <div class="card">
+        <div class="hero">
+          <div class="orb" id="orb" aria-hidden="true">
+            <span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span><span class="bar"></span>
+          </div>
+          <div style="flex:1;min-width:0">
+            <h2>MS Companion</h2>
+            <p class="status" id="status">Ready when you are</p>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="display:flex;flex-direction:column;flex:1;min-height:280px">
+        <div class="thread" id="thread"></div>
+        <div class="composer">
+          <textarea id="draft" rows="1" placeholder="Type a message…"></textarea>
+          <button class="btn primary icon" type="button" id="send" aria-label="Send">Send</button>
+        </div>
+        <div class="hint">
+          <span>Not medical advice</span>
+          <button type="button" id="clear">Clear</button>
+        </div>
+      </div>
+      <div class="chips" id="chips"></div>
+    </section>
+
+    <section class="panel" id="tab-checkin" aria-label="Check-in">
+      <div class="card">
+        <h2>Daily check-in</h2>
+        <p class="status">Soft tracking for you — not a medical chart. Your companion can use this when you talk.</p>
+        <label class="field"><span>Energy <b id="e-val">5</b></span><input id="energy" type="range" min="0" max="10" value="5"><div class="ends"><span>Drained</span><span>Steady</span></div></label>
+        <label class="field"><span>Pain / discomfort <b id="p-val">2</b></span><input id="pain" type="range" min="0" max="10" value="2"><div class="ends"><span>None</span><span>Severe</span></div></label>
+        <label class="field"><span>Mood <b id="m-val">5</b></span><input id="mood" type="range" min="0" max="10" value="5"><div class="ends"><span>Heavy</span><span>Lifted</span></div></label>
+        <p style="font-weight:600;margin:0 0 8px">Symptoms today</p>
+        <div class="pills" id="symptoms"></div>
+        <label class="field" style="margin-top:14px">
+          <span>Anything else?</span>
+          <textarea id="note" rows="3" placeholder="Optional note…"></textarea>
+        </label>
+        <div class="row">
+          <button class="btn primary" type="button" id="save-check">Save check-in</button>
+          <button class="btn" type="button" id="save-talk">Save & talk</button>
+        </div>
+        <div id="history"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="tab-tools" aria-label="Tools">
+      <div class="card" style="text-align:center">
+        <h2>Grounding breath</h2>
+        <p class="status">4 · 2 · 6 — soft and unhurried</p>
+        <div class="breath" id="breath"><div><strong id="breath-n">4</strong><em id="breath-l">Ready</em></div></div>
+        <button class="btn primary" type="button" id="breath-btn">Start breathing</button>
+      </div>
+      <div class="card">
+        <h2>Energy banking</h2>
+        <p class="status">Energy is a budget, not a moral score. Recovery is part of the plan.</p>
+        <ul class="clean">
+          <li>Put high-value tasks in your best hours.</li>
+          <li>Schedule rest before you crash, not after.</li>
+          <li>Cool your body if heat drains you.</li>
+          <li>One task at a time when cog fog is high.</li>
+          <li>Ask for help on the heavy lifts.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>When to get medical help</h2>
+        <p class="status">This is a companion — not emergency care.</p>
+        <p class="status">Contact your neurology team for new or worsening symptoms lasting more than a day, especially walking, vision, speech, or bladder.</p>
+        <p class="status">Seek emergency care for sudden severe symptoms, stroke-like signs, chest pain, or trouble breathing. In Australia, Lifeline is 13 11 14. In the US, call 988.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="tab-learn" aria-label="Learn">
+      <div class="card">
+        <h2>Learn about MS</h2>
+        <p class="status">Pick a topic to start a conversation. Always check medical decisions with your care team.</p>
+      </div>
+      <div id="topics"></div>
+      <div class="card">
+        <h2 style="font-size:1.05rem">Trusted organisations</h2>
+        <p class="status">MS Australia, National MS Society, MS Trust, MS International Federation, and your neurology clinic. This app helps you prepare questions — it does not replace those sources.</p>
+      </div>
+    </section>
+  </main>
+  <nav>
+    <div class="inner">
+      <button type="button" class="on" data-tab="companion"><span class="ico">Talk</span>Companion</button>
+      <button type="button" data-tab="checkin"><span class="ico">Day</span>Check-in</button>
+      <button type="button" data-tab="tools"><span class="ico">Calm</span>Tools</button>
+      <button type="button" data-tab="learn"><span class="ico">Learn</span>Learn</button>
+    </div>
+  </nav>
+</div>
+<script>
+(function () {
+  const WELCOME = "Hi — I'm MS Companion. Ask about symptoms, fatigue, treatments at a high level, or a hard day. Type whenever you're ready.";
+  const SYMPTOMS = ["Fatigue","Brain fog","Numbness","Weakness","Spasticity","Balance","Vision","Pain","Bladder","Heat sensitivity","Low mood","Sleep issues"];
+  const TOPICS = [
+    ["Understanding MS fatigue","Why MS fatigue feels different, and how pacing can help.",["Why is my MS fatigue so overwhelming even after rest?","Can you help me plan my day using energy banking?"]],
+    ["Relapse or flare?","How people tell a possible relapse from a temporary flare.",["How do I know if this is a relapse or a pseudo-relapse?","What should I tell my neurologist's office about new symptoms?"]],
+    ["Heat sensitivity","Uhthoff's phenomenon and cooling for daily life.",["Why do I feel worse in the heat?","What cooling strategies actually help with MS?"]],
+    ["Brain fog & cognition","Processing speed, memory, and practical workarounds.",["I keep losing my train of thought — is that MS?","Tips for working with cog fog?"]],
+    ["Mobility & balance","Walking changes, fall safety, and aids without stigma.",["My balance is off — what can help day to day?","How do I decide if I should use a cane?"]],
+    ["Bladder & bowel","Common patterns and coping approaches.",["I need the bathroom constantly — what is going on?","How can I manage urgency when I'm out?"]],
+    ["Mood & mental health","Grief, anxiety, and the emotional side of MS.",["I feel like I'm grieving my old life.","How do I talk to my partner about MS days?"]],
+    ["Treatments overview","High-level questions about disease-modifying therapies — not prescriptions.",["What should I ask before starting a DMT?","How do high-efficacy treatments differ from older ones?"]],
+    ["Work & energy","Disclosure choices and a sustainable workday.",["Should I tell my employer I have MS?","How do I pace a full workday with fatigue?"]],
+    ["For caregivers","Support without burning out.",["How can I support my partner on a bad MS day?","I'm a caregiver and I'm exhausted — what helps?"]]
+  ];
+  const CHIPS = ["I'm so fatigued today","Is this a relapse?","Help me feel calmer","Explain heat sensitivity"];
+
+  const KEY = "harbor-ms-single-v1";
+  const state = Object.assign({
+    messages: [],
+    checkIn: null,
+    history: [],
+    symptoms: []
+  }, load());
+
+  const $ = (id) => document.getElementById(id);
+  const thread = $("thread");
+  const statusEl = $("status");
+  let breathRaf = 0;
+  let breathOn = false;
+  let breathAudio = null;
+  let stopBreath = function () {};
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { return {}; }
+  }
+  function save() {
+    localStorage.setItem(KEY, JSON.stringify({
+      messages: state.messages.slice(-40),
+      checkIn: state.checkIn,
+      history: (state.history || []).slice(0, 14),
+      symptoms: state.symptoms
+    }));
+  }
+
+  function includesAny(text, words) {
+    return words.some((w) => text.includes(w));
+  }
+  function reply(text) {
+    const lower = (text || "").toLowerCase();
+    const c = state.checkIn;
+    const ctx = c ? "\n\nI noticed from your check-in: energy " + c.energy + "/10, pain " + c.pain + "/10, mood " + c.mood + "/10. Symptoms: " + ((c.symptoms && c.symptoms.length) ? c.symptoms.join(", ") : "none listed") + (c.note ? ". Note: " + c.note : "") + "." : "";
+    if (!text || text.length < 2) return "I'm here with you. Tell me how you're feeling, or ask about MS symptoms and daily life." + ctx;
+    if (includesAny(lower, ["suicid","kill myself","end my life","want to die","self-harm"]))
+      return "I'm really glad you told me. Please reach out now to someone trained for this. In Australia call Lifeline on 13 11 14. In the US call 988. If you are in immediate danger, call local emergency services. I'm here, but I am not a crisis service.";
+    if (includesAny(lower, ["emergency","can't breathe","stroke","chest pain"]))
+      return "Those symptoms can be serious. If this is sudden or severe — trouble breathing, chest pain, or stroke-like signs — seek emergency care now. After you are safe, your neurology team can help interpret what happened.";
+    if (includesAny(lower, ["hello","hi ","hi,","hey","good morning","good evening"]))
+      return "Hello — I'm MS Companion. I can talk about symptoms, fatigue, treatments at a high level, hard days, or simply keep you company. What's on your mind?" + ctx;
+    if (includesAny(lower, ["fatigue","exhausted","tired","no energy","spoon","energy"]))
+      return "MS fatigue is often a different beast from ordinary tiredness — it can hit like a wall, and rest doesn't always fix it the way people expect.\n\nA few approaches many people find helpful:\n• Energy banking: put high-priority tasks in your best hours, and plan recovery before you crash.\n• Cool your body if heat worsens symptoms.\n• Ask your clinician about sleep, infection, low mood, medication side effects, or anemia if fatigue suddenly spikes.\n• Break tasks into smaller pieces.\n\nIf you want, tell me roughly what your day looks like and we can sketch a gentler plan. This isn't medical advice." + ctx;
+    if (includesAny(lower, ["relapse","flare","exacerbation","new symptom","worse symptom"]))
+      return "It's smart to notice when symptoms change. A true relapse is usually new or clearly worse neurological symptoms lasting more than about 24 hours, not fully explained by heat, fever, or infection alone. A pseudo-relapse is a temporary flare when heat, a virus, or overdoing it worsens familiar symptoms.\n\nHelpful notes for your clinic: when it started, what changed, any fever, infection, or heat, whether it is still progressing, and how it affects walking, vision, bladder, or speech.\n\nSudden severe changes need emergency care. Otherwise contact your neurology team — they decide whether you need to be seen.";
+    if (includesAny(lower, ["heat","hot","uhthoff","summer","overheat","temperature","cooling"]))
+      return "Many people with MS are heat-sensitive — sometimes called Uhthoff's phenomenon. Heat can temporarily slow nerve signalling and make symptoms louder without meaning a new relapse.\n\nCooling ideas: pre-cool before activity, lukewarm showers, a cooling towel or vest, hydration, and outdoor time in cooler hours. Symptoms often ease once you cool down. If this is new or much worse, mention it at your next visit.";
+    if (includesAny(lower, ["brain fog","cog fog","memory","concentrate","focus","cognition","thinking","train of thought"]))
+      return "Cognitive changes in MS — processing speed, short-term memory, multitasking — are real and common. They don't mean you aren't trying.\n\nWhat often helps: one task at a time, write things down immediately, quieter rooms, rest before hard thinking, and calendars without shame. Occupational therapy can be surprisingly useful. Sleep, mood, and medications are worth mentioning to your clinician too.";
+    if (includesAny(lower, ["walk","balance","fall","cane","mobility","spastic","stiff","weak"]))
+      return "Mobility and balance changes can be frightening. Physical therapy for strength, gait, and fall safety helps many people.\n\nDay to day: good lighting, fewer trip hazards, sturdy shoes, and using a cane or other aid when you need it is a strength move, not a failure. Cooling can help if heat worsens your legs. If falls are increasing, tell your care team.";
+    if (includesAny(lower, ["bladder","bathroom","urgent","urgency","incontinence","bowel"]))
+      return "Bladder and bowel changes are very common in MS and under-discussed. Urgency, frequency, hesitancy, or incomplete emptying can all show up.\n\nPractical starts: timed voiding, notice bladder irritants such as caffeine, and plan restroom access when you go out. Pelvic floor physio and urology help many people. New burning, fever, or a sudden symptom spike can mean infection — that deserves medical attention, because infections can flare MS symptoms.";
+    if (includesAny(lower, ["depress","anxious","anxiety","sad","lonely","grief","scared","hopeless","mood","grieving","partner"]))
+      return "Living with MS can bring grief, fear, and heavy days. That does not mean you are weak. Mood and MS are linked both biologically and emotionally.\n\nName what you feel without judging it. Keep one small routine or connection. If low mood lasts most days, please talk with your doctor or a counsellor who understands chronic illness. You don't have to package this neatly — I'm here." + ctx;
+    if (includesAny(lower, ["dmt","treatment","ocrelizumab","tysabri","kesimpta","interferon","medication","infusion","injection","high-efficacy"]))
+      return "Disease-modifying therapies aim to reduce relapses and new MRI activity. Some may slow progression. Options range from injections and tablets to higher-efficacy infusions, each with different monitoring and risks.\n\nI can't recommend starting, stopping, or switching any medicine. Useful questions for your neurologist: the goal of therapy, infection risk and vaccines, monitoring, pregnancy plans, how it fits your life, and what success looks like on MRI and symptoms.";
+    if (includesAny(lower, ["pain","hurt","burning","numb","tingling","ms hug","neuropath"]))
+      return "MS-related pain can be neuropathic (burning, electric, pins and needles), musculoskeletal from how you compensate, or both — including the banding \"MS hug\".\n\nTracking heat, stress, posture, and sleep helps. Gentle movement, cooling, pacing, and a conversation with your clinician about options is the usual path. Sudden severe new pain deserves a medical review. Where is it, and is it new or familiar?";
+    if (includesAny(lower, ["vision","eye","optic","double vision","blurry"]))
+      return "Vision symptoms in MS can include optic neuritis (often painful vision change in one eye), double vision, or nystagmus. New vision loss or double vision should be checked promptly.\n\nWhile you arrange care: rest your eyes, avoid overheating, and note when it started, whether eye movement hurts, colour changes, and whether one or both eyes are affected. I am not a substitute for an eye or neurology exam.";
+    if (includesAny(lower, ["work","job","boss","accommodation","disability","disclose","employer"]))
+      return "Work with MS is a personal balance of energy, privacy, and practicality. Disclosure is your choice.\n\nHelpful adjustments, where available: flexible hours, quieter tasks, rest breaks, a cooler workspace, and written instructions. In Australia, the Disability Discrimination Act can support reasonable adjustments — local rules vary. If you describe your role and the hardest part of the day, we can sketch pacing and wording.";
+    if (includesAny(lower, ["caregiver","partner","husband","wife","family"]))
+      return "Supporting someone with MS is an act of care — and it can be depleting. Ask \"what would help today?\" rather than assuming. Protect rest, learn a few basics (heat, fatigue, unpredictability), and keep your own support.\n\nCaregivers need breaks without guilt. If you are the person with MS, it is okay to teach people how to help you.";
+    if (includesAny(lower, ["breath","calm","panic","ground","calmer"]))
+      return "Let's slow this down. Breathe in through your nose for 4, hold for 2, and out through your mouth for 6. Feel your feet on the floor. Name 3 things you can see, 2 you can touch, and 1 you can hear.\n\nThe Tools tab has a breathing guide if you want company with the rhythm. I'm right here.";
+    return "Thank you for sharing that. Living with MS can touch energy, mood, plans, and the body — you don't have to sort it alone.\n\nI can help unpack symptoms, prepare questions for your care team, or simply listen. What would help most right now: practical tips, emotional support, or a plain-language explanation?\n\nReminder: I'm a companion, not a substitute for your neurologist or emergency care." + ctx;
+  }
+
+  function setStatus(t) { statusEl.textContent = t; }
+  function renderThread() {
+    thread.innerHTML = "";
+    state.messages.forEach((m, i) => {
+      const div = document.createElement("div");
+      div.className = "msg " + (m.role === "user" ? "user" : "bot");
+      div.textContent = m.content;
+      thread.appendChild(div);
+    });
+    thread.scrollTop = thread.scrollHeight;
+  }
+  function push(role, content) {
+    state.messages.push({ role, content, at: Date.now() });
+    save();
+    renderThread();
+  }
+  function send(raw) {
+    const content = (raw || "").trim();
+    if (!content) return;
+    $("draft").value = "";
+    push("user", content);
+    const text = reply(content);
+    setStatus("Ready when you are");
+    push("assistant", text);
+  }
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "\u0026amp;")
+      .replace(/</g, "\u0026lt;")
+      .replace(/>/g, "\u0026gt;")
+      .replace(/"/g, "\u0026quot;");
+  }
+
+  function showTab(name) {
+    document.querySelectorAll(".panel").forEach((p) => p.classList.toggle("on", p.id === "tab-" + name));
+    document.querySelectorAll("nav button").forEach((b) => b.classList.toggle("on", b.dataset.tab === name));
+  }
+
+  function renderSymptoms() {
+    const box = $("symptoms");
+    box.innerHTML = "";
+    SYMPTOMS.forEach((s) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "pill" + (state.symptoms.includes(s) ? " on" : "");
+      b.textContent = s;
+      b.addEventListener("click", () => {
+        state.symptoms = state.symptoms.includes(s) ? state.symptoms.filter((x) => x !== s) : state.symptoms.concat(s);
+        renderSymptoms();
+      });
+      box.appendChild(b);
+    });
+  }
+  function currentCheck() {
+    return {
+      energy: Number($("energy").value),
+      pain: Number($("pain").value),
+      mood: Number($("mood").value),
+      symptoms: state.symptoms.slice(),
+      note: $("note").value.trim(),
+      at: Date.now()
+    };
+  }
+  function renderHistory() {
+    const box = $("history");
+    if (!state.history.length) { box.innerHTML = ""; return; }
+    box.innerHTML = "<p style='font-weight:600;color:#e7edf2'>Recent check-ins</p>" +
+      state.history.slice(0, 5).map((h) => {
+        const d = new Date(h.at).toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" });
+        return "<div class='history'><strong>" + d + "</strong> · energy " + h.energy + " · pain " + h.pain + " · mood " + h.mood +
+          (h.symptoms && h.symptoms.length ? "<br>" + escapeHtml(h.symptoms.join(" · ")) : "") +
+          (h.note ? "<br>" + escapeHtml(h.note) : "") + "</div>";
+      }).join("");
+  }
+
+  function renderTopics() {
+    const box = $("topics");
+    box.innerHTML = "";
+    TOPICS.forEach((t) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = "<h2 style='font-size:1.05rem'>" + escapeHtml(t[0]) + "</h2><p class='status'>" + escapeHtml(t[1]) + "</p>";
+      t[2].forEach((p) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "btn";
+        b.style.display = "block";
+        b.style.width = "100%";
+        b.style.textAlign = "left";
+        b.style.marginTop = "8px";
+        b.textContent = p;
+        b.addEventListener("click", () => { showTab("companion"); send(p); });
+        card.appendChild(b);
+      });
+      box.appendChild(card);
+    });
+  }
+
+  $("chips").innerHTML = "";
+  CHIPS.forEach((c) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "chip";
+    b.textContent = c;
+    b.addEventListener("click", () => send(c));
+    $("chips").appendChild(b);
+  });
+
+  if (!state.messages.length) state.messages = [{ role: "assistant", content: WELCOME, at: Date.now() }];
+  renderThread();
+  renderSymptoms();
+  renderTopics();
+  renderHistory();
+  if (state.checkIn) {
+    $("energy").value = state.checkIn.energy;
+    $("pain").value = state.checkIn.pain;
+    $("mood").value = state.checkIn.mood;
+    $("note").value = state.checkIn.note || "";
+    state.symptoms = state.checkIn.symptoms || [];
+    renderSymptoms();
+  }
+  ["energy","pain","mood"].forEach((id) => {
+    const map = { energy: "e-val", pain: "p-val", mood: "m-val" };
+    $(map[id]).textContent = $(id).value;
+    $(id).addEventListener("input", () => { $(map[id]).textContent = $(id).value; });
+  });
+
+  $("send").addEventListener("click", () => send($("draft").value));
+  $("draft").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send($("draft").value); }
+  });
+  $("clear").addEventListener("click", () => {
+    state.messages = [{ role: "assistant", content: WELCOME, at: Date.now() }];
+    save();
+    renderThread();
+  });
+
+  document.querySelectorAll("nav button").forEach((b) => {
+    b.addEventListener("click", () => showTab(b.dataset.tab));
+  });
+
+  function saveCheck() {
+    const entry = currentCheck();
+    state.checkIn = entry;
+    state.history = [entry].concat(state.history || []).slice(0, 30);
+    save();
+    renderHistory();
+    setStatus("Check-in saved");
+  }
+  $("save-check").addEventListener("click", saveCheck);
+  $("save-talk").addEventListener("click", () => { saveCheck(); showTab("companion"); });
+
+  function easeInOut(t) {
+    const x = Math.min(1, Math.max(0, t));
+    return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+  }
+  function startBreathSound(kind, duration) {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return function () {};
+    if (!breathAudio) breathAudio = new AC();
+    const ctx = breathAudio;
+    const seconds = Math.max(0.15, duration);
+    const now = ctx.currentTime;
+    const length = Math.floor(ctx.sampleRate * seconds);
+    const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < length; i++) {
+      const white = Math.random() * 2 - 1;
+      last = last * 0.98 + white * 0.02;
+      data[i] = last * 4;
+    }
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    const filter = ctx.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.Q.value = 0.6;
+    const gain = ctx.createGain();
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    if (kind === "in") {
+      filter.frequency.setValueAtTime(420, now);
+      filter.frequency.linearRampToValueAtTime(980, now + seconds);
+      gain.gain.setValueAtTime(0.0008, now);
+      gain.gain.linearRampToValueAtTime(0.09, now + seconds * 0.9);
+    } else {
+      filter.frequency.setValueAtTime(900, now);
+      filter.frequency.linearRampToValueAtTime(260, now + seconds);
+      gain.gain.setValueAtTime(0.09, now);
+      gain.gain.linearRampToValueAtTime(0.0008, now + seconds);
+    }
+    source.start(now);
+    source.stop(now + seconds + 0.02);
+    return function () {
+      try { source.stop(); } catch (e) {}
+    };
+  }
+  const phases = [
+    { n: "Breathe in", d: 4, kind: "in" },
+    { n: "Hold gently", d: 2, kind: "hold" },
+    { n: "Breathe out", d: 6, kind: "out" }
+  ];
+  $("breath-btn").addEventListener("click", () => {
+    breathOn = !breathOn;
+    cancelAnimationFrame(breathRaf);
+    stopBreath();
+    stopBreath = function () {};
+    $("breath-btn").textContent = breathOn ? "Pause" : "Start breathing";
+    if (!breathOn) {
+      $("breath").style.transform = "scale(1)";
+      $("breath-l").textContent = "Ready";
+      $("breath-n").textContent = "4";
+      return;
+    }
+    if (!breathAudio) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) breathAudio = new AC();
+    }
+    if (breathAudio) breathAudio.resume();
+    const total = 12, min = 0.72, max = 1.24;
+    const started = performance.now();
+    let lastKind = "";
+    let lastShown = -1;
+    const tick = (now) => {
+      if (!breathOn) return;
+      const elapsed = ((now - started) / 1000) % total;
+      let acc = 0, current = phases[0], into = elapsed;
+      for (let s = 0; s < phases.length; s++) {
+        if (elapsed < acc + phases[s].d) { current = phases[s]; into = elapsed - acc; break; }
+        acc += phases[s].d;
+      }
+      let scale = min;
+      if (current.kind === "in") scale = min + (max - min) * easeInOut(into / current.d);
+      else if (current.kind === "hold") scale = max;
+      else scale = max + (min - max) * easeInOut(into / current.d);
+      $("breath").style.transform = "scale(" + scale + ")";
+      const shown = Math.max(1, Math.ceil(current.d - into - 0.0001));
+      if (current.kind !== lastKind) {
+        stopBreath();
+        lastKind = current.kind;
+        stopBreath = current.kind === "hold" ? function () {} : startBreathSound(current.kind, current.d - into);
+      }
+      if (shown !== lastShown) {
+        lastShown = shown;
+        $("breath-n").textContent = shown;
+        $("breath-l").textContent = current.n;
+      }
+      breathRaf = requestAnimationFrame(tick);
+    };
+    breathRaf = requestAnimationFrame(tick);
+  });
+})();
+</script>
+</body>
+</html>
