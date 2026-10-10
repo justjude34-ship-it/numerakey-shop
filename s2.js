@@ -68,6 +68,7 @@ const AP2 = [
 {
   slug:"adhd-companion", name:"ADHD Wellness Companion", cat:"neuro", price:39, status:"live", ready:true,
   cover:"covers/adhd-companion.jpg",
+  demo:"https://adhd-wellness.netlify.app",
   desc:"Built around the hard part \u2014 starting \u2014 with a toolkit, a daily pulse, and five modules on how ADHD actually works.",
   tag:"Starting is the expensive part. The rest is momentum.",
   body:[
