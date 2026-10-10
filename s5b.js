@@ -6,6 +6,7 @@ STOPS.splice(0, STOPS.length, "#2EC4B6", "#9B5DE5", "#E040B0");
 APPS.push({
   slug:"lantern", name:"Lantern", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/lantern.jpg",
+  demo:"https://my-lanternapp.netlify.app",
   desc:"A calm space to understand relationship patterns, steady yourself, and plan healthy next steps.",
   tag:"Clarity without harsh labels.",
   body:[
