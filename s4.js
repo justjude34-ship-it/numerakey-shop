@@ -140,5 +140,35 @@ const AP4 = [
     "Then it goes further than most. Give it a surname already open to you \u2014 a maiden name, a partner's name \u2014 and it builds the variants: full given names, the middle dropped, initials, the familiar form of your first name. Twelve of them, ranked by how each Expression sits against your Life Path, with a field to test any spelling you invent. The numbers rebuild as you type."
   ],
   inside:["Your birth name read as the blueprint","The name you use today, read on top of it","Inclusion table \u2014 karmic lessons and hidden passion","Growth number from the first name","Test a surname already open to you","Twelve ranked variants, each explained","Type any spelling and watch it rebuild"]
+},
+{
+  slug:"meridian-emdr", name:"Meridian EMDR", cat:"ptsd", price:59, status:"live", ready:true,
+  desc:"A quiet room for bilateral stimulation between clinical sessions — butterfly BLS, stabilisation, grounding and a seven-step guided path.",
+  tag:"For the space between appointments.",
+  body:[
+    "Meridian is built for the days between EMDR sessions. Butterfly bilateral stimulation runs as a visual, as stereo tones, or both, at a pace you set, with timed sets, fullscreen and a pause that is always one tap away.",
+    "It puts stabilisation first: a safe place, a container, and nurturing, protective or wise resource figures, before any target work. A guided path walks check-in, target and SUDS, cognition and VOC, sets, installation, re-evaluation and closure. It is a support tool, not therapy, and it says so."
+  ],
+  inside:["Butterfly BLS — visual, stereo tones, or both","Safe place, container and resource figures","Grounding: 5-4-3-2-1, box breathing, body scan","Seven-step guided session","Private journal with SUDS trends and set counts","The eight phases explained, with CPTSD pacing notes","Calm now, with Australian crisis numbers","One file, local only"]
+},
+{
+  slug:"aurora-emdr", name:"Aurora EMDR", cat:"ptsd", price:59, status:"live", ready:true,
+  desc:"A guardian light on the path — butterfly BLS studio, stabilisation work and a guided session, private on your device.",
+  tag:"Each step is light on the path.",
+  body:[
+    "Aurora is self-support for use between clinical sessions. A butterfly bilateral stimulation studio sits at the centre, with a coach that gives structured, on-device guidance and a Calm now button for when a set is too much.",
+    "Stabilise first: build a safe place with all the senses, hold a container for leftover material, and anchor a resource. Grounding tools, a seven-step guided session and a plain-language guide to the eight phases sit alongside. Not therapy, not a medical device, and not a crisis service."
+  ],
+  inside:["Butterfly BLS studio, left–right","Coach with structured on-device guidance","Safe place, container and resource work","Grounding and breathing","Seven-step guided session","Learn EMDR — eight phases and CPTSD tips","Progress view","One file, local only"]
+},
+{
+  slug:"lumina-emdr", name:"Lumina EMDR", cat:"ptsd", price:59, status:"live", ready:true,
+  desc:"Rainbow bilateral stimulation on pure black — butterfly hug or eye tracking, offline, no account.",
+  tag:"Simple, dark, and steady.",
+  body:[
+    "Lumina is the simplest of the three: a rainbow light on a black field, moving left and right at a speed you choose. Use it with the butterfly hug, arms crossed and hands on opposite shoulders, or follow it with your eyes.",
+    "It works offline with no account. It is a self-help bilateral stimulation tool and not a substitute for licensed EMDR therapy; if distress rises, pause and reach for professional support."
+  ],
+  inside:["Rainbow bilateral stimulation on black","Butterfly hug or eye tracking","Adjustable speed","Pause at any time","Works offline, no account","One file, local only"]
 }
 ];

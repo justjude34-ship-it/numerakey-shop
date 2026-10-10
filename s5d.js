@@ -41,7 +41,10 @@ const FILES = {
   "daily-plate": "private/daily-plate.html",
   "auraflow": "private/auraflow.html",
   "rise": "private/rise.html",
-  "vesper": "private/vesper.html"
+  "vesper": "private/vesper.html",
+  "meridian-emdr": "private/meridian-emdr.html",
+  "aurora-emdr": "private/aurora-emdr.html",
+  "lumina-emdr": "private/lumina-emdr.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
