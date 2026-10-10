@@ -17,6 +17,7 @@ const SITE = {
 const CATEGORIES = [
   { id:"wellness", name:"Wellness",     colour:"#5CC8F5", note:"Quiet tools for hard seasons." },
   { id:"neuro",    name:"Neurodivergent", colour:"#8FD694", note:"Built for ADHD and AuDHD brains, not around them." },
+  { id:"ptsd",     name:"PTSD & Trauma", colour:"#E6A56B", note:"Skills, understanding and steadier ground for trauma." },
   { id:"sound",    name:"Sound",        colour:"#4FD1C5", note:"Tones, beats and nature, mixed the way you want them." },
   { id:"narc",     name:"Narcissistic Abuse", colour:"#F2789A", note:"Recognising it, surviving it, and getting out." },
   { id:"divine",   name:"Divination",   colour:"#B478F0", note:"Numerology, tarot, and the older systems." },
@@ -38,7 +39,7 @@ const AP1 = [
   inside:["Aria \u2014 speak to her, or write","A journal you can lock","Grounding toolkit for the bad moments","Sleep sound on 20-minute, 45-minute or all-night timers","Audio tuned to stay clear if you're hard of hearing","Sections on self-esteem and on the children","Crisis help always one tap away"]
 },
 {
-  slug:"bloom-from-within", name:"Bloom From Within", cat:"wellness", price:39, status:"live",
+  slug:"bloom-from-within", name:"Bloom From Within", cat:"ptsd", price:39, status:"live",
   cover:"covers/bloom-from-within.jpg",
   desc:"Trauma recovery you can see moving — practices, check-ins and a progress view.",
   tag:"Recovery, measured gently.",

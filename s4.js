@@ -11,7 +11,7 @@ const AP4 = [
   inside:["Four rooms, one per agreement","A path you move along at your own pace","Learn \u2014 the reasoning, not just the slogans","Name it, breathe, choose a room \u2014 for the slips","Keep, for what you want to hold on to","Private to your device"]
 },
 {
-  slug:"night-garden", name:"Night Garden", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"night-garden", name:"Night Garden", cat:"ptsd", price:39, status:"live", ready:true,
   cover:"covers/night-garden.jpg",
   desc:"Understanding complex PTSD \u2014 twelve lessons, plain language, and the words for what keeps happening.",
   tag:"Understanding complex PTSD.",
@@ -66,7 +66,7 @@ const AP4 = [
   inside:["Amy answers out loud, using your phone's voice","Speak or type \u2014 either works","Mood check-ins that build a picture","Breathing for when thinking won't start","One tiny next step, never a plan","One file, nothing sent anywhere"]
 },
 {
-  slug:"here", name:"Here", cat:"wellness", price:59, status:"live", ready:true,
+  slug:"here", name:"Here", cat:"ptsd", price:59, status:"live", ready:true,
   cover:"covers/here.jpg",
   desc:"A complex PTSD skills kit for the bad hour \u2014 pick a state, get a tool, two minutes.",
   tag:"Phase one only: safety and stabilisation.",
