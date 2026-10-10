@@ -142,7 +142,7 @@ const AP3 = [
   inside:["Twelve-season analysis by undertone, value and chroma","All twelve seasons to read and compare","Five-swatch studio \u2014 lock what works, shuffle the rest","Export as HEX, RGB, HSL or CSS variables","Contrast checking built in","Private to your device"]
 },
 {
-  slug:"dual-compass", name:"Dual Compass", cat:"wellness", price:59, status:"live", ready:true,
+  slug:"dual-compass", name:"Dual Compass", cat:"neuro", price:59, status:"live", ready:true,
   cover:"covers/dual-compass.jpg",
   desc:"For AuDHD \u2014 the two nervous systems that want opposite things, in one place that holds both.",
   tag:"For the brain that needs two things at once.",

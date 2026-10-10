@@ -44,7 +44,7 @@ const AP4 = [
   inside:["Type a line \u2014 she answers it","One small thing, rather than a plan","What you keep stays kept"]
 },
 {
-  slug:"kindling", name:"Kindling", cat:"wellness", price:59, status:"live", ready:true,
+  slug:"kindling", name:"Kindling", cat:"neuro", price:59, status:"live", ready:true,
   cover:"covers/kindling.jpg",
   desc:"For finding out late \u2014 a quiet coach for adults who got the ADHD or AuDHD answer in middle age.",
   tag:"You found out late. That changes the map.",

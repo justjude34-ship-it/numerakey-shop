@@ -66,7 +66,7 @@ const AP2 = [
   inside:["The loop explained without the lecture","Cue detective \u2014 catch your own triggers","Design a swap that pays the same reward","Track whether it actually stuck","No streak shaming","Runs offline on your device"]
 },
 {
-  slug:"adhd-companion", name:"ADHD Wellness Companion", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"adhd-companion", name:"ADHD Wellness Companion", cat:"neuro", price:39, status:"live", ready:true,
   cover:"covers/adhd-companion.jpg",
   desc:"Built around the hard part \u2014 starting \u2014 with a toolkit, a daily pulse, and five modules on how ADHD actually works.",
   tag:"Starting is the expensive part. The rest is momentum.",

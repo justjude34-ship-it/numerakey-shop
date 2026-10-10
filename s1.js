@@ -16,6 +16,7 @@ const SITE = {
    ========================================================================== */
 const CATEGORIES = [
   { id:"wellness", name:"Wellness",     colour:"#5CC8F5", note:"Quiet tools for hard seasons." },
+  { id:"neuro",    name:"Neurodivergent", colour:"#8FD694", note:"Built for ADHD and AuDHD brains, not around them." },
   { id:"sound",    name:"Sound",        colour:"#4FD1C5", note:"Tones, beats and nature, mixed the way you want them." },
   { id:"narc",     name:"Narcissistic Abuse", colour:"#F2789A", note:"Recognising it, surviving it, and getting out." },
   { id:"divine",   name:"Divination",   colour:"#B478F0", note:"Numerology, tarot, and the older systems." },
