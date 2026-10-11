@@ -47,6 +47,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 APPS.push({
   slug:"rise-beyond", name:"Rise Beyond", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/rise-beyond.jpg",
+  demo:"https://rise-beyondone.netlify.app",
   desc:"Four short regulation practices to watch and breathe along with — water, the Om, sound and a singing bowl.",
   tag:"Settle. Ground. Rise.",
   body:[

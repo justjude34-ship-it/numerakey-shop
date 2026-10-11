@@ -167,6 +167,7 @@ const AP4 = [
 },
 {
   slug:"lumina-emdr", name:"Lumina EMDR", cat:"ptsd", price:59, status:"live", ready:true,
+  cover:"covers/lumina-emdr.jpg",
   desc:"Rainbow bilateral stimulation on pure black — butterfly hug or eye tracking, offline, no account.",
   tag:"Simple, dark, and steady.",
   body:[
