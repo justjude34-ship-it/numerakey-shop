@@ -306,3 +306,16 @@ APPS.push({
   inside:["A natal chart from your birth details","A written reading","Choose your house system","Birth time and city optional","One file, yours to keep"]
 });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
+
+APPS.push({
+  slug:"teach-me-the-i-ching", name:"Teach Me the I Ching", cat:"divine", price:39, status:"live", ready:true,
+  cover:"covers/teach-me-the-i-ching.jpg",
+  desc:"A short path into the Book of Changes — yin and yang, the trigrams, how to cast with three coins, and how to read what you get.",
+  tag:"A short path. One idea at a time.",
+  body:[
+    "Most I Ching books assume you already know how it works. This one starts at the beginning and teaches in seven short lessons: what the book is, yin and yang, the eight trigrams, the six lines, how to cast, how to read, and a way to practise. One idea at a time, in plain language.",
+    "When you are ready, ask one clear question and throw three coins, six times, bottom line first. The app builds your hexagram, marks the changing lines, shows the second hexagram those lines turn into, and gives you a short picture of each. The full set of 64 is there to look through whenever you like."
+  ],
+  inside:["Seven short lessons, in order","Cast with three coins, six throws","Changing lines, and the second hexagram they make","The eight trigrams explained","All 64 hexagrams to browse","No account, works offline, nothing sent away"]
+});
+artFor(APPS[APPS.length - 1]).motif = "orbits";

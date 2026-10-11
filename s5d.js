@@ -44,6 +44,7 @@ const FILES = {
   "auraflow": "private/auraflow.html",
   "rise": "private/rise.html",
   "vesper": "private/vesper.html",
+  "teach-me-the-i-ching": "private/teach-me-the-i-ching.html",
   "meridian-emdr": "private/meridian-emdr.html",
   "aurora-emdr": "private/aurora-emdr.html",
   "lumina-emdr": "private/lumina-emdr.html"
