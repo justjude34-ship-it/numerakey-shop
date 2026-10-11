@@ -250,3 +250,17 @@ APPS.push({
   inside:["A guided breath you can follow by sight","Day and night looks","Optional sound","Start and stop whenever you like","One file, works offline","Yours to keep"]
 });
 artFor(APPS[APPS.length - 1]).motif = "rings";
+
+APPS.push({
+  slug:"cadence", name:"Cadence", cat:"divine", price:89, status:"live", ready:true,
+  cover:"covers/cadence.jpg",
+  demo:"https://cadence-numbers.netlify.app",
+  desc:"A numerology guide to your personal year, month and day, coloured by the essence you carry from your name.",
+  tag:"Find the rhythm you are already in.",
+  body:[
+    "Cadence works out where you are in your personal cycle — the year, the month and the day — and reads each one through the essence of your name, so the same number does not say the same thing to everyone.",
+    "Today gives you the day in front of you, Year and Cycle show the shape of what you are moving through, and You holds the part that stays constant. One file, yours to keep."
+  ],
+  inside:["Your personal year, month and day","Each reading coloured by your name’s essence","Today, Year, Cycle and You views","Works offline","One file, yours to keep"]
+});
+artFor(APPS[APPS.length - 1]).motif = "orbits";
