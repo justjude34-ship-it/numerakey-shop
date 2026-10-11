@@ -102,6 +102,7 @@ const AP4 = [
 {
   slug:"right-action", name:"Right Action", cat:"divine", price:59, status:"live", ready:true,
   cover:"covers/right-action.jpg",
+  demo:"https://right-action.netlify.app",
   desc:"What this year is actually for, month by month, and the next useful step in it.",
   tag:"The year has a shape. Work with it.",
   body:[
