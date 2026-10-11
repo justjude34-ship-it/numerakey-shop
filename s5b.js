@@ -266,7 +266,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"still", name:"Still", cat:"sound", price:89, status:"live", ready:true,
+  slug:"still", name:"Still", cat:"wellness", price:89, status:"live", ready:true,
   demo:"https://stillappone.netlify.app",
   desc:"Binaural beds, bronze chimes and an ocean breath — for racing thoughts and nights that will not quiet.",
   tag:"For the nights that will not quiet.",
