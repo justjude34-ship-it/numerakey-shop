@@ -292,3 +292,16 @@ APPS.push({
   inside:["Dress sizes across AU, US, UK and EU","Shoe sizes across AU, US, UK and EU","Works offline","No account, nothing sent anywhere","One file, yours to keep"]
 });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
+
+APPS.push({
+  slug:"astra-nova", name:"Astra Nova", cat:"divine", price:89, status:"live", ready:true,
+  demo:"https://astra-novaapp.netlify.app",
+  desc:"Your natal chart and a written reading, built from your birth date, time and place.",
+  tag:"The sky on the day you arrived.",
+  body:[
+    "Enter your birth date, and your birth time and city if you have them, choose a house system, and Astra Nova builds your natal chart and a reading to go with it.",
+    "It is for reflection and curiosity, not prediction or advice. One file, yours to keep."
+  ],
+  inside:["A natal chart from your birth details","A written reading","Choose your house system","Birth time and city optional","One file, yours to keep"]
+});
+artFor(APPS[APPS.length - 1]).motif = "orbits";
