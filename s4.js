@@ -13,6 +13,7 @@ const AP4 = [
 {
   slug:"night-garden", name:"Night Garden", cat:"ptsd", price:39, status:"live", ready:true,
   cover:"covers/night-garden.jpg",
+  demo:"https://night-garden-app.netlify.app",
   desc:"Understanding complex PTSD \u2014 twelve lessons, plain language, and the words for what keeps happening.",
   tag:"Understanding complex PTSD.",
   body:[
@@ -122,6 +123,7 @@ const AP4 = [
 },
 {
   slug:"synergy", name:"Synergy", cat:"divine", price:59, status:"live", ready:true, cover:"covers/synergy.jpg",
+  demo:"https://pythagorian-numerakey.netlify.app",
   desc:"Two charts side by side \u2014 where you meet easily, where the friction is structural, and what neither of you carries.",
   tag:"The bond, aspect by aspect.",
   body:[
