@@ -264,3 +264,16 @@ APPS.push({
   inside:["Your personal year, month and day","Each reading coloured by your name’s essence","Today, Year, Cycle and You views","Works offline","One file, yours to keep"]
 });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
+
+APPS.push({
+  slug:"still", name:"Still", cat:"sound", price:89, status:"live", ready:true,
+  demo:"https://stillappone.netlify.app",
+  desc:"Binaural beds, bronze chimes and an ocean breath — for racing thoughts and nights that will not quiet.",
+  tag:"For the nights that will not quiet.",
+  body:[
+    "Still pairs slow binaural tones with bronze chimes and an ocean-style breathing visual, so there is something steady to follow when your mind will not stop. Put on headphones, follow the breath, and let the sound do the work.",
+    "Not medical care and not a treatment for sleep problems. If sleeplessness is a pattern, see your doctor. One file, yours to keep."
+  ],
+  inside:["Binaural tones, best with headphones","Bronze chimes","An ocean breath to follow by sight","Made for racing thoughts and sleepless nights","Works offline","One file, yours to keep"]
+});
+artFor(APPS[APPS.length - 1]).motif = "wave";
