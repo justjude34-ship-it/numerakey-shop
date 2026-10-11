@@ -146,6 +146,7 @@ const AP4 = [
 },
 {
   slug:"meridian-emdr", name:"Meridian EMDR", cat:"ptsd", price:59, status:"live", ready:true,
+  demo:"https://meridian-emdrapp.netlify.app",
   desc:"A quiet room for bilateral stimulation between clinical sessions — butterfly BLS, stabilisation, grounding and a seven-step guided path.",
   tag:"For the space between appointments.",
   body:[
