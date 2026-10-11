@@ -41,6 +41,7 @@ const AP1 = [
 {
   slug:"bloom-from-within", name:"Bloom From Within", cat:"ptsd", price:39, status:"live",
   cover:"covers/bloom-from-within.jpg",
+  demo:"https://bloom-from-withinapp.netlify.app",
   desc:"Trauma recovery you can see moving — practices, check-ins and a progress view.",
   tag:"Recovery, measured gently.",
   body:[
