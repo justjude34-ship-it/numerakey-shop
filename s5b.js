@@ -310,6 +310,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 APPS.push({
   slug:"teach-me-the-i-ching", name:"Teach Me the I Ching", cat:"divine", price:39, status:"live", ready:true,
   cover:"covers/teach-me-the-i-ching.jpg",
+  demo:"https://teach-me-iching-app.netlify.app",
   desc:"A short path into the Book of Changes — yin and yang, the trigrams, how to cast with three coins, and how to read what you get.",
   tag:"A short path. One idea at a time.",
   body:[
