@@ -18,7 +18,7 @@ const CATEGORIES = [
   { id:"wellness", name:"Wellness",     colour:"#5CC8F5", note:"Quiet tools for hard seasons." },
   { id:"neuro",    name:"Neurodivergent", colour:"#8FD694", note:"Built for ADHD and AuDHD brains, not around them." },
   { id:"ptsd",     name:"PTSD & Trauma", colour:"#E6A56B", note:"Skills, understanding and steadier ground for trauma." },
-  { id:"sound",    name:"Sound",        colour:"#4FD1C5", note:"Tones, beats and nature, mixed the way you want them." },
+  { id:"sound",    name:"Frequency Healing and Sleep",colour:"#4FD1C5", note:"Tones, beats and nature, mixed the way you want them." },
   { id:"narc",     name:"Narcissistic Abuse", colour:"#F2789A", note:"Recognising it, surviving it, and getting out." },
   { id:"divine",   name:"Divination",   colour:"#B478F0", note:"Numerology, tarot, and the older systems." },
   { id:"money",    name:"Money",        colour:"#F4B740", note:"Know where it goes." },
