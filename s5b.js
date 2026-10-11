@@ -294,13 +294,13 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"stella", name:"Stella", cat:"divine", price:89, status:"live", ready:true,
-  cover:"covers/stella.jpg",
+  slug:"astra-nova", name:"Astra Nova", cat:"divine", price:89, status:"live", ready:true,
+  cover:"covers/astra-nova.jpg",
   demo:"https://astra-novaapp.netlify.app",
   desc:"Your natal chart and a written reading, built from your birth date, time and place.",
-  tag:"Understand the stars. Align your path.",
+  tag:"Discover. Align with the stars.",
   body:[
-    "Enter your birth date, and your birth time and city if you have them, choose a house system, and Stella builds your natal chart and a reading to go with it.",
+    "Enter your birth date, and your birth time and city if you have them, choose a house system, and Astra Nova builds your natal chart and a reading to go with it.",
     "It is for reflection and curiosity, not prediction or advice. One file, yours to keep."
   ],
   inside:["A natal chart from your birth details","A written reading","Choose your house system","Birth time and city optional","One file, yours to keep"]
