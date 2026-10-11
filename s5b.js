@@ -31,7 +31,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"nova", name:"Nova", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"nova", name:"Nova", cat:"neuro", price:39, status:"live", ready:true,
   cover:"covers/nova.jpg",
   demo:"https://nova-27.netlify.app",
   desc:"Soft structure for a brain that runs on interest — tiny steps, short sprints, a mood check-in and a companion in three tones.",
@@ -237,3 +237,16 @@ APPS.push({
   ],
   inside:["Mira, beside you while you clear","One small thing at a time","One file. Yours forever."]
 });
+
+APPS.push({
+  slug:"omni", name:"Omni", cat:"wellness", price:39, status:"live", ready:true,
+  demo:"https://omni-app1.netlify.app",
+  desc:"A still-lake breathing studio \u2014 one orb, one breath at a time, in a day or night look.",
+  tag:"Still water. Soft light.",
+  body:[
+    "Omni keeps breathing simple. An orb grows as you breathe in, rests on the hold, and softens as you breathe out, so you follow the shape instead of counting. Press start, stop whenever you like.",
+    "Choose a day or night look, add sound if you want it, and leave it at that. Not medical care: sit down if you feel dizzy, and stop anytime. One file, yours to keep."
+  ],
+  inside:["A guided breath you can follow by sight","Day and night looks","Optional sound","Start and stop whenever you like","One file, works offline","Yours to keep"]
+});
+artFor(APPS[APPS.length - 1]).motif = "rings";

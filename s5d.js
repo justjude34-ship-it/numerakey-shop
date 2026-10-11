@@ -18,6 +18,7 @@ const FILES = {
   "goodwin-readings": "private/goodwin-readings.html",
   "nest-light": "private/nest-light.html",
   "night-garden": "private/night-garden.html",
+  "omni": "private/omni.html",
   "first-light": "private/first-light.html",
   "pulse-plus": "private/pulse-plus.html",
   "sacred-address": "private/sacred-address.html",
