@@ -278,3 +278,17 @@ APPS.push({
   inside:["Binaural tones, best with headphones","Bronze chimes","An ocean breath to follow by sight","Made for racing thoughts and sleepless nights","Works offline","One file, yours to keep"]
 });
 artFor(APPS[APPS.length - 1]).motif = "wave";
+
+APPS.push({
+  slug:"sizeshift", name:"SizeShift", cat:"style", price:29, status:"live", ready:true,
+  cover:"covers/sizeshift.jpg",
+  demo:"https://size-shift.netlify.app",
+  desc:"Women’s dress and shoe sizes converted between Australia, the US, the UK and Europe.",
+  tag:"Know your size, wherever you shop.",
+  body:[
+    "Type in the size you know and see it in the other three systems at once — Australia, the US, the UK and Europe. It is made for shopping overseas, where a 10 is not always a 10.",
+    "It works offline in any browser, needs no account and sends nothing anywhere. One file, yours to keep."
+  ],
+  inside:["Dress sizes across AU, US, UK and EU","Shoe sizes across AU, US, UK and EU","Works offline","No account, nothing sent anywhere","One file, yours to keep"]
+});
+artFor(APPS[APPS.length - 1]).motif = "orbits";
