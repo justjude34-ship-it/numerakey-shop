@@ -148,7 +148,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"lunara", name:"Lunara", cat:"sound", price:39, status:"live", ready:true,
+  slug:"lunara", name:"Lunara", cat:"wellness", price:89, status:"live", ready:true,
   cover:"covers/lunara.jpg",
   demo:"https://justjude34-ship-it.github.io/lunara/",
   desc:"Private relaxation with binaural beats and singing bowls — one file, offline, buy once.",
