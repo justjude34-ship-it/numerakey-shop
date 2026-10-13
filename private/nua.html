@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08070b">
+<meta name="description" content="Nua — baby-name numerology after Matthew Oliver Goodwin. Whole name, live numbers, ask the numerologist.">
+<title>Nua — Name the child</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08070b; --card:#121018; --ink:#f4efe6; --muted:#b7b0a4;
+  --gold:#e8c872; --teal:#5eead4; --violet:#c4b5fd; --line:rgba(232,200,114,.22);
+  --good:#5eead4; --lesson:#f9a8d4; --warn:#fdba74;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Outfit,system-ui,sans-serif;line-height:1.55}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(720px 380px at 8% -10%,rgba(94,234,212,.16),transparent 55%),
+  radial-gradient(640px 360px at 96% 0%,rgba(196,181,253,.14),transparent 50%),
+  radial-gradient(500px 280px at 50% 100%,rgba(232,200,114,.08),transparent 55%)}
+.wrap{max-width:820px;margin:0 auto;padding:1rem 1rem 6.5rem}
+header.app{text-align:center;padding:.6rem 0 1rem}
+.wordmark{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(2.4rem,10vw,3.6rem);margin:0;letter-spacing:.02em;
+  background:linear-gradient(120deg,var(--teal),var(--gold),var(--violet),var(--teal));background-size:220% 220%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 9s ease-in-out infinite}
+.tag{color:var(--muted);margin:.25rem 0 0;font-size:.92rem}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.22rem .7rem;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#d7d0c4;margin-bottom:.4rem}
+@keyframes shimmer{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:1rem 1rem 1.1rem;margin:0 0 1rem}
+.kicker{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 .3rem}
+h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.7rem;margin:.1rem 0 .55rem;font-weight:600}
+h3{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.25rem;margin:1rem 0 .35rem;color:var(--violet)}
+label{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:.65rem 0 .28rem}
+input,textarea{width:100%;background:#0b0a10;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:.72rem .8rem;font:inherit}
+input:focus,textarea:focus{outline:1px solid var(--gold)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.55rem}
+@media(max-width:620px){.row2,.row3{grid-template-columns:1fr}}
+.hint{color:var(--muted);font-size:.8rem;margin:.35rem 0 0}
+.actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.85rem}
+button{font:inherit;border:0;border-radius:999px;padding:.68rem 1.1rem;cursor:pointer}
+.primary{background:linear-gradient(120deg,var(--teal),var(--gold));color:#102019;font-weight:600}
+.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.tiny{background:rgba(8,10,20,.55);color:var(--ink);border:1px solid var(--line);padding:.45rem .8rem;font-size:.82rem}
+.lockrow{display:flex;align-items:center;gap:.45rem;margin-top:.35rem;color:var(--muted);font-size:.8rem}
+.lockrow input{width:auto}
+.tiles{display:flex;flex-wrap:wrap;gap:.4rem;margin:.7rem 0 .2rem;min-height:2.2rem}
+.tile{background:#0b0a10;border:1px solid var(--line);border-radius:12px;padding:.35rem .5rem;min-width:2.6rem;text-align:center}
+.tile .L{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.25rem;line-height:1;color:var(--teal)}
+.tile .v{font-size:.68rem;color:var(--gold);letter-spacing:.04em}
+.tile.V{border-color:rgba(94,234,212,.35)}
+.tile.C{border-color:rgba(196,181,253,.28)}
+.strip{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem;margin:.8rem 0 .2rem}
+@media(max-width:620px){.strip{grid-template-columns:repeat(3,1fr)}}
+.num{background:#0b0a10;border:1px solid var(--line);border-radius:14px;padding:.55rem .3rem;text-align:center}
+.num b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.45rem;color:var(--gold);line-height:1.1}
+.num span{display:block;font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.15rem}
+.suggest{display:flex;flex-wrap:wrap;gap:.35rem;margin:.45rem 0 0}
+.chip{border:1px solid var(--line);background:#0b0a10;border-radius:999px;padding:.28rem .65rem;font-size:.82rem;cursor:pointer;color:var(--ink)}
+.chip:hover,.chip.on{border-color:var(--gold);color:var(--gold)}
+.chip.good{color:var(--good)}
+.chip.lesson{color:var(--lesson)}
+.chip.g{border-color:rgba(249,168,212,.35)}
+.chip.b{border-color:rgba(125,211,252,.35)}
+.filters{display:flex;flex-wrap:wrap;gap:.35rem;margin:.45rem 0 .2rem}
+.book{max-height:280px;overflow:auto;border:1px solid var(--line);border-radius:14px;padding:.55rem;margin-top:.45rem;background:#0b0a10}
+.bookmeta{color:var(--muted);font-size:.75rem;margin:.35rem 0 0}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;padding:.45rem .6rem calc(.55rem + env(safe-area-inset-bottom));background:rgba(8,7,11,.92);backdrop-filter:blur(12px);border-top:1px solid var(--line)}
+.tabs button{border-radius:14px;padding:.55rem .2rem;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;background:transparent;color:var(--muted);border:1px solid transparent}
+.tabs button.on{color:#102019;background:linear-gradient(120deg,var(--teal),var(--gold));font-weight:600}
+[hidden]{display:none!important}
+.core{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+@media(max-width:620px){.core{grid-template-columns:1fr 1fr}}
+.bar{display:grid;grid-template-columns:92px 1fr 28px;gap:.45rem;align-items:center;margin:.3rem 0}
+.track{height:8px;background:#1a1722;border-radius:99px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--violet))}
+.inc{display:grid;grid-template-columns:repeat(9,1fr);gap:.28rem;margin:.5rem 0}
+.inc i{display:block;text-align:center;border:1px solid var(--line);border-radius:10px;padding:.35rem .1rem;font-style:normal}
+.inc i b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.05rem}
+.inc i.karmic{border-color:rgba(249,168,212,.5);color:var(--lesson)}
+.inc i.above{border-color:rgba(94,234,212,.45);color:var(--good)}
+.inc i.below{border-color:rgba(253,186,116,.4);color:var(--warn)}
+.reading p{color:#e6e0d6}
+.cards{display:grid;gap:.65rem}
+.scard{border:1px solid var(--line);border-radius:16px;padding:.8rem;background:#0b0a10;cursor:pointer}
+.scard.on{border-color:var(--gold)}
+.mini{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.35rem}
+.chat{display:flex;flex-direction:column;gap:.65rem;min-height:220px}
+.bubble{border-radius:16px;padding:.75rem .85rem;max-width:100%}
+.bubble.ai{background:#0b0a10;border:1px solid var(--line)}
+.bubble.me{background:rgba(232,200,114,.12);border:1px solid var(--line);margin-left:1.2rem}
+.askrow{display:flex;gap:.45rem;margin-top:.6rem}
+.askrow input{flex:1}
+.comparebox{display:grid;gap:.7rem}
+@media(min-width:700px){.comparebox{grid-template-columns:1fr 1fr}}
+footer.note{color:var(--muted);font-size:.78rem;text-align:center;margin:1.4rem 0 .4rem}
+.harmony{margin:.6rem 0 0;padding:.65rem .75rem;border-radius:14px;border:1px solid var(--line);background:#0b0a10;font-size:.9rem}
+.ess{display:flex;flex-wrap:wrap;gap:.3rem;margin:.4rem 0}
+.ess span{border:1px solid var(--line);border-radius:10px;padding:.25rem .45rem;font-size:.75rem;color:var(--muted)}
+.ess span b{color:var(--gold);font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="app">
+    <div class="pill">Matthew Oliver Goodwin · baby names</div>
+    <h1 class="wordmark">Nua</h1>
+    <p class="tag">Name the child. See the numbers. Ask the numerologist.</p>
+  </header>
+
+  <section class="panel" id="view-name">
+    <p class="kicker">Name section</p>
+    <h2>The name as it will be written</h2>
+    <p class="hint">First, middle and last — the certificate name. Numbers rebuild as you type. Surname can stay locked while you try different first names.</p>
+
+    <label for="last">Family surname</label>
+    <input id="last" autocomplete="family-name" placeholder="Surname on the birth certificate">
+    <div class="lockrow"><input type="checkbox" id="lockLast" checked> <span>Keep surname while I search first names</span></div>
+
+    <div class="row2">
+      <div>
+        <label for="first">First name</label>
+        <input id="first" autocomplete="off" placeholder="The name you are testing" autocapitalize="words">
+      </div>
+      <div>
+        <label for="middle">Middle name</label>
+        <input id="middle" autocomplete="off" placeholder="Optional" autocapitalize="words">
+      </div>
+    </div>
+
+    <div class="row2">
+      <div>
+        <label for="called">Calling name</label>
+        <input id="called" autocomplete="off" placeholder="If different from first">
+      </div>
+      <div>
+        <label for="dob">Birth date</label>
+        <input id="dob" type="date">
+      </div>
+    </div>
+    <p class="hint">Date is optional. Add it when you know it and Nua will weigh the name against the Life Path.</p>
+
+    <label for="search">Name book — girls and boys</label>
+    <input id="search" autocomplete="off" placeholder="Search the book — Amelia, Lachlan, Sienna, Muhammad…">
+    <div class="filters" id="genderFilters">
+      <button type="button" class="tiny on" data-gender="all">All</button>
+      <button type="button" class="tiny" data-gender="girls">Girls</button>
+      <button type="button" class="tiny" data-gender="boys">Boys</button>
+    </div>
+    <p class="bookmeta" id="bookMeta"></p>
+    <div class="book suggest" id="suggest"></div>
+
+    <div class="tiles" id="tiles"></div>
+    <div class="strip" id="strip"></div>
+    <div class="harmony" id="harmony" hidden></div>
+
+    <div class="actions">
+      <button class="primary" type="button" id="btnRead">Read this name</button>
+      <button class="ghost" type="button" id="btnSave">Add to shortlist</button>
+      <button class="ghost" type="button" id="btnAsk">Ask the numerologist</button>
+    </div>
+  </section>
+
+  <section class="panel" id="view-reading" hidden>
+    <p class="kicker">The reading</p>
+    <h2 id="readTitle">The name</h2>
+    <div class="core" id="core"></div>
+    <div class="reading" id="reading"></div>
+  </section>
+
+  <section class="panel" id="view-list" hidden>
+    <p class="kicker">Shortlist</p>
+    <h2>Names you are holding</h2>
+    <p class="hint">Tap a name to make it active. Choose two to compare what changes.</p>
+    <div class="cards" id="list"></div>
+    <div class="actions">
+      <button class="tiny" type="button" id="btnCompare">Compare selected</button>
+      <button class="tiny" type="button" id="btnClear">Clear shortlist</button>
+    </div>
+    <div id="compareOut"></div>
+  </section>
+
+  <section class="panel" id="view-ask" hidden>
+    <p class="kicker">The numerologist</p>
+    <h2>Ask about this name</h2>
+    <p class="hint">The numerologist holds Goodwin’s method and the active chart. Ask in plain language.</p>
+    <div class="suggest" id="askChips"></div>
+    <div class="chat" id="chat"></div>
+    <div class="askrow">
+      <input id="askQ" placeholder="Ask anything about this name…">
+      <button class="primary" type="button" id="btnSend">Ask</button>
+    </div>
+  </section>
+
+  <footer class="note">Calculated in this phone after Matthew Oliver Goodwin. Names reduced separately. Masters 11 and 22 kept. Nothing is uploaded.</footer>
+</div>
+
+<nav class="tabs" aria-label="Sections">
+  <button class="on" data-view="name" type="button">Name</button>
+  <button data-view="reading" type="button">Reading</button>
+  <button data-view="list" type="button">Shortlist</button>
+  <button data-view="ask" type="button">Ask</button>
+</nav>
+
+<script>
+/* Nua name book — girls and boys. Popular AU / UK / US plus classics. */
+window.NUA_NAMES = {
+  girls: [
+    "Aaliyah","Abby","Abigail","Ada","Adah","Adelaide","Adele","Adeline","Adriana","Agatha","Agnes",
+    "Aisha","Alana","Alba","Alberta","Aleah","Alexandra","Alexis","Alice","Alicia","Alina","Alisha",
+    "Alison","Aliyah","Allegra","Alma","Alya","Alyssa","Amara","Amaya","Amber","Amelia","Amelie",
+    "Amina","Amira","Amy","Ana","Anastasia","Andrea","Angela","Angelina","Anika","Anita","Anna",
+    "Annabel","Annabelle","Anne","Annie","Antonia","Anya","April","Arabella","Arden","Aria","Ariana",
+    "Ariel","Arlette","Ashley","Aspen","Astrid","Athena","Aubrey","Audrey","Aurora","Autumn","Ava",
+    "Avery","Aviva","Ayla","Azalea","Addison",
+    "Bailey","Beatrice","Beatrix","Bella","Belle","Bernadette","Bess","Bessie","Beth","Bethany",
+    "Betsy","Betty","Bianca","Billie","Blair","Blake","Blanche","Bonnie","Bronte","Bridget","Brittany","Brooke",
+    "Brooklyn","Bryony",
+    "Caitlin","Cali","Callie","Cameron","Camila","Camilla","Candace","Cara","Carla","Carly","Carmen",
+    "Carol","Caroline","Carolyn","Casey","Cassandra","Cassie","Catalina","Catherine","Cathy","Cecilia",
+    "Celeste","Celia","Celine","Charlie","Charlotte","Chelsea","Chiara","Chloe","Christina","Christine",
+    "Cindy","Claire","Clara","Clare","Clarissa","Claudia","Clementine","Cleo","Colette","Cora","Coral","Cosette",
+    "Coraline","Cornelia","Cosima","Courtney","Crystal","Cynthia",
+    "Dahlia","Daisy","Dakota","Dana","Dani","Daniela","Danielle","Daphne","Darcy","Davina","Dawn",
+    "Deanna","Deborah","Delia","Delilah","Della","Denise","Desiree","Destiny","Diana","Diane","Dina",
+    "Dior","Dixie","Dolly","Dominique","Donna","Dora","Doris","Dorothy","Drew","Dulcie",
+    "Eden","Edith","Edna","Eileen","Elaine","Eleanor","Elena","Eliana","Elise","Elisha","Eliza",
+    "Elizabeth","Ella","Elle","Ellen","Ellie","Ellis","Eloise","Elora","Elsa","Elsie","Elodie","Eloisa",
+    "Elowen","Elsa","Elsie","Ember","Emelia","Emerson","Emery","Emilia","Emily","Emma","Emmeline",
+    "Erica","Erin","Esme","Esmeralda","Estelle","Esther","Etta","Eva","Evangeline","Eve","Evelyn",
+    "Everly","Evie",
+    "Faith","Fallon","Farah","Fatima","Felicity","Fiona","Flora","Florence","Frances","Francesca",
+    "Frankie","Freya","Frida",
+    "Gabriela","Gabrielle","Gail","Gemma","Genesis","Genevieve","Georgia","Georgie","Georgina","Gia",
+    "Gianna","Gina","Giselle","Gladys","Gloria","Goldie","Grace","Gracie","Greta","Gwen","Gwendolyn",
+    "Hadley","Hailey","Haisley","Hallie","Hana","Hanna","Hannah","Harley","Harlow","Harmony","Harper",
+    "Harriet","Hattie","Haven","Hayley","Hazel","Heather","Heidi","Helen","Helena","Henrietta","Hester",
+    "Holland","Holly","Hope","Hudson",
+    "Ida","Ila","Iliana","Imogen","India","Indi","Indie","Ines","Ingrid","Iona","Irene","Iris","Isabel",
+    "Isabella","Isabelle","Isla","Isobel","Ivory","Ivy",
+    "Jacqueline","Jade","Jada","Jamie","Jane","Janet","Janice","Jasmine","Jayda","Jayla","Jean",
+    "Jeanette","Jemima","Jenna","Jennifer","Jenny","Jessica","Jessie","Jill","Joanna","Joanne","Jocelyn",
+    "Jodie","Johanna","Jolene","Jordan","Josephine","Josie","Joy","Joyce","Judith","Judy","Julia",
+    "Juliana","Julie","Juliet","Juliette","June","Juniper","Juno","Justice",
+    "Kai","Kaia","Kaitlyn","Karen","Karina","Kate","Katelyn","Katherine","Kathleen","Katie","Katrina",
+    "Kay","Kayla","Kaylee","Keira","Kelly","Kelsey","Kendall","Kendra","Kennedy","Kenza","Keren",
+    "Kerry","Khloe","Kiana","Kiara","Kim","Kimberly","Kira","Kirra","Kirsten","Kora","Kristen","Kristina","Kyla",
+    "Kylie",
+    "Lacey","Laila","Lainey","Lana","Lara","Larissa","Laura","Laurel","Lauren","Lavender","Layla",
+    "Leah","Leila","Lena","Leona","Leslie","Leticia","Lexi","Lia","Lila","Lilac","Lilian","Liliana",
+    "Lilith","Lillian","Lilly","Lily","Lina","Linda","Lindsay","Lisa","Livia","Liv","Lola","Lorelei",
+    "Lottie","Lorna","Lorraine","Louisa","Louise","Lucia","Lucille","Lucy","Luisa","Lulu","Luna","Lydia","Lyla","Lyra",
+    "Mabel","Mackenzie","Macy","Maddie","Madeline","Madelyn","Madison","Mae","Maeve","Maggie","Magnolia",
+    "Maia","Maisie","Makayla","Malia","Mallory","Mara","Maren","Margaret","Margot","Maria","Mariah",
+    "Marian","Marianne","Marie","Mariella","Marilyn","Marina","Marion","Marisol","Marley","Marlowe","Martha",
+    "Martina","Mary","Maryam","Matilda","Maya","Mckenna","Meadow","Megan","Melanie","Melinda","Melissa",
+    "Melody","Mercedes","Meredith","Mia","Michaela","Michelle","Mila","Milan","Mildred","Millie","Mimi",
+    "Mina","Mira","Miranda","Miriam","Molly","Monica","Morgan","Myla","Mylie","Myra",
+    "Nadia","Nancy","Naomi","Natalia","Natalie","Natasha","Naya","Nell","Nellie","Nerida","Nia",
+    "Nicole","Nina","Noa","Noelle","Nora","Norah","Nova","Nyla",
+    "Oakley","Octavia","Odette","Olive","Olivia","Opal","Ophelia","Orla","Ottilie",
+    "Paige","Paisley","Paloma","Pamela","Paola","Parker","Patricia","Paula","Pauline","Payton",
+    "Pearl","Peggy","Penelope","Penny","Persephone","Petra","Peyton","Philippa","Phoebe","Pia",
+    "Piper","Pippa","Poppy","Posie","Precious","Primrose","Priscilla","Priya",
+    "Quinn",
+    "Rachael","Rachel","Raelynn","Rafaela","Ramona","Raven","Rayne","Reagan","Rebecca","Reese",
+    "Regina","Remi","Remy","Renee","Rhea","Riley","Rita","River","Roberta","Robin","Rochelle",
+    "Rosa","Rosalie","Rosalind","Rosamund","Rose","Rosemary","Rosie","Rowan","Rowena","Roxanne",
+    "Ruby","Ruth","Rylee",
+    "Sabrina","Sadie","Sage","Saskia","Salma","Samantha","Sandra","Sandy","Sasha","Savannah","Sawyer",
+    "Scarlett","Selena","Selene","Serena","Shannon","Sharon","Sheila","Shelby","Sheryl","Shiloh",
+    "Sienna","Sierra","Simone","Skye","Skylar","Sloane","Sofia","Sonia","Sonya","Sophia","Sophie",
+    "Stacy","Stella","Stephanie","Summer","Susan","Susanna","Suzanne","Sydney","Sylvia","Sylvie",
+    "Tabitha","Tahlia","Tahnee","Talia","Tamara","Tamsin","Tanya","Tara","Taryn","Tasmin","Tatiana","Taylor",
+    "Teagan","Tessa","Thea","Theodora","Theresa","Tia","Tiffany","Tilly","Tina","Tracy","Trinity",
+    "Una","Unity","Ursula",
+    "Valentina","Valerie","Vanessa","Vera","Verity","Veronica","Victoria","Vienna","Viola","Violet",
+    "Virginia","Vivian","Vivienne",
+    "Waverly","Wendy","Whitney","Willa","Willow","Winifred","Winnie","Winter","Wren",
+    "Xanthe","Ximena",
+    "Yara","Yasmin","Yasmine","Yolanda","Yvette","Yvonne",
+    "Zara","Zelda","Zendaya","Zia","Zinnia","Zoe","Zoey","Zora","Zuri"
+  ],
+  boys: [
+    "Aaron","Abdullah","Abel","Abraham","Ace","Adam","Adrian","Ahmad","Ahmed","Aidan","Aiden",
+    "Alan","Alastair","Albert","Alberto","Alden","Alec","Alejandro","Alex","Alexander","Alexis",
+    "Alfie","Alfred","Ali","Alistair","Allan","Allen","Alonso","Alvin","Amari","Amir","Amos",
+    "Anderson","Andre","Andreas","Andrew","Andy","Angelo","Angus","Anthony","Anton","Antonio",
+    "Archer","Archie","Ari","Arian","Arjun","Arlo","Armand","Armando","Arnold","Aron","Arthur",
+    "Arturo","Asa","Asher","Ashley","Ashton","Aston","Atlas","Atticus","August","Augustine","Austin",
+    "Avery","Axel","Ayaan","Aziel",
+    "Bailey","Barrett","Barry","Banjo","Beau","Beckett","Ben","Benedict","Benjamin","Bennett","Benson",
+    "Bentley","Bernard","Billy","Blaine","Blair","Blake","Bo","Bobby","Bodhi","Boris","Brad",
+    "Braden","Bradley","Brady","Brandon","Brantley","Braxton","Brayden","Brendan","Brennan","Brett",
+    "Brian","Brock","Broderick","Brodie","Brody","Brooks","Bruce","Bruno","Bryan","Bryce","Bryson",
+    "Byron",
+    "Cade","Caden","Caiden","Cain","Caleb","Callan","Callum","Calvin","Cameron","Camillo","Carl",
+    "Carlos","Carlton","Carson","Carter","Casey","Cash","Casper","Cassian","Cassius","Cedric",
+    "Cesar","Charles","Charlie","Chase","Chester","Chris","Christian","Christopher","Clarence",
+    "Clancy","Clark","Claude","Clay","Clayton","Clement","Clifford","Clint","Clinton","Clyde","Cody",
+    "Cohen","Colby","Cole","Colin","Collin","Colton","Conner","Connor","Conor","Conrad","Cooper",
+    "Corbin","Corey","Cormac","Cornelius","Craig","Cristian","Cruz","Cullen","Curtis","Cyrus",
+    "Dale","Dallas","Damian","Damien","Damon","Dan","Daniel","Danny","Dante","Darcy","Darian",
+    "Darius","Darren","Darryl","Darwin","Dave","David","Davis","Dawson","Deacon","Dean","Declan",
+    "Demetrius","Denis","Dennis","Derek","Desmond","Devin","Devon","Diego","Dillon","Dimitri",
+    "Dominic","Dominick","Donald","Donovan","Dorian","Doug","Douglas","Drake","Drew","Duane",
+    "Duncan","Dustin","Dwayne","Dwight","Dylan",
+    "Earl","Easton","Eddie","Eden","Edgar","Edison","Edmund","Eduardo","Edward","Edwin","Elias",
+    "Eliezer","Eli","Elijah","Elio","Elliot","Elliott","Ellis","Elton","Elvis","Emanuel","Emerson",
+    "Emery","Emil","Emilio","Emmanuel","Emmett","Enrique","Enzo","Eric","Erick","Erik","Ernest",
+    "Ernesto","Ethan","Eugene","Evan","Everett","Ewan","Ezekiel","Ezra",
+    "Fabian","Felipe","Felix","Fernando","Finlay","Finley","Finn","Finnegan","Fletcher","Flynn",
+    "Forrest","Foster","Francesco","Francis","Francisco","Frank","Franklin","Fraser","Fred",
+    "Freddie","Frederick",
+    "Gabriel","Gael","Gage","Gareth","Garrett","Gary","Gavin","Gene","Geoffrey","George","Gerald",
+    "Gianni","Gideon","Gilbert","Glenn","Gordon","Grady","Graham","Grant","Grayson","Greg",
+    "Gregory","Greyson","Griffin","Guillermo","Gunnar","Gunner","Gus","Gustavo",
+    "Hamish","Hank","Hans","Harley","Harold","Harrison","Harry","Harvey","Hassan","Hayden",
+    "Hayes","Heath","Hector","Hendrix","Henry","Herbert","Herman","Holden","Homer","Horace",
+    "Houston","Howard","Hudson","Hugh","Hugo","Hunter","Hurley",
+    "Ian","Ibrahim","Idris","Ignacio","Iker","Ira","Isaac","Isaiah","Ismael","Israel","Ivan","Ivo",
+    "Jack","Jackson","Jacob","Jacoby","Jacques","Jaden","Jake","Jakob","Jamal","James","Jameson",
+    "Jamie","Jared","Jarvis","Jason","Jasper","Javier","Jax","Jaxon","Jaxson","Jay","Jayce","Jayden",
+    "Jean","Jed","Jeff","Jeffrey","Jensen","Jeremiah","Jeremy","Jerome","Jerry","Jesse","Jessie",
+    "Jesus","Jett","Jim","Jimmy","Joaquin","Joe","Joel","Joey","Johan","John","Johnny","Jonah",
+    "Jonas","Jonathan","Jordan","Jorge","Jose","Joseph","Joshua","Josiah","Juan","Judah","Jude",
+    "Jules","Julian","Julio","Julius","Junior","Justice","Justin",
+    "Kade","Kaden","Kai","Kaiden","Kairo","Kaleb","Kane","Karl","Karson","Kash","Kasper","Keith",
+    "Kelvin","Ken","Kendrick","Kennedy","Kenneth","Kenny","Kent","Kevin","Khalil","Kian","Kieran",
+    "Killian","King","Kingston","Kingsley","Kirk","Knox","Koa","Kobe","Kody","Kohen","Koen","Kole",
+    "Kristian","Kristopher","Kurt","Kyle","Kylan","Kyler",
+    "Lachlan","Lance","Landon","Lane","Larry","Lawrence","Lawson","Leandro","Lee","Legend","Leif",
+    "Leland","Lenny","Lennox","Leo","Leon","Leonard","Leonardo","Leonel","Leopold","Leroy","Levi","Lewis","Liam",
+    "Lincoln","Lionel","Lloyd","Logan","Lorenzo","Louis","Luca","Lucas","Lucian","Luciano","Luis",
+    "Luka","Lukas","Luke","Luther","Lyle","Lyndon",
+    "Mack","Maddox","Magnus","Malachi","Malcolm","Malik","Manuel","Marc","Marcel","Marco","Marcos",
+    "Marcus","Mario","Mark","Marlon","Marshall","Martin","Marvin","Mason","Mateo","Mathew","Mathias",
+    "Matias","Matt","Matthew","Matthias","Maurice","Mauricio","Maverick","Max","Maxim","Maximilian",
+    "Maximus","Maxwell","Mekhi","Melvin","Micah","Michael","Miguel","Mike","Milan","Miles","Miller",
+    "Milo","Milton","Mitchell","Mohamed","Mohammad","Mohammed","Moises","Morgan","Morris","Moses",
+    "Muhammad","Murphy","Murray","Myles",
+    "Nash","Nasir","Nat","Nathan","Nathanael","Nathaniel","Ned","Neil","Nelson","Nicholas","Nick",
+    "Nico","Nicolas","Nigel","Niko","Nikolai","Nixon","Noah","Noel","Nolan","Norman",
+    "Oakley","Odin","Oliver","Ollie","Omar","Oren","Orion","Orlando","Oscar","Osiris","Oskar",
+    "Oswald","Otis","Otto","Owen",
+    "Pablo","Parker","Patrick","Patrik","Paul","Paxton","Pedro","Percy","Perry","Peter","Peyton",
+    "Philip","Phillip","Phoenix","Pierce","Pierre","Porter","Preston","Prince",
+    "Quentin","Quincy","Quinn","Quinton",
+    "Rafferty","Rafael","Ralph","Ramon","Randall","Randy","Raphael","Raul","Ray","Raymond","Reece","Reed",
+    "Reese","Reggie","Reginald","Reid","Remington","Remy","Rene","Reuben","Rex","Rhett","Ricardo",
+    "Richard","Richie","Rick","Ricky","Rico","Riley","River","Robert","Roberto","Robin","Rocco",
+    "Rocky","Roderick","Rodney","Rodrigo","Roger","Rohan","Roland","Roman","Romeo","Ronald",
+    "Ronan","Ronin","Rory","Ross","Rowan","Roy","Royce","Ruben","Russell","Ryan","Ryder","Ryker",
+    "Rylan",
+    "Sam","Sammy","Samson","Samuel","Santiago","Santino","Santos","Saul","Sawyer","Scott","Sean",
+    "Sebastian","Sergio","Seth","Shane","Shawn","Sidney","Silas","Simon","Sonny","Soren","Spencer","Stanley",
+    "Stefan","Stephen","Sterling","Steve","Steven","Stewart","Stuart","Sullivan","Sylvester",
+    "Tanner","Tate","Taylor","Ted","Teddy","Terence","Terrance","Terry","Thaddeus","Theo","Theodore",
+    "Thomas","Timothy","Titus","Tobias","Toby","Todd","Tom","Tommy","Tony","Travis","Trent","Trenton",
+    "Trevor","Trey","Tristan","Troy","Tucker","Ty","Tyler","Tyson",
+    "Ulysses","Uriah","Uriel",
+    "Valentino","Van","Vance","Vaughn","Victor","Vincent","Vincenzo","Vinny","Virgil","Vito",
+    "Wade","Walker","Wallace","Walter","Warren","Waylon","Wayne","Wesley","Weston","Wilbur",
+    "Wilder","Will","William","Willie","Wilson","Winston","Wolf","Wyatt","Wylder",
+    "Xander","Xavier",
+    "Yahir","Yosef","Yusuf",
+    "Zach","Zachariah","Zachary","Zack","Zaid","Zain","Zane","Zayden","Zayn","Zeke","Zion","Zyaire"
+  ]
+};
+
+/* Nua — baby-name numerology after Matthew Oliver Goodwin */
+(function () {
+  const LETTER = {
+    A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
+    J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
+    S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
+  };
+  const ALWAYS = {A:1,E:1,I:1,O:1,U:1};
+  const PLANE = {
+    D:'physical',E:'physical',M:'physical',W:'physical',
+    A:'mental',G:'mental',H:'mental',J:'mental',L:'mental',N:'mental',P:'mental',
+    B:'emotional',I:'emotional',O:'emotional',R:'emotional',S:'emotional',T:'emotional',X:'emotional',Z:'emotional',
+    C:'intuitive',F:'intuitive',K:'intuitive',Q:'intuitive',U:'intuitive',V:'intuitive',Y:'intuitive'
+  };
+  const AVG = {1:[2,3],2:[1,1],3:[1,2],4:[1,1],5:[3,5],6:[1,2],7:[0,1],8:[1,1],9:[2,3]};
+  const DEBTS = {13:1,14:1,16:1,19:1};
+
+  const KEY = {
+    1:{word:'Independence', gift:'A self-starting flame. This child wants to try it themselves.', need:'Room to choose, and a grown-up who does not hover.', parent:'Offer two real choices. Praise the attempt, not only the result.', shadow:'Can go stubborn or lonely if the will is crowded.'},
+    2:{word:'Cooperation', gift:'A soft radar for other people. Peace-making comes naturally.', need:'Gentleness, pairing, and time to feel before speaking.', parent:'Do not force the spotlight. Let them warm up beside you.', shadow:'Can disappear into other people’s moods.'},
+    3:{word:'Joy of living', gift:'Words, colour, play, and a bright social spark.', need:'An audience that is kind, and a place to make a mess.', parent:'Talk with them. Draw with them. Let the house hear laughter.', shadow:'Scattered talk or hurt feelings if joy is shut down.'},
+    4:{word:'Order and service', gift:'Steady hands. They build, finish, and keep the shape of a day.', need:'Rhythm, honest work, and something they can complete.', parent:'Simple routines. One job that is truly theirs.', shadow:'Rigidity or worry when life will not sit still.'},
+    5:{word:'Constructive freedom', gift:'Curiosity in motion. Change is food, not a threat.', need:'Fresh air, new stories, and a long leash with a visible fence.', parent:'Adventure with a coming-home time. Teach freedom as a craft.', shadow:'Restlessness or testing every edge.'},
+    6:{word:'Love and responsibility', gift:'A natural carer. Home, beauty, and looking after people.', need:'To be needed — and also to be a child, not the family nurse.', parent:'Let them help. Do not let them carry the adults.', shadow:'Worry, perfection, or taking on too much.'},
+    7:{word:'Understanding', gift:'A quiet, studying mind. They want the why underneath the what.', need:'Solitude that is respected, and answers that are true.', parent:'Do not fill every silence. Keep a few honest books nearby.', shadow:'Withdrawal or mistrust if they are rushed or mocked.'},
+    8:{word:'Material mastery', gift:'A feel for how the world works — strength, fairness, results.', need:'Real responsibility and a model of clean power.', parent:'Talk money and effort without shame. Show fair leadership.', shadow:'Control, or a fear of not being enough.'},
+    9:{word:'Human kindness', gift:'A wide heart. They feel the room, the street, the story of others.', need:'A cause, an art, and adults who do not make them the family saviour.', parent:'Serve together in small ways. Let them keep a private corner.', shadow:'Hurt from taking on the whole world.'},
+    11:{word:'Illumination', gift:'High voltage insight. They see what others miss.', need:'Sleep, nature, and a grounded home. Master 11 lives as 11/2.', parent:'Protect the nervous system. Teach the 2: kindness, pairing, rest.', shadow:'Tension, sleeplessness, or feeling “too much”.'},
+    22:{word:'Master builder', gift:'The power to turn a large ideal into something that stands.', need:'Time. Master 22 lives as 22/4 — build in ordinary bricks first.', parent:'Big dreams, small daily work. Do not rush the cathedral.', shadow:'Overwhelm, or refusing to start because it is not yet grand.'}
+  };
+  const LETTERS = {
+    A:'Begins with a pioneering step — original, direct, a little proud.',
+    B:'Begins by gathering people. Soft, loyal, sometimes unsure.',
+    C:'Begins in conversation and charm. Needs an outlet for the voice.',
+    D:'Begins with work and structure. Practical from the first hour.',
+    E:'Begins in motion. Adventure, change, a dislike of being boxed.',
+    F:'Begins by taking care. Home, duty, a wish to make things beautiful.',
+    G:'Begins in thought. Private, analytical, slow to show the inner room.',
+    H:'Begins with will. Strength, ambition, a need for fair authority.',
+    I:'Begins with feeling. Creative, humanitarian, easily moved.',
+    J:'Begins like a 1 with extra grace — leadership wrapped in manners.',
+    K:'Begins with intuition. Sensitive, artistic, not to be hurried.',
+    L:'Begins in expression. Social, verbal, hungry for response.',
+    M:'Begins with method. Reliable, thorough, can over-manage.',
+    N:'Begins with freedom. Curious, changeable, needs honest limits.',
+    O:'Begins in harmony. Responsible, self-contained, feelings held close.',
+    P:'Begins in the mind. A student. Wants to understand before acting.',
+    Q:'Begins with unusual poise. Magnetic, private, a little otherworldly.',
+    R:'Begins with a wide feeling-life. Generous, intense, easily wounded.',
+    S:'Begins independently, then looks for meaning. A seeker with spine.',
+    T:'Begins by cooperating. Gentle start; finishing needs encouragement.',
+    U:'Begins in sensitivity and intuition. Absorbing, artistic, private.',
+    V:'Begins with imagination. Builder of inner worlds; needs earth too.',
+    W:'Begins with a waver. Two paths at once — teach choosing.',
+    X:'Begins with feeling that wants form. Artistic responsibility.',
+    Y:'Begins in thought and pause. Analysis, intuition, a touch of doubt.',
+    Z:'Begins with a strong feeling-nature that wants a worthy task.'
+  };
+  const VOWEL = {
+    A:'First vowel A — the inner approach is leadership, originality, a clear mind.',
+    E:'First vowel E — the inner approach is adventure, activity, change.',
+    I:'First vowel I — the inner approach is feeling, creativity, a humanitarian tilt.',
+    O:'First vowel O — the inner approach is harmony, responsibility, feelings kept close.',
+    U:'First vowel U — the inner approach is sensitivity and intuition.',
+    W:'First vowel W — the inner approach carries vacillation; help them choose.',
+    Y:'First vowel Y — the inner approach is thought, analysis, a pause before the leap.'
+  };
+  const PLANE_T = {
+    physical:{strong:'A body-first child — practical, sensory, happiest making or moving.', average:'A workable physical streak. Enough earth to carry the rest.', weak:'Less drawn to hard physical grind. Offer play, not drills.', absent:'The name holds no physical-plane letters. Ground them with routine and nature.'},
+    mental:{strong:'A mind-first child — reason, words, plans, questions.', average:'A balanced mental streak. They can think without living only in the head.', weak:'Less naturally analytical. Teach thinking through doing.', absent:'The name holds no mental-plane letters. Sit with puzzles and stories anyway.'},
+    emotional:{strong:'A feeling-first child — weather inside is vivid. They need names for feelings.', average:'Feeling is present and usable, not flooding.', weak:'Feelings may hide. Invite them out without forcing a performance.', absent:'The name holds no emotional-plane letters. Model warmth out loud.'},
+    intuitive:{strong:'An inner-knowing child. Hunches arrive before reasons. Protect sleep and quiet.', average:'Intuition is available when the house is not too loud.', weak:'They trust what can be proven. Still honour a “funny feeling”.', absent:'The name holds no intuitive-plane letters. Wonder can still be taught.'}
+  };
+  const LESSON = {
+    1:'Missing 1 — learning to stand alone without waiting for permission.',
+    2:'Missing 2 — learning true cooperation, not just keeping the peace.',
+    3:'Missing 3 — learning to speak before it is perfect, and survive that.',
+    4:'Missing 4 — learning method, finishing, the unglamorous brick.',
+    5:'Missing 5 — learning change that was not chosen, without panic.',
+    6:'Missing 6 — learning responsibility that costs something, and love that is not control.',
+    7:'Missing 7 — learning depth, study, and not taking the surface as the whole.',
+    8:'Missing 8 — learning clean power, money, and the adult world without fear.',
+    9:'Missing 9 — learning to give without disappearing, and to let go.'
+  };
+  const DEBT_T = {
+    13:'A 13 behind a number asks for work without shortcuts — patience, method, no laziness of spirit.',
+    14:'A 14 behind a number asks for freedom used well — not every door, the right door.',
+    16:'A 16 behind a number asks for humility of the ego — listen, rebuild, do not stand above.',
+    19:'A 19 behind a number asks for independence that still sees other people.'
+  };
+  const BOOK = (window.NUA_NAMES && window.NUA_NAMES.girls && window.NUA_NAMES.boys) ? window.NUA_NAMES : {girls:[],boys:[]};
+  const ALL_NAMED = [
+    ...BOOK.girls.map(n=>({n,g:'g'})),
+    ...BOOK.boys.map(n=>({n,g:'b'}))
+  ].sort((a,b)=>a.n.localeCompare(b.n));
+  let genderFilter = 'all';
+
+  function lettersOnly(s){return String(s||'').toUpperCase().replace(/[^A-Z]/g,'');}
+  function reduce(n, keep){
+    n = Number(n)||0;
+    if(keep && (n===11||n===22)) return n;
+    while(n>9){
+      if(keep && (n===11||n===22)) return n;
+      n = String(n).split('').reduce((a,d)=>a+Number(d),0);
+    }
+    return n;
+  }
+  function fmt(n, behind){
+    if(n===11) return '11/2';
+    if(n===22) return '22/4';
+    if(behind && behind!==n && behind>9) return behind+'/'+n;
+    return String(n);
+  }
+  function isVowel(ls,i){
+    const L=ls[i];
+    if(ALWAYS[L]) return true;
+    const prev=i>0?ls[i-1]:'';
+    const next=i<ls.length-1?ls[i+1]:'';
+    if(L==='Y') return !ALWAYS[next];
+    if(L==='W') return !!(prev && ALWAYS[prev]);
+    return false;
+  }
+  function analyze(name){
+    const ls=lettersOnly(name).split('');
+    const tiles=ls.map((L,i)=>({letter:L,value:LETTER[L],kind:isVowel(ls,i)?'V':'C',plane:PLANE[L]}));
+    const all=tiles.reduce((a,t)=>a+t.value,0);
+    const vow=tiles.filter(t=>t.kind==='V').reduce((a,t)=>a+t.value,0);
+    const con=tiles.filter(t=>t.kind==='C').reduce((a,t)=>a+t.value,0);
+    return {raw:name,letters:ls,tiles,all,vow,con,allR:reduce(all,true),vowR:reduce(vow,true),conR:reduce(con,true)};
+  }
+  function combine(parts, sumKey, redKey){
+    const fromR=parts.reduce((a,p)=>a+p[redKey],0);
+    return {raw:parts.reduce((a,p)=>a+p[sumKey],0), behind:fromR, value:reduce(fromR,true)};
+  }
+  function intensity(tiles){
+    const counts={1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0};
+    tiles.forEach(t=>{counts[t.value]++;});
+    const rows=[], lessons=[], points=[];
+    let maxQ=0, maxN=[];
+    for(let n=1;n<=9;n++){
+      const q=counts[n], [lo,hi]=AVG[n];
+      let band='average';
+      if(q===0){band='karmic';lessons.push(n);}
+      else if(q<lo){band='below';points.push({n,q,band});}
+      else if(q>hi){band='above';points.push({n,q,band});}
+      rows.push({n,q,band});
+      if(q>maxQ){maxQ=q;maxN=[n];}
+      else if(q===maxQ && q>0) maxN.push(n);
+    }
+    const prime=maxN.filter(n=>!(n===5 && maxQ<6) && maxQ>=2);
+    return {counts,rows,lessons,points,prime,passion:prime.length?prime:maxN};
+  }
+  function temperament(tiles){
+    const t={physical:0,mental:0,emotional:0,intuitive:0};
+    tiles.forEach(x=>{if(x.plane) t[x.plane]++;});
+    const max=Math.max(t.physical,t.mental,t.emotional,t.intuitive,1);
+    function st(v){if(v===0)return 'absent';if(v>=max*0.6||v===max)return 'strong';if(v<max*0.25)return 'weak';return 'average';}
+    return {
+      physical:{count:t.physical,strength:st(t.physical)},
+      mental:{count:t.mental,strength:st(t.mental)},
+      emotional:{count:t.emotional,strength:st(t.emotional)},
+      intuitive:{count:t.intuitive,strength:st(t.intuitive)}
+    };
+  }
+  function debtsOf(parts, cores){
+    const found=[];
+    parts.forEach(p=>{
+      [p.all,p.vow,p.con].forEach(n=>{if(DEBTS[n]) found.push(n);});
+    });
+    cores.forEach(n=>{if(DEBTS[n]) found.push(n);});
+    return [...new Set(found)];
+  }
+  function lifePath(dob){
+    if(!dob) return null;
+    const m=String(dob).match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if(!m) return null;
+    const year=+m[1], month=+m[2], day=+m[3];
+    const monthR=reduce(month,true), dayR=reduce(day,true), yearR=reduce(year,true);
+    const sum=monthR+dayR+yearR;
+    return {year,month,day,monthR,dayR,yearR,lifePath:reduce(sum,true),birthday:reduce(day,true),
+      label:String(day).padStart(2,'0')+'/'+String(month).padStart(2,'0')+'/'+year};
+  }
+  function transits(first, middle, last, years){
+    const F=lettersOnly(first)||'';
+    const M=lettersOnly(middle);
+    const L=lettersOnly(last);
+    const out=[];
+    for(let age=0; age<years; age++){
+      const p = F ? F[age % F.length] : '';
+      const m = M ? M[age % M.length] : '';
+      const s = L ? L[age % L.length] : '';
+      const sum = (p?LETTER[p]:0)+(m?LETTER[m]:0)+(s?LETTER[s]:0);
+      out.push({age, p, m, s, essence: reduce(sum,true), sum});
+    }
+    return out;
+  }
+  function chartFrom(first, middle, last, dob, called){
+    const names=[first,middle,last].map(s=>String(s||'').trim()).filter(Boolean);
+    const parts=names.map(analyze);
+    const tiles=parts.flatMap(p=>p.tiles);
+    const expr=combine(parts,'all','allR');
+    const soul=combine(parts,'vow','vowR');
+    const pers=combine(parts,'con','conR');
+    const firstP=parts[0]||analyze('');
+    const date=lifePath(dob);
+    const maturity=date?reduce((date.lifePath===11?2:date.lifePath===22?4:date.lifePath)+ (expr.value===11?2:expr.value===22?4:expr.value), true):null;
+    return {
+      first:first||'', middle:middle||'', last:last||'', called:called||'',
+      fullName:names.join(' '), parts, tiles,
+      expression:{value:expr.value,behind:expr.behind,raw:expr.raw,label:fmt(expr.value,expr.behind)},
+      soulUrge:{value:soul.value,behind:soul.behind,raw:soul.raw,label:fmt(soul.value,soul.behind)},
+      personality:{value:pers.value,behind:pers.behind,raw:pers.raw,label:fmt(pers.value,pers.behind)},
+      growth: firstP.letters.length?{value:firstP.allR,raw:firstP.all,label:fmt(firstP.allR,firstP.all)}:null,
+      intensity:intensity(tiles), planes:temperament(tiles),
+      cornerstone:firstP.tiles[0]||null,
+      capstone:firstP.tiles.length?firstP.tiles[firstP.tiles.length-1]:null,
+      firstVowel:firstP.tiles.find(t=>t.kind==='V')||null,
+      date, maturity: maturity!=null?{value:maturity,label:fmt(maturity)}:null,
+      debts:debtsOf(parts,[expr.behind,soul.behind,pers.behind]),
+      transits: transits(first,middle,last,18),
+      letterCount:tiles.length
+    };
+  }
+
+  const $ = (id)=>document.getElementById(id);
+  const state = { first:'', middle:'', last:'', called:'', dob:'', shortlist:[], pick:[] };
+
+  try{
+    const saved=JSON.parse(localStorage.getItem('nua-state')||'null');
+    if(saved){
+      state.first=saved.first||''; state.middle=saved.middle||''; state.last=saved.last||'';
+      state.called=saved.called||''; state.dob=saved.dob||''; state.shortlist=saved.shortlist||[];
+    }
+  }catch(e){}
+
+  function persist(){
+    try{localStorage.setItem('nua-state', JSON.stringify({
+      first:state.first,middle:state.middle,last:state.last,called:state.called,dob:state.dob,shortlist:state.shortlist
+    }));}catch(e){}
+  }
+
+  function current(){ return chartFrom(state.first,state.middle,state.last,state.dob,state.called); }
+
+  function renderTiles(ch){
+    const el=$('tiles');
+    if(!ch.tiles.length){el.innerHTML='';return;}
+    el.innerHTML=ch.tiles.map(t=>'<div class="tile '+t.kind+'"><div class="L">'+t.letter+'</div><div class="v">'+t.value+' · '+t.kind+'</div></div>').join('');
+  }
+  function renderStrip(ch){
+    const passion=(ch.intensity.passion||[]).map(String).join(',')||'—';
+    const lessons=(ch.intensity.lessons||[]).map(String).join(',')||'none';
+    const cells=[
+      ['Expression', ch.expression.label],
+      ['Soul Urge', ch.soulUrge.label],
+      ['Personality', ch.personality.label],
+      ['Passion', passion],
+      ['Lessons', lessons]
+    ];
+    $('strip').innerHTML=cells.map(c=>'<div class="num"><b>'+c[1]+'</b><span>'+c[0]+'</span></div>').join('');
+    const h=$('harmony');
+    if(ch.date){
+      const lp=ch.date.lifePath, ex=ch.expression.value;
+      const a=lp===11?2:lp===22?4:lp, b=ex===11?2:ex===22?4:ex;
+      const gap=Math.abs(a-b);
+      let tone='The name’s Expression '+ch.expression.label+' sits beside a Life Path '+fmt(lp)+'. ';
+      if(gap<=1) tone+='Close numbers. The road and the tool-kit speak a similar language.';
+      else if(gap<=3) tone+='A workable stretch. The child will grow by using the name to meet the path.';
+      else tone+='A wider stretch. Parent the Life Path first; let the name add colour, not a second destiny.';
+      h.hidden=false; h.textContent=tone;
+    } else { h.hidden=true; }
+  }
+
+  function keyOf(n){return KEY[n]||KEY[n===11?11:n===22?22:reduce(n,false)];}
+  function writeReading(ch){
+    if(!ch.letterCount){
+      $('readTitle').textContent='Waiting for a name';
+      $('core').innerHTML='';
+      $('reading').innerHTML='<p>Enter a first name in the Name section. The whole certificate name is used — letters, vowels, consonants, inclusion table, planes, first letter, first vowel, and the essence years if a date is present.</p>';
+      return;
+    }
+    $('readTitle').textContent=ch.fullName+(ch.called && ch.called!==ch.first ? ' · called '+ch.called : '');
+    const cells=[
+      ['Expression', ch.expression.label],
+      ['Soul Urge', ch.soulUrge.label],
+      ['Personality', ch.personality.label]
+    ];
+    if(ch.growth) cells.push(['Growth (first)', ch.growth.label]);
+    if(ch.date) cells.push(['Life Path', fmt(ch.date.lifePath)]);
+    if(ch.maturity) cells.push(['Maturity', ch.maturity.label]);
+    $('core').innerHTML=cells.map(c=>'<div class="num"><b>'+c[1]+'</b><span>'+c[0]+'</span></div>').join('');
+
+    const ex=keyOf(ch.expression.value);
+    const su=keyOf(ch.soulUrge.value);
+    const pe=keyOf(ch.personality.value);
+    let html='';
+    html+='<h3>What this name gives</h3>';
+    html+='<p><b>Expression '+ch.expression.label+'</b> — '+ex.word+'. '+ex.gift+' '+ex.need+'</p>';
+    html+='<p><b>Soul Urge '+ch.soulUrge.label+'</b> — the inner want. '+su.gift+'</p>';
+    html+='<p><b>Personality '+ch.personality.label+'</b> — how the child meets the room before they are known. '+pe.gift+'</p>';
+    if(ch.called && lettersOnly(ch.called) && lettersOnly(ch.called)!==lettersOnly(ch.first)){
+      const call=analyze(ch.called);
+      html+='<p>The calling name <b>'+ch.called+'</b> carries its own first-name Growth '+fmt(call.allR, call.all)+'. Daily use colours the certificate name; it does not replace it.</p>';
+    }
+    html+='<h3>How to parent this energy</h3>';
+    html+='<p>'+ex.parent+' Inner life: '+su.parent+' The face they show: '+pe.parent+'</p>';
+    if(ch.cornerstone) html+='<p><b>Cornerstone '+ch.cornerstone.letter+'</b> — '+ (LETTERS[ch.cornerstone.letter]||'')+'</p>';
+    if(ch.firstVowel) html+='<p>'+(VOWEL[ch.firstVowel.letter]||'')+'</p>';
+    if(ch.capstone) html+='<p><b>Capstone '+ch.capstone.letter+'</b> — the last letter of the first name is how they like to finish what they start.</p>';
+
+    html+='<h3>Inclusion table</h3>';
+    html+='<div class="inc">'+ch.intensity.rows.map(r=>'<i class="'+r.band+'"><b>'+r.n+'</b>'+r.q+'</i>').join('')+'</div>';
+    html+='<p>Hidden Passion / Prime Intensifier: <b>'+(ch.intensity.passion.join(', ')||'—')+'</b>. This is the flavour the name repeats until it becomes a gift — and sometimes an overused muscle.</p>';
+    if(ch.intensity.lessons.length){
+      html+='<p>'+ch.intensity.lessons.map(n=>LESSON[n]).join(' ') +' A missing number is a lesson, not a sentence. Life will teach it; you can help without forcing.</p>';
+    } else {
+      html+='<p>No karmic lessons in the letters — every number 1–9 is present. The work is balance, not filling a hole.</p>';
+    }
+    if(ch.debts.length){
+      html+='<p>'+ch.debts.map(n=>DEBT_T[n]).join(' ')+'</p>';
+    }
+
+    html+='<h3>Planes of Expression</h3>';
+    ['physical','mental','emotional','intuitive'].forEach(k=>{
+      const p=ch.planes[k];
+      html+='<div class="bar"><span>'+k+'</span><div class="track"><div class="fill" style="width:'+Math.min(100,p.count*18)+'%"></div></div><span>'+p.count+'</span></div>';
+      html+='<p class="hint">'+p.strength+' — '+PLANE_T[k][p.strength]+'</p>';
+    });
+
+    if(ch.date){
+      html+='<h3>Name against the birth date</h3>';
+      html+='<p>Life Path '+fmt(ch.date.lifePath)+' · Birthday '+fmt(ch.date.birthday)+(ch.maturity?' · Maturity '+ch.maturity.label:'')+'. The date is the road. The name is how they walk it.</p>';
+      html+='<p>'+$('harmony').textContent+'</p>';
+      html+='<h3>Essence years 0–17</h3>';
+      html+='<p class="hint">Physical transit from the first name, mental from the middle, spiritual from the last. Essence is their sum for that year.</p>';
+      html+='<div class="ess">'+ch.transits.map(t=>'<span><b>'+t.age+'</b> '+(t.p||'·')+(t.m||'')+(t.s||'')+' → '+t.essence+'</span>').join('')+'</div>';
+    } else {
+      html+='<p class="hint">Add a birth date in the Name section to weigh this name against the Life Path and to see the Essence years.</p>';
+    }
+
+    html+='<h3>The numbers behind</h3>';
+    html+='<p>Expression is built from '+ch.expression.behind+' · Soul Urge from '+ch.soulUrge.behind+' · Personality from '+ch.personality.behind+'. Goodwin reads the number behind as a trace of colour on the core.</p>';
+    html+='<p class="hint">Whole name used: '+ch.letterCount+' letters. Each name reduced on its own, then added — masters 11 and 22 kept, 33 reduced.</p>';
+    $('reading').innerHTML=html;
+  }
+
+  function showView(name){
+    ['name','reading','list','ask'].forEach(v=>{
+      const el=$('view-'+v);
+      if(el) el.hidden = v!==name;
+    });
+    document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on', b.dataset.view===name));
+    if(name==='reading') writeReading(current());
+    if(name==='list') renderList();
+    if(name==='ask') seedChat();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+
+  function live(){
+    state.first=$('first').value;
+    state.middle=$('middle').value;
+    state.last=$('last').value;
+    state.called=$('called').value;
+    state.dob=$('dob').value;
+    persist();
+    const ch=current();
+    renderTiles(ch);
+    renderStrip(ch);
+  }
+
+  function renderSuggest(q){
+    const box=$('suggest');
+    const s=String(q||'').trim().toLowerCase();
+    let pool = ALL_NAMED;
+    if(genderFilter==='girls') pool = BOOK.girls.map(n=>({n,g:'g'}));
+    else if(genderFilter==='boys') pool = BOOK.boys.map(n=>({n,g:'b'}));
+    if(s){
+      const start = pool.filter(x=>x.n.toLowerCase().startsWith(s));
+      const mid = pool.filter(x=>!x.n.toLowerCase().startsWith(s) && x.n.toLowerCase().includes(s));
+      pool = start.concat(mid);
+    }
+    const shown = pool.slice(0, 180);
+    const meta=$('bookMeta');
+    if(meta){
+      const label = genderFilter==='girls'?'girls':genderFilter==='boys'?'boys':'names';
+      meta.textContent = shown.length + (pool.length>shown.length?' of '+pool.length:'') + ' ' + label + ' · tap a name to try it';
+    }
+    box.innerHTML=shown.map(x=>'<button type="button" class="chip '+x.g+'" data-name="'+x.n+'">'+x.n+'</button>').join('');
+  }
+
+  function applyFirst(n){
+    $('first').value=n;
+    state.first=n;
+    live();
+    renderSuggest('');
+  }
+
+  function renderList(){
+    const el=$('list');
+    if(!state.shortlist.length){el.innerHTML='<p class="hint">No names saved yet. Add from the Name section.</p>';return;}
+    el.innerHTML=state.shortlist.map((item,i)=>{
+      const ch=chartFrom(item.first,item.middle,item.last,item.dob,item.called);
+      const on=state.pick.indexOf(i)>=0?' on':'';
+      return '<div class="scard'+on+'" data-i="'+i+'"><b>'+ch.fullName+'</b>'+(item.called?' · '+item.called:'')+
+        '<div class="mini"><span class="chip">Exp '+ch.expression.label+'</span><span class="chip">Soul '+ch.soulUrge.label+'</span><span class="chip">Pers '+ch.personality.label+'</span>'+
+        (ch.intensity.lessons.length?'<span class="chip lesson">Lessons '+ch.intensity.lessons.join(',')+'</span>':'<span class="chip good">No lessons</span>')+
+        '</div></div>';
+    }).join('');
+  }
+
+  function compareSelected(){
+    if(state.pick.length<2){ $('compareOut').innerHTML='<p class="hint">Tap two shortlisted names first.</p>'; return; }
+    const a=state.shortlist[state.pick[0]], b=state.shortlist[state.pick[1]];
+    const A=chartFrom(a.first,a.middle,a.last,a.dob,a.called);
+    const B=chartFrom(b.first,b.middle,b.last,b.dob,b.called);
+    function block(ch){
+      return '<div class="scard"><b>'+ch.fullName+'</b>'+
+        '<p>Expression '+ch.expression.label+' · Soul '+ch.soulUrge.label+' · Personality '+ch.personality.label+'</p>'+
+        '<p>Passion '+(ch.intensity.passion.join(', ')||'—')+' · Lessons '+(ch.intensity.lessons.join(', ')||'none')+'</p>'+
+        '<p>Planes P'+ch.planes.physical.count+' M'+ch.planes.mental.count+' E'+ch.planes.emotional.count+' I'+ch.planes.intuitive.count+'</p>'+
+        '<p>'+(ch.cornerstone?('Cornerstone '+ch.cornerstone.letter):'')+(ch.firstVowel?(' · First vowel '+ch.firstVowel.letter):'')+'</p></div>';
+    }
+    let diff='<p>';
+    if(A.expression.value!==B.expression.value) diff+='Expression changes from '+A.expression.label+' to '+B.expression.label+'. ';
+    else diff+='Expression stays '+A.expression.label+'. ';
+    if(A.soulUrge.value!==B.soulUrge.value) diff+='Soul Urge changes from '+A.soulUrge.label+' to '+B.soulUrge.label+'. ';
+    else diff+='Soul Urge stays '+A.soulUrge.label+'. ';
+    if(A.personality.value!==B.personality.value) diff+='Personality changes from '+A.personality.label+' to '+B.personality.label+'. ';
+    const missA=A.intensity.lessons.join(','), missB=B.intensity.lessons.join(',');
+    if(missA!==missB) diff+='Lessons shift from ['+(missA||'none')+'] to ['+(missB||'none')+'].';
+    diff+='</p>';
+    $('compareOut').innerHTML='<div class="comparebox">'+block(A)+block(B)+'</div>'+diff;
+  }
+
+  function saveName(){
+    const ch=current();
+    if(!ch.letterCount){alert('Enter a name first.');return;}
+    const item={first:state.first,middle:state.middle,last:state.last,called:state.called,dob:state.dob};
+    const key=JSON.stringify(item);
+    if(state.shortlist.some(x=>JSON.stringify(x)===key)) return;
+    state.shortlist.unshift(item);
+    persist();
+    showView('list');
+  }
+
+  let chatSeeded=false;
+  function seedChat(){
+    const ch=current();
+    $('askChips').innerHTML=[
+      'What does this name give a baby?',
+      'How do I parent this Expression?',
+      'What do the missing numbers mean?',
+      'Is this harmonious with the Life Path?',
+      'Compare the Soul Urge and Personality',
+      'Tell me about the first letter and first vowel',
+      'What are the Essence years?'
+    ].map(q=>'<button type="button" class="chip" data-q="'+q.replace(/"/g,'')+'">'+q+'</button>').join('');
+    if(!chatSeeded){
+      const intro = ch.letterCount
+        ? 'I am holding <b>'+ch.fullName+'</b>. Expression '+ch.expression.label+', Soul Urge '+ch.soulUrge.label+', Personality '+ch.personality.label+'. Ask me anything about the letters, the lessons, the planes, or how to live with this name.'
+        : 'Put a name in the Name section, then ask. I read after Matthew Oliver Goodwin — whole name, letters, essence, the lot.';
+      $('chat').innerHTML='<div class="bubble ai">'+intro+'</div>';
+      chatSeeded=true;
+    }
+  }
+
+  function answer(q){
+    const ch=current();
+    const t=q.toLowerCase();
+    if(!ch.letterCount) return 'Enter a name in the Name section first. I need the letters before I can speak.';
+    if(/lesson|missing|karmic/.test(t)){
+      if(!ch.intensity.lessons.length) return 'No numbers are missing from '+ch.fullName+'. Every digit 1–9 is in the letters. The work is balance, not filling a hole.';
+      return ch.fullName+' is missing '+ch.intensity.lessons.join(', ')+'. '+ch.intensity.lessons.map(n=>LESSON[n]).join(' ')+' Help the child meet that energy in ordinary life — do not drill it.';
+    }
+    if(/parent|raise|help them|how do i/.test(t)){
+      const ex=keyOf(ch.expression.value), su=keyOf(ch.soulUrge.value);
+      return 'Parent the Expression first — that is the tool-kit of the name. '+ex.parent+' The Soul Urge is the private want: '+su.parent;
+    }
+    if(/life path|harmon|birth|date|compat/.test(t)){
+      if(!ch.date) return 'Add a birth date in the Name section and I can weigh Expression '+ch.expression.label+' against the Life Path.';
+      return $('harmony').textContent+' Life Path '+fmt(ch.date.lifePath)+', Birthday '+fmt(ch.date.birthday)+(ch.maturity?', Maturity '+ch.maturity.label:'')+'. The date is the road. The name is the walk.';
+    }
+    if(/soul|heart|desire|inner/.test(t)){
+      const su=keyOf(ch.soulUrge.value);
+      return 'Soul Urge '+ch.soulUrge.label+' ('+ch.soulUrge.behind+' behind) — '+su.word+'. '+su.gift+' '+su.need;
+    }
+    if(/person|outer|face|meet the room/.test(t)){
+      const pe=keyOf(ch.personality.value);
+      return 'Personality '+ch.personality.label+' is the front door. '+pe.gift+' '+pe.shadow;
+    }
+    if(/express|destiny|talent|give/.test(t)){
+      const ex=keyOf(ch.expression.value);
+      return 'Expression '+ch.expression.label+' is what the whole name hands the child. '+ex.word+'. '+ex.gift+' '+ex.need+' '+ex.parent;
+    }
+    if(/letter|corner|capstone|vowel|first letter/.test(t)){
+      let s='';
+      if(ch.cornerstone) s+='Cornerstone '+ch.cornerstone.letter+' — '+(LETTERS[ch.cornerstone.letter]||'')+' ';
+      if(ch.firstVowel) s+=(VOWEL[ch.firstVowel.letter]||'')+' ';
+      if(ch.capstone) s+='Capstone '+ch.capstone.letter+' colours how they finish.';
+      return s||'I need a first name to read the cornerstone and first vowel.';
+    }
+    if(/plane|temper|physical|mental|emotional|intuit/.test(t)){
+      return ['physical','mental','emotional','intuitive'].map(k=>{
+        const p=ch.planes[k];
+        return k+' '+p.count+' ('+p.strength+'). '+PLANE_T[k][p.strength];
+      }).join(' ');
+    }
+    if(/essence|transit|year/.test(t)){
+      if(!ch.date) return 'Essence years need a birth date. The first name walks the physical transit, the middle the mental, the last the spiritual — one letter per year, cycling.';
+      const early=ch.transits.slice(0,9).map(x=>'age '+x.age+': '+(x.p||'·')+(x.m||'')+(x.s||'')+' → '+x.essence).join('; ');
+      return 'Essence for the early years of '+ch.fullName+': '+early+'.';
+    }
+    if(/passion|intens|inclusion|table|count/.test(t)){
+      return 'Inclusion counts: '+ch.intensity.rows.map(r=>r.n+'×'+r.q).join(', ')+'. Hidden Passion '+(ch.intensity.passion.join(', ')||'—')+'.';
+    }
+    if(/compare|versus|vs|or /.test(t)){
+      return 'Save two names on the Shortlist and tap Compare. Or type another first name in the Name section — the surname can stay locked — and watch the strip change.';
+    }
+    if(/master|11|22/.test(t)){
+      return 'Masters are kept: 11/2 illumination, 22/4 master builder. 33 is reduced. A baby with 11 or 22 in the name needs extra rest and ordinary earth under the high voltage.';
+    }
+    if(/goodwin|method|how do you calculate|rule/.test(t)){
+      return 'Pythagorean letters. Each name is added and reduced on its own, then those totals are added — that is how a master appears or disappears. Vowels A E I O U; Y is a vowel unless the next letter is a vowel; W is a vowel only after a vowel. Personality is the consonants. Inclusion is the count of 1–9. Planes: physical D E M W, mental A G H J L N P, emotional B I O R S T X Z, intuitive C F K Q U V Y.';
+    }
+    const ex=keyOf(ch.expression.value);
+    return 'On '+ch.fullName+': Expression '+ch.expression.label+' — '+ex.word+'. '+ex.gift+' Soul Urge '+ch.soulUrge.label+', Personality '+ch.personality.label+', Hidden Passion '+(ch.intensity.passion.join(', ')||'—')+', lessons '+(ch.intensity.lessons.join(', ')||'none')+'. Ask me about parenting, lessons, planes, letters, or the Life Path.';
+  }
+
+  function sendAsk(q){
+    q=String(q||'').trim();
+    if(!q) return;
+    const box=$('chat');
+    box.innerHTML+='<div class="bubble me">'+q.replace(/</g,'')+'</div>';
+    box.innerHTML+='<div class="bubble ai">'+answer(q)+'</div>';
+    box.lastElementChild.scrollIntoView({behavior:'smooth',block:'end'});
+    $('askQ').value='';
+  }
+
+  function hydrate(){
+    $('first').value=state.first;
+    $('middle').value=state.middle;
+    $('last').value=state.last;
+    $('called').value=state.called;
+    $('dob').value=state.dob;
+    live();
+    renderSuggest('');
+  }
+
+  ['first','middle','last','called','dob'].forEach(id=>{
+    $(id).addEventListener('input', live);
+    $(id).addEventListener('change', live);
+  });
+  $('search').addEventListener('input', (e)=>{
+    const v=e.target.value;
+    renderSuggest(v);
+    if(v && /^[a-zA-Z' -]+$/.test(v)){
+      $('first').value=v;
+      live();
+    }
+  });
+  const gf=$('genderFilters');
+  if(gf) gf.addEventListener('click', (e)=>{
+    const g=e.target.dataset.gender;
+    if(!g) return;
+    genderFilter=g;
+    gf.querySelectorAll('button').forEach(b=>b.classList.toggle('on', b.dataset.gender===g));
+    renderSuggest($('search').value);
+  });
+  $('suggest').addEventListener('click', (e)=>{
+    const n=e.target.dataset.name;
+    if(n){ applyFirst(n); $('search').value=n; }
+  });
+  $('btnRead').addEventListener('click', ()=>{ chatSeeded=false; showView('reading'); });
+  $('btnSave').addEventListener('click', saveName);
+  $('btnAsk').addEventListener('click', ()=>{ chatSeeded=false; showView('ask'); });
+  $('btnCompare').addEventListener('click', compareSelected);
+  $('btnClear').addEventListener('click', ()=>{ state.shortlist=[]; state.pick=[]; persist(); renderList(); $('compareOut').innerHTML=''; });
+  $('list').addEventListener('click', (e)=>{
+    const card=e.target.closest('.scard'); if(!card) return;
+    const i=+card.dataset.i;
+    const item=state.shortlist[i];
+    $('first').value=item.first; $('middle').value=item.middle; $('last').value=item.last;
+    $('called').value=item.called||''; $('dob').value=item.dob||'';
+    live();
+    const at=state.pick.indexOf(i);
+    if(at>=0) state.pick.splice(at,1);
+    else {
+      if(state.pick.length>=2) state.pick.shift();
+      state.pick.push(i);
+    }
+    renderList();
+  });
+  $('askChips').addEventListener('click', (e)=>{ const q=e.target.dataset.q; if(q) sendAsk(q); });
+  $('btnSend').addEventListener('click', ()=>sendAsk($('askQ').value));
+  $('askQ').addEventListener('keydown', (e)=>{ if(e.key==='Enter') sendAsk($('askQ').value); });
+  document.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click', ()=>{
+    if(b.dataset.view==='ask' || b.dataset.view==='reading') chatSeeded=false;
+    showView(b.dataset.view);
+  }));
+
+  hydrate();
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
+})();
+
+</script>
+</body>
+</html>
