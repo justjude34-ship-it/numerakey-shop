@@ -46,6 +46,7 @@ const FILES = {
   "rise": "private/rise.html",
   "vesper": "private/vesper.html",
   "teach-me-the-i-ching": "private/teach-me-the-i-ching.html",
+  "teach-me-runes": "private/teach-me-runes.html",
   "meridian-emdr": "private/meridian-emdr.html",
   "aurora-emdr": "private/aurora-emdr.html",
   "lumina-emdr": "private/lumina-emdr.html",

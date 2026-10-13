@@ -320,3 +320,17 @@ APPS.push({
   inside:["Seven short lessons, in order","Cast with three coins, six throws","Changing lines, and the second hexagram they make","The eight trigrams explained","All 64 hexagrams to browse","No account, works offline, nothing sent away"]
 });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
+
+APPS.push({
+  slug:"teach-me-runes", name:"Teach Me Runes", cat:"divine", price:39, status:"live", ready:true,
+  cover:"covers/teach-me-runes.jpg",
+  demo:"https://teach-me-runes.netlify.app",
+  desc:"A study of the Elder Futhark — the name, the sound, and what the old poems actually say, rune by rune. Not a prediction.",
+  tag:"Twenty-four letters. One at a time.",
+  body:[
+    "Most rune books hand you reversed meanings and prediction spreads before you know what a rune even says. This one starts at the name and the sound, then gives you the old poems themselves — Old English, Norwegian and Icelandic — in plain language, plus an everyday example for each. If a rune looks the same upside down, the app says so rather than inventing a reverse.",
+    "Freyr's ætt — the first family of eight — is open now: Fehu, Uruz, Thurisaz, Ansuz, Raidho, Kenaz, Gebo, Wunjo. Hagal's ætt and Tyr's ætt, plus the quiz, one-rune draw and three-rune cast, arrive as free updates once their voice is checked against this first eight."
+  ],
+  inside:["Freyr's ætt: eight runes, in full, now","Old English, Norwegian and Icelandic poems, explained plainly","An everyday example for each rune","Honest about which runes have no reverse","A private journal that stays on your phone","Hagal's and Tyr's ætt, quiz and casts — free updates","No account, works offline, nothing sent away"]
+});
+artFor(APPS[APPS.length - 1]).motif = "wave";
