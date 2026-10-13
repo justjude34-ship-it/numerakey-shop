@@ -49,7 +49,8 @@ const FILES = {
   "aurora-emdr": "private/aurora-emdr.html",
   "lumina-emdr": "private/lumina-emdr.html",
   "nua": "private/nua.html",
-  "quietshore": "private/quietshore.html"
+  "quietshore": "private/quietshore.html",
+  "soulsync": "private/soulsync.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
