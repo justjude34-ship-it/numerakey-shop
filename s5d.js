@@ -11,6 +11,7 @@ const FILES = {
   "steady-day": "apps/steady-day/index.html",
   "comet": "private/comet.html",
   "sanctuary": "private/sanctuary.html",
+  "cassandra": "private/cassandra.html",
   "elegy": "private/elegy.html",
   "wind-and-water": "private/wind-and-water.html",
   "synergy": "private/synergy.html",

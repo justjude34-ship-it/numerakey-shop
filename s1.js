@@ -96,7 +96,7 @@ const AP1 = [
   inside:["Five rooms, no homework, stay as long as it's true","The next lamb \u2014 when the system looks again","A recogniser that names patterns, never people","A decoder for what just happened","A family map of who holds which job","Shame-return cards, one sentence at a time","Quick exit button, and 000, Lifeline, Blue Knot, 1800RESPECT"]
 },
 {
-  slug:"cassandra", name:"Cassandra", cat:"narc", price:39, status:"live",
+  slug:"cassandra", name:"Cassandra", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/cassandra.jpg",
   demo:"https://cassandra-one.netlify.app",
   desc:"Naming narcissistic family patterns, so the thing you noticed has a shape.",
