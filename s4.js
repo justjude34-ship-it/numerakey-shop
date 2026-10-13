@@ -124,6 +124,19 @@ const AP4 = [
   inside:["Whole name read as it will be written","Numbers rebuild live as you type","Lock the surname, try first names","Weighed against the Life Path","A name book, girls and boys","Shortlist and compare the final two"]
 },
 {
+  slug:"your-wishes", name:"Your Wishes", cat:"home", price:59, status:"live", ready:true,
+  cover:"covers/your-wishes.jpg",
+  demo:"https://your-final-wishes.netlify.app",
+  desc:"A gentle, guided way to put your wishes into words \u2014 for your family, your future and the people you love.",
+  tag:"Your wishes, in your words.",
+  body:[
+    "Your Wishes asks one quiet question at a time across eight areas: who you are and who you care about, what you own, who receives what, the care of people and animals, healthcare and end-of-life wishes, funeral and memorial wishes, personal messages, and the practical details your executor will need.",
+    "Answer by speaking or by typing. What you say lands in a box you can correct, so a misheard name or a wrong word is fixed before anything is saved. Skip what you are not ready for, step back, and come back to it. Your progress is kept on your device, and at the end you review it section by section and download a plain-text draft.",
+    "It is a preparation tool, not legal advice. A will still needs proper witnessing and review by a lawyer, and the draft is there to make that conversation easier. Voice input uses your browser\u2019s speech service and needs an internet connection and microphone permission; typing works anywhere."
+  ],
+  inside:["Eight areas, one question at a time","Speak or type, and correct before saving","Skip, go back, and pick up where you left off","Review each section at a glance","Download a plain-text draft to take to your lawyer","Saved on your device, no account"]
+},
+{
   slug:"synergy", name:"Synergy", cat:"divine", price:59, status:"live", ready:true, cover:"covers/synergy.jpg",
   demo:"https://pythagorian-numerakey.netlify.app",
   desc:"Two charts side by side \u2014 where you meet easily, where the friction is structural, and what neither of you carries.",
