@@ -98,6 +98,7 @@ const AP1 = [
 {
   slug:"cassandra", name:"Cassandra", cat:"narc", price:39, status:"live",
   cover:"covers/cassandra.jpg",
+  demo:"https://cassandra-one.netlify.app",
   desc:"Naming narcissistic family patterns, so the thing you noticed has a shape.",
   tag:"You were not imagining it.",
   body:[
