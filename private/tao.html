@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<!-- Tao — 81 chapters, one a day. Version 1.0. A NumeraKey companion. Buy once, yours to keep. -->
+<html lang="en" data-theme="ink" data-size="m">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tao — 81 chapters, one a day</title>
+<meta name="description" content="A quiet daily companion to the Tao Te Ching. One chapter a day, with a reflection and a small practice. Works offline. Nothing leaves this device.">
+<meta name="theme-color" content="#0c0b0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tao">
+<meta name="color-scheme" content="dark light">
+<style>
+
+:root{
+  --bg:#0c0b0a;--elev:#161412;--card:#1a1815;--ink:#f0eadc;--muted:#9a9284;--faint:#6a645a;
+  --gold:#d6b882;--gold2:#e8d3a4;--jade:#7eb8a8;--rose:#c9928a;
+  --line:rgba(214,184,130,.16);--shadow:0 24px 60px rgba(0,0,0,.38);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,"Times New Roman",ui-serif,serif;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --r:20px;--wrap:680px;--verse:1.38rem;--pad:20px;
+  --wash-a:rgba(214,184,130,.09);--wash-b:rgba(126,184,168,.07);
+  --type:1;
+}
+html[data-theme="parchment"]{
+  --bg:#f3ead8;--elev:#efe4cc;--card:#f7f1e4;--ink:#2a261e;--muted:#6b6458;--faint:#8a8274;
+  --gold:#8a6a32;--gold2:#6a4e22;--jade:#3d6f64;--rose:#9a5e56;
+  --line:rgba(80,60,20,.14);--shadow:0 18px 40px rgba(80,60,20,.10);
+  --wash-a:rgba(214,184,130,.22);--wash-b:rgba(61,111,100,.10);
+}
+html[data-size="s"]{--verse:1.18rem;--type:.94}
+html[data-size="l"]{--verse:1.56rem;--type:1.08}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);min-height:100%}
+html{font-size:calc(16px * var(--type))}
+body{
+  min-height:100dvh;
+  padding-bottom:calc(78px + env(safe-area-inset-bottom));
+  background:var(--bg);
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(920px 520px at 8% -12%,var(--wash-a),transparent 62%),
+    radial-gradient(820px 540px at 108% 6%,var(--wash-b),transparent 58%);
+}
+/* grain omitted — it showed through gradient titles and muddyed the verse */
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+a{color:var(--gold);text-decoration:none}
+.wrap{position:relative;z-index:2;width:min(var(--wrap),100% - 32px);margin:0 auto;padding-top:calc(16px + env(safe-area-inset-top))}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{font-family:var(--serif);letter-spacing:.36em;font-size:.72rem;text-transform:uppercase;color:var(--muted)}
+.brand b{font-weight:500;color:var(--ink);letter-spacing:.36em}
+.date{font-size:.72rem;color:var(--muted);letter-spacing:.04em;margin-top:3px;text-transform:none;letter-spacing:.02em}
+.streak{font-size:.75rem;color:var(--gold);border:1px solid var(--line);padding:6px 12px;border-radius:99px;letter-spacing:.04em;white-space:nowrap}
+h1,h2,h3{font-family:var(--serif);font-weight:500;margin:0}
+.grad{color:#ead9a8;background:linear-gradient(100deg,#f7e9bc 0%,#e0c07a 48%,#8fc9b8 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+html[data-theme="parchment"] .grad{color:#6a4e22;background:linear-gradient(100deg,#8a6a32 0%,#6a4e22 50%,#3d6f64 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow)}
+.hero svg,.tile svg{display:block;width:100%;height:auto}
+.hero svg{aspect-ratio:3/2}
+@media(min-width:700px){.hero svg{aspect-ratio:16/9}}
+.hero .num{position:absolute;left:16px;top:14px;font-family:var(--serif);font-size:.72rem;letter-spacing:.28em;color:rgba(240,234,220,.82);text-transform:uppercase}
+html[data-theme="parchment"] .hero .num{color:rgba(42,38,30,.72)}
+.hero .fav{position:absolute;right:6px;top:4px;width:44px;height:44px;display:grid;place-items:center;color:var(--ink);opacity:.88}
+.hero .fav.on{color:var(--rose);opacity:1}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(transparent,rgba(0,0,0,.45));pointer-events:none}
+html[data-theme="parchment"] .hero::after{background:linear-gradient(transparent,rgba(42,38,30,.18))}
+.title{font-size:clamp(2.05rem,7vw,2.95rem);line-height:1.1;margin:26px 0 6px;letter-spacing:-.015em}
+.sub{color:var(--muted);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase}
+.rule{height:1px;width:28px;background:var(--gold);margin:22px 0 18px;border:0;opacity:.85}
+.verse{font-family:var(--serif);font-size:var(--verse);line-height:1.8;letter-spacing:.01em;margin:0 0 8px;white-space:pre-line;color:#f4eee3;max-width:34em}
+html[data-theme="parchment"] .verse{color:var(--ink)}
+.box{border:1px solid var(--line);background:var(--card);border-radius:var(--r);padding:20px 20px 18px;margin:16px 0}
+.box h3{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--jade);font-family:var(--sans);margin-bottom:10px;font-weight:600}
+.box p{margin:0;line-height:1.65;color:var(--ink);opacity:.9;font-size:.98rem}
+.practice{border-left:2px solid var(--jade);padding-left:18px}
+.walkrow{display:flex;align-items:flex-start;gap:12px;margin-top:14px}
+.chk{flex:none;appearance:none;-webkit-appearance:none;width:22px;height:22px;margin-top:1px;border:1.5px solid var(--jade);border-radius:6px;background:transparent;display:grid;place-items:center}
+.chk:checked{background:var(--jade);border-color:var(--jade)}
+.chk:checked::after{content:"";width:5px;height:9px;border:solid #14110c;border-width:0 2px 2px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.walkrow label{font-size:.92rem;line-height:1.45;color:var(--muted);cursor:pointer}
+textarea{width:100%;min-height:92px;border-radius:14px;border:1px solid var(--line);background:var(--elev);color:var(--ink);font:inherit;line-height:1.55;padding:12px 14px;resize:vertical;font-size:16px}
+textarea:focus,input[type=search]:focus{outline:2px solid color-mix(in srgb,var(--jade) 55%,transparent);outline-offset:1px}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 6px;align-items:center}
+.btn{padding:12px 18px;border-radius:99px;border:1px solid var(--line);background:var(--elev);font-size:.9rem;min-height:44px}
+.btn.main{background:linear-gradient(100deg,var(--gold),var(--jade));color:#14110c;border:0;font-weight:600}
+html[data-theme="parchment"] .btn.main{color:#14110c}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.5}
+.btn.ghost{background:transparent}
+.btn.text{border:0;background:none;color:var(--muted);padding:8px 4px}
+.saved{font-size:.82rem;color:var(--jade);letter-spacing:.04em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:12px;margin-top:16px}
+.tile{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:var(--card);text-align:left;padding:0;content-visibility:auto;contain-intrinsic-size:180px}
+.tile svg{aspect-ratio:1/1}
+.tile .lab{display:block;padding:10px 10px 12px;font-family:var(--serif);font-size:.78rem;line-height:1.3;color:var(--ink);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:3.1em}
+.tile .n{position:absolute;top:7px;left:9px;font-family:var(--serif);font-size:.7rem;color:rgba(255,255,255,.8);letter-spacing:.08em}
+html[data-theme="parchment"] .tile .n{color:rgba(42,38,30,.75)}
+.tile.done::after{content:"";position:absolute;top:9px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--jade);box-shadow:0 0 0 3px rgba(0,0,0,.25)}
+.tile.heart::before{content:"";position:absolute;top:9px;right:20px;width:7px;height:7px;border-radius:50%;background:var(--rose)}
+.tile.heart.done::before{right:20px}
+.tile.heart:not(.done)::before{right:9px}
+.tile.today{box-shadow:0 0 0 1px var(--gold),var(--shadow)}
+.tile.today .n{color:var(--gold)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;margin-top:12px;-webkit-overflow-scrolling:touch}
+.chip{flex:none;padding:8px 14px;border-radius:99px;border:1px solid var(--line);font-size:.8rem;color:var(--muted);min-height:36px}
+.chip.on{color:#14110c;background:var(--gold);border-color:var(--gold);font-weight:600}
+html[data-theme="parchment"] .chip.on{color:#14110c}
+input[type=search]{width:100%;padding:13px 16px;border-radius:99px;border:1px solid var(--line);background:var(--elev);color:var(--ink);font:inherit;font-size:16px}
+.entry{border-left:2px solid var(--gold);padding:2px 0 2px 14px;margin:16px 0}
+.entry small{color:var(--muted);letter-spacing:.06em;font-size:.75rem}
+.entry p{margin:6px 0 0;line-height:1.65;white-space:pre-wrap;font-family:var(--serif);font-size:1.02rem}
+nav.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;
+  padding:6px 6px calc(8px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-top:1px solid var(--line);z-index:5}
+nav.tabs button{flex:1;padding:7px 2px 5px;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);min-height:52px}
+nav.tabs button.on{color:var(--gold)}
+nav.tabs button svg{display:block;margin:0 auto 3px;width:22px;height:22px}
+.center{text-align:center}
+.small{font-size:.84rem;color:var(--muted);line-height:1.65}
+.fade{animation:f .32s ease both}
+@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fade{animation:none} .btn:active{transform:none}}
+.stat{display:flex;gap:10px;margin:8px 0 18px}
+.stat div{flex:1;text-align:center;padding:16px 6px;border:1px solid var(--line);border-radius:16px;background:var(--card)}
+.stat b{display:block;font-family:var(--serif);font-size:1.7rem;color:var(--gold);font-weight:500}
+.stat span{font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.path81{display:grid;grid-template-columns:repeat(9,1fr);gap:9px;padding:8px 2px 4px}
+.path81 button{aspect-ratio:1;border-radius:50%;border:1px solid color-mix(in srgb,var(--faint) 70%,transparent);background:transparent;min-width:0;padding:0}
+.path81 button.walked{background:var(--jade);border-color:var(--jade)}
+.path81 button.kept:not(.walked):not(.today){background:color-mix(in srgb,var(--rose) 55%,transparent);border-color:var(--rose)}
+.path81 button.today{background:var(--gold);border-color:var(--gold)}
+.path81 button.today{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--gold);transform:scale(1.12)}
+.path81 button:focus-visible,.btn:focus-visible,.chip:focus-visible,.fav:focus-visible,nav.tabs button:focus-visible{
+  outline:2px solid var(--gold);outline-offset:2px}
+.veil{min-height:calc(100dvh - 40px);display:flex;flex-direction:column;justify-content:center;padding:24px 8px 80px}
+.veil h1{font-size:clamp(2.4rem,10vw,3.4rem);letter-spacing:.28em;text-transform:uppercase;margin-bottom:18px}
+.veil p{color:var(--muted);font-size:1.05rem;line-height:1.7;margin:0 0 8px;max-width:22em}
+.toast{position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  background:var(--card);border:1px solid var(--line);color:var(--ink);padding:10px 16px;border-radius:99px;
+  font-size:.82rem;z-index:9;opacity:0;pointer-events:none;transition:opacity .25s}
+.toast.on{opacity:1}
+.a2hs{margin:16px 0;padding:14px 16px;border:1px dashed var(--line);border-radius:16px;color:var(--muted);font-size:.84rem;line-height:1.5}
+.ctrl{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 4px}
+body.welcome{padding-bottom:0}
+body.welcome nav.tabs{display:none}
+.hidden{display:none !important}
+.speak{width:44px;height:44px;display:grid;place-items:center;color:var(--muted)}
+.speak.on{color:var(--gold)}
+.more-notes{color:var(--muted);font-size:.82rem;margin:8px 0}
+.actions-sub{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+
+
+</style>
+</head>
+<body>
+<main class="wrap" id="app"></main>
+<nav class="tabs" aria-label="Sections">
+  <button data-v="today" class="on" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16"/><circle cx="12" cy="8.2" r="1.2" fill="currentColor" stroke="none"/><circle cx="12" cy="15.8" r="1.2" fill="none"/></svg>
+    Today
+  </button>
+  <button data-v="browse" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="4.5" y="4.5" width="6.2" height="6.2" rx="1.2"/><rect x="13.3" y="4.5" width="6.2" height="6.2" rx="1.2"/><rect x="4.5" y="13.3" width="6.2" height="6.2" rx="1.2"/><rect x="13.3" y="13.3" width="6.2" height="6.2" rx="1.2"/></svg>
+    Browse
+  </button>
+  <button data-v="journal" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M6 20h12"/><path d="M8 16.5l9.2-9.2a1.6 1.6 0 0 0-2.3-2.3L5.7 14.2 5 19l4.8-.7z"/></svg>
+    Journal
+  </button>
+  <button data-v="path" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><circle cx="6" cy="17" r="1.4"/><circle cx="10.5" cy="12.5" r="1.4"/><circle cx="15" cy="9" r="1.4"/><circle cx="18.5" cy="6" r="1.4"/><path d="M7.2 16.1l2.1-2.3m2.2-2.3 2.6-2.1m2.3-1.7 1.7-1.4"/></svg>
+    Path
+  </button>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+
+window.TAO=window.TAO||[];
+TAO.push(
+["The Name Beyond Names","moon",
+"A way that can be put into words\nis not the whole way.\nA name that can be spoken\nis not the whole name.\n\nBefore anything was called anything, there was only this.\nOnce there were names, there were things,\nand the things were born and raised like children.\n\nWhen you stop wanting, you glimpse the mystery.\nWhen you want, you only see the surface.\nBoth come from one place.\nCall that place deep, then deeper still:\nthe door to every wonder.",
+"Every time you try to pin life down in words, something slips through. What have you been so sure you understood that you stopped looking at it?",
+"Pick one ordinary thing today, a cup, a tree, a face, and look at it for a full minute without naming it or judging it."],
+
+["Opposites Arise Together","circle",
+"Once we notice beauty, we also notice ugliness.\nOnce we call something good, its opposite appears.\nHaving and lacking, hard and easy, long and short, high and low:\neach one only exists beside the other.\n\nSo the wise person acts without forcing\nand teaches without lecturing.\nThings rise and fall and she does not interfere.\nShe makes and does not own,\nworks and does not cling to the result.\nBecause she never holds on, nothing is taken from her.",
+"A lot of suffering comes from insisting one side of a pair should win forever. Is there something you are calling bad that is quietly holding up something you value?",
+"Today, when you catch yourself labelling something good or bad, add the words “for now” and see how the feeling shifts."],
+
+["Quieting the Wanting","mountain",
+"If nobody is set up as the best, people stop fighting for the crown.\nIf rare things are not treasured, people stop stealing.\nIf shiny things are not put on display, hearts stay calm.\n\nSo the wise leader eases the mind and feeds the body,\nsoftens ambition and strengthens the bones.\nShe keeps people free of restless scheming and craving,\nand keeps the clever from meddling.\n\nWhen nothing is forced, nothing goes out of order.",
+"Comparison is a machine that manufactures wanting. What would your day feel like with one fewer thing to measure yourself against?",
+"Spend a full day without checking anyone else’s achievements, feeds or rankings. Notice what comes up in the gap."],
+
+["The Bottomless Bowl","cup",
+"The Way is like an empty bowl\nthat no amount of pouring can fill.\nDeep, deep, it seems the root of all things.\n\nIt dulls the sharp edge,\nuntangles the knot,\ndims the glare,\nand settles like dust in the light.\n\nClear as still water, it simply stays.\nI cannot tell whose child it is.\nIt seems to have been here before any gods.",
+"Being empty is not the same as being lacking. Where in your life could you leave room instead of filling every gap?",
+"Leave one thing unscheduled today, an hour, an afternoon, a corner of a room, and let it stay open."],
+
+["The Space Between","wind",
+"Heaven and earth are not sentimental.\nThey treat every living thing like a straw offering, used and let go.\nThe wise person is the same,\nkind without playing favourites.\n\nThe space between earth and sky is like a bellows:\nempty, and yet it never runs out.\nThe more it moves, the more comes forth.\n\nLots of talk wears a person out.\nBetter to keep to the centre.",
+"Being impartial is not the same as being cold. It may be the widest kind of care. Who could you treat more evenly than you do now?",
+"Before you speak in an important conversation today, take one full breath and let some of your words go unsaid."],
+
+["The Valley Spirit","valley",
+"The valley spirit does not die.\nCall her the mysterious mother.\nThe gate of the mother is the root of heaven and earth.\n\nIt goes on and on, so faint it may not be there,\nand yet you can draw on it and never run dry.",
+"The most durable things are often soft, low and quiet. What in your life keeps giving without ever being noticed?",
+"Find a low place today, a garden bed, a stairwell, a hollow in the ground, and sit there for a few minutes."],
+
+["Last, and So Lasting","tree",
+"Heaven lasts. Earth lasts.\nThey last because they do not live for themselves.\n\nSo the wise person steps back and ends up in front,\nsets herself aside and is kept safe.\nIsn’t it because she asks nothing for herself\nthat she comes to be fulfilled?",
+"Trying hard to secure yourself can be exactly what makes you fragile. When did stepping back last turn out better than pushing forward?",
+"Let someone else go first, choose first, or be right today, and see what you do with the space you gained."],
+
+["Like Water","water",
+"The highest goodness is like water.\nWater helps everything grow and asks for nothing.\nIt settles in the low places that others avoid,\nand that is why it is close to the Way.\n\nLive close to the ground.\nKeep your heart deep.\nBe generous when you give,\ntrue when you speak,\nsteady when you lead,\ncapable in your work,\nand alert to the moment.\n\nBecause you do not fight, no one can blame you.",
+"Water gets around every obstacle without being at war with any of them. Where are you pushing against something you could flow around?",
+"When something blocks you today, ask “how would water do this?” and take the softer route."],
+
+["Stop Before It Spills","cup",
+"Better to stop than to keep filling until it spills.\nSharpen a blade too far and it will not hold its edge.\n\nA hall full of gold and jade cannot be defended.\nPride in wealth and rank plants its own ruin.\n\nDo your work well, then step back.\nThat is how the sky moves.",
+"Enough is a real amount, and it is easy to sail past it. What is one place you could say “that is enough” and mean it?",
+"Finish one task today at good rather than perfect, and walk away from it."],
+
+["Can You Hold Without Gripping?","circle",
+"Can you keep body and spirit together and never let them split?\nCan you breathe softly, like a newborn?\nCan you clear the dark mirror of the mind until it shows no flaw?\nCan you love people and lead them without cleverness?\nCan you open and close the great gates without being the one in charge?\nCan you see everything clearly and still not need to know?\n\nBring things to life and nurture them.\nMake, and do not own.\nHelp, and do not lead by force.\nThat is quiet power.",
+"Most of these questions are about holding lightly. Which one makes you tense up when you read it?",
+"Take five slow breaths, out longer than in, before you open your phone for the first time today."],
+
+["What the Empty Part Does","wheel",
+"Thirty spokes meet in a wheel’s hub,\nbut it is the hole in the middle that lets the cart move.\n\nClay is shaped into a jar,\nbut it is the emptiness inside that lets it hold water.\n\nDoors and windows are cut to make a room,\nbut it is the space inside that makes it a place to live.\n\nSo what exists gives us the thing,\nand what is empty gives us its use.",
+"We keep counting what we have and forget what makes it useful. Where would a little more space make your life work better?",
+"Clear one shelf, drawer or surface completely, and leave it empty for a week."],
+
+["Too Much to See","bamboo",
+"Five colours can blind the eye.\nFive sounds can deafen the ear.\nFive flavours can dull the tongue.\nChasing and racing can make the mind wild.\nHoarding rare things can make you go astray.\n\nSo the wise person looks after the belly, not the eye.\nShe lets the outer pass, and keeps what is inside.",
+"More input is not always more life. What is one stream of noise you could turn down without missing it?",
+"Go for a walk today with no music, podcast or screen, and let the ordinary sounds be enough."],
+
+["Praise and Blame","boat",
+"Praise and shame both make us jump.\nHonour and worry are the same kind of trouble,\nlike having a body.\n\nWhy do praise and shame shake us?\nBecause being praised puts us below the one who praises,\nand we tremble when we get it and when we lose it.\n\nWhy is honour so much like having a body?\nBecause we have worry only because we have a self.\nWithout a self, what worry would there be?\n\nSo trust the world to the one\nwho cares for it as she cares for herself.",
+"Notice how much of your mood is set by other people’s opinions. What would you do if no one were watching or grading?",
+"The next time you get praise or criticism today, pause and let it pass through before you answer."],
+
+["The Shape of No Shape","cloud",
+"Look for it and you cannot see it: call it faint.\nListen and you cannot hear it: call it hushed.\nReach for it and you cannot hold it: call it slight.\nThese three cannot be pulled apart. They are one.\n\nAbove, it is not bright. Below, it is not dark.\nIt goes on and on, and cannot be named.\nIt returns to nothing.\nIt is the shape of no shape, the form of no form.\n\nMeet it and you see no front.\nFollow it and you see no back.\n\nHold on to the old Way to deal with the present.\nKnow the beginning, and you have the thread.",
+"Some of the most important things in life have no edges you can grip. Where have you been demanding a clear outline from something that has none?",
+"Sit for three minutes with your eyes closed and notice sounds without trying to identify them."],
+
+["Waiting for the Mud","water",
+"The wise ones of old were subtle and deep.\nThey are hard to describe, so I can only say how they seemed:\n\nCareful, as if crossing a winter stream.\nWatchful, as if aware of danger on all sides.\nCourteous, like a guest.\nYielding, like ice beginning to melt.\nPlain, like uncut wood.\nOpen, like a valley.\nMurky, like muddy water.\n\nWho can wait for the mud to settle and the water to clear?\nWho can stay still until the right move appears?\n\nThose who follow the Way do not need to be full.\nBecause they are not full, they can always begin again.",
+"There are times when doing nothing is the skilled thing. What decision could get better if you gave it a few more days to settle?",
+"Fill a glass with muddy water or stir dust into it. Watch it clear, then ask yourself what in your life needs the same patience."],
+
+["Returning to Stillness","seed",
+"Reach the highest emptiness.\nHold steady in stillness.\n\nAll the things of the world rise and grow,\nand I watch them go back.\nThey flourish, and each returns to its root.\n\nReturning to the root is called stillness.\nStillness is called going back to what is.\nGoing back to what is, is called the constant.\nKnowing the constant is clarity.\nNot knowing it leads to blunders and grief.\n\nKnow the constant and you become open.\nOpen, you become fair.\nFair, you become whole.\nWhole, you belong to the Way.\nThe Way lasts.\nEven when the body is gone, there is no danger.",
+"Every rising has a returning. What would it be like to trust your own quiet periods as part of the cycle, not a failure of it?",
+"Sit somewhere still for five minutes and let your mind do whatever it does. Do not fix it."],
+
+["The Unnoticed Leader","path",
+"The best leaders are barely known to the people.\nNext come the ones people love and praise.\nNext, the ones people fear.\nWorst, the ones people despise.\n\nWhen trust is thin, distrust follows.\n\nThe wise leader is careful with words.\nWhen the work is done and the goal is reached,\nthe people say: “We did this ourselves.”",
+"Leadership at its best leaves other people feeling capable. Where could you step back so that someone else can say they did it themselves?",
+"Today, help someone with something and leave without taking any credit."],
+
+["When Goodness Needs Announcing","door",
+"When the great Way is forgotten,\nwe start talking about kindness and duty.\nWhen cleverness appears, great pretence follows.\nWhen a family falls out of harmony,\nwe begin to praise dutiful children and loving parents.\nWhen a country falls into chaos,\nwe suddenly hear about loyal servants.",
+"Virtue that has to be announced is often a sign something natural has been lost. Where in your life are you performing something that used to be simply true?",
+"Do one kind thing today that no one will ever know about, and do not tell anyone."],
+
+["Setting Down the Ornaments","stone",
+"Drop the fancy wisdom and the show of holiness,\nand people will be a hundred times better off.\nDrop the talk of duty and rules,\nand people will remember how to love.\nDrop clever schemes and the chase for profit,\nand thieves will have nothing to steal.\n\nThese three are not enough on their own.\nSo have something to hold on to:\nlook at the plain, embrace the simple,\nput self aside, and want less.",
+"There is a kind of relief in being uncomplicated. What are you carrying around only because it makes you look wise, capable or good?",
+"Remove one “should” from your day today and see whether the sky falls in."],
+
+["The Odd One Out","boat",
+"Give up study and you will have no worries.\nHow much difference is there between yes and no?\nBetween good and bad?\nMust I fear what others fear? How silly.\n\nEveryone else is merry, as if at a feast,\nas if up on a terrace in spring.\nI alone am drifting, blank as an infant who has not yet smiled.\nEveryone has more than enough. I seem to have lost it all.\nEveryone is bright. I am dim.\nEveryone is sharp. I am dull.\nI am tossed about like the sea, blown about with no place to stop.\n\nEveryone has a purpose. I seem stubborn and plain.\nBut I am different from them in this:\nI prize being fed at the breast of the Mother.",
+"Not fitting in can be a lonely feeling, and also a kind of freedom. What are you trying to belong to that you have quietly outgrown?",
+"Do one small thing today just because it suits you, whether or not anyone else would choose it."]
+);
+
+TAO.push(
+["Something Real in the Dim","cloud",
+"The shape of great goodness follows the Way and nothing else.\nAnd the Way, as a thing, is faint and hard to hold.\nYet inside the haze there are images.\nInside the haze there are things.\nIn the deep and the dark there is something like a seed, and it is real, and it can be trusted.\n\nFrom long ago until now its name has never gone away.\nThrough it we can see where everything begins.\nHow do I know this is how things begin?\nBy this.",
+"Some of what is most true can only be sensed at the edges. What have you known without being able to prove it?",
+"Trust one quiet hunch today, a small one, and act on it. Notice what you learn."],
+
+["Bend and Stay Whole","tree",
+"Bend, and you stay whole.\nCrook yourself, and you will be straight.\nBe hollow, and you will be filled.\nBe worn out, and you will be renewed.\nHave little, and you will gain.\nHave too much, and you will be lost.\n\nSo the wise person holds to the one thing\nand becomes a pattern for others.\nShe does not show off, so she shines.\nShe does not defend herself, so she is seen clearly.\nShe does not boast, so her work is honoured.\nShe does not brag, so she lasts.\nShe does not compete, so no one competes with her.\n\nIs “bend, and you stay whole” only words?\nTruly, this is how to come back whole.",
+"We tend to admire the rigid, yet the rigid snap. Where could you bend a little today and be stronger for it?",
+"When you meet a small disagreement today, yield on the point that does not really matter."],
+
+["Even Storms Are Short","wind",
+"Speak little. That is natural.\nA whirlwind does not blow all morning.\nA downpour does not last all day.\nWho makes them? Heaven and earth.\nIf even heaven and earth cannot make them last,\nhow could a person?\n\nSo when you work with the Way, you become one with the Way.\nWhen you work with goodness, you become one with goodness.\nWhen you work with loss, you become one with loss.\n\nThose who join the Way are welcomed by the Way.\nThose who join goodness are welcomed by goodness.\nThose who join loss are welcomed by loss.\nWhere trust is thin, distrust grows.",
+"Intense feelings do not last. Is there a storm in you right now that you could trust to pass?",
+"When a strong feeling arrives today, say to yourself: “This will move through.” Wait for it to."],
+
+["Standing on Tiptoe","path",
+"If you stand on tiptoe, you cannot stand for long.\nIf you stride too wide, you cannot walk far.\nIf you show yourself off, you are not truly bright.\nIf you justify yourself, you are not truly clear.\nIf you boast, you get no credit.\nIf you brag, you do not last.\n\nTo the Way, these are like leftover food and a swollen sore:\nall of it unpleasant.\nSo one who has the Way does not linger in them.",
+"Reaching for the impressive costs more than we admit. Where are you on tiptoe right now?",
+"Come down off your toes in one area: say “I do not know” or “I need help” once today."],
+
+["Before Heaven and Earth","moon",
+"There was something whole and unformed\nthat was born before heaven and earth.\nSilent and empty, it stood on its own and did not change.\nIt moved in circles and did not tire.\nIt could be the mother of the world.\n\nI do not know its name.\nI call it the Way.\nIf I must call it something, I call it Great.\nGreat means it goes on.\nGoing on means it reaches far.\nReaching far means it comes back.\n\nSo the Way is great, heaven is great, earth is great, and a person can be great.\nPeople follow the earth.\nThe earth follows heaven.\nHeaven follows the Way.\nThe Way follows its own nature.",
+"There is an order underneath everything, and you are part of it. When did you last feel that you were following something bigger than a plan?",
+"Go outside at dusk or dawn and stay for ten minutes. Let the sky do its slow changes without you."],
+
+["Heavy Roots, Light Steps","stone",
+"The heavy is the root of the light.\nStillness is the master of restlessness.\n\nSo the wise traveller goes all day\nand never leaves his baggage behind.\nEven in the midst of splendid sights,\nhe stays calm and at ease.\n\nHow can the ruler of ten thousand chariots\nbe careless with his own person?\nBeing careless cuts you off from your root.\nBeing restless robs you of command.",
+"Lightness comes from being well rooted, not from having no weight. What is your anchor when the world gets fast?",
+"Before something rushed today, put both feet on the floor and feel your weight for three breaths."],
+
+["Leaving No Tracks","path",
+"A good traveller leaves no trace.\nA good speaker makes no slips.\nA good counter needs no counting sticks.\nA good door needs no bolt and cannot be opened.\nA good knot needs no rope and cannot be undone.\n\nSo the wise person is good at helping people,\nand no one is cast off.\nShe is good at using things,\nand nothing is wasted.\nThis is called following the light.\n\nThe good person is the teacher of the not-yet-good.\nThe not-yet-good is the good person’s material.\nIf you do not respect your teacher or care for your material,\nyou are lost, however clever.\nThis is the secret.",
+"Excellence often looks like ease. What is something you do so well that it looks like you are doing nothing?",
+"Do one thing today with as little fuss as you can. No announcement, no residue."],
+
+["Know the Strong, Keep the Soft","valley",
+"Know the strong, but keep to the gentle,\nand be the valley of the world.\nBeing the valley, you will not lose your true power,\nand you can return to being a child.\n\nKnow the bright, but keep to the dark,\nand be the pattern of the world.\nBeing the pattern, you will not go wrong,\nand you can return to the boundless.\n\nKnow honour, but keep to the humble,\nand be the valley of the world.\nBeing the valley, you will be enough,\nand you can return to the uncarved block.\n\nThe block is carved into tools.\nThe wise person uses them, but leads by staying whole.",
+"You can know how to win and still choose not to. What strength do you hold in reserve?",
+"Notice one moment today when you could win an argument, and quietly let it go."],
+
+["The World Cannot Be Gripped","wheel",
+"Those who want to take the world and do what they like with it\nwill not, I think, succeed.\nThe world is a sacred vessel.\nYou cannot act on it.\nThose who act on it ruin it.\nThose who grasp it lose it.\n\nSome things lead and some follow.\nSome are warm and some are cold.\nSome are strong and some are weak.\nSome rise and some fall.\n\nSo the wise person avoids the extreme,\nthe excessive, the too much.",
+"Control feels like safety and often costs the very thing we are protecting. What in your life could use a looser hold?",
+"Choose one thing you have been gripping and loosen your hand, in body first: unclench your jaw and shoulders."],
+
+["The Boomerang of Force","circle",
+"One who helps a leader by the Way\ndoes not use weapons to dominate the world.\nWhat you do returns to you.\n\nWhere armies have camped, thorns grow.\nAfter a great war come years of hunger.\n\nSo the good commander achieves the result and stops.\nHe does not take advantage of his strength.\nHe wins without boasting, without pride, without conceit.\nHe wins because he could not do otherwise.\nHe wins and does not dominate.\n\nWhat grows strong soon grows old.\nThat is not the Way, and what is not the Way soon comes to an end.",
+"Force works quickly and pays slowly. Where have you won something and then paid for it later?",
+"Choose the gentler of two approaches to one problem today, even if it is slower."],
+
+["Victory as a Funeral","cloud",
+"Weapons are tools of misfortune.\nEveryone dislikes them, so those with the Way do not stay near them.\n\nThe wise person is at ease on the left in peace\nand on the right in war.\nWeapons are not tools for the wise.\nHe uses them only when there is no choice,\nand then with calm, without enjoying it.\n\nTo enjoy winning is to enjoy killing.\nSomeone who enjoys killing cannot be trusted with the world.\n\nWhen many have died, weep for them with sorrow.\nWhen you win a war, hold it like a funeral.",
+"Even a justified win has a cost worth feeling. Is there a victory in your life you have been celebrating that also deserves some grief?",
+"If you argue with someone today, afterwards ask yourself what the win took from them, and from you."],
+
+["Uncarved","stone",
+"The Way has no name.\nIt is like an uncarved block: small, simple, and beyond anyone’s command.\nIf leaders could keep to it,\nall things would come to them freely.\nHeaven and earth would be at peace, and sweet dew would fall.\nThe people would not need to be told what to do,\nbut would settle themselves.\n\nOnce the block is cut, there are names.\nOnce there are names, know when to stop.\nKnowing when to stop keeps you out of danger.\n\nThe Way in the world is like a stream running down to the river and the sea.",
+"Labels are useful and they also limit us. Which name have you been carrying so long you have forgotten you could put it down?",
+"Spend an hour doing something without deciding what it “is” or what it is “for”. Walk. Doodle. Wander."],
+
+["Knowing Yourself","moon",
+"To know others is intelligence.\nTo know yourself is wisdom.\nTo overcome others takes force.\nTo overcome yourself takes strength.\n\nThose who know they have enough are rich.\nThose who keep going with resolve have purpose.\nThose who do not lose their place last long.\nThose who die and are not forgotten are the ones who really live.",
+"The hardest terrain to map is inward. What have you learned about yourself lately that surprised you?",
+"Write down three things you truly need and three things you only want. Compare the lists."],
+
+["The Great Does Not Try","water",
+"The great Way flows everywhere, left and right.\nAll things depend on it for life, and it does not turn away.\nIt does its work and does not claim it.\nIt clothes and feeds all things and does not rule them.\nIt has no wants, so you could call it small.\nAll things return to it, and it does not lord over them,\nso you could call it great.\n\nBecause it never makes itself great,\nit is able to be great.",
+"Real generosity does not keep a ledger. Where are you giving and quietly waiting for credit?",
+"Do something helpful today and let it go without any acknowledgement."],
+
+["Bland and Endless","door",
+"Hold to the great image, and the world will come to you.\nThey come, and they are not harmed.\nThey find peace and ease.\n\nMusic and food make travellers stop.\nBut the Way, when spoken, is plain and has no flavour.\nLook at it, and there is not enough to see.\nListen for it, and there is not enough to hear.\nUse it, and it cannot be used up.",
+"The things that sustain us are often unspectacular. What plain, steady thing in your life deserves more thanks?",
+"Eat one meal today very slowly, with nothing else going on, and taste what is actually there."],
+
+["Soft Overcomes Hard","water",
+"To shrink something, first let it expand.\nTo weaken something, first let it grow strong.\nTo remove something, first let it be raised.\nTo take something, first give it.\nThis is called subtle insight.\n\nThe soft and weak overcome the hard and strong.\nFish should not be taken out of the deep water.\nThe sharpest tools of a country should not be shown off.",
+"Timing matters more than force. What are you trying to push that might resolve itself if you let it run its course?",
+"Where you would normally push today, wait a beat and see whether the thing moves on its own."],
+
+["Nothing Undone","bamboo",
+"The Way does nothing, and nothing is left undone.\nIf leaders could hold to it,\nall things would change by themselves.\n\nWhen they change and want stirs up again,\nI would settle them with the plainness of the nameless.\nThe nameless plainness brings freedom from wanting.\nWithout wanting, there is calm.\nAnd the world settles of itself.",
+"Sometimes the most effective thing is to stop meddling. What are you still tinkering with that is already fine?",
+"Leave one finished thing alone today, no edits, no extra polish."],
+
+["The Husk and the Fruit","seed",
+"The highest goodness does not try to be good, and so it is good.\nLesser goodness never stops trying, and so it falls short.\nThe highest goodness does nothing and has no aim.\nLesser goodness does things, and has an aim.\n\nWhen the Way is lost, there is goodness.\nWhen goodness is lost, there is kindness.\nWhen kindness is lost, there is duty.\nWhen duty is lost, there is ritual.\nRitual is the thin husk of loyalty and trust,\nthe start of confusion.\n\nSo the wise person keeps to the fruit, not the husk,\nto what is real, not what is decoration.",
+"It is easy to keep the rules and lose the reason for them. What practice in your life has become a husk?",
+"Pick one habit or ritual and ask what it was originally for. Do it today with that purpose in mind, or drop it."],
+
+["Oneness","circle",
+"Of old, these attained oneness:\nSky attained it and became clear.\nEarth attained it and became steady.\nSpirit attained it and became alive.\nValleys attained it and became full.\nAll things attained it and began to grow.\nLeaders attained it and gave the world its order.\n\nWithout oneness, the sky would crack.\nThe earth would split.\nSpirits would go dull.\nValleys would dry up.\nAll things would die out.\n\nThe noble is rooted in the humble.\nThe high stands on the low.\nSo rulers call themselves lonely, orphaned, unworthy.\nDoes this not show that the humble is the root?\n\nNot the tinkle of jade. Be as plain as stone.",
+"Everything stands on something lower and quieter. Who or what holds you up that you rarely thank?",
+"Thank one person today whose work holds something up without being noticed."],
+
+["Returning and Yielding","seed",
+"Returning is how the Way moves.\nYielding is how the Way works.\n\nAll things under heaven are born of being.\nBeing is born of nothing.",
+"Returning and yielding are not defeat, they are the rhythm of things. Where in your life is it time to come back to something?",
+"Return to something you left unfinished or neglected, for just ten minutes today."]
+);
+
+TAO.push(
+["The Laughter Test","mountain",
+"When the best kind of student hears of the Way, she sets out to live it.\nWhen the middling student hears of it, sometimes it sticks and sometimes it slips.\nWhen the lowest student hears of it, she laughs out loud.\nIf she did not laugh, it would not be the Way.\n\nSo the old saying goes:\nThe bright path looks dark.\nThe path forward looks like a step back.\nThe smooth path looks rough.\nThe highest goodness looks like an empty valley.\nGreat purity looks stained.\nAbundant goodness looks like not enough.\nSteady goodness looks lazy.\nThe great square has no corners.\nThe great vessel takes the longest to finish.\nThe great sound is barely heard.\nThe great image has no shape.\n\nThe Way is hidden and has no name.\nYet it alone knows how to give, and how to finish.",
+"Real change often looks foolish at first. What are you working on that other people, or your own inner critic, laugh at?",
+"Do something small today that you would normally dismiss as pointless, and do it well."],
+
+["One, Two, Three","circle",
+"The Way gave birth to one.\nOne gave birth to two.\nTwo gave birth to three.\nThree gave birth to all the things of the world.\n\nAll things carry the shade on their back and hold the sun in their arms,\nand the breath between them keeps them in balance.\n\nWhat people dislike most is being lonely, orphaned, unworthy.\nYet those are the names leaders give themselves.\nThings grow by losing and lose by growing.\n\nWhat others teach, I also teach:\nthe violent do not find a gentle end.\nI take this as my starting point.",
+"Everything comes from a simple beginning that divides and blooms. What is the simplest version of what you are trying to do?",
+"Reduce something complicated to one sentence today. Say it aloud."],
+
+["The Softest Thing","water",
+"The softest thing in the world\ncan ride over the hardest.\nWhat has no substance can enter where there is no gap.\n\nThat is how I know the value of doing without doing.\nTeaching without words,\nbenefit without effort:\nfew in the world can manage it.",
+"Water wears down stone, and kindness wears down resistance. Where could patience do what pressure has not?",
+"Meet one hard mood, yours or someone else’s, with something soft: a slow reply, a warm drink, a pause."],
+
+["What Is Dearer?","cup",
+"Which is closer to you, your name or your body?\nWhich is worth more, your body or your goods?\nWhich hurts more, gaining or losing?\n\nToo much love of one thing is expensive.\nA big hoard means a big loss.\n\nKnow when you have enough and you will not be shamed.\nKnow when to stop and you will not be in danger.\nThat is how you last.",
+"Most of us chase what is loud and neglect what is close. What have you been spending your body or your peace on?",
+"Give one hour to the thing you keep saying matters most, and protect it from everything else."],
+
+["Great Skill Looks Clumsy","bridge",
+"Great completeness seems to be lacking something,\nyet it never wears out.\nGreat fullness seems empty,\nyet it is never used up.\nGreat straightness seems bent.\nGreat skill seems clumsy.\nGreat eloquence seems tongue-tied.\n\nMovement beats the cold.\nStillness beats the heat.\nCalm and quiet put the world right.",
+"Mastery hides itself. Who do you know whose ease and simplicity conceal years of quiet work?",
+"Practise something slowly today, slower than looks impressive, until it feels almost too easy."],
+
+["Enough Is Enough","stone",
+"When the Way holds in the world,\nswift horses are used to pull the manure cart.\nWhen the Way is lost,\nwar horses are bred in the meadows outside the city.\n\nThere is no greater fault than wanting more.\nThere is no greater misfortune than not being satisfied.\nThere is no greater sin than greed.\n\nSo the contentment of knowing you have enough\nis enough, always.",
+"Enough is a place you can arrive at. What would make today feel enough, just as it is?",
+"Before bed tonight, name three things that were enough today: a meal, a moment, a message."],
+
+["The Window Within","door",
+"You can know the world without going out the door.\nYou can see the way of heaven without looking out the window.\n\nThe farther you go, the less you know.\n\nSo the wise person knows without travelling,\nnames without looking,\nand accomplishes without doing.",
+"Some knowing only comes when we stop moving. What do you already know that you are waiting for someone else to tell you?",
+"Take a quiet half hour at home and ask yourself one honest question. Wait for the answer without hunting for it."],
+
+["Less Each Day","path",
+"In study, every day something is added.\nIn following the Way, every day something is let go.\nLet go, and let go again,\nuntil you arrive at doing nothing.\nWhen you do nothing, nothing is left undone.\n\nThe world is taken by those who let it be.\nThose who try to force it are not fit to hold it.",
+"There is a kind of learning that is really un-learning. What belief or habit could you let go of this week?",
+"Choose one thing to remove from your day, a commitment, an app, a habit, and notice the space."],
+
+["The Open Mind","cloud",
+"The wise person has no fixed mind.\nShe takes the people’s minds as her own.\n\nTo the good, I am good.\nTo the not-good, I am also good.\nThat is goodness.\nTo the honest, I am honest.\nTo the dishonest, I am also honest.\nThat is honesty.\n\nThe wise person lives in the world with a gentle, open mind.\nPeople keep their eyes and ears on her,\nand she treats them all like children.",
+"It is easy to be kind to the kind. Who would you find it hard to give an open mind to today?",
+"Listen to one person today as if you were wrong and they were right. Only listen, do not respond."],
+
+["Making Room for Life","tree",
+"Coming out is life. Going back in is death.\nSome are followers of life, some of death,\nand some simply pass from life to death by their own moving.\nWhy is that? Because they live too greedily.\n\nI have heard that one who knows how to care for life\ncan walk the hills without meeting a tiger or a wild ox,\ncan go into battle without armour.\nThe ox has nowhere to put its horn.\nThe tiger has nowhere to put its claw.\nThe soldier has nowhere to put his blade.\nWhy? Because such a person has no room in her for death.",
+"Fear leaves little space for living. What would you do if a bit less of your energy went to protecting yourself?",
+"Do one thing today that a slightly less frightened version of you would do, however small."],
+
+["Raising Without Owning","seed",
+"The Way gives birth.\nGoodness nurtures.\nThings take shape.\nCircumstances complete them.\n\nSo everything honours the Way and prizes goodness,\nnot because it is ordered to, but because it is natural.\n\nThe Way brings forth and goodness nourishes.\nThey grow things, care for them, shelter them, mature them.\nThey give life and do not possess it.\nThey act and do not claim it.\nThey lead and do not rule.\nThat is called deep goodness.",
+"Raising children, projects or people all call for the same thing: give fully, and do not grab the result. What are you tending?",
+"Do something for the growth of another person or plan today and keep your hands off the outcome."],
+
+["Return to the Mother","valley",
+"The world had a beginning.\nCall it the mother of the world.\nWhen you know the mother, you know her children.\nWhen you know the children, go back and hold the mother.\nThen you will never be in danger, even when your body is gone.\n\nBlock the openings, shut the doors, and your life will be free of toil.\nOpen the openings, chase after things, and your life will be beyond help.\n\nTo see the small is clarity.\nTo keep to the soft is strength.\nUse the light, return to clarity,\nand you will not bring harm on yourself.\nThis is called practising the constant.",
+"We can drown in the details and forget the source they come from. What is all this busyness really for?",
+"Close all the tabs, physical or otherwise, on one problem today and ask what it is ultimately about."],
+
+["The Wide, Easy Road","path",
+"If I had even a little sense,\nI would walk the great road,\nand my only fear would be straying from it.\nThe great road is wide and easy,\nyet people prefer the side paths.\n\nThe palace is spotless\nwhile the fields are choked with weeds\nand the granaries are empty.\nSome wear fine silks, carry sharp swords,\nfeast without limit, and have goods to spare.\nThis is called thieving and showing off.\nIt is not the Way.",
+"The simple road is usually available; we take the winding one out of habit. Where are you making something harder than it needs to be?",
+"Take the direct route in something today: the plain message, the honest request, the short path."],
+
+["Planted Well","tree",
+"What is planted well will not be pulled up.\nWhat is held well will not slip away.\nChildren and grandchildren will keep the offerings going without end.\n\nCultivate goodness in yourself, and it becomes real.\nCultivate it in the family, and it overflows.\nCultivate it in the village, and it grows.\nCultivate it in the country, and it flourishes.\nCultivate it in the world, and it is everywhere.\n\nSo look at a person through the person,\na family through the family,\na village through the village,\na country through the country,\nthe world through the world.\nHow do I know the world is like this? By this.",
+"Change moves outward from a person. What is one thing you could do well at your own level, where you actually live?",
+"Improve one small thing in your immediate space today, and enjoy it."],
+
+["Like a Newborn","path",
+"One who holds deep goodness is like a newborn.\nPoisonous insects do not sting her.\nFierce animals do not seize her.\nBirds of prey do not strike her.\n\nHer bones are soft and her muscles weak,\nyet her grip is firm.\nShe has not known the joining of man and woman,\nyet she is complete, because her vital force is at its fullest.\nShe can cry all day and not become hoarse,\nbecause her harmony is at its fullest.\n\nTo know harmony is to know the constant.\nTo know the constant is to be clear.\nForcing life is a bad omen.\nThe mind that drives the breath is straining.\nWhat grows strong grows old.\nThat is not the Way.",
+"Babies are not trying to be anything. What would be different if you were less tangled up in trying to be something today?",
+"Do something purely for the pleasure of it today: sing, splash, lie on the floor and look up."],
+
+["Those Who Know","cloud",
+"Those who know do not speak.\nThose who speak do not know.\n\nBlock the openings, shut the doors.\nBlunt what is sharp, untangle what is knotted.\nSoften the glare, join the dust.\nThis is called the deep union.\n\nSuch a person cannot be brought close or pushed away,\ncannot be helped or harmed,\ncannot be raised up or brought low.\nAnd so she is the most valued in the world.",
+"Loud certainty is often a sign of thin knowing. When have you spoken most about something you understood least?",
+"In one conversation today, ask a question where you would usually give an opinion."],
+
+["Fewer Rules","door",
+"Govern a country with straightness.\nFight a war with surprise.\nTake the world by not meddling.\nHow do I know this? By this:\n\nThe more prohibitions there are, the poorer people become.\nThe more sharp weapons, the more chaos.\nThe more clever skills, the more strange things appear.\nThe more laws, the more thieves.\n\nSo the wise person says:\nI do nothing, and the people change themselves.\nI like stillness, and the people put themselves right.\nI do not meddle, and the people prosper.\nI have no wants, and the people return to simplicity.",
+"Rules tend to breed loopholes. Where might trust do more than another rule?",
+"Drop one rule you have set for yourself or others, and see what happens."],
+
+["Fortune Leans on Misfortune","boat",
+"When the government is quiet, the people are simple.\nWhen the government is sharp, the people are sly.\n\nMisfortune is what good fortune leans on.\nGood fortune is where misfortune hides.\nWho knows where it ends?\nThere is no fixed rule.\nThe straight turns crooked.\nThe good turns strange.\nPeople have been confused about this for a long time.\n\nSo the wise person is square but does not cut,\nsharp but does not pierce,\nstraight but does not overreach,\nbright but does not dazzle.",
+"Tragedy and luck are woven together more than we like to admit. Is there something that felt like a loss that later turned out to be a gift?",
+"Write about a past setback and find one good thing that would not exist without it."],
+
+["Restraint Is Preparation","seed",
+"In ruling people and in serving heaven,\nnothing is better than restraint.\n\nRestraint means preparing early.\nPreparing early means storing up goodness.\nStoring up goodness means being able to overcome anything.\nBeing able to overcome anything means no one knows your limit.\nWhen no one knows your limit, you can hold a country.\n\nHolding the mother of the country, you can last long.\nThis is called deep roots and a firm base:\nthe way to long life and lasting sight.",
+"Holding back is not weakness; it is a kind of saving. What energy could you keep for something that matters more later?",
+"Say no to one thing today so that you have something left for what you truly care about."],
+
+["Cooking a Small Fish","cup",
+"Govern a large country as you would cook a small fish.\n\nWhen you rule the world by the Way,\nthe spirits have no power over it.\nNot that they have no power,\nbut they do not harm people.\nNot only do they not harm people,\nthe wise person does not harm them either.\n\nWhen neither side does harm,\ntheir goodness comes back together.",
+"Small fish fall apart if you keep poking them. What are you handling so much that it is starting to come apart?",
+"Cook or prepare something simple today and notice the moment when you want to fiddle. Do not."]
+);
+
+TAO.push(
+["Lying Low","valley",
+"A great country is like low ground,\nwhere all the streams of the world run together.\nIt is the female of the world.\nThe female wins over the male by stillness,\nby lying beneath him.\n\nSo a great country that yields to a small one wins the small one over.\nA small country that yields to a great one is taken in by it.\nSome yield in order to win. Some yield and are won.\n\nThe great country wants to gather and protect people.\nThe small country wants to join and serve.\nEach gets what it wants.\nThe great one should do the yielding.",
+"Power that lowers itself becomes a place where things gather. Where could being the one who yields make room for others to come closer?",
+"In a small disagreement today, be the first to move toward the other person."],
+
+["The Refuge","door",
+"The Way is the hidden source of everything.\nIt is the treasure of the good\nand the shelter of the not-yet-good.\n\nFine words can buy respect.\nGood deeds can raise a person’s standing.\nBut what about those who are not good?\nWhy would they be thrown away?\n\nWhen a ruler is crowned, or given ministers,\nbetter than offering gems and fast horses\nis to sit still and offer the Way.\n\nWhy did the ancients value this Way so much?\nIsn’t it because those who seek find it,\nand those who have made mistakes are forgiven?\nThat is why it is the world’s treasure.",
+"There is something in us that is not thrown away when we fail. Where do you most need to be welcomed back?",
+"Forgive one small thing, in yourself or someone else, and let it stay forgiven."],
+
+["Begin With the Easy","seed",
+"Act without acting.\nWork without working.\nTaste what has no taste.\nSee the great in the small, the many in the few.\nMeet injury with goodness.\n\nDeal with the hard while it is still easy.\nDeal with the great while it is still small.\nThe hardest things in the world begin as easy.\nThe greatest things begin as small.\n\nSo the wise person never tries to do something great,\nand that is how she gets it done.\n\nPromises made lightly are seldom kept.\nThose who think everything is easy will meet with plenty of trouble.\nSo the wise person treats everything as though it were hard,\nand in the end nothing is hard for her.",
+"Big problems are best handled when they are still tiny. What small, uncomfortable thing have you been leaving until it gets big?",
+"Deal with one small problem right now, the one you have been avoiding, before it grows."],
+
+["A Thousand Miles","path",
+"What is still is easy to hold.\nWhat has not yet appeared is easy to plan for.\nWhat is brittle breaks easily.\nWhat is tiny scatters easily.\n\nAct before it exists.\nSet things in order before there is chaos.\n\nA tree you cannot put your arms around grew from a tiny shoot.\nA tower nine storeys high began with a heap of earth.\nA journey of a thousand miles starts under your feet.\n\nThose who force it, ruin it.\nThose who grasp it, lose it.\nSo the wise person does not force and does not ruin,\ndoes not grasp and does not lose.\n\nPeople often fail when they are nearly done.\nBe as careful at the end as at the beginning,\nand you will not fail.",
+"The next step is the only one you can take. What is the very first small step of something you have been putting off?",
+"Take the first ten minutes of a big task today, only ten, and then decide whether to stop."],
+
+["Simple People, Wise Rule","bamboo",
+"In the old days, those who followed the Way\ndid not make people clever.\nThey kept them simple.\n\nPeople are hard to rule when they know too many tricks.\nRuling with cleverness is a curse on the country.\nRuling without cleverness is a blessing.\n\nKnow these two, and you have a pattern.\nKnow the pattern always,\nand you have deep goodness.\n\nDeep goodness goes far and deep.\nIt turns things back toward harmony.",
+"Cleverness is not the same as wisdom. Where has trying to be clever made your life more complicated?",
+"Say the plain, true thing in one situation today where you would normally spin it."],
+
+["The Sea Rules Because It Is Low","water",
+"Rivers and seas are kings of a hundred valleys\nbecause they are good at staying below them.\nThat is why they are kings.\n\nSo the wise person who wishes to be above the people\nspeaks with humility.\nShe who wishes to lead puts herself behind.\n\nThus she is above them and they feel no weight.\nShe is in front of them and they feel no harm.\nThe world is glad to push her forward and never tires of her.\n\nBecause she does not compete,\nno one under heaven can compete with her.",
+"Position and humility are not opposites. Where can you lead by making it easy for others to move ahead?",
+"In a group today, ask another person for their idea first and honour it."],
+
+["Three Treasures","moon",
+"Everyone says my Way is great and yet seems like nothing you can name.\nBut only because it is great does it seem like nothing.\nIf it looked like anything, it would have been small long ago.\n\nI have three treasures that I hold and guard.\nThe first is compassion.\nThe second is simplicity.\nThe third is not daring to be first in the world.\n\nBecause of compassion, I can be brave.\nBecause of simplicity, I can be generous.\nBecause I do not put myself first, I can lead.\n\nPeople today drop compassion and try to be brave.\nThey drop simplicity and try to be generous.\nThey drop humility and try to be first.\nThis is death.\n\nCompassion wins in battle and holds in defence.\nHeaven protects those it would save with compassion.",
+"Compassion looks soft and turns out to be sturdy. Which of these three do you most need to practise?",
+"Choose one of the three treasures and let it steer one decision today."],
+
+["The Gentle Fighter","mountain",
+"A good soldier is not warlike.\nA good fighter is not angry.\nA good winner does not gloat.\nA good employer takes a lower place.\n\nThis is called the goodness of not contending.\nThis is called using other people’s strength.\nThis is called being in harmony with heaven,\nthe oldest ideal.",
+"Calm is a form of strength that does not need to prove itself. When do you feel most steady while things around you are heated?",
+"When someone is agitated today, let your own voice and breathing stay slow and low."],
+
+["Retreat a Foot","wind",
+"There is a saying among soldiers:\nI do not dare to be the host. I would rather be the guest.\nI do not dare to advance an inch. I would rather retreat a foot.\n\nThis is called marching without marching,\nrolling up your sleeve without an arm to show,\ndragging off an enemy without an enemy,\nholding a weapon without a weapon.\n\nThere is no greater misfortune than underestimating an enemy.\nTo do so nearly costs me my treasures.\n\nWhen two evenly matched armies meet,\nthe one that grieves wins.",
+"There is a strength in stepping back. Where might a small retreat protect something valuable?",
+"Give ground on one thing today, and use the freed energy to protect something you value."],
+
+["Easy to Understand, Hard to Do","bridge",
+"My words are very easy to understand\nand very easy to put into practice.\nYet no one in the world can understand them,\nand no one can practise them.\n\nMy words have an ancestor.\nMy deeds have a master.\nBecause people do not know this, they do not know me.\n\nThose who know me are few, and so I am prized.\nThe wise person wears rough cloth\nand keeps jade close to her heart.",
+"The simplest advice is often the hardest to follow. What piece of plain wisdom do you already know and keep skipping?",
+"Do the simple thing you already know you should do — drink the water, sleep, call them — and skip the analysis."],
+
+["Sick of the Sickness","cloud",
+"To know that you do not know is highest.\nTo not know and think you know is a sickness.\n\nOnly by being sick of the sickness can you be free of it.\nThe wise person is not sick,\nbecause she is sick of the sickness.\nThat is why she is not sick.",
+"Seeing your own blind spots is a kind of health. What is one thing you have realised you do not actually know?",
+"Say aloud once today, “I am not sure,” about something you would usually pretend to know."],
+
+["Do Not Crowd People","sun",
+"When people do not fear your power,\nreal power arrives.\nDo not press into their homes.\nDo not weigh down their lives.\nIf you do not weigh them down, they will not grow tired of you.\n\nSo the wise person knows herself and does not show herself off.\nShe values herself and does not exalt herself.\nShe lets go of the one and holds to the other.",
+"People flourish when they are given room. Where are you crowding someone, or where are you being crowded?",
+"Give someone real space today, no check-in, no advice, and see what they do with it."],
+
+["Heaven’s Wide Net","cloud",
+"Courage that dares leads to death.\nCourage that does not dare leads to life.\nOf these two, one helps and one harms.\nWho knows why heaven dislikes what it dislikes?\nEven the wise person finds this hard.\n\nThe Way of heaven does not compete, and yet it wins.\nIt does not speak, and yet it answers.\nIt does not call, and yet things come.\nIt is relaxed, and yet its plans are good.\n\nHeaven’s net is wide and its mesh is coarse,\nbut nothing slips through.",
+"You do not have to force outcomes for things to come around. What could you trust to arrive in its own time?",
+"Do your part on something today, then stop and let it be. Leave the outcome to the rest of the world."],
+
+["The Master Carpenter","tree",
+"If people do not fear death,\nwhat use is it to threaten them with it?\nEven if people did fear it,\nand those who did wrong were put down,\nwho would dare take such a task upon themselves?\n\nThere is a natural process that takes care of it.\nTo do its work in its place\nis like taking over the work of a master carpenter.\nThose who cut wood in the master’s place\nare rarely without wounds in their own hands.",
+"Some things have their own course, and interfering costs the interferer. What are you trying to do that nature or time would do better?",
+"Notice one place where you are taking over something that would take care of itself, and step out."],
+
+["Why People Go Hungry","bamboo",
+"The people go hungry because the rulers take too much in taxes.\nThat is why they go hungry.\n\nThe people are hard to govern because the rulers meddle.\nThat is why they are hard to govern.\n\nThe people take death lightly because the rulers strain to hold on to life.\nThat is why they take death lightly.\n\nThose who do not cling to life are wiser\nthan those who prize it too much.",
+"When the ones with more take too much, everyone else feels it. Where do you take more than you need? Could you give a little of it back?",
+"Give away something you do not strictly need — time, money, food — to someone who could use it."],
+
+["Soft in Life, Stiff in Death","bamboo",
+"A person is soft and pliant when alive.\nWhen dead, she is hard and stiff.\nAll the plants and trees are soft and tender when alive.\nWhen dead, they are dry and brittle.\n\nSo hardness and stiffness belong to death.\nSoftness and pliancy belong to life.\n\nAn army that is stiff will not win.\nA tree that is stiff is cut down.\nThe strong and large sink to the bottom.\nThe soft and weak rise to the top.",
+"Rigidity is a warning sign; flexibility is a sign of life. Where in your body, your schedule or your beliefs are you gone stiff?",
+"Stretch slowly for five minutes today, and let one belief go a little loose at the same time."],
+
+["Bending the Bow","wheel",
+"The Way of heaven is like the stretching of a bow.\nThe high is pulled down and the low is lifted.\nThe excess is taken away and the lack is made up.\n\nThe Way of heaven takes from those who have too much\nand gives to those who have too little.\nThe way of people is not like this.\nIt takes from those who have too little\nand offers it to those who already have too much.\n\nWho can offer their surplus to the world?\nOnly one who follows the Way.\n\nSo the wise person does her work and does not claim it,\ncompletes her task and does not stay attached to it.\nShe does not wish to show that she is better.",
+"Balance is something we can serve rather than only receive. What surplus do you have that another person is short of?",
+"Share one surplus today: a skill, a spare hour, a meal, an introduction."],
+
+["Nothing Softer Than Water","water",
+"Nothing in the world is softer or weaker than water.\nYet nothing is better at wearing down the hard and strong.\nThere is nothing that can take its place.\n\nThe weak beat the strong.\nThe soft beat the hard.\nEveryone knows this, and no one puts it into practice.\n\nSo the wise person says:\nThose who take on the country’s disgrace\nare fit to rule it.\nThose who take on the country’s troubles\nare fit to be its king.\n\nTrue words seem like their opposite.",
+"We know softness works and go on being hard. What one thing would you attempt with more gentleness if you trusted it would work?",
+"Pick something you usually approach with tension, an email, a chore, a conversation, and do it as softly as you can."],
+
+["Keeping Your Side","stone",
+"After a great quarrel is settled,\nsome resentment always remains.\nHow can that be called good?\n\nSo the wise person keeps her half of the agreement\nand does not demand it of the other.\nThe good attend to their part.\nThe not-so-good attend to what is owed them.\n\nHeaven has no favourites.\nIt is always with the good.",
+"You cannot always control what others do, but you can always keep your own word. Where have you been waiting for them to go first?",
+"Keep one small promise today, to yourself or someone else, without keeping score."],
+
+["A Small, Quiet Country","boat",
+"Imagine a small country with few people.\nThere are tools that could save the work of ten, and they are not used.\nPeople take death seriously and do not move far away.\nThey have boats and carriages, and they never ride in them.\nThey have armour and weapons, and never show them.\nThey go back to the old way of keeping records on knotted cords.\n\nTheir food is sweet.\nTheir clothes are lovely.\nTheir homes are peaceful.\nTheir customs are a joy.\n\nThe next country is so near, they can see it,\nand hear its dogs and roosters.\nYet the people grow old and die\nwithout ever going there.",
+"There is a kind of contentment that does not need more. What would it take to feel that where you are is already a good country?",
+"Stay home for one evening as if there were nowhere else you needed to be. Enjoy what is close."],
+
+["The Way Gives and Does Not Compete","sun",
+"True words are not fancy.\nFancy words are not true.\nThe good do not argue.\nThose who argue are not good.\nThe wise do not know a great deal.\nThose who know a great deal are not wise.\n\nThe wise person does not hoard.\nThe more she does for others, the more she has.\nThe more she gives to others, the more she is given.\n\nThe Way of heaven benefits and does not harm.\nThe Way of the wise person is to act and not compete.",
+"You have arrived at the end, and the end is a beginning. What is the one thing from these eighty-one chapters you most want to carry with you?",
+"Write down one line from any chapter that has stayed with you, and put it where you will see it tomorrow. Then begin again from chapter 1 whenever you are ready."]
+);
+
+
+</script>
+<script>
+
+/* Procedural ink-and-light illustrations, one per chapter, drawn as inline SVG. No images, no network. */
+(function(){
+function rng(s){var a=(s*2654435761)>>>0;return function(){a+=0x6D2B79F5;var t=a;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return((t^(t>>>14))>>>0)/4294967296}}
+var HUES=[162,42,196,36,214,150,48,178,26,204,140,56],uid=0;
+function f(x){return Number(x).toFixed(1)}
+function ridge(k,y,amp,fill,op,step){
+  var R=k.R;step=step||40;var d="M-20 200 L-20 "+y,py=y;
+  for(var x=0;x<=340;x+=step){var ny=y-R()*amp;d+=" Q"+f(x+step/2)+" "+f((py+ny)/2-R()*amp*.5)+" "+f(x+step)+" "+f(ny);py=ny}
+  return '<path d="'+d+' L360 200Z" fill="'+fill+'" opacity="'+op+'"/>';
+}
+function mist(k,y,h,op){return '<rect x="-10" y="'+y+'" width="340" height="'+h+'" fill="'+k.c(30,70,.5)+'" opacity="'+op+'" filter="url(#'+k.id+'b)"/>'}
+function moonAt(k,x,y,r){return '<circle cx="'+f(x)+'" cy="'+f(y)+'" r="'+f(r*2.6)+'" fill="url(#'+k.id+'g)"/><circle cx="'+f(x)+'" cy="'+f(y)+'" r="'+f(r)+'" fill="'+k.c(55,90)+'"/>'}
+function waves(k,y0,n,op){var o="",R=k.R;for(var i=0;i<n;i++){var y=y0+i*(200-y0)/n,a=1+i*.5,d="M-10 "+f(y);
+  for(var x=-10;x<330;x+=32){d+=" q8 "+f(-a-R()*a)+" 16 0 t16 0"}
+  o+='<path d="'+d+'" fill="none" stroke="'+k.c(50,72)+'" stroke-width="'+f(.6+i*.12)+'" opacity="'+f(op*(.35+i/n*.65))+'"/>'}return o}
+var M={
+moon:function(k){var R=k.R,x=90+R()*140;return moonAt(k,x,72,24)+ridge(k,150,22,k.c(35,11),1)+mist(k,140,26,.35)+ridge(k,172,12,k.c(30,5),1)},
+mountain:function(k){var R=k.R;return moonAt(k,60+R()*200,52,14)+ridge(k,120,46,k.c(30,20),.9,55)+mist(k,112,30,.45)+ridge(k,145,38,k.c(32,13),1,50)+mist(k,150,26,.4)+ridge(k,178,26,k.c(30,6),1,60)},
+water:function(k){var R=k.R,x=100+R()*120,o=moonAt(k,x,58,20);o+='<rect y="112" width="320" height="88" fill="'+k.c(40,8)+'"/>'+ridge(k,112,10,k.c(30,5),1,50);
+  for(var i=0;i<7;i++){var w=42-i*4.5;o+='<rect x="'+f(x-w/2)+'" y="'+(118+i*10)+'" width="'+f(w)+'" height="2" rx="1" fill="'+k.c(60,85)+'" opacity="'+f(.75-i*.09)+'"/>'}return o+waves(k,116,7,.7)},
+valley:function(k){var o='<ellipse cx="160" cy="118" rx="70" ry="90" fill="url(#'+k.id+'g)"/>';
+  o+='<path d="M-10 60 Q60 90 140 200 L-10 200Z" fill="'+k.c(35,9)+'"/><path d="M330 55 Q260 90 180 200 L330 200Z" fill="'+k.c(35,9)+'"/>';
+  o+='<path d="M-10 110 Q70 120 130 200 L-10 200Z" fill="'+k.c(30,5)+'"/><path d="M330 108 Q250 122 190 200 L330 200Z" fill="'+k.c(30,5)+'"/>';
+  return o+mist(k,150,30,.5)},
+bamboo:function(k){var R=k.R,o=moonAt(k,240,50,16);for(var i=0;i<7;i++){var x=25+i*44+R()*16,w=4+R()*4,top=-10,bot=200,sh=k.c(40,18+R()*14);
+  o+='<rect x="'+f(x)+'" y="0" width="'+f(w)+'" height="200" fill="'+sh+'" opacity="'+f(.55+R()*.4)+'"/>';
+  for(var y=22+R()*20;y<190;y+=34+R()*14){o+='<rect x="'+f(x-1)+'" y="'+f(y)+'" width="'+f(w+2)+'" height="2.4" fill="'+k.c(40,8)+'"/>';
+    if(R()>.55){var dir=R()>.5?1:-1,lx=x+w/2;o+='<path d="M'+f(lx)+' '+f(y)+' q'+f(dir*22)+' -10 '+f(dir*40)+' 6 q'+f(-dir*20)+' -2 '+f(-dir*40)+' -6z" fill="'+k.c(55,42)+'" opacity=".85"/>'}}}
+  return o+mist(k,150,50,.4)},
+circle:function(k){var R=k.R,o='<circle cx="160" cy="100" r="82" fill="url(#'+k.id+'g)" opacity=".55"/>',a0=(R()*60+20)*Math.PI/180,a1=a0+5.5;
+  function P(r,a){return f(160+r*Math.cos(a))+" "+f(100+r*Math.sin(a))}
+  o+='<path d="M'+P(56,a0)+' A56 56 0 1 1 '+P(56,a1)+'" fill="none" stroke="'+k.c(60,86)+'" stroke-width="11" stroke-linecap="round" opacity=".92"/>';
+  o+='<path d="M'+P(58,a0+.3)+' A58 58 0 1 1 '+P(58,a1-.6)+'" fill="none" stroke="'+k.c(50,96)+'" stroke-width="3" stroke-linecap="round" opacity=".7"/>';
+  return o+waves(k,160,4,.5)},
+bridge:function(k){var R=k.R,o=moonAt(k,70+R()*180,48,14)+ridge(k,110,30,k.c(30,14),.9,60)+'<rect y="128" width="320" height="72" fill="'+k.c(40,7)+'"/>';
+  o+='<path d="M50 132 Q160 60 270 132" fill="none" stroke="'+k.c(45,64)+'" stroke-width="7" stroke-linecap="round"/><path d="M50 132 Q160 204 270 132" fill="none" stroke="'+k.c(45,50)+'" stroke-width="5" opacity=".28"/>';
+  for(var x=80;x<=240;x+=32){var t=(x-50)/220,y=132-4*t*(1-t)*72*.5*1.0;o+='<line x1="'+x+'" y1="'+f(y+2)+'" x2="'+x+'" y2="132" stroke="'+k.c(40,55)+'" stroke-width="1.6"/>'}
+  return o+waves(k,140,5,.5)},
+wheel:function(k){var o='<circle cx="160" cy="100" r="88" fill="url(#'+k.id+'g)" opacity=".45"/>';
+  for(var i=0;i<30;i++){var a=i/30*Math.PI*2;o+='<line x1="'+f(160+18*Math.cos(a))+'" y1="'+f(100+18*Math.sin(a))+'" x2="'+f(160+66*Math.cos(a))+'" y2="'+f(100+66*Math.sin(a))+'" stroke="'+k.c(45,68)+'" stroke-width="1.3" opacity=".8"/>'}
+  return o+'<circle cx="160" cy="100" r="68" fill="none" stroke="'+k.c(55,78)+'" stroke-width="4"/><circle cx="160" cy="100" r="18" fill="'+k.c(40,4)+'" stroke="'+k.c(55,78)+'" stroke-width="3"/><circle cx="160" cy="100" r="7" fill="'+k.c(70,92)+'"/>'},
+tree:function(k){var R=k.R,o=moonAt(k,250,46,15)+ridge(k,158,18,k.c(30,9),1);
+  function br(x,y,len,ang,w,d){if(d>6||len<5)return;var x2=x+len*Math.cos(ang),y2=y+len*Math.sin(ang);
+    o+='<line x1="'+f(x)+'" y1="'+f(y)+'" x2="'+f(x2)+'" y2="'+f(y2)+'" stroke="'+k.c(35,d>4?52:30)+'" stroke-width="'+f(w)+'" stroke-linecap="round"/>';
+    if(d>=5)o+='<circle cx="'+f(x2)+'" cy="'+f(y2)+'" r="'+f(2+R()*2.5)+'" fill="'+k.c(60,66)+'" opacity=".55"/>';
+    br(x2,y2,len*(.72+R()*.1),ang-.25-R()*.35,w*.7,d+1);br(x2,y2,len*(.72+R()*.1),ang+.25+R()*.35,w*.7,d+1)}
+  br(130,170,44,-Math.PI/2+.05,7,0);return o+mist(k,160,30,.35)},
+door:function(k){var o='<rect width="320" height="200" fill="'+k.c(30,7)+'"/><rect x="110" y="34" width="100" height="150" rx="3" fill="url(#'+k.id+'g)" stroke="'+k.c(40,30)+'" stroke-width="6"/>';
+  o+='<rect x="120" y="44" width="80" height="140" fill="'+k.c(70,88,.9)+'" opacity=".85"/><path d="M110 184 L60 200 L260 200 L210 184Z" fill="'+k.c(70,80,.4)+'"/>';
+  return o+'<line x1="160" y1="44" x2="160" y2="184" stroke="'+k.c(40,30)+'" stroke-width="2"/>'},
+boat:function(k){var R=k.R,x=100+R()*100,o=moonAt(k,240,44,14)+ridge(k,110,16,k.c(30,8),1,50)+'<rect y="112" width="320" height="88" fill="'+k.c(40,7)+'"/>';
+  o+='<path d="M'+f(x)+' 122 q30 14 60 0 l-6 10 q-24 8 -48 0z" fill="'+k.c(35,30)+'"/><line x1="'+f(x+30)+'" y1="122" x2="'+f(x+30)+'" y2="88" stroke="'+k.c(35,45)+'" stroke-width="2"/>';
+  o+='<circle cx="'+f(x+30)+'" cy="88" r="14" fill="url(#'+k.id+'g)"/><circle cx="'+f(x+30)+'" cy="88" r="3" fill="'+k.c(70,92)+'"/>';
+  return o+waves(k,120,8,.7)},
+seed:function(k){var o='<ellipse cx="160" cy="120" rx="80" ry="60" fill="url(#'+k.id+'g)" opacity=".5"/>'+ridge(k,158,6,k.c(30,10),1,80)+'<rect y="160" width="320" height="40" fill="'+k.c(30,6)+'"/>';
+  o+='<path d="M160 160 C158 140 162 124 160 108" fill="none" stroke="'+k.c(55,60)+'" stroke-width="3" stroke-linecap="round"/>';
+  o+='<path d="M160 116 C140 112 128 100 126 88 C144 90 156 100 160 116z" fill="'+k.c(55,52)+'"/><path d="M160 122 C182 118 194 108 198 94 C178 96 164 106 160 122z" fill="'+k.c(60,62)+'"/>';
+  return o+'<circle cx="160" cy="104" r="5" fill="'+k.c(70,90)+'"/>'},
+cup:function(k){var o='<ellipse cx="160" cy="112" rx="90" ry="70" fill="url(#'+k.id+'g)" opacity=".4"/>';
+  o+='<path d="M96 100 Q100 168 160 170 Q220 168 224 100z" fill="'+k.c(35,22)+'" stroke="'+k.c(45,60)+'" stroke-width="2"/><ellipse cx="160" cy="100" rx="64" ry="12" fill="'+k.c(60,86,.95)+'" stroke="'+k.c(45,64)+'" stroke-width="2"/>';
+  for(var i=0;i<3;i++)o+='<path d="M'+(140+i*20)+' 84 q-8 -14 0 -28 q8 -14 0 -28" fill="none" stroke="'+k.c(30,86)+'" stroke-width="1.6" opacity=".35" stroke-linecap="round"/>';
+  return o+'<rect x="120" y="172" width="80" height="6" rx="3" fill="'+k.c(35,12)+'"/>'},
+wind:function(k){var R=k.R,o="";for(var i=0;i<7;i++){var y=30+i*22+R()*10,d="M-10 "+f(y);for(var x=-10;x<330;x+=60)d+=" c15 "+f(-16-R()*14)+" 32 "+f(-16-R()*14)+" 45 "+f(R()*8-4)+" s28 "+f(14+R()*10)+" 15 "+f(R()*6);
+  o+='<path d="'+d+'" fill="none" stroke="'+k.c(45,60+R()*25)+'" stroke-width="'+f(.8+R()*1.4)+'" opacity="'+f(.35+R()*.5)+'" stroke-linecap="round"/>'}
+  for(var j=0;j<9;j++)o+='<ellipse cx="'+f(R()*320)+'" cy="'+f(R()*200)+'" rx="4" ry="1.8" transform="rotate('+f(R()*80-40)+' '+f(R()*320)+' '+f(R()*200)+')" fill="'+k.c(60,66)+'" opacity=".6"/>';
+  return o},
+sun:function(k){var o='<circle cx="160" cy="132" r="96" fill="url(#'+k.id+'g)"/>';
+  for(var i=0;i<15;i++){var a=Math.PI+(i+.5)/15*Math.PI;o+='<line x1="'+f(160+46*Math.cos(a))+'" y1="'+f(132+46*Math.sin(a))+'" x2="'+f(160+(74+(i%2)*14)*Math.cos(a))+'" y2="'+f(132+(74+(i%2)*14)*Math.sin(a))+'" stroke="'+k.c(60,82)+'" stroke-width="1.6" opacity=".6"/>'}
+  return o+'<circle cx="160" cy="132" r="34" fill="'+k.c(60,90)+'"/>'+ridge(k,138,14,k.c(30,9),1,50)+'<rect y="134" width="320" height="66" fill="'+k.c(35,5)+'"/>'+waves(k,142,5,.4)},
+path:function(k){var R=k.R,o=moonAt(k,70+R()*180,46,14)+ridge(k,104,34,k.c(30,17),.95,55)+mist(k,98,24,.4);
+  o+='<rect y="110" width="320" height="90" fill="'+k.c(30,8)+'"/><path d="M150 110 Q120 140 190 158 Q250 172 210 200 L110 200 Q170 172 120 150 Q100 132 165 110z" fill="'+k.c(45,42)+'" opacity=".85"/>';
+  return o},
+cloud:function(k){var R=k.R,o=moonAt(k,80+R()*160,60,18);for(var i=0;i<9;i++){o+='<ellipse cx="'+f(R()*320)+'" cy="'+f(70+R()*100)+'" rx="'+f(40+R()*60)+'" ry="'+f(9+R()*14)+'" fill="'+k.c(35,58+R()*20)+'" opacity="'+f(.15+R()*.25)+'" filter="url(#'+k.id+'b)"/>'}
+  return o+ridge(k,178,14,k.c(30,5),1)},
+stone:function(k){var R=k.R,o=moonAt(k,240,50,14)+'<rect y="140" width="320" height="60" fill="'+k.c(40,6)+'"/>',y=140,rx=46;
+  for(var i=0;i<4;i++){var ry=9+R()*4;y-=ry*1.7;o+='<ellipse cx="'+f(150+R()*8-4)+'" cy="'+f(y+ry)+'" rx="'+f(rx)+'" ry="'+f(ry)+'" fill="'+k.c(20,26+i*5)+'" stroke="'+k.c(30,50)+'" stroke-width="1"/>';rx*=.72}
+  return o+'<ellipse cx="150" cy="146" rx="46" ry="4" fill="'+k.c(50,70)+'" opacity=".25"/>'+waves(k,148,5,.5)}
+};
+window.TaoArt=function(n,motif){
+  var R=rng(n*97+13),h=HUES[n%HUES.length],id="a"+(uid++);
+  var k={R:R,id:id,c:function(s,l,a){return"hsla("+h+","+s+"%,"+l+"%,"+(a==null?1:a)+")"}};
+  var o='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="'+motif+' illustration"><defs>'
+   +'<linearGradient id="'+id+'s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+k.c(45,4)+'"/><stop offset=".65" stop-color="'+k.c(40,12)+'"/><stop offset="1" stop-color="'+k.c(35,8)+'"/></linearGradient>'
+   +'<radialGradient id="'+id+'g"><stop offset="0" stop-color="'+k.c(70,82,.9)+'"/><stop offset=".45" stop-color="'+k.c(60,58,.3)+'"/><stop offset="1" stop-color="'+k.c(60,50,0)+'"/></radialGradient>'
+   +'<filter id="'+id+'b"><feGaussianBlur stdDeviation="3"/></filter></defs><rect width="320" height="200" fill="url(#'+id+'s)"/>';
+  for(var i=0;i<24;i++)o+='<circle cx="'+f(R()*320)+'" cy="'+f(R()*100)+'" r="'+f(R()*.8+.2)+'" fill="#fff" opacity="'+f(R()*.5+.1)+'"/>';
+  return o+(M[motif]||M.mountain)(k)+"</svg>";
+};
+window.TaoMotifs=Object.keys(M);
+})();
+
+
+</script>
+<script>
+
+(function(){
+"use strict";
+var CH=window.TAO||[],N=CH.length,KEY2="tao.v2",KEY1="tao.v1",S,view="today",cur=0,filter="all",query="",fromTab="today";
+var $=function(s){return document.querySelector(s)};
+var app=$("#app");
+var artCache={};
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function ymd(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function parseYmd(s){var p=s.split("-");return new Date(+p[0],+p[1]-1,+p[2])}
+function dayIndex(s){return Math.round(parseYmd(s).getTime()/864e5)}
+function niceDate(d){d=d||new Date();try{return d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"})}catch(e){return ymd(d)}}
+function niceYmd(s){return niceDate(parseYmd(s))}
+
+function load(){
+  var raw=null;
+  try{raw=localStorage.getItem(KEY2)||localStorage.getItem(KEY1)}catch(e){}
+  try{S=raw?JSON.parse(raw):null}catch(e){S=null}
+  S=S||{};
+  S.read=S.read||{};S.fav=S.fav||{};S.notes=S.notes||{};S.days=S.days||{};
+  S.theme=S.theme==="parchment"?"parchment":"ink";
+  S.size=(S.size==="s"||S.size==="l")?S.size:"m";
+  S.practice=S.practice||{};
+  S.hideA2HS=!!S.hideA2HS;
+  S.draft=S.draft||{};
+  if(S.start&&!S.welcomed)S.welcomed=true;
+  S.welcomed=!!S.welcomed;
+  applyChrome();
+}
+function save(){
+  try{
+    localStorage.setItem(KEY2,JSON.stringify(S));
+    localStorage.setItem(KEY1,JSON.stringify({start:S.start,read:S.read,fav:S.fav,notes:S.notes,days:S.days}));
+  }catch(e){}
+}
+function applyChrome(){
+  document.documentElement.setAttribute("data-theme",S.theme);
+  document.documentElement.setAttribute("data-size",S.size);
+  var tm=document.querySelector('meta[name="theme-color"]');
+  if(tm)tm.setAttribute("content",S.theme==="parchment"?"#f3ead8":"#0c0b0a");
+  var h=(new Date()).getHours();
+  var root=document.documentElement.style;
+  if(S.theme==="parchment"){
+    root.setProperty("--wash-a","rgba(214,184,130,.22)");
+    root.setProperty("--wash-b","rgba(61,111,100,.10)");
+  }else if(h>=5&&h<11){
+    root.setProperty("--wash-a","rgba(214,184,130,.13)");
+    root.setProperty("--wash-b","rgba(126,184,168,.06)");
+  }else if(h>=18){
+    root.setProperty("--wash-a","rgba(214,184,130,.05)");
+    root.setProperty("--wash-b","rgba(126,184,168,.10)");
+  }else{
+    root.setProperty("--wash-a","rgba(214,184,130,.09)");
+    root.setProperty("--wash-b","rgba(126,184,168,.07)");
+  }
+}
+function todayN(){
+  if(!S.start)return 1;
+  var diff=dayIndex(ymd())-dayIndex(S.start);
+  return((diff%N)+N)%N+1;
+}
+function streak(){
+  var c=0,d=parseYmd(ymd());
+  if(!S.days[ymd()])d.setDate(d.getDate()-1);
+  for(;;){
+    var k=ymd(d);
+    if(S.days[k]){c++;d.setDate(d.getDate()-1)}
+    else break;
+  }
+  return c;
+}
+function art(n,motif){
+  if(artCache[n])return artCache[n];
+  try{artCache[n]=window.TaoArt(n,motif)}catch(e){artCache[n]=""}
+  return artCache[n];
+}
+function toast(msg){
+  var t=$("#toast");if(!t)return;
+  t.textContent=msg;t.classList.add("on");
+  clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove("on")},1800);
+}
+function iconHeart(on){
+  return on
+    ?'<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-6.4-4.35-9.2-8.12C1.1 10.7 1.2 7.4 3.4 5.6 5.3 4 8 4.2 9.7 6.1L12 8.5l2.3-2.4C16 4.2 18.7 4 20.6 5.6c2.2 1.8 2.3 5.1.6 7.28C18.4 16.65 12 21 12 21z"/></svg>'
+    :'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 20.4s-6.1-4.2-8.8-7.8C1.6 10.6 1.7 7.6 3.7 6c1.8-1.5 4.3-1.3 5.9.5L12 9.1l2.4-2.6c1.6-1.8 4.1-2 5.9-.5 2 1.6 2.1 4.6.5 6.6C18.1 16.2 12 20.4 12 20.4z"/></svg>';
+}
+function iconSpeak(on){
+  return '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10H4z"/><path d="M16 9a4 4 0 0 1 0 6" stroke-linecap="round"/>'+(on?'<path d="M18.5 7a7 7 0 0 1 0 10" stroke-linecap="round"/>':'')+'</svg>';
+}
+
+function head(extra){
+  var st=streak();
+  var label=st?st+" day"+(st===1?"":"s")+" walking":"A quiet start";
+  return '<div class="top"><div><div class="brand"><b>Tao</b></div><div class="date">'+esc(niceDate())+'</div></div><div class="streak">'+esc(label)+'</div></div>'+(extra||"");
+}
+
+function chapter(n,isToday){
+  var c=CH[n-1];if(!c){app.innerHTML="<p>Chapter not found.</p>";return}
+  cur=n;
+  var notes=S.notes[n]||[];
+  var walked=!!S.read[n];
+  var practiced=!!S.practice[n];
+  var shown=notes.slice().reverse();
+  var extra=shown.length>2;
+  var vis=extra?shown.slice(0,2):shown;
+  var h=head()+'<div class="fade"><article class="hero">'+art(n,c[1])+'<div class="num">'+(isToday?"Today · ":"")+"Chapter "+n+" of "+N+'</div>'
+    +'<button class="fav'+(S.fav[n]?" on":"")+'" id="fav" aria-label="'+(S.fav[n]?"Remove from kept":"Keep this chapter")+'" aria-pressed="'+(S.fav[n]?"true":"false")+'">'+iconHeart(!!S.fav[n])+'</button></article>'
+    +'<h1 class="title grad">'+esc(c[0])+'</h1><div class="sub">Chapter '+n+'</div>'
+    +'<hr class="rule"><div class="verse">'+esc(c[2])+'</div>'
+    +'<div class="box"><h3>Reflect</h3><p>'+esc(c[3])+'</p></div>'
+    +'<div class="box practice"><h3>Practise today</h3><p>'+esc(c[4])+'</p>'
+    +'<div class="walkrow"><input class="chk" type="checkbox" id="prac" '+(practiced?"checked":"")+'><label for="prac">I’ll practise this today</label></div></div>'
+    +'<div class="box"><h3>A line, if one comes</h3><textarea id="note" placeholder="What did this stir?" aria-label="A line about this chapter">'+(S.draft[n]?esc(S.draft[n]):"")+'</textarea>'
+    +'<div class="row"><button class="btn" id="saveNote">Save a line</button><span class="saved" id="saved" hidden>Saved</span></div>'
+    +vis.map(function(e){return'<div class="entry"><small>'+esc(niceYmd(e.d))+'</small><p>'+esc(e.t)+'</p></div>'}).join("")
+    +(extra?'<button class="btn text more-notes" id="moreNotes">Show '+(shown.length-2)+' earlier lines</button>':'')
+    +'</div>'
+    +'<div class="row">'
+    +(walked?'<span class="saved">Walked'+(S.read[n]?" · "+esc(niceYmd(S.read[n])):"" )+'</span>'
+      :'<button class="btn main" id="done">I walked this</button>')
+    +'<button class="btn ghost" id="prev">← Previous</button>'
+    +'<button class="btn ghost" id="next">Next →</button>'
+    +'</div>'
+    +'<div class="actions-sub">'
+    +'<button class="speak" id="speak" aria-label="Read aloud" title="Read aloud">'+iconSpeak(false)+'</button>'
+    +'<button class="btn text" id="share">Copy these words</button>'
+    +(!isToday?'<button class="btn text" id="goToday">Today</button>':'')
+    +(fromTab==="browse"&&!isToday?'<button class="btn text" id="goBrowse">The eighty-one</button>':'')
+    +(fromTab==="journal"?'<button class="btn text" id="goJournal">Journal</button>':'')
+    +'</div></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+  $("#fav").onclick=function(){if(S.fav[n])delete S.fav[n];else S.fav[n]=1;save();chapter(n,isToday)};
+  var done=$("#done");if(done)done.onclick=function(){markWalked(n);chapter(n,isToday)};
+  $("#prac").onchange=function(){
+    if(this.checked){S.practice[n]=ymd();markWalked(n)}
+    else{delete S.practice[n];save()}
+    var row=document.querySelector(".row");
+    if(row&&S.read[n]){
+      var done=document.getElementById("done");
+      if(done){
+        var span=document.createElement("span");
+        span.className="saved";
+        span.textContent="Walked · "+niceYmd(S.read[n]);
+        done.replaceWith(span);
+      }
+    }
+  };
+  $("#prev").onclick=function(){fromTab=fromTab||"today";var p=n===1?N:n-1;chapter(p,p===todayN())};
+  $("#next").onclick=function(){fromTab=fromTab||"today";var nx=n===N?1:n+1;chapter(nx,nx===todayN())};
+  var g=$("#goToday");if(g)g.onclick=function(){go("today")};
+  var gb=$("#goBrowse");if(gb)gb.onclick=function(){go("browse")};
+  var gj=$("#goJournal");if(gj)gj.onclick=function(){go("journal")};
+  var ta=$("#note");
+  var saveNote=function(){
+    var v=ta.value.trim();if(!v)return;
+    var prev=(S.notes[n]||[]).slice(-1)[0];
+    if(prev&&prev.t===v&&prev.d===ymd()){ta.value="";return}
+    (S.notes[n]=S.notes[n]||[]).push({d:ymd(),t:v});
+    S.days[ymd()]=1;if(S.draft)delete S.draft[n];save();
+    ta.value="";
+    var s=$("#saved");if(s){s.hidden=false;setTimeout(function(){s.hidden=true},1600)}
+    var box=ta.closest(".box");
+    if(box){
+      var htmlN='<div class="entry"><small>'+esc(niceYmd(ymd()))+'</small><p>'+esc(v)+'</p></div>';
+      var row=box.querySelector(".row");
+      if(row)row.insertAdjacentHTML("afterend",htmlN);
+    }
+  };
+  ta.addEventListener("input",function(){S.draft[n]=ta.value;save()});
+  $("#saveNote").onclick=saveNote;
+  var more=$("#moreNotes");
+  if(more)more.onclick=function(){
+    more.insertAdjacentHTML("beforebegin",shown.slice(2).map(function(e){return'<div class="entry"><small>'+esc(niceYmd(e.d))+'</small><p>'+esc(e.t)+'</p></div>'}).join(""));
+    more.remove();
+  };
+  $("#share").onclick=function(){shareChapter(n)};
+  $("#speak").onclick=function(){toggleSpeak(n,this)};
+}
+function markWalked(n){
+  S.read[n]=S.read[n]||ymd();
+  S.days[ymd()]=1;
+  save();
+}
+function shareChapter(n){
+  var c=CH[n-1];
+  var text=c[0]+"\nChapter "+n+" of "+N+"\n\n"+c[2]+"\n\nReflect\n"+c[3]+"\n\nPractise today\n"+c[4];
+  if(navigator.share){
+    navigator.share({title:c[0],text:text}).catch(function(){copyText(text)});
+  }else copyText(text);
+}
+function copyText(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(function(){toast("Copied")}).catch(function(){toast("Could not copy")});
+  }else toast("Copy from the page");
+}
+var speaking=false;
+function toggleSpeak(n,btn){
+  if(!window.speechSynthesis){toast("Reading aloud isn’t available here");return}
+  if(speaking){speechSynthesis.cancel();speaking=false;btn.classList.remove("on");btn.innerHTML=iconSpeak(false);return}
+  var c=CH[n-1];
+  var u=new SpeechSynthesisUtterance(c[0]+". "+c[2].replace(/\n+/g," ")+". "+c[3]+". Practise today. "+c[4]);
+  u.rate=.92;u.pitch=1;
+  u.onend=function(){speaking=false;btn.classList.remove("on");btn.innerHTML=iconSpeak(false)};
+  speaking=true;btn.classList.add("on");btn.innerHTML=iconSpeak(true);
+  speechSynthesis.cancel();speechSynthesis.speak(u);
+}
+
+function browse(){
+  var q=query.toLowerCase(),list=[];
+  for(var i=1;i<=N;i++){
+    var c=CH[i-1];
+    if(filter==="read"&&!S.read[i])continue;
+    if(filter==="unread"&&S.read[i])continue;
+    if(filter==="fav"&&!S.fav[i])continue;
+    if(q&&(c[0]+" "+c[2]+" "+c[3]+" "+c[4]).toLowerCase().indexOf(q)<0&&String(i)!==q)continue;
+    list.push(i);
+  }
+  var chips=[["all","All"],["unread","Unread"],["read","Walked"],["fav","Kept"]].map(function(x){
+    return '<button class="chip'+(filter===x[0]?" on":"")+'" data-f="'+x[0]+'">'+x[1]+'</button>';
+  }).join("");
+  var tn=todayN();
+  app.innerHTML=head()+'<div class="fade"><h2 class="grad" style="font-size:1.85rem;margin-bottom:14px">The eighty-one</h2>'
+    +'<input type="search" id="q" placeholder="A title, a word, a number" value="'+esc(query)+'" aria-label="Search chapters">'
+    +'<div class="chips">'+chips+'</div>'
+    +'<div class="grid">'+list.map(function(i){
+      return '<button class="tile'+(S.read[i]?" done":"")+(S.fav[i]?" heart":"")+(i===tn?" today":"")+'" data-n="'+i+'">'
+        +art(i,CH[i-1][1])+'<span class="n">'+i+(i===tn?" · today":"")+'</span><span class="lab">'+esc(CH[i-1][0])+'</span></button>';
+    }).join("")+'</div>'
+    +(list.length?"":'<p class="small center" style="margin-top:36px">Nothing matches that yet.</p>')+'</div>';
+  var inp=$("#q");
+  inp.oninput=function(e){
+    query=e.target.value;
+    var p=e.target.selectionStart;
+    if(window._qT)clearTimeout(window._qT);
+    window._qT=setTimeout(function(){browse();var n=$("#q");if(n){n.focus();try{n.setSelectionRange(p,p)}catch(err){}}},80);
+  };
+  [].forEach.call(document.querySelectorAll(".chip"),function(b){b.onclick=function(){filter=b.dataset.f;browse()}});
+  [].forEach.call(document.querySelectorAll(".tile"),function(b){b.onclick=function(){fromTab="browse";setTab("browse");chapter(+b.dataset.n,+b.dataset.n===tn)}});
+}
+
+function journal(){
+  var all=[];
+  Object.keys(S.notes).forEach(function(n){S.notes[n].forEach(function(e){all.push({n:+n,d:e.d,t:e.t})})});
+  all.sort(function(a,b){return a.d<b.d?1:a.d>b.d?-1:b.n-a.n});
+  app.innerHTML=head()+'<div class="fade"><h2 class="grad" style="font-size:1.85rem;margin-bottom:6px">Journal</h2>'
+    +'<p class="small">Lines you have written. They stay on this device.</p>'
+    +(all.length?all.map(function(e){
+      return '<div class="entry"><small>'+esc(niceYmd(e.d))+' · <a href="#" data-n="'+e.n+'">Ch. '+e.n+' '+esc(CH[e.n-1][0])+'</a></small><p>'+esc(e.t)+'</p></div>';
+    }).join(""):'<div class="box center"><p>No lines yet. One sentence on today’s chapter is enough.</p><div class="row" style="justify-content:center"><button class="btn main" id="openToday">Open today’s chapter</button></div></div>')
+    +(all.length?'<div class="row"><button class="btn" id="exp">Export</button><button class="btn ghost" id="shareJ">Share</button></div>':'')
+    +'</div>';
+  [].forEach.call(document.querySelectorAll(".entry a"),function(a){a.onclick=function(ev){ev.preventDefault();fromTab="journal";setTab("journal");chapter(+a.dataset.n,+a.dataset.n===todayN())}});
+  var ot=$("#openToday");if(ot)ot.onclick=function(){go("today")};
+  var x=$("#exp");
+  if(x)x.onclick=function(){
+    var t=all.map(function(e){return e.d+"  Chapter "+e.n+" — "+CH[e.n-1][0]+"\n"+e.t}).join("\n\n");
+    try{var b=new Blob([t],{type:"text/plain"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="tao-journal.txt";document.body.appendChild(a);a.click();a.remove();toast("Exported")}catch(e){copyText(t)}
+  };
+  var sj=$("#shareJ");
+  if(sj)sj.onclick=function(){
+    var t=all.map(function(e){return e.d+"  Chapter "+e.n+" — "+CH[e.n-1][0]+"\n"+e.t}).join("\n\n");
+    if(navigator.share)navigator.share({title:"Tao journal",text:t}).catch(function(){copyText(t)});
+    else copyText(t);
+  };
+}
+
+function pathView(){
+  var rc=Object.keys(S.read).length,fc=Object.keys(S.fav).length,st=streak(),tn=todayN();
+  var dots="";
+  for(var i=1;i<=N;i++){
+    var cls="dot";
+    if(i===tn)cls+=" today";
+    else if(S.read[i])cls+=" walked";
+    else if(S.fav[i])cls+=" kept";
+    dots+='<button class="'+cls+'" data-n="'+i+'" title="Chapter '+i+' · '+esc(CH[i-1][0])+'" aria-label="Chapter '+i+'"></button>';
+  }
+  var standalone=window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches;
+  var a2hs=(!standalone&&!S.hideA2HS)
+    ?'<div class="a2hs" id="a2hs">Add this to your home screen if you want it like a small book in your pocket. <button class="btn text" id="hideA2HS">Not now</button></div>'
+    :"";
+  app.innerHTML=head()+'<div class="fade"><h2 class="grad" style="font-size:1.85rem;margin-bottom:8px">Your path</h2>'
+    +'<p class="small" style="margin-top:0">Eighty-one chapters. One a day. Then begin again.</p>'
+    +'<div class="stat"><div><b>'+rc+'</b><span>Walked</span></div><div><b>'+st+'</b><span>Days walking</span></div><div><b>'+fc+'</b><span>Kept</span></div></div>'
+    +'<div class="box"><h3>The eighty-one</h3><div class="path81">'+dots+'</div></div>'
+    +'<div class="box"><h3>How this works</h3><p>One chapter a day, in order, from the day you began. After chapter '+N+' it returns to the first — the book is meant to be walked again. Open any chapter whenever you like.</p></div>'
+    +'<div class="box"><h3>About the wording</h3><p>The Tao Te Ching is old, and it has many translations. These pages carry the spirit of each chapter in plain language. They are not meant to replace a scholarly one. If a chapter moves you, read it in a few versions and notice what changes.</p></div>'
+    +'<div class="box"><h3>Private and offline</h3><p>Notes, kept chapters and your place stay on this phone. Nothing is sent away. It works without a connection.</p></div>'
+    +'<div class="box"><h3>This copy</h3><p>You own this file. Keep it on as many of your own devices as you like. Notes never leave the device they are written on.</p><p style="margin-top:10px">The Tao Te Ching is ancient and belongs to everyone. The plain wording and this companion are © 2026 Judith Anne Crighton / NumeraKey. Please do not resell the file or present the wording as a scholarly translation.</p><p class="small" style="margin-top:10px">Version 1.0 · Yours to keep.</p></div>'
+    +'<div class="box"><h3>Reading</h3><p class="small" style="margin-bottom:10px">Ink for night. Parchment for day. Larger type if the eyes are tired.</p>'
+    +'<div class="ctrl"><button class="chip'+(S.theme==="ink"?" on":"")+'" id="thInk">Ink</button>'
+    +'<button class="chip'+(S.theme==="parchment"?" on":"")+'" id="thParch">Parchment</button></div>'
+    +'<div class="ctrl"><button class="chip'+(S.size==="s"?" on":"")+'" id="szS">A−</button>'
+    +'<button class="chip'+(S.size==="m"?" on":"")+'" id="szM">A</button>'
+    +'<button class="chip'+(S.size==="l"?" on":"")+'" id="szL">A+</button></div></div>'
+    +a2hs
+    +'<div class="box"><h3>This copy</h3><p>You own this file. Keep it on as many of your own devices as you like. Notes never leave the device they are written on.</p><p style="margin-top:10px">The Tao Te Ching is ancient and belongs to everyone. The plain wording and this companion are yours to keep. Please don’t resell the file or present the wording as a scholarly translation.</p><p class="small" style="margin-top:10px">Tao · 1.0 · A NumeraKey companion. © 2026 Judith Anne Crighton.</p></div>'
+    +'<div class="box"><h3>This copy</h3><p>This is a copy you keep. Notes, kept chapters and your place stay on this device. Nothing is sent away.</p><p class="small" style="margin-top:10px">Version 1.0 · NumeraKey</p></div>'
+    +'<div class="box"><h3>Begin again</h3><p class="small" style="margin-bottom:10px">Today becomes chapter 1 again. Walking history clears. Notes and kept chapters stay.</p>'
+    +'<button class="btn" id="restart">Restart from chapter 1</button></div></div>';
+  [].forEach.call(document.querySelectorAll(".path81 button"),function(b){
+    b.onclick=function(){fromTab="path";setTab("path");chapter(+b.dataset.n,+b.dataset.n===tn)};
+  });
+  $("#thInk").onclick=function(){S.theme="ink";save();applyChrome();pathView()};
+  $("#thParch").onclick=function(){S.theme="parchment";save();applyChrome();pathView()};
+  $("#szS").onclick=function(){S.size="s";save();applyChrome();pathView()};
+  $("#szM").onclick=function(){S.size="m";save();applyChrome();pathView()};
+  $("#szL").onclick=function(){S.size="l";save();applyChrome();pathView()};
+  var hide=$("#hideA2HS");if(hide)hide.onclick=function(){S.hideA2HS=true;save();pathView()};
+  $("#restart").onclick=function(){
+    if(this.dataset.sure!=="1"){
+      this.dataset.sure="1";this.textContent="Tap again to begin at chapter 1";
+      var btn=this;setTimeout(function(){if(btn.dataset.sure==="1"){btn.dataset.sure="";btn.textContent="Restart from chapter 1"}},4000);
+      return;
+    }
+    S.start=ymd();S.read={};S.days={};S.practice={};save();go("today");
+  };
+}
+
+function welcome(){
+  document.body.classList.add("welcome");
+  app.innerHTML='<div class="veil fade center"><h1 class="grad">Tao</h1>'
+    +'<p>Eighty-one chapters.</p><p>One a day.</p><p>Nothing leaves this device.</p>'
+    +'<div class="row" style="justify-content:center;margin-top:28px"><button class="btn main" id="begin">Begin the walk</button></div></div>';
+  $("#begin").onclick=function(){
+    S.welcomed=true;S.start=S.start||ymd();save();go("today");
+  };
+}
+
+function setTab(t){
+  [].forEach.call(document.querySelectorAll("nav.tabs button"),function(b){
+    var on=b.dataset.v===t;
+    b.classList.toggle("on",on);
+    if(on)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");
+  });
+}
+function go(v){
+  document.body.classList.remove("welcome");
+  view=v;fromTab=v;setTab(v==="today"?"today":v);
+  if(window.speechSynthesis)try{speechSynthesis.cancel()}catch(e){}
+  speaking=false;
+  if(v==="today")chapter(todayN(),true);
+  else if(v==="browse")browse();
+  else if(v==="journal")journal();
+  else pathView();
+  window.scrollTo(0,0);
+}
+
+function bootIcons(){
+  try{
+    var icon='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#0c0b0a"/><circle cx="256" cy="256" r="148" fill="none" stroke="#d6b882" stroke-width="28" stroke-linecap="round" stroke-dasharray="780 190"/><circle cx="256" cy="256" r="16" fill="#7eb8a8"/></svg>');
+    var m={name:"Tao — 81 chapters, one a day",short_name:"Tao",start_url:".",display:"standalone",background_color:"#0c0b0a",theme_color:"#0c0b0a",icons:[{src:icon,sizes:"512x512",type:"image/svg+xml",purpose:"any"}]};
+    var l=document.createElement("link");l.rel="manifest";l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:"application/manifest+json"}));document.head.appendChild(l);
+    var a=document.createElement("link");a.rel="apple-touch-icon";a.href=icon;document.head.appendChild(a);
+    var i=document.createElement("link");i.rel="icon";i.href=icon;document.head.appendChild(i);
+  }catch(e){}
+}
+
+function boot(){
+  if(!N){app.innerHTML="<p style='padding:30px'>No chapters loaded.</p>";return}
+  load();
+  [].forEach.call(document.querySelectorAll("nav.tabs button"),function(b){b.onclick=function(){go(b.dataset.v)}});
+  bootIcons();
+  if(!S.welcomed)welcome();
+  else{
+    if(!S.start){S.start=ymd();save()}
+    go("today");
+  }
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",boot);else boot();
+})();
+
+
+</script>
+</body>
+</html>
