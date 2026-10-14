@@ -54,7 +54,8 @@ const FILES = {
   "nua": "private/nua.html",
   "quietshore": "private/quietshore.html",
   "soulsync": "private/soulsync.html",
-  "your-wishes": "private/your-wishes.html"
+  "your-wishes": "private/your-wishes.html",
+  "premium-budget": "private/premium-budget.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
