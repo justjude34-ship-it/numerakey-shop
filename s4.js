@@ -172,6 +172,7 @@ const AP4 = [
 },
 {
   slug:"aurora-emdr", name:"Aurora EMDR", cat:"ptsd", price:59, status:"live", ready:true,
+  cover:"covers/aurora-emdr.jpg",
   desc:"A guardian light on the path — butterfly BLS studio, stabilisation work and a guided session, private on your device.",
   tag:"Each step is light on the path.",
   body:[
