@@ -241,6 +241,7 @@ APPS.push({
 
 APPS.push({
   slug:"omni", name:"Omni", cat:"wellness", price:39, status:"live", ready:true,
+  cover:"covers/omni.jpg",
   demo:"https://omni-app1.netlify.app",
   desc:"A still-lake breathing studio \u2014 one orb, one breath at a time, in a day or night look.",
   tag:"Still water. Soft light.",
