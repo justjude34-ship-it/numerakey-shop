@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<meta name="theme-color" content="#05070d"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="description" content="Serenity Gratitude Journal — a quiet daily practice. Pause. Notice. Write it down. Private, offline, buy once."/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<title>Serenity — Gratitude Journal</title>
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Serenity%20Gratitude%20Journal%22%2C%22short_name%22%3A%22Serenity%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%2305070d%22%2C%22theme_color%22%3A%22%2305070d%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2064%2064'%253E%253Crect%20width%3D'64'%20height%3D'64'%20rx%3D'14'%20fill%3D'%2305070d'%2F%253E%253Cpath%20d%3D'M32%2048C30.5%2046.8%2016%2036.2%2016%2025.5a9.5%209.5%200%200%201%2015.2-7.5A9.5%209.5%200%200%201%2048%2025.5C48%2036.2%2033.5%2046.8%2032%2048z'%20fill%3D'%232dd4bf'%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%232dd4bf'/%3E%3Cstop offset='1' stop-color='%23f9a8d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%2305070d'/%3E%3Cpath d='M32 48C30.5 46.8 16 36.2 16 25.5a9.5 9.5 0 0 1 15.2-7.5A9.5 9.5 0 0 1 48 25.5C48 36.2 33.5 46.8 32 48z' fill='url(%23g)'/%3E%3C/svg%3E"/>
+<style>
+:root{
+  --bg:#05070d;--bg2:#0a0e18;--card:rgba(12,18,32,.78);--card-solid:#0e1424;
+  --teal:#2dd4bf;--teal-bright:#5eead4;--teal-deep:#14b8a6;
+  --pink:#f9a8d4;--pink-deep:#f472b6;
+  --gold:#f6e7a1;--gold-mid:#e0b84a;--gold-soft:#f3d67a;
+  --green:#4ade80;--blue:#7dd3fc;--lilac:#c4b5fd;
+  --text:#eef2f8;--muted:#9aa8c0;--border:rgba(45,212,191,.2);
+  --shadow:0 14px 44px rgba(0,0,0,.5);--radius:18px;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;border:none;cursor:pointer;background:none;color:inherit}
+textarea,input{font:inherit;color:inherit;background:transparent;border:none;outline:none;resize:none;width:100%}
+.app{height:100%;position:relative;overflow:hidden}
+
+.cosmic{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 50% at 18% 8%,rgba(45,212,191,.16),transparent 55%),
+    radial-gradient(ellipse 70% 45% at 88% 18%,rgba(244,114,182,.12),transparent 50%),
+    radial-gradient(ellipse 55% 35% at 50% 55%,rgba(224,184,74,.07),transparent 55%),
+    radial-gradient(ellipse 100% 80% at 50% 50%,#080c16,var(--bg));
+}
+.cosmic::before{
+  content:"";position:absolute;inset:0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 10% 20%,rgba(255,255,255,.55),transparent),
+    radial-gradient(1px 1px at 30% 60%,rgba(255,255,255,.35),transparent),
+    radial-gradient(1.5px 1.5px at 70% 15%,rgba(255,255,255,.5),transparent),
+    radial-gradient(1px 1px at 85% 55%,rgba(255,255,255,.3),transparent),
+    radial-gradient(1px 1px at 50% 40%,rgba(255,255,255,.28),transparent),
+    radial-gradient(1.5px 1.5px at 20% 80%,rgba(255,255,255,.4),transparent),
+    radial-gradient(1px 1px at 60% 75%,rgba(255,255,255,.32),transparent),
+    radial-gradient(1px 1px at 42% 12%,rgba(246,231,161,.45),transparent);
+  opacity:.75;animation:twinkle 9s ease-in-out infinite alternate;
+}
+.aurora{
+  position:absolute;width:140%;height:62%;left:-20%;top:-8%;
+  background:conic-gradient(from 180deg at 50% 50%,
+    transparent 0deg,rgba(45,212,191,.13) 55deg,transparent 115deg,
+    rgba(244,114,182,.1) 190deg,transparent 250deg,rgba(224,184,74,.09) 310deg,transparent 360deg);
+  filter:blur(42px);animation:drift 20s ease-in-out infinite alternate;opacity:.95;
+}
+@keyframes twinkle{from{opacity:.4}to{opacity:.9}}
+@keyframes drift{from{transform:rotate(-7deg) translateY(0)}to{transform:rotate(7deg) translateY(18px)}}
+@keyframes breathe{from{opacity:.55;transform:translateX(-50%) scale(.96)}to{opacity:.9;transform:translateX(-50%) scale(1.04)}}
+
+.screen{position:absolute;inset:0;z-index:1;display:none;flex-direction:column;
+  padding:max(16px,env(safe-area-inset-top)) 20px max(20px,var(--safe-b));
+  overflow-y:auto;-webkit-overflow-scrolling:touch}
+.screen.active{display:flex}
+
+/* COVER */
+#cover{align-items:center;justify-content:center;text-align:center;padding-left:16px;padding-right:16px}
+.cover-frame{
+  position:relative;width:100%;max-width:380px;
+  border:1.5px solid rgba(224,184,74,.55);
+  border-radius:28px;padding:2px;
+  box-shadow:0 0 0 1px rgba(246,231,161,.18), inset 0 0 0 1px rgba(246,231,161,.12), 0 20px 60px rgba(0,0,0,.45);
+  background:linear-gradient(160deg,rgba(246,231,161,.12),rgba(45,212,191,.04) 40%,rgba(244,114,182,.05));
+}
+.cover-inner{
+  display:flex;flex-direction:column;align-items:center;
+  border-radius:26px;padding:36px 22px 28px;
+  background:radial-gradient(ellipse 90% 60% at 50% 35%,rgba(45,212,191,.08),transparent 60%),
+             radial-gradient(ellipse 70% 50% at 55% 55%,rgba(224,184,74,.06),transparent 55%),
+             rgba(5,7,13,.55);
+}
+.crystal{
+  width:46px;height:46px;margin-bottom:10px;opacity:.85;
+  filter:drop-shadow(0 0 12px rgba(246,231,161,.35));
+  animation:breathe 5s ease-in-out infinite alternate;
+  position:relative;left:0;
+}
+.app-icon{
+  width:86px;height:86px;border-radius:22px;margin-bottom:26px;
+  background:#05070d;
+  border:1px solid rgba(255,255,255,.08);
+  display:grid;place-items:center;
+  box-shadow:0 0 36px rgba(45,212,191,.35),0 0 70px rgba(244,114,182,.2),0 14px 28px rgba(0,0,0,.45);
+  position:relative;
+}
+.app-icon svg{width:52px;height:52px}
+.label-daily{
+  font-size:11px;letter-spacing:.3em;color:var(--teal);font-weight:650;
+  text-transform:uppercase;margin-bottom:14px;
+}
+.title-serenity{
+  font-size:clamp(42px,11vw,56px);font-weight:720;line-height:1.05;margin-bottom:6px;
+  letter-spacing:-.02em;
+}
+.title-serenity .sere{color:var(--teal-bright)}
+.title-serenity .nity{color:var(--pink)}
+.subtitle{font-size:18px;color:#fff;font-weight:600;margin-bottom:18px}
+.tagline{font-size:14.5px;line-height:1.55;color:var(--muted);max-width:300px;margin-bottom:32px}
+.btn-open{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--teal-deep),var(--teal));color:#042f2e;
+  font-weight:720;font-size:16px;padding:16px 36px;border-radius:999px;
+  box-shadow:0 8px 28px rgba(45,212,191,.4);transition:transform .15s;
+  min-height:52px;width:min(100%,300px);justify-content:center;
+}
+.btn-open:active{transform:scale(.97)}
+.btn-open svg{width:20px;height:20px}
+.footer-tag{margin-top:28px;font-size:13px;color:rgba(154,168,192,.75);letter-spacing:.04em}
+
+/* HOME */
+.home-header{display:flex;align-items:center;gap:12px;margin-bottom:22px;padding-top:4px}
+.home-header .mini-icon{
+  width:42px;height:42px;border-radius:12px;flex-shrink:0;
+  background:#05070d;border:1px solid rgba(45,212,191,.25);
+  display:grid;place-items:center;
+  box-shadow:0 0 18px rgba(45,212,191,.3);
+}
+.home-header .mini-icon svg{width:24px;height:24px}
+.home-header .titles{display:flex;flex-direction:column;gap:1px}
+.home-header .brand{
+  font-size:10px;letter-spacing:.22em;font-weight:720;
+  background:linear-gradient(90deg,var(--gold),var(--gold-mid),var(--gold-soft));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.home-header .name{font-size:17px;font-weight:650;color:var(--text)}
+
+.silk{
+  display:inline-block;padding:5px 12px;border-radius:999px;margin-bottom:14px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:650;
+  color:var(--gold);background:linear-gradient(90deg,rgba(246,231,161,.1),rgba(224,184,74,.06),rgba(243,214,122,.1));
+  border:1px solid rgba(224,184,74,.28);
+}
+
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+.stat{
+  background:var(--card);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:16px;padding:14px 14px 12px;
+  box-shadow:var(--shadow);
+}
+.stat-label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);margin-bottom:6px}
+.stat-label svg{width:14px;height:14px;opacity:.95}
+.stat-value{font-size:22px;font-weight:720;line-height:1.1}
+.stat-value.pink{color:var(--pink-deep);font-size:18px}
+
+.actions{display:flex;gap:10px;margin-bottom:20px}
+.btn-primary,.btn-secondary{
+  flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:14px 16px;border-radius:14px;font-weight:680;font-size:15px;min-height:50px;
+  transition:transform .12s;
+}
+.btn-primary:active,.btn-secondary:active{transform:scale(.97)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--teal-deep),var(--teal));color:#042f2e;
+  box-shadow:0 6px 20px rgba(45,212,191,.35);
+}
+.btn-secondary{
+  background:rgba(45,212,191,.1);border:1px solid var(--border);color:var(--teal);
+}
+.btn-primary svg,.btn-secondary svg{width:18px;height:18px}
+
+.cal-wrap{margin-bottom:8px}
+.cal-label{
+  font-size:12px;margin-bottom:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:650;
+  background:linear-gradient(90deg,var(--gold),var(--gold-mid));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.cal-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+.cal-strip::-webkit-scrollbar{display:none}
+.cal-day{
+  flex:0 0 auto;width:56px;height:68px;border-radius:16px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  background:var(--card);border:1px solid rgba(255,255,255,.06);
+}
+.cal-day .dow{font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--muted);text-transform:uppercase}
+.cal-day .dom{font-size:18px;font-weight:700}
+.cal-day.today{
+  background:linear-gradient(160deg,var(--teal-deep),#0f766e);
+  border-color:transparent;box-shadow:0 6px 20px rgba(20,184,166,.4);
+}
+.cal-day.today .dow,.cal-day.today .dom{color:#fff}
+.cal-day.has-entry:not(.today){border-color:rgba(45,212,191,.45)}
+.cal-day.has-entry:not(.today) .dom{color:var(--teal)}
+.cal-day .dot{width:5px;height:5px;border-radius:50%;background:var(--teal);margin-top:2px}
+.cal-day.today .dot{background:#fff}
+
+.empty-hint{text-align:center;color:var(--muted);font-size:14px;padding:28px 12px;line-height:1.5}
+
+/* WRITE */
+.write-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-top:4px}
+.write-top h2{
+  font-size:20px;font-weight:720;
+  background:linear-gradient(90deg,var(--gold),var(--gold-mid),var(--gold-soft));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.btn-back{
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--muted);
+}
+.btn-back svg{width:20px;height:20px}
+
+.blessings{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.bless-card{
+  display:flex;gap:12px;align-items:flex-start;
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:14px;box-shadow:var(--shadow);
+}
+.bless-num{
+  flex-shrink:0;width:28px;height:28px;border-radius:50%;
+  background:rgba(45,212,191,.15);border:1.5px solid var(--teal);
+  color:var(--teal);font-size:13px;font-weight:700;
+  display:grid;place-items:center;margin-top:2px;
+}
+.bless-card textarea{min-height:48px;line-height:1.45;font-size:15px;padding-top:4px}
+.bless-card textarea::placeholder{color:rgba(154,168,192,.65)}
+
+.btn-add{
+  display:inline-flex;align-items:center;gap:6px;align-self:flex-start;
+  color:var(--teal);font-size:14px;font-weight:600;padding:8px 4px;margin-bottom:22px;
+}
+.btn-add svg{width:16px;height:16px}
+
+.section-label{font-size:14px;font-weight:620;color:var(--text);margin-bottom:12px}
+.moods{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.mood{
+  display:flex;align-items:center;gap:7px;padding:10px 14px;border-radius:999px;
+  background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.1);
+  font-size:13px;font-weight:600;color:var(--muted);min-height:42px;transition:all .15s;
+}
+.mood svg{width:16px;height:16px}
+.mood.selected{color:#fff;transform:scale(1.03)}
+.mood[data-mood="Grateful"].selected{background:rgba(244,114,182,.2);border-color:var(--pink-deep);color:#fbcfe8}
+.mood[data-mood="Glad"].selected{background:rgba(243,214,122,.18);border-color:var(--gold-mid);color:var(--gold)}
+.mood[data-mood="Calm"].selected{background:rgba(74,222,128,.18);border-color:var(--green);color:#bbf7d0}
+.mood[data-mood="Tired"].selected{background:rgba(125,211,252,.18);border-color:var(--blue);color:#bae6fd}
+.mood[data-mood="Low"].selected{background:rgba(196,181,253,.18);border-color:var(--lilac);color:#e9d5ff}
+
+.reflect-card{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:14px;margin-bottom:20px;box-shadow:var(--shadow);
+}
+.reflect-card label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}
+.reflect-card textarea{min-height:72px;font-size:15px;line-height:1.45}
+.reflect-card textarea::placeholder{color:rgba(154,168,192,.55)}
+
+.btn-save{
+  width:100%;padding:16px;border-radius:16px;font-weight:720;font-size:16px;
+  background:linear-gradient(135deg,var(--teal-deep),var(--teal));color:#042f2e;
+  box-shadow:0 8px 28px rgba(45,212,191,.4);min-height:54px;margin-bottom:12px;
+}
+.btn-save:active{transform:scale(.98)}
+.btn-save:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* HISTORY */
+.history-list{display:flex;flex-direction:column;gap:12px;padding-bottom:20px}
+.entry{
+  background:var(--card);border:1px solid var(--border);border-radius:16px;
+  padding:16px;box-shadow:var(--shadow);
+}
+.entry-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
+.entry-date{font-size:13px;color:var(--muted);font-weight:500}
+.entry-mood{font-size:12px;font-weight:650;padding:4px 10px;border-radius:999px;background:rgba(255,255,255,.06)}
+.entry-mood.Grateful{color:#fbcfe8;background:rgba(244,114,182,.15)}
+.entry-mood.Glad{color:var(--gold);background:rgba(243,214,122,.14)}
+.entry-mood.Calm{color:#bbf7d0;background:rgba(74,222,128,.14)}
+.entry-mood.Tired{color:#bae6fd;background:rgba(125,211,252,.14)}
+.entry-mood.Low{color:#e9d5ff;background:rgba(196,181,253,.14)}
+.entry-blessings{list-style:none;display:flex;flex-direction:column;gap:6px}
+.entry-blessings li{font-size:14.5px;line-height:1.4;padding-left:18px;position:relative;color:var(--text)}
+.entry-blessings li::before{
+  content:"";position:absolute;left:0;top:7px;width:8px;height:8px;border-radius:50%;
+  background:var(--teal);opacity:.75;
+}
+.entry-reflect{margin-top:10px;font-size:13px;color:var(--muted);font-style:italic;line-height:1.4;
+  border-top:1px solid rgba(255,255,255,.06);padding-top:10px}
+.entry-del{
+  margin-top:10px;font-size:12px;color:rgba(154,168,192,.7);text-decoration:underline;
+  text-underline-offset:3px;
+}
+
+.toast{
+  position:fixed;left:50%;bottom:calc(28px + var(--safe-b));transform:translateX(-50%) translateY(120%);
+  background:rgba(14,20,36,.96);border:1px solid var(--border);color:var(--text);
+  padding:12px 20px;border-radius:12px;font-size:14px;font-weight:600;z-index:50;
+  box-shadow:var(--shadow);transition:transform .3s ease;white-space:nowrap;
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(min-width:480px){
+  .screen{max-width:440px;left:50%;transform:translateX(-50%);right:auto;width:100%}
+  .stats{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="cosmic"><div class="aurora"></div></div>
+<div class="app">
+
+  <section id="cover" class="screen active" aria-label="Cover">
+    <div class="cover-frame">
+      <div class="cover-inner">
+        <svg class="crystal" viewBox="0 0 64 64" aria-hidden="true">
+          <defs>
+            <linearGradient id="cg" x1="0" y1="0" x2="1" y2="1">
+              <stop stop-color="#f6e7a1"/><stop offset=".5" stop-color="#e0b84a"/><stop offset="1" stop-color="#5eead4"/>
+            </linearGradient>
+          </defs>
+          <polygon points="32,6 52,22 44,52 20,52 12,22" fill="url(#cg)" opacity=".35"/>
+          <polygon points="32,10 48,24 42,48 22,48 16,24" fill="none" stroke="url(#cg)" stroke-width="1.4"/>
+          <path d="M32 10 L32 48 M16 24 L48 24 M20 48 L32 24 L44 48" stroke="url(#cg)" stroke-width=".9" opacity=".7"/>
+        </svg>
+        <div class="app-icon" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="hl" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#2dd4bf"/><stop offset="1" stop-color="#5eead4"/>
+              </linearGradient>
+              <linearGradient id="hr" x1="0" y1="0" x2="1" y2="1">
+                <stop stop-color="#fce7f3"/><stop offset="1" stop-color="#f9a8d4"/>
+              </linearGradient>
+            </defs>
+            <path d="M32 50C30.5 48.8 16 38.2 16 27.5a9.5 9.5 0 0 1 15.2-7.5A9.5 9.5 0 0 1 48 27.5C48 38.2 33.5 48.8 32 50z" fill="url(#hl)"/>
+            <path d="M32 50C33.5 48.8 48 38.2 48 27.5a9.5 9.5 0 0 0-15.2-7.5" fill="url(#hr)" opacity=".95"/>
+            <path d="M40 16c3.2-3.8 7.6-3.2 9.4.2 1.2 2.1 1 4.5-.4 6.4L40 34l-6.5-7.8C36 23 37.6 19.5 40 16z" fill="#a7f3d0" fill-opacity=".9"/>
+          </svg>
+        </div>
+        <div class="label-daily">Daily Practice</div>
+        <h1 class="title-serenity"><span class="sere">Seren</span><span class="nity">ity</span></h1>
+        <p class="subtitle">Gratitude Journal</p>
+        <p class="tagline">A quiet cover for a quiet practice. Open when you are ready to notice what is good.</p>
+        <button type="button" class="btn-open" id="btnOpen" aria-label="Open journal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Open journal
+        </button>
+        <p class="footer-tag">Pause. Notice. Write it down.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="home" class="screen" aria-label="Home">
+    <header class="home-header">
+      <div class="mini-icon" aria-hidden="true">
+        <svg viewBox="0 0 64 64" fill="none">
+          <defs><linearGradient id="mh" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2dd4bf"/><stop offset="1" stop-color="#f9a8d4"/></linearGradient></defs>
+          <path d="M32 50C30.5 48.8 16 38.2 16 27.5a9.5 9.5 0 0 1 15.2-7.5A9.5 9.5 0 0 1 48 27.5C48 38.2 33.5 48.8 32 50z" fill="url(#mh)"/>
+        </svg>
+      </div>
+      <div class="titles">
+        <span class="brand">SERENITY</span>
+        <span class="name">Gratitude Journal</span>
+      </div>
+    </header>
+
+    <div class="silk" aria-hidden="true">One quiet page</div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2"><path d="M12 3c.4 2.5 1.6 4.6 3.2 6.2C17 11 18.5 13 18.5 15.5a6.5 6.5 0 1 1-13 0c0-2.2 1.2-4 2.8-5.8C10 7.6 11.4 5.6 12 3z"/></svg>
+          Streak
+        </div>
+        <div class="stat-value" id="statStreak">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7dd3fc" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          This week
+        </div>
+        <div class="stat-value" id="statWeek">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Entries
+        </div>
+        <div class="stat-value" id="statEntries">0</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z"/></svg>
+          Top mood
+        </div>
+        <div class="stat-value pink" id="statMood">—</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button type="button" class="btn-primary" id="btnWrite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Write
+      </button>
+      <button type="button" class="btn-secondary" id="btnHistory">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        History
+      </button>
+    </div>
+
+    <div class="cal-wrap">
+      <div class="cal-label">This week</div>
+      <div class="cal-strip" id="calStrip"></div>
+    </div>
+  </section>
+
+  <section id="write" class="screen" aria-label="Write">
+    <div class="write-top">
+      <button type="button" class="btn-back" id="btnBackWrite" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <h2>Today’s blessings</h2>
+      <div style="width:40px"></div>
+    </div>
+
+    <div class="blessings" id="blessings"></div>
+    <button type="button" class="btn-add" id="btnAdd">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+      Add another
+    </button>
+
+    <div class="section-label">How are you feeling?</div>
+    <div class="moods" id="moods" role="group" aria-label="Mood">
+      <button type="button" class="mood" data-mood="Grateful" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="#f472b6"><path d="M12 21s-6.7-4.35-9.33-7.6C.8 11.2 1.1 7.8 3.5 6.1 5.3 4.8 7.7 5.1 9 6.5L12 9.7l3-3.2c1.3-1.4 3.7-1.7 5.5-.4 2.4 1.7 2.7 5.1.83 7.3C18.7 16.65 12 21 12 21z"/></svg>
+        Grateful
+      </button>
+      <button type="button" class="mood" data-mood="Glad" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#f3d67a" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><circle cx="9" cy="10" r="1" fill="#f3d67a"/><circle cx="15" cy="10" r="1" fill="#f3d67a"/></svg>
+        Glad
+      </button>
+      <button type="button" class="mood" data-mood="Calm" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="#4ade80"><path d="M7 18c4-1 6-5 7-9 2 1 4 3 4 8-3 1-5 2-7 1z"/></svg>
+        Calm
+      </button>
+      <button type="button" class="mood" data-mood="Tired" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="#7dd3fc"><path d="M6 16h12a4 4 0 0 0 0-8 5.5 5.5 0 0 0-10.5-1.5A3.5 3.5 0 0 0 6 16z"/></svg>
+        Tired
+      </button>
+      <button type="button" class="mood" data-mood="Low" aria-pressed="false">
+        <svg viewBox="0 0 24 24" fill="#c4b5fd"><path d="M18 14.5A6.5 6.5 0 0 1 9.5 6 7.5 7.5 0 1 0 18 14.5z"/></svg>
+        Low
+      </button>
+    </div>
+
+    <div class="reflect-card">
+      <label for="reflection">What does this gratitude remind you of? <span style="opacity:.6">(optional)</span></label>
+      <textarea id="reflection" placeholder="A quiet thought…" rows="3"></textarea>
+    </div>
+
+    <button type="button" class="btn-save" id="btnSave">Save entry</button>
+  </section>
+
+  <section id="history" class="screen" aria-label="History">
+    <div class="write-top">
+      <button type="button" class="btn-back" id="btnBackHist" aria-label="Back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <h2>History</h2>
+      <div style="width:40px"></div>
+    </div>
+    <div class="history-list" id="historyList"></div>
+  </section>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  const STORAGE_KEY = 'serenity-gratitude-v1';
+  const PLACEHOLDERS = [
+    'I am grateful for…',
+    'Another blessing…',
+    'Something small that helped…',
+    'A person who made today lighter…',
+    'A quiet moment I noticed…',
+    'One more gift today…'
+  ];
+
+  let entries = load();
+  let selectedMood = null;
+  let blessCount = 2;
+
+  const $ = (s, r=document) => r.querySelector(s);
+  const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+
+  function load(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return [];
+      const data = JSON.parse(raw);
+      return Array.isArray(data) ? data : [];
+    }catch(e){ return []; }
+  }
+  function save(){
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+  }
+
+  function show(id){
+    $$('.screen').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById(id);
+    if(el){ el.classList.add('active'); el.scrollTop = 0; }
+  }
+
+  function toast(msg){
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  function todayKey(d = new Date()){
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return y+'-'+m+'-'+day;
+  }
+
+  function parseKey(k){
+    const [y,m,d] = k.split('-').map(Number);
+    return new Date(y, m-1, d);
+  }
+
+  function daysWithEntries(){
+    return new Set(entries.map(e => e.date));
+  }
+
+  function calcStreak(){
+    const set = daysWithEntries();
+    if(set.size === 0) return 0;
+    let d = new Date();
+    if(!set.has(todayKey(d))){
+      d.setDate(d.getDate()-1);
+      if(!set.has(todayKey(d))) return 0;
+    }
+    let streak = 0;
+    while(set.has(todayKey(d))){
+      streak++;
+      d.setDate(d.getDate()-1);
+    }
+    return streak;
+  }
+
+  function calcWeek(){
+    const now = new Date();
+    const weekAgo = new Date(now);
+    weekAgo.setDate(weekAgo.getDate()-6);
+    weekAgo.setHours(0,0,0,0);
+    return entries.filter(e => parseKey(e.date) >= weekAgo).length;
+  }
+
+  function calcTopMood(){
+    if(!entries.length) return '—';
+    const counts = {};
+    entries.forEach(e => { if(e.mood) counts[e.mood] = (counts[e.mood]||0)+1; });
+    let best = null, n = 0;
+    Object.keys(counts).forEach(k => { if(counts[k] > n){ n = counts[k]; best = k; } });
+    return best || '—';
+  }
+
+  function renderHome(){
+    $('#statStreak').textContent = String(calcStreak());
+    $('#statWeek').textContent = String(calcWeek());
+    $('#statEntries').textContent = String(entries.length);
+    $('#statMood').textContent = calcTopMood();
+    renderCalendar();
+  }
+
+  function renderCalendar(){
+    const strip = $('#calStrip');
+    strip.innerHTML = '';
+    const set = daysWithEntries();
+    const dows = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+    for(let i=0;i<7;i++){
+      const d = new Date();
+      d.setDate(d.getDate()-i);
+      const key = todayKey(d);
+      const el = document.createElement('div');
+      el.className = 'cal-day' + (i===0?' today':'') + (set.has(key)?' has-entry':'');
+      const dowLabel = i===0 ? 'TODAY' : dows[d.getDay()].toUpperCase();
+      el.innerHTML = '<span class="dow">'+dowLabel+'</span><span class="dom">'+d.getDate()+'</span>' +
+        (set.has(key)?'<span class="dot"></span>':'');
+      strip.appendChild(el);
+    }
+  }
+
+  function renderBlessings(){
+    const box = $('#blessings');
+    const existing = $$('textarea', box).map(t => t.value);
+    box.innerHTML = '';
+    for(let i=0;i<blessCount;i++){
+      const card = document.createElement('div');
+      card.className = 'bless-card';
+      const ph = PLACEHOLDERS[Math.min(i, PLACEHOLDERS.length-1)];
+      card.innerHTML =
+        '<div class="bless-num">'+(i+1)+'</div>'+
+        '<textarea rows="2" placeholder="'+ph+'" data-i="'+i+'" aria-label="Blessing '+(i+1)+'"></textarea>';
+      box.appendChild(card);
+      if(existing[i]) $$('textarea', card)[0].value = existing[i];
+    }
+  }
+
+  function resetWrite(){
+    blessCount = 2;
+    selectedMood = null;
+    $('#reflection').value = '';
+    $$('.mood').forEach(m => { m.classList.remove('selected'); m.setAttribute('aria-pressed','false'); });
+    renderBlessings();
+    updateSaveBtn();
+  }
+
+  function updateSaveBtn(){
+    const texts = $$('#blessings textarea').map(t => t.value.trim()).filter(Boolean);
+    $('#btnSave').disabled = texts.length === 0 || !selectedMood;
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function renderHistory(){
+    const list = $('#historyList');
+    if(!entries.length){
+      list.innerHTML = '<p class="empty-hint">No entries yet.<br>Your first blessing is waiting.</p>';
+      return;
+    }
+    const sorted = entries.slice().sort((a,b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id));
+    list.innerHTML = sorted.map(e => {
+      const d = parseKey(e.date);
+      const label = d.toLocaleDateString(undefined,{weekday:'short', month:'short', day:'numeric', year:'numeric'});
+      const blessings = (e.blessings||[]).map(b => '<li>'+escapeHtml(b)+'</li>').join('');
+      const reflect = e.reflection ? '<div class="entry-reflect">'+escapeHtml(e.reflection)+'</div>' : '';
+      return '<article class="entry" data-id="'+escapeHtml(e.id)+'">'+
+        '<div class="entry-meta"><span class="entry-date">'+label+'</span>'+
+        (e.mood?'<span class="entry-mood '+e.mood+'">'+e.mood+'</span>':'')+
+        '</div><ul class="entry-blessings">'+blessings+'</ul>'+reflect+
+        '<button type="button" class="entry-del" data-del="'+escapeHtml(e.id)+'">Remove</button></article>';
+    }).join('');
+  }
+
+  $('#btnOpen').addEventListener('click', () => { renderHome(); show('home'); });
+  $('#btnWrite').addEventListener('click', () => { resetWrite(); show('write'); });
+  $('#btnHistory').addEventListener('click', () => { renderHistory(); show('history'); });
+  $('#btnBackWrite').addEventListener('click', () => { renderHome(); show('home'); });
+  $('#btnBackHist').addEventListener('click', () => { renderHome(); show('home'); });
+
+  $('#btnAdd').addEventListener('click', () => {
+    if(blessCount >= 8){ toast('Eight is a lovely full page'); return; }
+    blessCount++;
+    renderBlessings();
+    updateSaveBtn();
+    const areas = $$('#blessings textarea');
+    areas[areas.length-1].focus();
+  });
+
+  $('#blessings').addEventListener('input', updateSaveBtn);
+
+  $('#moods').addEventListener('click', e => {
+    const btn = e.target.closest('.mood');
+    if(!btn) return;
+    $$('.mood').forEach(m => { m.classList.remove('selected'); m.setAttribute('aria-pressed','false'); });
+    btn.classList.add('selected');
+    btn.setAttribute('aria-pressed','true');
+    selectedMood = btn.dataset.mood;
+    updateSaveBtn();
+  });
+
+  $('#btnSave').addEventListener('click', () => {
+    const blessings = $$('#blessings textarea').map(t => t.value.trim()).filter(Boolean);
+    if(!blessings.length || !selectedMood) return;
+    const entry = {
+      id: Date.now().toString(36)+Math.random().toString(36).slice(2,6),
+      date: todayKey(),
+      mood: selectedMood,
+      blessings,
+      reflection: $('#reflection').value.trim(),
+      createdAt: new Date().toISOString()
+    };
+    entries.push(entry);
+    save();
+    toast('Saved. Well noticed.');
+    renderHome();
+    show('home');
+  });
+
+  $('#historyList').addEventListener('click', e => {
+    const btn = e.target.closest('[data-del]');
+    if(!btn) return;
+    const id = btn.getAttribute('data-del');
+    entries = entries.filter(x => x.id !== id);
+    save();
+    toast('Removed.');
+    renderHistory();
+    renderHome();
+  });
+
+  renderBlessings();
+
+  // Offline-friendly service worker (single-file cache)
+  if('serviceWorker' in navigator){
+    const sw = `
+      const CACHE='serenity-v2';
+      self.addEventListener('install', e => {
+        e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./','./index.html']).catch(()=>{})));
+        self.skipWaiting();
+      });
+      self.addEventListener('activate', e => {
+        e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));
+        self.clients.claim();
+      });
+      self.addEventListener('fetch', e => {
+        if(e.request.method!=='GET') return;
+        e.respondWith(
+          caches.match(e.request).then(r => r || fetch(e.request).then(res => {
+            const copy = res.clone();
+            caches.open(CACHE).then(c => c.put(e.request, copy)).catch(()=>{});
+            return res;
+          }).catch(() => caches.match('./index.html')))
+        );
+      });
+    `;
+    const blob = new Blob([sw], {type:'text/javascript'});
+    const url = URL.createObjectURL(blob);
+    navigator.serviceWorker.register(url).catch(()=>{});
+  }
+})();
+</script>
+</body>
+</html>
