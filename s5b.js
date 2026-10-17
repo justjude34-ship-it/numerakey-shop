@@ -18,6 +18,20 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
+  slug:"what-now", name:"What Now?", cat:"narc", price:29, status:"live", ready:true,
+  cover:"covers/what-now.jpg",
+  demo:"https://what-now-7.netlify.app",
+  desc:"Support and information for anyone in, leaving, or recovering from a relationship with a narcissist.",
+  tag:"Go at your own pace.",
+  body:[
+    "What Now? starts with one question: what is happening right now? Pick the moment you are in and get plain steps on what to do, what to avoid and what you could say. Around it sits a library of the patterns behind love-bombing, gaslighting, hoovering and smear campaigns, so you can see the playbook instead of doubting yourself.",
+    "It helps you stay steady while you are stuck, plan a safe way out, and protect your bond with your children from parental alienation. When you cannot settle, there is guided breathing, including a four-minute come-down session. Everything stays on your device."
+  ],
+  inside:["Situations guide: what to do, avoid, and say","A library of narcissist patterns and tactics","A safe-leaving plan and checklist","Parental alienation guidance and contact log","Private reality log and journal, optional PIN","Guided breathing and a 4-minute come-down session","Works offline, one file, yours to keep"]
+});
+artFor(APPS[APPS.length - 1]).motif = "rings";
+
+APPS.push({
   slug:"pulse-plus", name:"Pulse Plus", cat:"sound", price:39, status:"live", ready:true,
   cover:"covers/pulse-plus.jpg",
   desc:"A neon music player in teal and magenta for the music you already own — add songs, build playlists, keep it all on your device.",
