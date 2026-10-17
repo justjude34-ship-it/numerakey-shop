@@ -21,6 +21,7 @@ module.exports = async (req, res) => {
     form.set("line_items[0][price_data][unit_amount]", String(Math.round(app.price * 100)));
     form.set("line_items[0][price_data][tax_behavior]", "inclusive");
     form.set("line_items[0][price_data][product_data][name]", app.name);
+    form.set("line_items[0][price_data][product_data][tax_code]", "txcd_10202001");
     form.set("managed_payments[enabled]", "true");
     form.set("metadata[slug]", slug);
     form.set("success_url", origin + "/#/thanks/" + slug + "?s={CHECKOUT_SESSION_ID}");
