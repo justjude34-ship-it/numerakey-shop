@@ -13,13 +13,14 @@ function loadCatalogue() {
   return vm.runInNewContext(src, {}, { timeout: 2000 });
 }
 
-function stripe(pathAndQuery, formBody) {
+function stripe(pathAndQuery, formBody, version) {
   const key = process.env.STRIPE_SECRET_KEY;
   if (!key) throw new Error("STRIPE_SECRET_KEY is not set");
   return fetch("https://api.stripe.com/v1/" + pathAndQuery, {
     method: formBody ? "POST" : "GET",
     headers: {
       Authorization: "Bearer " + key,
+      ...(version ? { "Stripe-Version": version } : {}),
       ...(formBody ? { "Content-Type": "application/x-www-form-urlencoded" } : {})
     },
     body: formBody ? formBody.toString() : undefined
