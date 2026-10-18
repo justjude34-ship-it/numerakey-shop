@@ -12,6 +12,7 @@ const AP3 = [
 {
   slug:"sacred-address", name:"Sacred Address", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/sacred-address.jpg",
+  demo:"https://sacred-address.vercel.app",
   desc:"The number on your door, read after Thomas Muldoon \u2014 what the place supports, and what it asks of whoever lives there.",
   tag:"The place that chose you.",
   body:[
