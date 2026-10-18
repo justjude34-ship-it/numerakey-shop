@@ -28,7 +28,7 @@ const CATEGORIES = [
 
 const AP1 = [
 {
-  slug:"sanctuary", name:"Sanctuary", cat:"wellness", price:39, status:"live",
+  slug:"sanctuary", name:"Sanctuary", cat:"narc", price:39, status:"live",
   cover:"covers/sanctuary.jpg",
   desc:"The big one \u2014 a companion to talk to, a locked journal, grounding tools and sleep sound.",
   tag:"Nothing is required of you here.",
