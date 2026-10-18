@@ -22,15 +22,15 @@ const AP3 = [
   inside:["Your house, unit or flat number, read in full","Master numbers held whole","Letters in the address counted properly","The working shown at every step","A library of your recent readings","Muldoon's method, credited","Private to your device"]
 },
 {
-  slug:"phillips-inner-self", name:"Phillips Inner Self", cat:"numerology", price:59, status:"live", ready:true,
+  slug:"phillips-inner-self", name:"Inside Your Numbers", cat:"numerology", price:59, status:"live", ready:true,
   cover:"covers/phillips-inner-self.jpg",
-  desc:"David Phillips' reading of the inner self \u2014 the numbers behind how you actually operate.",
+  desc:"The numbers behind how you actually operate \u2014 method after David Phillips' numerology.",
   tag:"The inner self, revealed in numbers.",
   body:[
-    "Phillips' own framework for the interior life, worked through properly rather than summarised. It reads the numbers that describe temperament and motive, and says what each one does when it is working and what it does when it isn't.",
+    "A framework for the interior life, following David Phillips' numerology and worked through properly rather than summarised. It reads the numbers that describe temperament and motive, and says what each one does when it is working and what it does when it isn't.",
     "One file, no account, no subscription \u2014 it says so on its own front page. Opens from the desktop with the network off, and everything stays on the device."
   ],
-  inside:["Phillips' framework, worked through in full","What each number does well, and badly","No account and no subscription","Runs offline, from one file","Private to your device"]
+  inside:["The framework, worked through in full","What each number does well, and badly","No account and no subscription","Runs offline, from one file","Private to your device"]
 },
 {
   slug:"domain-energy", name:"Domain Energy", cat:"numerology", price:59, status:"live", ready:true,
