@@ -76,7 +76,7 @@ const AP3 = [
   inside:["Monthly, yearly or blank templates","Budgeted against actual, per row","Totals and percentage of income spent","Colour-coded spending pie you control","CSV and PDF export","Auto-saves in the browser as you type"]
 },
 {
-  slug:"paws-of-destiny", name:"Paws of Destiny", cat:"home", price:39, status:"live",
+  slug:"paws-of-destiny", name:"Paws of Destiny", cat:"numerology", price:39, status:"live",
   cover:"covers/paws-of-destiny.jpg",
   desc:"A numerology reading for the animal who shares your life \u2014 name, date, and the nature they came with.",
   tag:"For the one who shares your life.",
@@ -109,7 +109,7 @@ const AP3 = [
   inside:["Bagua mapped to your floor plan","Room-by-room guidance","Fixes using what you own","Annual energy shifts","Notes per room"]
 },
 {
-  slug:"name-your-pet", name:"How to Name Your Pet", cat:"home", price:39, status:"live", ready:true,
+  slug:"name-your-pet", name:"How to Name Your Pet", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/name-your-pet.jpg",
   desc:"Choose a name whose numbers suit the animal, from a catalogue of 2,207 or one of your own.",
   tag:"Find the name whose numbers will live well with your companion.",
