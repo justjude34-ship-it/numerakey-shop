@@ -133,6 +133,7 @@ const AP2 = [
 {
   slug:"numera", name:"Numera", cat:"numerology", price:89, status:"live",
   cover:"covers/numera.jpg",
+  demo:"https://numerakey-numera-demo.vercel.app",
   desc:"The full reading \u2014 Phillips' birth chart and Goodwin's name numerology, run together on one page.",
   tag:"Name and date, read as one.",
   body:[
