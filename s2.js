@@ -146,13 +146,13 @@ const AP2 = [
   slug:"lumen-tarot", name:"Lumen Tarot", cat:"divine", price:39, status:"live",
   cover:"covers/lumen-tarot.jpg",
   demo:"https://numerakey-lumen-tarot-demo.vercel.app",
-  desc:"A full deck and a private reading journal \u2014 light for the question you're holding.",
+  desc:"A full tarot deck with a daily card and a three-card spread \u2014 upright and reversed, entirely private.",
   tag:"Light for the question you are holding.",
   body:[
-    "Ask, draw, and read \u2014 then keep it. Lumen treats the journal as the point rather than an afterthought, so a reading from three months ago is still there when the same question comes round again, which it does.",
+    "Draw the daily card, or lay out a three-card spread, and read what comes up \u2014 upright or reversed. Lumen is a quiet reading for whenever you need one, with the meaning of every card written out in full.",
     "No card packs to unlock and no daily pull held back behind a paywall. The whole deck is yours from the first open, and every reading stays on the device."
   ],
-  inside:["The full deck, upright and reversed","Spreads from a single card upward","Your question recorded with the draw","A journal of past readings you can revisit","Entirely private, entirely offline"]
+  inside:["The full deck, upright and reversed","A daily card","A three-card spread","Sample cards to browse and learn from","Entirely private, entirely offline"]
 },
 {
   slug:"tao", name:"Tao", cat:"divine", price:39, status:"live", ready:true,
