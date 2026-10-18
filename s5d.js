@@ -61,7 +61,8 @@ const FILES = {
   "what-now": "private/what-now.html",
   "money-jar": "private/money-jar.html",
   "black-sheep": "private/black-sheep.html",
-  "coming-home": "private/coming-home.html"
+  "coming-home": "private/coming-home.html",
+  "lumen-tarot": "private/lumen-tarot.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
