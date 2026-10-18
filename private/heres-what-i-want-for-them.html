@@ -280,12 +280,34 @@ function go(id) {
   if (id === 'screen-closing') showClosing();
 }
 
+function pickVoice() {
+  if (!('speechSynthesis' in window)) return;
+  voices = speechSynthesis.getVoices() || [];
+  if (!voices.length) return;
+  const langScore = l => { l = (l || '').replace('_', '-').toLowerCase(); return l === 'en-au' ? 4 : l === 'en-nz' || l === 'en-gb' || l === 'en-ie' ? 3 : l.startsWith('en') ? 2 : 0; };
+  let best = null, bestScore = 0;
+  voices.forEach(v => {
+    let sc = langScore(v.lang);
+    if (!sc) return;
+    if (/natural|neural|online|premium|enhanced|wavenet/i.test(v.name)) sc += 6;
+    if (/google/i.test(v.name)) sc += 2;
+    if (/compact|espeak|novelty/i.test(v.name)) sc -= 5;
+    if (sc > bestScore) { best = v; bestScore = sc; }
+  });
+  selectedVoice = best;
+}
+if ('speechSynthesis' in window) {
+  pickVoice();
+  speechSynthesis.onvoiceschanged = pickVoice;
+}
+
 function speak(text) {
   if (!('speechSynthesis' in window)) return;
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-AU';
-  u.rate = 0.95;
+  if (selectedVoice) { u.voice = selectedVoice; u.lang = selectedVoice.lang; } else { u.lang = 'en-AU'; }
+  u.rate = 0.92;
+  u.pitch = 1;
   speechSynthesis.speak(u);
 }
 
