@@ -124,7 +124,7 @@ const AP4 = [
   inside:["Whole name read as it will be written","Numbers rebuild live as you type","Lock the surname, try first names","Weighed against the Life Path","A name book, girls and boys","Shortlist and compare the final two"]
 },
 {
-  slug:"your-wishes", name:"Your Wishes", cat:"home", price:59, status:"live", ready:true,
+  slug:"your-wishes", name:"Your Wishes", cat:"personal", price:59, status:"live", ready:true,
   cover:"covers/your-wishes.jpg",
   demo:"https://your-final-wishes.netlify.app",
   desc:"A gentle, guided way to put your wishes into words \u2014 for your family, your future and the people you love.",
