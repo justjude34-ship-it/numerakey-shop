@@ -59,7 +59,9 @@ const FILES = {
   "premium-budget": "private/premium-budget.html",
   "heres-what-i-want-for-them": "private/heres-what-i-want-for-them.html",
   "what-now": "private/what-now.html",
-  "money-jar": "private/money-jar.html"
+  "money-jar": "private/money-jar.html",
+  "black-sheep": "private/black-sheep.html",
+  "coming-home": "private/coming-home.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;

@@ -57,6 +57,7 @@ const AP1 = [
 {
   slug:"coming-home", name:"Coming Home", cat:"wellness", price:59, status:"live", ready:true,
   cover:"covers/coming-home.jpg",
+  demo:"https://numerakey-coming-home-demo.vercel.app",
   desc:"Inner child work that builds a safe room first, then goes back for the parts still waiting there.",
   tag:"Stand with the child who still lives in you.",
   body:[
@@ -91,6 +92,7 @@ const AP1 = [
 {
   slug:"black-sheep", name:"The Black Sheep", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/black-sheep.jpg",
+  demo:"https://numerakey-black-sheep-demo.vercel.app",
   desc:"For the one the family named difficult \u2014 and for the adult watching the same coat held out to a child.",
   tag:"You were never the problem.",
   body:[
