@@ -116,7 +116,7 @@ const AP3 = [
 {
   slug:"name-your-pet", name:"How to Name Your Pet", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/name-your-pet.jpg",
-  demo:"https://numerakey-name-your-pet-demo.vercel.app",
+  demo:"https://numerakey-name-your-pet-demo.vercel.app/?preview=1",
   desc:"Choose a name whose numbers suit the animal, from a catalogue of 2,207 or one of your own.",
   tag:"Find the name whose numbers will live well with your companion.",
   body:[
