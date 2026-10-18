@@ -24,7 +24,8 @@ const CATEGORIES = [
   { id:"divine",   name:"Divination",   colour:"#B478F0", note:"Tarot, astrology, and the older systems." },
   { id:"money",    name:"Money",        colour:"#F4B740", note:"Know where it goes." },
   { id:"home",     name:"Home & Pets",  colour:"#EC8FC4", note:"The household, and everyone in it." },
-  { id:"style",    name:"Style",        colour:"#E8A0A8", note:"What suits you, worked out properly." }
+  { id:"style",    name:"Style",        colour:"#E8A0A8", note:"What suits you, worked out properly." },
+  { id:"general",  name:"General",      colour:"#9FB4C7", note:"Handy tools that don't belong on any other shelf." }
 ];
 
 const AP1 = [
