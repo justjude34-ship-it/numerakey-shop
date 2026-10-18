@@ -2,6 +2,7 @@ const AP4 = [
 {
   slug:"accord", name:"Accord", cat:"wellness", price:39, status:"live", ready:true,
   cover:"covers/accord.jpg",
+  demo:"https://numerakey-accord-demo.vercel.app",
   desc:"A practice house built on the Four Agreements \u2014 four rooms, and somewhere to go when you slip.",
   tag:"Four rooms. One accord.",
   body:[
@@ -58,6 +59,7 @@ const AP4 = [
 {
   slug:"nest-light", name:"Nest Light", cat:"wellness", price:59, status:"live", ready:true,
   cover:"covers/nest-light.jpg",
+  demo:"https://numerakey-nest-light-demo.vercel.app",
   desc:"Amy \u2014 a companion who answers out loud, with mood, breath and one tiny next step.",
   tag:"A quiet self-care companion. Not therapy.",
   body:[
@@ -91,6 +93,7 @@ const AP4 = [
 {
   slug:"daily-plate", name:"Daily Plate", cat:"wellness", price:39, status:"live", ready:true,
   cover:"covers/daily-plate.jpg",
+  demo:"https://numerakey-daily-plate-demo.vercel.app",
   desc:"A food diary that knows the Australian shelf \u2014 Woolworths, Coles and ALDI, kept on your phone.",
   tag:"Your plate. On this phone only.",
   body:[
@@ -150,6 +153,7 @@ const AP4 = [
 {
   slug:"nomen", name:"Nomen", cat:"numerology", price:59, status:"live", ready:true,
   cover:"covers/nomen.jpg",
+  demo:"https://numerakey-nomen-demo.vercel.app",
   desc:"Read the name you were given, then find one that carries you better.",
   tag:"Your name is a number. Read it, then find one that carries you further.",
   body:[
@@ -173,6 +177,7 @@ const AP4 = [
 {
   slug:"aurora-emdr", name:"Aurora EMDR", cat:"ptsd", price:59, status:"live", ready:true,
   cover:"covers/aurora-emdr.jpg",
+  demo:"https://numerakey-aurora-emdr-demo.vercel.app",
   desc:"A guardian light on the path — butterfly BLS studio, stabilisation work and a guided session, private on your device.",
   tag:"Each step is light on the path.",
   body:[
@@ -184,6 +189,7 @@ const AP4 = [
 {
   slug:"lumina-emdr", name:"Lumina EMDR", cat:"ptsd", price:59, status:"live", ready:true,
   cover:"covers/lumina-emdr.jpg",
+  demo:"https://numerakey-lumina-emdr-demo.vercel.app",
   desc:"Rainbow bilateral stimulation on pure black — butterfly hug or eye tracking, offline, no account.",
   tag:"Simple, dark, and steady.",
   body:[

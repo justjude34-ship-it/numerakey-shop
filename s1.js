@@ -33,6 +33,7 @@ const AP1 = [
 {
   slug:"sanctuary", name:"Sanctuary", cat:"narc", price:39, status:"live",
   cover:"covers/sanctuary.jpg",
+  demo:"https://numerakey-sanctuary-demo.vercel.app",
   desc:"The big one \u2014 a companion to talk to, a locked journal, grounding tools and sleep sound.",
   tag:"Nothing is required of you here.",
   body:[
@@ -137,6 +138,7 @@ const AP1 = [
 {
   slug:"rise", name:"Rise", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/rise.jpg",
+  demo:"https://numerakey-rise-demo.vercel.app",
   desc:"Name the move as it happens, settle your body, protect your record, and keep going.",
   tag:"A detour, not a destination.",
   body:[
@@ -160,6 +162,7 @@ const AP1 = [
 {
   slug:"auraflow", name:"AuraFlow Plus", cat:"sound", price:39, status:"live",
   cover:"covers/auraflow.jpg",
+  demo:"https://numerakey-auraflow-demo.vercel.app",
   desc:"Four moods and six layers of nature sound, mixed to whatever the evening needs.",
   tag:"Living nature. Yours to mix.",
   body:[
@@ -171,6 +174,7 @@ const AP1 = [
 {
   slug:"vesper", name:"Vesper", cat:"sound", price:29, status:"live", ready:true,
   cover:"covers/vesper.jpg",
+  demo:"https://numerakey-vesper-demo.vercel.app",
   desc:"Binaural beats and Tibetan bronze bowls \u2014 two modes, and they never run together.",
   tag:"One mode at a time.",
   body:[

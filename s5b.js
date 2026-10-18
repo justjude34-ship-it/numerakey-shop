@@ -34,6 +34,7 @@ artFor(APPS[APPS.length - 1]).motif = "rings";
 APPS.push({
   slug:"pulse-plus", name:"Pulse Plus", cat:"sound", price:39, status:"live", ready:true,
   cover:"covers/pulse-plus.jpg",
+  demo:"https://numerakey-pulse-plus-demo.vercel.app",
   desc:"A neon music player in teal and magenta for the music you already own — add songs, build playlists, keep it all on your device.",
   tag:"Your music. On this device.",
   body:[
@@ -86,6 +87,7 @@ APPS.push({
 APPS.push({
   slug:"stillwater", name:"Stillwater", cat:"wellness", price:39, status:"live", ready:true,
   cover:"covers/stillwater.jpg",
+  demo:"https://numerakey-stillwater-demo.vercel.app",
   desc:"A private mood notebook kept on your phone — a check-in, a journal, a written coach and sounds made on the spot.",
   tag:"A quiet place, kept here.",
   body:[
@@ -112,6 +114,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 APPS.push({
   slug:"first-light", name:"First Light", cat:"wellness", price:39, status:"live", ready:true,
   cover:"covers/first-light.jpg",
+  demo:"https://numerakey-first-light-demo.vercel.app",
   desc:"A quiet sleep course — a diary, a steady rise time and three tools for the middle of the night.",
   tag:"Sleep is a skill. You can relearn it.",
   body:[
@@ -194,6 +197,7 @@ artFor(APPS[APPS.length - 1]).motif = "rings";
 APPS.push({
   slug:"elegy", name:"Elegy", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/elegy.jpg",
+  demo:"https://numerakey-elegy-demo.vercel.app",
   desc:"A private companion for daughters of narcissistic mothers — a playbook, a sealed record, ready scripts, and the decisions that are still yours.",
   tag:"What stays true, even now.",
   body:[
@@ -206,6 +210,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
   slug:"steady-day", name:"Steady Day", cat:"wellness", price:39, status:"live", ready:true, cover:"covers/steady-day.jpg",
+  demo:"https://numerakey-steady-day-demo.vercel.app",
   desc:"A calm personal logging companion for diabetes — glucose, meals, medication reminders and notes, kept on your device.",
   tag:"A quiet place to log your day.",
   body:[
@@ -244,6 +249,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 APPS.push({
   slug:"room-to-breathe", name:"Room to Breathe", cat:"home", price:39, status:"live", ready:true,
   cover:"covers/room-to-breathe.jpg",
+  demo:"https://numerakey-room-to-breathe-demo.vercel.app",
   desc:"Clearing away the clutter, one small thing at a time — Mira sits with you while you do it.",
   tag:"I’ll sit with you while you do one small thing.",
   body:[

@@ -46,6 +46,7 @@ const AP3 = [
 {
   slug:"comet", name:"Comet", cat:"money", price:59, status:"live",
   cover:"covers/comet.jpg",
+  demo:"https://numerakey-comet-demo.vercel.app",
   desc:"The month-to-month one: bills, categories, savings goals, and where it actually went.",
   tag:"Where it goes, and why.",
   body:[
@@ -79,6 +80,7 @@ const AP3 = [
 {
   slug:"paws-of-destiny", name:"Paws of Destiny", cat:"numerology", price:39, status:"live",
   cover:"covers/paws-of-destiny.jpg",
+  demo:"https://numerakey-paws-of-destiny-demo.vercel.app",
   desc:"A numerology reading for the animal who shares your life \u2014 name, date, and the nature they came with.",
   tag:"For the one who shares your life.",
   body:[
@@ -101,6 +103,7 @@ const AP3 = [
 {
   slug:"wind-and-water", name:"Wind & Water", cat:"home", price:39, status:"live",
   cover:"covers/wind-and-water.jpg",
+  demo:"https://numerakey-wind-and-water-demo.vercel.app",
   desc:"Feng shui for a real house, room by room, without buying anything.",
   tag:"Work with the house you have.",
   body:[
@@ -166,6 +169,7 @@ const AP3 = [
 {
   slug:"soulsync", name:"SoulSync", cat:"wellness", price:39, status:"live", ready:true,
   cover:"covers/soulsync.jpg",
+  demo:"https://numerakey-soulsync-demo.vercel.app",
   desc:"Mood, journal and tiny habits in one quiet place \u2014 with a companion that reflects rather than advises.",
   tag:"A small check-in is enough.",
   body:[

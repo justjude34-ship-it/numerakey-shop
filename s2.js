@@ -13,6 +13,7 @@ const AP2 = [
 {
   slug:"held", name:"Held", cat:"narc", price:39, status:"live",
   cover:"covers/held.jpg",
+  demo:"https://numerakey-held-demo.vercel.app",
   desc:"For daughters of narcissistic mothers \u2014 a warm friend at two in the morning.",
   tag:"A quiet place to put it down.",
   body:[
@@ -24,6 +25,7 @@ const AP2 = [
 {
   slug:"unspoken", name:"Unspoken", cat:"narc", price:39, status:"live",
   cover:"covers/unspoken.jpg",
+  demo:"https://numerakey-unspoken-demo.vercel.app",
   desc:"For daughters of narcissistic fathers \u2014 a private place to name the pattern.",
   tag:"His approval was never the measure of her.",
   body:[
@@ -35,6 +37,7 @@ const AP2 = [
 {
   slug:"ember", name:"Ember", cat:"narc", price:39, status:"live",
   cover:"covers/ember.jpg",
+  demo:"https://numerakey-ember-demo.vercel.app",
   desc:"For parents living with parental alienation \u2014 the loss nobody offers condolences for.",
   tag:"You are still their parent.",
   body:[
@@ -81,6 +84,7 @@ const AP2 = [
 {
   slug:"quietshore", name:"Quietshore", cat:"wellness", price:39, status:"live", ready:true,
   cover:"covers/quietshore.jpg",
+  demo:"https://numerakey-quietshore-demo.vercel.app",
   desc:"Short sits with generated tides underneath, and a record of them that nobody else sees.",
   tag:"Short sits, quiet tides, nothing to earn.",
   body:[
@@ -92,6 +96,7 @@ const AP2 = [
 {
   slug:"unwritten", name:"Unwritten", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/unwritten.jpg",
+  demo:"https://numerakey-unwritten-demo.vercel.app",
   desc:"For daughters of narcissistic mothers \u2014 the moves named one by one, so the fog gets a shape.",
   tag:"You are not crazy. There was a script.",
   body:[
@@ -103,6 +108,7 @@ const AP2 = [
 {
   slug:"goodwin-readings", name:"Numerology Reading", cat:"numerology", price:89, status:"live", ready:true,
   cover:"covers/goodwin-readings.jpg",
+  demo:"https://numerakey-goodwin-readings-demo.vercel.app",
   desc:"The complete Goodwin reading \u2014 the Core, the karmic debts, the Pinnacles, and the year you are standing in.",
   tag:"The whole method, not the headline.",
   body:[
@@ -147,6 +153,7 @@ const AP2 = [
 {
   slug:"tao", name:"Tao", cat:"divine", price:39, status:"live", ready:true,
   cover:"covers/tao.jpg",
+  demo:"https://numerakey-tao-demo.vercel.app",
   desc:"The Tao Te Ching, one chapter a day for eighty-one days, then round again.",
   tag:"Eighty-one days, then begin again.",
   body:[
