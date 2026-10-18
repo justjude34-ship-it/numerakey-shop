@@ -24,6 +24,7 @@ const AP3 = [
 {
   slug:"phillips-inner-self", name:"Inside Your Numbers", cat:"numerology", price:59, status:"live", ready:true,
   cover:"covers/phillips-inner-self.jpg",
+  demo:"https://numerakey-phillips-inner-self-demo.vercel.app",
   desc:"The numbers behind how you actually operate \u2014 method after David Phillips' numerology.",
   tag:"The inner self, revealed in numbers.",
   body:[
@@ -115,6 +116,7 @@ const AP3 = [
 {
   slug:"name-your-pet", name:"How to Name Your Pet", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/name-your-pet.jpg",
+  demo:"https://numerakey-name-your-pet-demo.vercel.app",
   desc:"Choose a name whose numbers suit the animal, from a catalogue of 2,207 or one of your own.",
   tag:"Find the name whose numbers will live well with your companion.",
   body:[
@@ -148,6 +150,7 @@ const AP3 = [
 {
   slug:"dual-compass", name:"Dual Compass", cat:"neuro", price:59, status:"live", ready:true,
   cover:"covers/dual-compass.jpg",
+  demo:"https://numerakey-dual-compass-demo.vercel.app",
   desc:"For AuDHD \u2014 the two nervous systems that want opposite things, in one place that holds both.",
   tag:"For the brain that needs two things at once.",
   body:[

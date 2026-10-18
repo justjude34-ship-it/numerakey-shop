@@ -2,6 +2,7 @@ const AP2 = [
 {
   slug:"clarify", name:"Clarify", cat:"wellness", price:39, status:"live",
   cover:"covers/clarify.jpg",
+  demo:"https://numerakey-clarify-demo.vercel.app",
   desc:"For the decision you keep going round on, and the overwhelm underneath it.",
   tag:"A quiet place to work out what you think.",
   body:[
@@ -120,6 +121,7 @@ const AP2 = [
 {
   slug:"numera-plus", name:"Numera Plus", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/numera-plus.jpg",
+  demo:"https://numerakey-numera-plus-demo.vercel.app",
   desc:"Your birth date in Phillips' 3\u00d73 grid \u2014 the arrows, the empty squares, and what they ask of you.",
   tag:"Nine squares. Eight arrows. One date.",
   body:[

@@ -26,6 +26,7 @@ const AP4 = [
 {
   slug:"tend", name:"Tend", cat:"home", price:39, status:"live", ready:true,
   cover:"covers/tend.jpg",
+  demo:"https://numerakey-tend-demo.vercel.app",
   desc:"One small cleaning job a day, worked out from the rooms you actually have.",
   tag:"A little bit of cleaning each day, planned around your home.",
   body:[
@@ -37,6 +38,7 @@ const AP4 = [
 {
   slug:"reclaim", name:"Reclaim", cat:"wellness", price:59, status:"live", ready:true,
   cover:"covers/reclaim.jpg",
+  demo:"https://numerakey-reclaim-demo.vercel.app",
   desc:"Someone to sit with \u2014 who asks for one small thing, not the whole mountain.",
   tag:"One gentle day at a time.",
   body:[
@@ -48,6 +50,7 @@ const AP4 = [
 {
   slug:"kindling", name:"Kindling", cat:"neuro", price:59, status:"live", ready:true,
   cover:"covers/kindling.jpg",
+  demo:"https://numerakey-kindling-demo.vercel.app",
   desc:"For finding out late \u2014 a quiet coach for adults who got the ADHD or AuDHD answer in middle age.",
   tag:"You found out late. That changes the map.",
   body:[
@@ -82,6 +85,7 @@ const AP4 = [
 {
   slug:"gentle-clear", name:"Gentle Clear", cat:"wellness", price:39, status:"live",
   cover:"covers/gentle-clear.jpg",
+  demo:"https://numerakey-gentle-clear-demo.vercel.app",
   desc:"Mira sits with you and asks the only useful question: what would feel doable?",
   tag:"I'll sit with you.",
   body:[

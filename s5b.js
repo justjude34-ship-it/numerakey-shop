@@ -223,6 +223,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
   slug:"hearthaven", name:"HeartHaven", cat:"wellness", price:39, status:"live", ready:true, cover:"covers/hearthaven.jpg",
+  demo:"https://numerakey-hearthaven-demo.vercel.app",
   desc:"A private sanctuary for reality, rest and recovery — reality-check language, grounding, singing-bowl tones and a journal, behind your own PIN.",
   tag:"Your private sanctuary.",
   body:[
@@ -236,6 +237,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 APPS.push({
   slug:"lumina-sleep", name:"Lumina Sleep", cat:"sound", price:39, status:"live", ready:true,
   cover:"covers/lumina-sleep.jpg",
+  demo:"https://numerakey-lumina-sleep-demo.vercel.app",
   desc:"Ocean, rain and brown noise with delta, theta and alpha tones for drifting off — generated on your phone, with a sleep timer that fades out.",
   tag:"Sound for sleep. No voice.",
   body:[

@@ -186,6 +186,7 @@ const AP1 = [
 {
   slug:"binaural-studio", name:"Binaural Studio", cat:"sound", price:39, status:"live",
   cover:"covers/binaural-studio.jpg",
+  demo:"https://numerakey-binaural-studio-demo.vercel.app",
   desc:"Five binaural presets layered with music and nature. Headphones required.",
   tag:"Headphones on.",
   body:[
