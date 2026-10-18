@@ -8,7 +8,7 @@ const PAYMENTS = {
   "steady-day": "https://buy.stripe.com/eVq00c1dP4whbr69li0RG01"
 };
 const FILES = {
-  "steady-day": "apps/steady-day/index.html",
+  "steady-day": "private/steady-day.html",
   "comet": "private/comet.html",
   "sanctuary": "private/sanctuary.html",
   "serenity": "private/serenity.html",
