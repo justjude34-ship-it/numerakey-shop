@@ -100,7 +100,7 @@ const AP4 = [
   inside:["Australian products \u2014 Woolworths, Coles, ALDI","Barcode and product search (needs a connection)","Water, protein, carbs and fat alongside","A gentle daily target, not a deficit","No account, nothing uploaded","One file, buy once"]
 },
 {
-  slug:"right-action", name:"Right Action", cat:"divine", price:59, status:"live", ready:true,
+  slug:"right-action", name:"Right Action", cat:"numerology", price:59, status:"live", ready:true,
   cover:"covers/right-action.jpg",
   demo:"https://right-action.netlify.app",
   desc:"What this year is actually for, month by month, and the next useful step in it.",
@@ -112,7 +112,7 @@ const AP4 = [
   inside:["Today \u2014 the one useful step, now","Your personal year and what it is for","Month by month through the year","Where you sit in the nine-year cycle","The people around you, and their years","Ask it plainly, in your own words"]
 },
 {
-  slug:"nua", name:"Nua", cat:"divine", price:39, status:"live", ready:true,
+  slug:"nua", name:"Nua", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/nua.jpg",
   demo:"https://nua-names.netlify.app",
   desc:"Name a child and see the numbers before the certificate is signed.",
@@ -137,7 +137,7 @@ const AP4 = [
   inside:["Eight areas, one question at a time","Speak or type, and correct before saving","Skip, go back, and pick up where you left off","Review each section at a glance","Download a plain-text draft to take to your lawyer","Saved on your device, no account"]
 },
 {
-  slug:"synergy", name:"Synergy", cat:"divine", price:59, status:"live", ready:true, cover:"covers/synergy.jpg",
+  slug:"synergy", name:"Synergy", cat:"numerology", price:59, status:"live", ready:true, cover:"covers/synergy.jpg",
   demo:"https://pythagorian-numerakey.netlify.app",
   desc:"Two charts side by side \u2014 where you meet easily, where the friction is structural, and what neither of you carries.",
   tag:"The bond, aspect by aspect.",
@@ -148,7 +148,7 @@ const AP4 = [
   inside:["Both charts in full, Goodwin and Phillips","Every aspect marked harmonious, neutral or challenging","Numbers only you carry, only they carry, and shared","The shared blind spot \u2014 what neither of you has","Both personal years, turning on the birthday","A typeset PDF of the whole reading","No account, nothing sent anywhere"]
 },
 {
-  slug:"nomen", name:"Nomen", cat:"divine", price:59, status:"live", ready:true,
+  slug:"nomen", name:"Nomen", cat:"numerology", price:59, status:"live", ready:true,
   cover:"covers/nomen.jpg",
   desc:"Read the name you were given, then find one that carries you better.",
   tag:"Your name is a number. Read it, then find one that carries you further.",

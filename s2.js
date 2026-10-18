@@ -101,7 +101,7 @@ const AP2 = [
   inside:["The moves named, one at a time","What each one is actually for","A line to hold onto after each","Grey rock, low contact and no contact","No forgiveness agenda, nothing to complete","One file, private to your device"]
 },
 {
-  slug:"goodwin-readings", name:"Numerology Reading", cat:"divine", price:89, status:"live", ready:true,
+  slug:"goodwin-readings", name:"Numerology Reading", cat:"numerology", price:89, status:"live", ready:true,
   cover:"covers/goodwin-readings.jpg",
   desc:"The complete Goodwin reading \u2014 the Core, the karmic debts, the Pinnacles, and the year you are standing in.",
   tag:"The whole method, not the headline.",
@@ -112,7 +112,7 @@ const AP2 = [
   inside:["The full Core, plus Birthday and Maturity","Karmic debts 13, 14, 16 and 19 named","Intensity and the Planes of Expression","Life Periods, Pinnacles and Challenges","Personal Year, Transits and Essence","Masters 11 and 22 held, never flattened","Every calculation shown, step by step"]
 },
 {
-  slug:"numera-plus", name:"Numera Plus", cat:"divine", price:39, status:"live", ready:true,
+  slug:"numera-plus", name:"Numera Plus", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/numera-plus.jpg",
   desc:"Your birth date in Phillips' 3\u00d73 grid \u2014 the arrows, the empty squares, and what they ask of you.",
   tag:"Nine squares. Eight arrows. One date.",
@@ -123,7 +123,7 @@ const AP2 = [
   inside:["The 3\u00d73 grid built from your birth date","Arrows of strength and arrows of emptiness","All nine squares read one by one","Mind, Soul, Physical, Thought, Will, Action","Compare two charts side by side","Print the reading","Phillips credited, method shown"]
 },
 {
-  slug:"numera", name:"Numera", cat:"divine", price:89, status:"live",
+  slug:"numera", name:"Numera", cat:"numerology", price:89, status:"live",
   cover:"covers/numera.jpg",
   desc:"The full reading \u2014 Phillips' birth chart and Goodwin's name numerology, run together on one page.",
   tag:"Name and date, read as one.",

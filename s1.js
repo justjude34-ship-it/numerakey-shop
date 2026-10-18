@@ -15,12 +15,13 @@ const SITE = {
       buy:    optional full Lemon Squeezy URL; otherwise store + /buy/<slug>
    ========================================================================== */
 const CATEGORIES = [
+  { id:"numerology", name:"Numerology", colour:"#C78BF5", note:"Your numbers, your name, your year." },
   { id:"wellness", name:"Wellness",     colour:"#5CC8F5", note:"Quiet tools for hard seasons." },
   { id:"neuro",    name:"Neurodivergent", colour:"#8FD694", note:"Built for ADHD and AuDHD brains, not around them." },
   { id:"ptsd",     name:"PTSD & Trauma", colour:"#E6A56B", note:"Skills, understanding and steadier ground for trauma." },
   { id:"sound",    name:"Frequency Healing and Sleep",colour:"#4FD1C5", note:"Tones, beats and nature, mixed the way you want them." },
   { id:"narc",     name:"Narcissistic Abuse", colour:"#F2789A", note:"Recognising it, surviving it, and getting out." },
-  { id:"divine",   name:"Divination",   colour:"#B478F0", note:"Numerology, tarot, and the older systems." },
+  { id:"divine",   name:"Divination",   colour:"#B478F0", note:"Tarot, astrology, and the older systems." },
   { id:"money",    name:"Money",        colour:"#F4B740", note:"Know where it goes." },
   { id:"home",     name:"Home & Pets",  colour:"#EC8FC4", note:"The household, and everyone in it." },
   { id:"style",    name:"Style",        colour:"#E8A0A8", note:"What suits you, worked out properly." }

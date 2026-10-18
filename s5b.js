@@ -268,7 +268,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"cadence", name:"Cadence", cat:"divine", price:89, status:"live", ready:true,
+  slug:"cadence", name:"Cadence", cat:"numerology", price:89, status:"live", ready:true,
   cover:"covers/cadence.jpg",
   demo:"https://cadence-numbers.netlify.app",
   desc:"A numerology guide to your personal year, month and day, coloured by the essence you carry from your name.",

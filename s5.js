@@ -28,7 +28,7 @@ function hashBytes(seed, n){
    family while every app inside it sits at its own point on the band. */
 const HUES = {
   wellness:[186,256], neuro:[110,150], ptsd:[14,34], narc:[338,398], sound:[156,202],
-  divine:[256,314],  money:[30,70],   home:[296,348], style:[350,382]
+  numerology:[270,330], divine:[256,314],  money:[30,70],   home:[296,348], style:[350,382]
 };
 
 const MOTIFS = ["bitting","wave","rings","spokes","field","orbits","lattice","bloom","stack"];

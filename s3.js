@@ -1,6 +1,6 @@
 const AP3 = [
 {
-  slug:"home-number", name:"Home Number", cat:"divine", price:29, status:"live", ready:true, cover:"covers/home-number.jpg",
+  slug:"home-number", name:"Home Number", cat:"numerology", price:29, status:"live", ready:true, cover:"covers/home-number.jpg",
   desc:"The quick read on a house number \u2014 the arithmetic shown, and whether it suits your Life Path.",
   tag:"Every door has a number. Every number has a temper.",
   body:[
@@ -10,7 +10,7 @@ const AP3 = [
   inside:["Straight Pythagorean reduction, working shown","Masters 11, 22 and 33 held whole","Letters counted, labels ignored","Twelve full number profiles","Checked against your own Life Path","Living tips and colours for each number","No fonts, no requests \u2014 nothing leaves the file"]
 },
 {
-  slug:"sacred-address", name:"Sacred Address", cat:"divine", price:39, status:"live", ready:true,
+  slug:"sacred-address", name:"Sacred Address", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/sacred-address.jpg",
   desc:"The number on your door, read after Thomas Muldoon \u2014 what the place supports, and what it asks of whoever lives there.",
   tag:"The place that chose you.",
@@ -21,7 +21,7 @@ const AP3 = [
   inside:["Your house, unit or flat number, read in full","Master numbers held whole","Letters in the address counted properly","The working shown at every step","A library of your recent readings","Muldoon's method, credited","Private to your device"]
 },
 {
-  slug:"phillips-inner-self", name:"Phillips Inner Self", cat:"divine", price:59, status:"live", ready:true,
+  slug:"phillips-inner-self", name:"Phillips Inner Self", cat:"numerology", price:59, status:"live", ready:true,
   cover:"covers/phillips-inner-self.jpg",
   desc:"David Phillips' reading of the inner self \u2014 the numbers behind how you actually operate.",
   tag:"The inner self, revealed in numbers.",
@@ -32,7 +32,7 @@ const AP3 = [
   inside:["Phillips' framework, worked through in full","What each number does well, and badly","No account and no subscription","Runs offline, from one file","Private to your device"]
 },
 {
-  slug:"domain-energy", name:"Domain Energy", cat:"divine", price:59, status:"live", ready:true,
+  slug:"domain-energy", name:"Domain Energy", cat:"numerology", price:59, status:"live", ready:true,
   cover:"covers/domain-energy.jpg",
   desc:"Read a domain's Soul Urge, Personality and Destiny before you spend money on it.",
   tag:"For founders, before the invoice.",
@@ -153,7 +153,7 @@ const AP3 = [
   inside:["Built for AuDHD, not one or the other","Rowan, set to the tone you ask for","Unstick, Sit and Rest \u2014 whichever the day needs","Familiar loop, slow body, interest nibble, one-surface tidy","Scripts for leaving, cancelling and asking for accommodations","Crisis lines for Australia, the US, the UK and Canada","One file, runs offline"]
 },
 {
-  slug:"numera-chaldean", name:"Numera Chaldean", cat:"divine", price:59, status:"live", ready:true, cover:"covers/numera-chaldean.jpg",
+  slug:"numera-chaldean", name:"Numera Chaldean", cat:"numerology", price:59, status:"live", ready:true, cover:"covers/numera-chaldean.jpg",
   desc:"The Chaldean system in full \u2014 driver, conductor, name, Lo Shu grid and timing.",
   tag:"The older system, worked properly.",
   body:[
