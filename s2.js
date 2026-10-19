@@ -119,7 +119,7 @@ const AP2 = [
   inside:["The full Core, plus Birthday and Maturity","Karmic debts 13, 14, 16 and 19 named","Intensity and the Planes of Expression","Life Periods, Pinnacles and Challenges","Personal Year, Transits and Essence","Masters 11 and 22 held, never flattened","Every calculation shown, step by step"]
 },
 {
-  slug:"numera-plus", name:"Numera Plus", cat:"numerology", price:39, status:"live", ready:true,
+  slug:"numera-plus", name:"Numera Plus", cat:"numerology", price:89, status:"live", ready:true,
   cover:"covers/numera-plus.jpg",
   demo:"https://numerakey-numera-plus-demo.vercel.app",
   desc:"Your birth date in Phillips' 3\u00d73 grid \u2014 the arrows, the empty squares, and what they ask of you.",
