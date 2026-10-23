@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex"><script>window.NK_DEMO={"lock": [], "lockMsg": "This part of Domain Energy is in the full app.", "slug": "domain-energy", "name": "Domain Energy", "url": "https://numerakey-shop.vercel.app/#/app/domain-energy"};</script><script>/* NumeraKey demo layer: banner, locks, caps, no persistence, no export/print. */
+(function(){
+"use strict";
+var C = window.NK_DEMO || {}; var SHOP = C.url || "https://numerakey-shop.vercel.app";
+var KEY = "nkdemo:" + (C.slug || location.hostname);
+var realLS = null; try { realLS = window.localStorage; } catch(e) {}
+function rget(k,d){ try{ var v=realLS&&realLS.getItem(KEY+":"+k); return v==null?d:JSON.parse(v);}catch(e){return d;} }
+function rset(k,v){ try{ realLS&&realLS.setItem(KEY+":"+k, JSON.stringify(v)); }catch(e){} }
+
+/* 1. Nothing the user enters is kept: localStorage lives in memory for this visit only. */
+function MemStorage(){ var m = new Map(); var o = {
+  getItem:function(k){ k=String(k); return m.has(k)?m.get(k):null; },
+  setItem:function(k,v){ m.set(String(k), String(v)); },
+  removeItem:function(k){ m.delete(String(k)); },
+  clear:function(){ m.clear(); },
+  key:function(i){ return Array.from(m.keys())[i] ?? null; }
+}; Object.defineProperty(o,"length",{get:function(){return m.size;}});
+  return new Proxy(o,{ get:function(t,p){ if(p in t) return t[p]; return typeof p==="string"&&m.has(p)?m.get(p):undefined; },
+    set:function(t,p,v){ if(p in t) return false; m.set(String(p),String(v)); return true; },
+    deleteProperty:function(t,p){ m.delete(String(p)); return true; },
+    ownKeys:function(){ return Array.from(m.keys()); },
+    getOwnPropertyDescriptor:function(t,p){ return m.has(p)?{value:m.get(p),enumerable:true,configurable:true,writable:true}:undefined; } });
+}
+try { Object.defineProperty(window, "localStorage", { value: MemStorage(), configurable: true }); } catch(e) {}
+/* IndexedDB: a fresh, throwaway database per visit; older demo databases are removed. */
+try {
+  var idb = window.indexedDB, run = Math.random().toString(36).slice(2,8), origOpen = idb.open.bind(idb), origDel = idb.deleteDatabase.bind(idb);
+  idb.open = function(name, v){ return v===undefined ? origOpen("nkdemo-"+run+"-"+name) : origOpen("nkdemo-"+run+"-"+name, v); };
+  idb.deleteDatabase = function(name){ return origDel("nkdemo-"+run+"-"+name); };
+  if (idb.databases) idb.databases().then(function(l){ l.forEach(function(d){ if(d.name && d.name.indexOf("nkdemo-"+run)!==0) origDel(d.name); }); }).catch(function(){});
+} catch(e) {}
+/* No offline install of the demo. */
+try { if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function(r){ r.forEach(function(x){ x.unregister(); }); }).catch(function(){});
+  navigator.serviceWorker.register = function(){ return new Promise(function(){}); };
+} } catch(e) {}
+try { window.showSaveFilePicker = undefined; window.showDirectoryPicker = undefined; } catch(e) {}
+
+/* 2. Overlay */
+var css = ""
++ "#nkd-bar{position:fixed;top:0;left:0;right:0;height:44px;z-index:2147483646;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 12px;"
++ "background:rgba(12,12,16,.96);border-bottom:1px solid rgba(214,196,140,.38);font:500 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ece8df;letter-spacing:.01em;box-sizing:border-box}"
++ "#nkd-bar .nkd-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#nkd-bar b{color:#e3cf8f;font-weight:600}"
++ ".nkd-btn{display:inline-block;padding:7px 14px;border-radius:999px;border:1px solid rgba(214,196,140,.7);color:#f3e7bf!important;background:linear-gradient(180deg,rgba(214,196,140,.16),rgba(214,196,140,.05));text-decoration:none!important;font:600 14px/1.1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;white-space:nowrap;cursor:pointer}"
++ "#nkd-ov{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:rgba(6,6,9,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:20px;box-sizing:border-box}"
++ "#nkd-ov.on{display:flex}#nkd-card{max-width:380px;width:100%;background:#15151b;border:1px solid rgba(214,196,140,.35);border-radius:18px;padding:28px 24px 22px;text-align:center;color:#e9e6de;box-shadow:0 20px 60px rgba(0,0,0,.6);font:400 17px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}"
++ "#nkd-card h2{margin:0 0 10px;font:600 23px/1.25 Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#f6e7b0,#cdb36b 55%,#efe0a6);-webkit-background-clip:text;background-clip:text;color:transparent}"
++ "#nkd-card p{margin:0 0 20px;color:#cfcac0}#nkd-card .nkd-btn{font-size:16px;padding:11px 22px}"
++ "#nkd-close{display:block;margin:14px auto 0;background:none;border:0;color:#a9a49a;font:500 15px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}"
++ ".nkd-locked{position:relative;opacity:.55!important}"
++ ".nkd-locked::after{content:'\\1F512';position:absolute;top:2px;right:2px;font-size:11px;line-height:1;opacity:.9;pointer-events:none;filter:grayscale(1)}"
++ ".nkd-hide{display:none!important}"
++ "#nkd-bar.nkd-light{background:rgba(251,249,244,.97);border-bottom-color:rgba(150,128,60,.35);color:#2b2a28}#nkd-bar.nkd-light b{color:#1d1d1f}"
++ "#nkd-bar.nkd-light .nkd-btn{color:#2b2a28!important;border-color:rgba(160,135,60,.75);background:linear-gradient(180deg,rgba(214,190,110,.22),rgba(214,190,110,.08))}"
++ "html{scroll-padding-top:44px}body{padding-top:44px!important}"
++ (C.css||"");
+function inject(){
+  if (document.getElementById("nkd-bar")) return;
+  var st = document.createElement("style"); st.id="nkd-style"; st.textContent = css; (document.head||document.documentElement).appendChild(st);
+  var bar = document.createElement("div"); bar.id="nkd-bar"; bar.setAttribute("role","note");
+  bar.innerHTML = '<span class="nkd-t"><b>Demo version</b><span id="nkd-info"></span></span><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a>';
+  document.body.appendChild(bar);
+  var ov = document.createElement("div"); ov.id="nkd-ov"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+  ov.innerHTML = '<div id="nkd-card"><h2 id="nkd-h">Available in the full app</h2><p id="nkd-p"></p><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a><button id="nkd-close" type="button">Keep exploring the demo</button></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener("click", function(e){ if(e.target===ov && !ov.dataset.hard) hide(); });
+  document.getElementById("nkd-close").addEventListener("click", function(){ if(!ov.dataset.hard) hide(); });
+  try { var bg = "", els=[]; var pe = document.elementFromPoint(innerWidth/2, innerHeight*0.6); while (pe && pe!==document.documentElement) { if (!(pe.id||"").startsWith("nkd-")) els.push(pe); pe = pe.parentElement; } els.push(document.body, document.documentElement);
+    for (var i=0;i<els.length;i++){ var c = getComputedStyle(els[i]).backgroundColor; if (c && !/rgba\(\s*0,\s*0,\s*0,\s*0\)|transparent/.test(c) && !/rgba\([^)]*,\s*0?\.[0-4]\d*\)/.test(c)) { bg = c; break; } var gi = getComputedStyle(els[i]).backgroundImage; var gm = gi && gi.match(/rgba?\([^)]*\)/); if (gm) { bg = gm[0]; break; } }
+    var mm = bg.match(/\d+(\.\d+)?/g); if (C.theme==="light" || (C.theme!=="dark" && mm && (0.299*mm[0]+0.587*mm[1]+0.114*mm[2]) > 160)) bar.classList.add("nkd-light"); } catch(e){}
+  info(); mark(); shift();
+}
+function hide(){ var ov=document.getElementById("nkd-ov"); if(ov) ov.classList.remove("on"); }
+function show(msg, head, hard){
+  inject(); var ov=document.getElementById("nkd-ov");
+  document.getElementById("nkd-h").textContent = head || "Available in the full app";
+  document.getElementById("nkd-p").textContent = msg || (C.lockMsg || ("This part of " + (C.name||"the app") + " is available in the full app."));
+  var cl = document.getElementById("nkd-close"); if (hard) { ov.dataset.hard="1"; cl.style.display="none"; } else { delete ov.dataset.hard; cl.style.display=""; }
+  ov.classList.add("on");
+}
+window.NKDemo = { show: show };
+function info(){ var el=document.getElementById("nkd-info"); if(!el) return; var t="";
+  if (C.cap) { var left = Math.max(0, C.cap.n - rget("cap",0)); t = " \u00b7 " + left + " of " + C.cap.n + " free " + (C.cap.label||"uses") + " left"; }
+  if (C.timer) t = " \u00b7 " + C.timer + "-minute listening session";
+  if (C.info) t = " \u00b7 " + C.info;
+  el.textContent = t; }
+
+/* 3. Locks and caps (capture phase, before the app sees the click) */
+function matches(el, list){ if(!list||!el||!el.closest) return null; for (var i=0;i<list.length;i++){ var m = el.closest(list[i]); if (m) return m; } return null; }
+function textMatch(el){ if(!C.lockText||!el||!el.closest) return null; var b = el.closest("button,a,[role=button],[role=tab],li,[onclick],[data-tab],[data-view],[data-go],[data-nav],[data-page],label,.card,.tile");
+  if(!b) return null; var t=(b.innerText||b.getAttribute("aria-label")||"").trim().toLowerCase();
+  for (var i=0;i<C.lockText.length;i++){ var k=C.lockText[i]; if (k instanceof RegExp ? k.test(t) : t===k.toLowerCase()) return b; } return null; }
+function isLocked(el){ if (matches(el, C.allow)) return null; var m = matches(el, C.lock) || textMatch(el); if (m) return m;
+  if (C.lockIf) { try { var r = C.lockIf(el); if (r) return r; } catch(e){} } return null; }
+function guard(e){
+  var t = e.target; if (!t || !t.closest) return;
+  if (t.closest("#nkd-bar,#nkd-ov")) return;
+  if (window.__nkdHard) { e.preventDefault(); e.stopImmediatePropagation(); show(window.__nkdHard, "Thank you for trying the demo", true); return; }
+  var a = t.closest("a[download]");
+  if (a || isLocked(t)) {
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type==="click"||e.type==="submit") show(a ? "Saving and exporting are available in the full app." : null);
+    return;
+  }
+  if (C.cap && e.type==="keydown" && C.cap.keySel && t.matches && t.matches(C.cap.keySel) && e.key==="Enter") { var u0 = rget("cap",0);
+    if (u0 >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+    if ((t.value||"").trim()) { rset("cap", u0+1); setTimeout(info,0); } return; }
+  if (C.cap && e.type==="click") { var c = matches(t, C.cap.sel); if (!c && C.cap.textSel) { var bb = t.closest("button,a,[role=button],input[type=submit]"); if (bb && C.cap.textSel.test((bb.innerText||bb.value||"").trim().toLowerCase())) c = bb; }
+    if (c) { var used = rget("cap",0);
+      if (used >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+      if (!C.cap.valid || C.cap.valid(c)) { rset("cap", used+1); setTimeout(info,0); }
+    } }
+}
+["click","pointerdown","mousedown","touchstart","keydown","submit","change","input"].forEach(function(ev){
+  window.addEventListener(ev, function(e){
+    if (ev==="keydown" && !(e.key==="Enter"||e.key===" ")) return;
+    if (ev==="change"||ev==="input") { if (isLocked(e.target)) { e.stopImmediatePropagation(); } return; }
+    if (ev!=="click"&&ev!=="submit"&&ev!=="keydown") { var t=e.target; if(t&&t.closest&&!t.closest("#nkd-bar,#nkd-ov")&&(isLocked(t)||window.__nkdHard)) { e.stopImmediatePropagation(); } return; }
+    guard(e);
+  }, true);
+});
+/* anchors clicked from code with a download attribute */
+var aclick = HTMLAnchorElement.prototype.click;
+HTMLAnchorElement.prototype.click = function(){ if (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||"")) { show("Saving and exporting are available in the full app."); return; } return aclick.apply(this, arguments); };
+var adisp = HTMLAnchorElement.prototype.dispatchEvent;
+HTMLAnchorElement.prototype.dispatchEvent = function(ev){ if (ev && ev.type==="click" && (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||""))) { show("Saving and exporting are available in the full app."); return false; } return adisp.apply(this, arguments); };
+window.print = function(){ show("Printing is available in the full app."); };
+try { var ws = window.open; window.open = function(u){ if (u===undefined || u==="" || /^blob:|^data:|about:blank/.test(String(u))) { show("Saving and exporting are available in the full app."); return null; } return ws.apply(window, arguments); }; } catch(e) {}
+try { if (navigator.share) navigator.share = function(){ show("Sharing and exporting are available in the full app."); return Promise.reject(new Error("demo")); }; } catch(e) {}
+window.addEventListener("beforeprint", function(){ document.documentElement.style.display="none"; });
+window.addEventListener("afterprint", function(){ document.documentElement.style.display=""; });
+
+function mark(){
+  var list = (C.lock||[]).concat(C.markOnly||[]);
+  list.forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ if(!matches(el,C.allow)) el.classList.add("nkd-locked"); }); } catch(e){} });
+  if (C.lockText) document.querySelectorAll("button,a,[role=tab],[data-tab],[data-view],[data-go],[data-nav],.card,.tile").forEach(function(el){ if (!el.classList.contains("nkd-locked") && textMatch(el)===el && !matches(el,C.allow)) el.classList.add("nkd-locked"); });
+  (C.hide||[]).forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ el.classList.add("nkd-hide"); }); } catch(e){} });
+  document.querySelectorAll('link[rel="manifest"]').forEach(function(l){ l.remove(); });
+}
+function shift(){
+  if (C.noShift) return;
+  var all = document.body ? document.body.querySelectorAll("*") : [];
+  for (var i=0;i<all.length;i++){ var el = all[i]; if (el.id && el.id.indexOf("nkd-")===0) continue;
+    if (el.dataset.nkdShift) continue;
+    var cs = getComputedStyle(el); if (cs.position!=="fixed" && cs.position!=="sticky") continue;
+    var top = parseFloat(cs.top); if (isNaN(top) || top > 4) continue;
+    el.style.setProperty("top", (top+44)+"px", "important"); el.dataset.nkdShift = "1"; }
+}
+var pend=false; function soon(){ if(pend) return; pend=true; setTimeout(function(){ pend=false; mark(); shift(); }, 120); }
+function start(){ inject(); new MutationObserver(soon).observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:["class","style","hidden"]}); if (C.onReady) try{ C.onReady(); }catch(e){} }
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+
+/* hash routes that belong to the full app */
+if (C.lockHash) { var okHash = location.hash && !C.lockHash.test(location.hash) ? location.hash : (C.homeHash||"#/");
+  if (location.hash && C.lockHash.test(location.hash)) { try { history.replaceState(null, "", location.pathname + location.search + okHash); } catch(e){} }
+  window.addEventListener("hashchange", function(e){ if (C.lockHash.test(location.hash)) { e.stopImmediatePropagation(); history.replaceState(null, "", location.pathname + location.search + okHash); show(); } else okHash = location.hash; }, true); }
+
+/* 4. Listening session limit for audio apps */
+if (C.timer) {
+  var ctxs = [], LIMIT = C.timer*60*1000, HOLD = 12*3600*1000;
+  var startAt = rget("t0", 0); if (startAt && Date.now()-startAt > LIMIT + HOLD) { startAt = 0; rset("t0", 0); }
+  var endMsg = "Your " + C.timer + "-minute demo session has ended. The full app has no time limit.";
+  function expired(){ return startAt && Date.now()-startAt >= LIMIT; }
+  function begin(){ if (!startAt) { startAt = Date.now(); rset("t0", startAt); } }
+  function stopAll(){
+    window.__nkdHard = endMsg;
+    ctxs.forEach(function(c){ try{ c.suspend(); }catch(e){} });
+    document.querySelectorAll("audio,video").forEach(function(m){ try{ m.pause(); m.muted=true; }catch(e){} });
+    show(endMsg, "Thank you for trying the demo", true);
+  }
+  ["AudioContext","webkitAudioContext"].forEach(function(n){ var O = window[n]; if (!O) return;
+    var W = function(){ var c = new (Function.prototype.bind.apply(O, [null].concat([].slice.call(arguments))))(); ctxs.push(c); return c; };
+    W.prototype = O.prototype; try{ Object.setPrototypeOf(W, O); }catch(e){} window[n] = W; });
+  var oResume = window.AudioContext && AudioContext.prototype.resume;
+  if (oResume) AudioContext.prototype.resume = function(){ if (expired()) { stopAll(); return Promise.resolve(); } begin(); return oResume.apply(this, arguments); };
+  var oStart = window.AudioScheduledSourceNode && AudioScheduledSourceNode.prototype.start;
+  if (oStart) AudioScheduledSourceNode.prototype.start = function(){ if (expired()) { stopAll(); return; } begin(); return oStart.apply(this, arguments); };
+  var oPlay = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function(){ if (expired()) { stopAll(); return Promise.reject(new Error("demo")); } begin(); return oPlay.apply(this, arguments); };
+  setInterval(function(){ if (startAt) { var left = Math.max(0, LIMIT-(Date.now()-startAt)); var el=document.getElementById("nkd-info");
+      if (el) el.textContent = left>0 ? " \u00b7 " + Math.ceil(left/60000) + " min of listening left" : " \u00b7 session ended";
+      if (left<=0 && !window.__nkdHard) stopAll(); } }, 1000);
+}
+})();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>NumeraKey demo — Energetic Domain Name Analyzer</title>
+<style>
+  :root {
+    --bg: #0b0a08;
+    --surface: #14120e;
+    --elevated: #1c1914;
+    --fg: #f3ede2;
+    --muted: #a89b88;
+    --subtle: #7a7064;
+    --gold: #c4a265;
+    --gold-bright: #e4c98a;
+    --ink: #0b0a08;
+    --border: #2a251c;
+    --danger: #c45c4a;
+    --display: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
+    --sans: "Segoe UI", system-ui, sans-serif;
+    --mono: "SF Mono", ui-monospace, "Cascadia Mono", Menlo, Consolas, monospace;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); color: var(--fg); }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  button, input { font: inherit; }
+  button { cursor: pointer; }
+  .wrap { width: min(64rem, calc(100% - 2rem)); margin: 0 auto; }
+  header {
+    position: sticky; top: 0; z-index: 4;
+    border-bottom: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(12px);
+  }
+  .bar { display: flex; align-items: center; justify-content: space-between; height: 4rem; gap: 1rem; }
+  .brand { display: flex; align-items: center; gap: 0.7rem; color: inherit; text-decoration: none; }
+  .mark { width: 2rem; height: 2rem; flex: none; }
+  .brand strong { font-family: var(--display); font-size: 1.25rem; font-weight: 500; letter-spacing: 0.02em; }
+  .brand small, .bar em {
+    display: block; color: var(--muted); font-style: normal;
+    font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+  }
+  .bar em { display: none; }
+  main { padding: 2.5rem 0 4rem; }
+  .hero { text-align: center; max-width: 40rem; margin: 0 auto; }
+  .kicker { color: var(--gold); font-size: 0.75rem; letter-spacing: 0.18em; text-transform: uppercase; margin: 0; }
+  h1 { font-family: var(--display); font-weight: 500; font-size: clamp(2.1rem, 6vw, 3.4rem); line-height: 1.05; margin: 0.7rem 0 0; }
+  .lede { color: var(--muted); margin: 1rem auto 0; max-width: 36rem; }
+  .demo-banner {
+    max-width: 40rem;
+    margin: 1.4rem auto 0;
+    border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+    background: color-mix(in srgb, var(--gold) 8%, transparent);
+    border-radius: 0.8rem;
+    padding: 0.85rem 1rem;
+    text-align: center;
+    color: var(--gold-bright);
+    font-size: 0.92rem;
+  }
+  .demo-banner span { display: block; color: var(--muted); font-size: 0.82rem; margin-top: 0.25rem; }
+  form { max-width: 40rem; margin: 2.2rem auto 0; }
+  .row { display: flex; flex-direction: column; gap: 0.75rem; }
+  input[type="text"] {
+    height: 3.5rem; width: 100%; border-radius: 0.7rem;
+    border: 1px solid var(--border); background: var(--surface); color: var(--fg);
+    padding: 0 1rem; font-family: var(--mono); letter-spacing: 0.04em;
+  }
+  input:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .go, .ghost {
+    height: 3.5rem; border-radius: 0.7rem; border: 0; padding: 0 1.6rem;
+    background: var(--gold); color: var(--ink); font-weight: 650;
+  }
+  .go:active { transform: scale(0.98); }
+  .ghost {
+    height: 2.75rem; background: transparent; color: var(--gold);
+    border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-top: 0.85rem; }
+  .chip {
+    min-height: 2.75rem; border-radius: 999px; border: 1px solid var(--border);
+    background: transparent; color: var(--muted); padding: 0.4rem 0.8rem;
+    font-family: var(--mono); font-size: 0.75rem;
+  }
+  .chip:hover, .chip.on { border-color: color-mix(in srgb, var(--gold) 50%, transparent); color: var(--gold); }
+  .err { color: var(--danger); font-size: 0.875rem; margin: 0.6rem 0 0; }
+  .hints { display: grid; gap: 0.75rem; margin-top: 3.5rem; }
+  .card, .hint {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 1rem;
+  }
+  .hint { padding: 1.15rem 1.2rem; }
+  .hint p, .muted { color: var(--muted); }
+  .hint p { margin: 0.4rem 0 0; font-size: 0.9rem; }
+  #out { margin-top: 3rem; display: grid; gap: 1.75rem; }
+  .panel { padding: 1.4rem; }
+  .score-grid { display: grid; gap: 1.4rem; align-items: center; }
+  .gauge { width: 8.5rem; margin: 0 auto; position: relative; }
+  .gauge svg { width: 100%; height: auto; transform: rotate(-90deg); }
+  .gauge strong {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; font-family: var(--display);
+    font-size: 3rem; font-weight: 500; color: var(--gold-bright); line-height: 1;
+  }
+  .gauge strong span { font-family: var(--sans); font-size: 0.72rem; letter-spacing: 0.16em; color: var(--muted); margin-top: 0.25rem; }
+  h2, h3 { font-family: var(--display); font-weight: 500; margin: 0; }
+  h2 { font-size: clamp(2rem, 4vw, 2.6rem); }
+  h3 { font-size: 1.7rem; }
+  .mono { font-family: var(--mono); letter-spacing: 0.14em; color: var(--muted); font-size: 0.9rem; margin: 0.25rem 0 0; }
+  .cores, .ends { display: grid; gap: 0.85rem; }
+  .core { padding: 1.3rem; display: grid; gap: 1rem; }
+  .num { font-family: var(--display); font-size: 3rem; color: var(--gold-bright); line-height: 1; margin: 0.3rem 0 0; }
+  .steps { font-family: var(--mono); color: var(--subtle); font-size: 0.75rem; }
+  .label { color: var(--gold); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; margin: 0; }
+  .sub { color: var(--subtle); font-size: 0.75rem; margin: 0.2rem 0 0; }
+  .copy { color: var(--muted); font-size: 0.92rem; margin: 0.3rem 0 0; }
+  .block + .block { margin-top: 0.85rem; }
+  .tiles { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+  .tile {
+    width: 3rem; border-radius: 0.45rem; border: 1px solid var(--border);
+    background: var(--elevated); text-align: center; padding: 0.45rem 0 0.35rem;
+  }
+  .tile.end { border-color: color-mix(in srgb, var(--gold) 55%, transparent); background: color-mix(in srgb, var(--gold) 12%, transparent); }
+  .tile.vowel { border-color: color-mix(in srgb, var(--gold) 28%, transparent); }
+  .tile b { display: block; font-family: var(--display); font-size: 1.35rem; font-weight: 500; line-height: 1; }
+  .tile.end b, .tile.vowel b { color: var(--gold-bright); }
+  .tile i { display: block; margin-top: 0.3rem; font-style: normal; font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+  .note { color: var(--subtle); font-size: 0.75rem; }
+  .end-card { padding: 1.15rem 1.2rem; background: color-mix(in srgb, var(--elevated) 55%, transparent); }
+  .letter { font-family: var(--display); font-size: 2rem; color: var(--gold-bright); line-height: 1; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.4rem; }
+  footer { border-top: 1px solid color-mix(in srgb, var(--border) 80%, transparent); }
+  footer p { color: var(--subtle); font-size: 0.75rem; padding: 1.4rem 0 1.8rem; margin: 0; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  @media (min-width: 720px) {
+    .bar em { display: block; }
+    .row { flex-direction: row; }
+    input[type="text"] { flex: 1; }
+    .chips { justify-content: flex-start; }
+    .hints, .score-grid, .ends { grid-template-columns: auto 1fr; }
+    .hints { grid-template-columns: repeat(3, 1fr); }
+    .core { grid-template-columns: 7.5rem 1fr; }
+    .gauge { margin: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+  @media print {
+    header, form, .hints, .actions, footer, .kicker, .demo-banner { display: none !important; }
+    body, .card, .hint, .end-card { background: #fff; color: #1a140c; }
+    .copy, .muted, .mono, .sub, .steps { color: #3d3428; }
+    .label, .num, .letter, h1, h2, h3 { color: #6b5424; }
+    .card, .end-card { break-inside: avoid; border-color: #ddd; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap bar">
+    <a class="brand" href="#"><svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="7" fill="none" stroke="#c4a265" stroke-width="1.4"/><path d="M10 22 V10 h5.2 a4.2 4.2 0 0 1 0 8.4 H10" fill="none" stroke="#e4c98a" stroke-width="1.6"/><circle cx="22.2" cy="20.6" r="1.3" fill="#c4a265"/></svg><span><strong>NumeraKey</strong><small>Domain energy</small></span></a>
+    <em>Energetic Domain Name Analyzer</em>
+  </div>
+</header>
+<main class="wrap">
+  <section class="hero">
+    <p class="kicker">NumeraKey · for founders</p>
+    <h1>Energetic Domain Name Analyzer</h1>
+    <p class="lede">Try a sample name. Soul Urge, Personality, and Destiny, in Matthew Goodwin’s system. The file you keep reads any domain you type.</p>
+    <div id="demo-banner" class="demo-banner" hidden><strong>Shop demo</strong><span>Sample names only. The file you buy reads any domain, offline, with nothing to install.</span></div>
+  </section>
+  <form id="form">
+    <label class="sr" for="domain">Domain name</label>
+    <div class="row">
+      <input id="domain" type="text" autocomplete="off" spellcheck="false" placeholder="yourstudio.com" />
+      <button class="go" type="submit">Analyze</button>
+    </div>
+    <div class="chips" id="chips"></div>
+    <p class="err" id="err" hidden></p>
+  </form>
+  <div id="empty" class="hints"></div>
+  <div id="out" hidden></div>
+</main>
+<footer><div class="wrap"><p>NumeraKey shop demo · The full file is one page, any browser, no account · Matthew Goodwin’s Pythagorean system</p></div></footer>
+<script>
+const DATA = {"letters":{"A":{"letter":"A","value":1,"title":"The spark","meaning":"A is the cleanest 1 in the alphabet — a first breath. Goodwin’s 1 is independence, initiative, and the will to begin without permission. A does not join a category; it starts one. Energetically it is vertical: self-directed, slightly lonely, allergic to being second.","inName":"In a domain, A starts something rather than joining something. At the opening it is a handshake that assumes the room will follow. In the middle it keeps the name from going soft. One well-placed A gives the brand a spine. A cluster of A’s can make the name feel self-referential — as if the company is talking to itself.","brand":"Best when the product must claim first-mover status without sounding borrowed. Price and positioning should be unapologetic. Partnership-first or marketplace-of-equals stories will fight this letter. If A leads the name, the landing page should make a claim, not an invitation to browse."},"B":{"letter":"B","value":2,"title":"The bond","meaning":"B gathers. It is the 2 of cooperation, timing, and the intelligence of the other party. Soft power is the asset. Volume is the leak. B does not conquer a room; it tunes it. The energy is horizontal — receptivity, patience, the second yes.","inName":"In a brand it softens a hard 1 or 8 nearby and implies that value is built with someone — a partner, a market, a community. At the start it invites rather than announces. Overused, it can make the name feel hesitant, as if it is waiting for permission.","brand":"Built for glue: tools that live between teams, consultative sales, anything that needs a second yes. Do not force a warrior narrative onto a B-heavy name. Pricing can be premium if the promise is care and precision, not dominance."},"C":{"letter":"C","value":3,"title":"The voice","meaning":"C wants to be said aloud. It is social, creative, and slightly theatrical — the 3 of charm and of copy people repeat. Expression given a mouth. A 3 lives on voice; it leaks if there is nothing under the performance.","inName":"A C near the start tells the market the brand will talk. Strong in consumer and media names. It lifts a heavy 4 or 8 and makes a technical field more speakable. It can scatter focus if the rest of the letters are already loud.","brand":"Use it when word of mouth is the real distribution. Write for the ear. A C-led name that ships a mute product feels like a costume. Keep a spine of 4 or 8 nearby so the charm has something to stand on."},"D":{"letter":"D","value":4,"title":"The cornerstone","meaning":"D is work, wall, and foundation. Goodwin’s 4 is system, limitation, and the dignity of process. It is a wall, not a spotlight. It rewards what lasts and will not forgive flash without a foundation.","inName":"It steadies a restless name and tells the market the product will hold weight. Excellent in infrastructure, security, and ops brands. At the close it is a locked door — good for trust. Too many D’s make a name feel heavy, dutiful, even grim.","brand":"Best for companies that sell reliability, engineering, or the unglamorous year of building. Do not market a D name as a party. Let the work show. Shortcuts in the product or the story will stall until the structure is honest."},"E":{"letter":"E","value":5,"title":"The current","meaning":"E is the most common vowel and the most mobile. It is motion — change, freedom, a market that will not sit still. A 5 needs a spine, or it becomes too many features and too many promises. Appetite is the gift. Scatter is the debt.","inName":"A name rich in E feels contemporary and hard to cage — the letter of markets and versions. As a vowel it feeds the Soul Urge with restlessness. Without a 4 or 8 nearby it can promise more motion than delivery.","brand":"Good for products that live on change: platforms, versions, discovery. Give the 5 a calendar and a constraint. Too many markets, too many launches, a mood mistaken for a plan — that is E without a wall."},"F":{"letter":"F","value":6,"title":"The hearth","meaning":"F is care with a backbone — home, family, responsibility, a beautiful obligation. Goodwin’s 6 wants to look after people. Dominance copy will feel like a costume. Trust is the asset. Smothering is the leak.","inName":"It warms a technical name and implies the product looks after someone living. At the opening it is hospitality. In a purely extractive brand it will feel borrowed. One F is often enough; a cluster can make the name sentimental.","brand":"Built for health, home, service, and stewardship. Price the care, not the conquest. If you sell extraction or a hard close, F will argue with you in public. Let the about page sound like responsibility, not a campaign."},"G":{"letter":"G","value":7,"title":"The scholar","meaning":"G turns the name inward. Analysis, privacy, the specialist’s room. Goodwin’s 7 is insight — the adept, the analyst, the private intelligence of a craft. It wins in a niche and stalls as a parade. Depth, not volume.","inName":"It adds gravity and a hint of secrecy. Useful for research, security, and deep tech. It will not help a brand that needs to be instantly obvious at a glance. At the start it withholds; the market has to come closer.","brand":"Stay in a niche deep enough to deserve the insight. Publish the method, not the mood. A G name that tries to shout like a 1 or an 8 sounds strained. Let experts recognize themselves in the first sentence."},"H":{"letter":"H","value":8,"title":"The throne","meaning":"H is executive force — material success, authority, the sound of a door closing on a deal. Goodwin’s 8 is capital and the will to own. It is comfortable with money and a hard close, and it withers in a story that pretends not to care about either.","inName":"It gives a name commercial weight and a slightly formal posture. Strong as an opening or a close. Without a human vowel nearby it can read as cold power. One H is a throne; two can feel like a fortress.","brand":"Best for companies that will raise, price, and close without apology. Lead with results. A timid product under an H will disappoint people who expected force. Do not hide the commercial intent — the letter already announced it."},"I":{"letter":"I","value":9,"title":"The horizon","meaning":"I is the humanitarian 9 as a single stroke — completion, empathy, a wide lens. A 9 wants to serve something larger than the founder. Small, private grabs shrink it. The gift is reach. The leak is abstraction.","inName":"It lifts a name out of the petty and toward a thesis. As a vowel it feeds the Soul Urge with a finish that includes other people. Overused, it can make the brand feel abstract or self-serious — a slogan instead of a shop.","brand":"Aim at a public, a mission, or a completion, not a private win. Platform and cause brands wear I well. If the offer is tiny or cynical, this letter will make the name look larger than the company, and the market will notice the gap."},"J":{"letter":"J","value":1,"title":"The envoy","meaning":"J is a 1 with manners. Leadership that arrives socially rather than by decree. Still independence, still first — but the room is allowed to like you. Initiative without the blunt edge of A or the hiss of S.","inName":"It starts a name with authority that does not shove. Strong at the opening of founder-led consumer brands that still need to feel approachable. In the middle it can soften a hard commercial close without giving the 1 away.","brand":"Use when you must lead in public and still be invited back. The hero line can be a claim with a human face. Do not hide the leadership — J is not a 2. It is a 1 that knows how to enter a room."},"K":{"letter":"K","value":2,"title":"The intuition","meaning":"K is partnership with an edge — a 2 that will not disappear into the other person. Intuition, tautness, a slightly electric alliance. In the Pythagorean chart it is still a 2: cooperation, timing, the second yes — but it feels more charged than B or T.","inName":"In a domain it adds tautness and a slight technical or martial quality. Good for tools, security, and B2B names that need trust without softness. Isolated at the end, it can feel abrupt — a hinge that has already closed.","brand":"Built for products that know something before they say it. Consultative, but not fluffy. Do not market a K name as pure hospitality; the edge is the point. Let the first sentence sound like competence that still makes room for the other party."},"L":{"letter":"L","value":3,"title":"The teacher","meaning":"L is expression that wants to instruct as well as charm. Creative, verbal, slightly elegant — a 3 with a lesson in it. Flow and language. It helps a name feel designed rather than invented.","inName":"It gives a name lift and a slightly premium mouthfeel. Excellent in design, fashion, editorial, and education brands. In a purely industrial field it can seem decorative unless the product actually teaches.","brand":"Write to be repeated and to be understood. A course, a method, a distinctive voice. Without a 4 or 8 nearby, L can look more beautiful than built. Put something under the line so the elegance is earned."},"M":{"letter":"M","value":4,"title":"The mason","meaning":"M is system and industry — the letter of making, measuring, and holding the line. 4 with mass. Material, method, the sense that something has been assembled rather than announced.","inName":"It gives a domain a sense of production capacity. Strong in manufacturing, money, and “we built this” stories. Two M’s in a short name can make it feel dense and immovable. At the start it is a workshop, not a stage.","brand":"Sell the making. Process, capacity, the unglamorous year. An M name that markets like a 3 will feel fake. Let the product look built. Slow is allowed; flimsy is not."},"N":{"letter":"N","value":5,"title":"The appetite","meaning":"N is curiosity and magnetism — a 5 that hunts. Motion with tension. It wants change and it feels the risk. Alertness, a slightly modern, nervous intelligence. Appetite is the gift. Anxiety is the leak.","inName":"It keeps a name from sitting still and suggests the product will keep changing with the user. Excellent in marketplaces and discovery products. Too many N’s can make the name feel hungry or restless in a way the market reads as unstable.","brand":"Good for search, networks, news, anything that lives on the next thing. Give the appetite a rail so it does not become too many features. A serious brand wearing too much N can look like it is chasing rather than holding."},"O":{"letter":"O","value":6,"title":"The circle","meaning":"O is protection, family, and completeness — a round 6. It contains, protects, and finishes a circle. Generous visually and sonically. Care at the center. Softness is the watch: a 6 that loses its backbone becomes padding.","inName":"It holds the name together and implies someone is being looked after. As a vowel it feeds the Soul Urge with responsibility. A run of O’s can make the brand feel soft or padded when it needs an edge. One O is often a hold; three is a cushion.","brand":"Community, health, stewardship, products that enclose rather than cut. Do not put O on a raid. Let the promise be completeness and care. If you need severity, pair it with a 4, 8, or a sharp consonant so the circle has a wall."},"P":{"letter":"P","value":7,"title":"The study","meaning":"P is investigation behind a closed door. Research, privacy, the expert who does not overshare. Still a 7 — insight, the specialist — but it will publish, eventually, on its own terms. Precision and a slightly academic restraint.","inName":"It adds a premium, slightly withholding quality. Good for products that want to be trusted by experts. Weak for brands that must explain themselves in one glance. At the opening it asks the market to come in; it will not shout from the street.","brand":"Let the work be deep and the copy exact. A P name that performs like a 3 will feel precious. Stay in the niche. Publish the method before the mood. People who need the parade will not stay; the ones who need the study will."},"Q":{"letter":"Q","value":8,"title":"The uncommon 8","meaning":"Q is power with an odd frequency — rare in English names, therefore memorable. It concentrates 8’s executive force into something slightly strange. Capital that does not arrive in the usual suit. Scarcity is the asset. Gimmick is the leak.","inName":"People notice a Q. It adds rarity and a slightly exclusive tone. Isolated without U it can feel unfinished. Use it only if the product can carry the peculiarity; otherwise it reads as a stunt in the middle of an otherwise ordinary word.","brand":"Useful when the brand wants to feel scarce, expensive, or slightly other. Do not hide the commercial 8 — Q is still capital. If the company is ordinary, this letter will make the name look stranger than the offer, and that gap will not close."},"R":{"letter":"R","value":9,"title":"The people","meaning":"R is the 9 of the crowd — humanitarian, tolerant, a leader of others rather than a hermit. Service with a forward lean. Reach that includes people rather than hovering above them. The gift is public spirit. The leak is a growl: too many R’s start to sound forceful instead of wide.","inName":"It gives a name public reach and a sense that many people will stand under it. One of the strongest letters for a platform. At the close it is a hand still out. A cluster of R’s can rasp — the name starts to sound like a claim instead of a gathering.","brand":"Platform, cause, consumer, anything that must hold a crowd. Write for the many, not the inner room. A small private grab under an R will look mean. If you mean to serve a public, this letter already said so — keep the product that wide."},"S":{"letter":"S","value":1,"title":"The ascent","meaning":"S is ambition as a first letter and self-reliance anywhere it sits. A more social 1 than A — it starts, sells, and climbs. Still the original, still first, but it knows how to be heard. The gift is climb. The leak is slick: a hiss of S’s can feel like a slogan.","inName":"Excellent opening for a company that intends to replace an incumbent. It cuts and it carries. In the middle it keeps the name moving up. Overused, it hisses — the name starts to sound like a campaign instead of a company.","brand":"Use when you are unseating someone and you need the market to remember you in one syllable. Be first, but do not be oily. A landing page that oversells under an S will confirm the slickness the ear already suspected."},"T":{"letter":"T","value":2,"title":"The table","meaning":"T is diplomacy and the second chair — cooperation that still has a structure. The 2 of meeting. It sets a surface between two parties. Competent, grounded, slightly formal. The handshake that has already been arranged.","inName":"It steadies a name and implies negotiation rather than conquest. Strong in B2B and tools that sit between teams. At the start it is a chair being pulled out. A cluster of T’s can make the brand feel stiff — all table, no talk.","brand":"Built for professional services, infrastructure between people, anything that cannot be bought on impulse. The hero line should welcome, then specify. Do not force a raid onto a T name. Let the second yes be the sale."},"U":{"letter":"U","value":3,"title":"The open sound","meaning":"U is optimistic, social 3-energy with a rounder mouth than C or L. Receptive, inclusive, a space held open. Expression that does not need to perform as hard. The gift is friendliness. The leak is an unfinished mouth — too many U’s can feel like the name never closed.","inName":"It makes a name friendlier and more speakable. As a vowel it feeds the Soul Urge with social warmth. In a luxury or scientific brand it can undercut severity — sometimes that is the point. A run of U’s can leave the field sounding open and slightly unfixed.","brand":"Good when the product needs to be said aloud without sounding like a pitch. Community, consumer, anything that should feel available. If you need severity, pair U with a 4 or 8 so the openness has a frame."},"V":{"letter":"V","value":4,"title":"The wedge","meaning":"V is construction with a point — endurance, a cutting 4. Precision, containment, a slightly modern severity. It looks like a victory mark and behaves like one: decisive, structural, slightly martial. Foundation that does not blur.","inName":"It gives a name architectural clarity. Useful in tech, finance, legal, performance. At the end of a word it can feel like a locked door — good for trust, poor for invitation. One V is a cut; two can feel like armor.","brand":"Sell the structure and the edge. Excellent when the product must look like it will hold and decide. Do not market a V name as a hug. Let the first sentence be specific. Invitation can live in the vowels; V will do the wall."},"W":{"letter":"W","value":5,"title":"The wave","meaning":"W is a double-U — a 5 of travel and change that occupies more space than N or E. Motion in pulses. Width, weather, coming-and-going. Restlessness with a wide mouth. Goodwin treats it as a consonant unless it is forced into a vowel role, which is rare in domains.","inName":"It makes a name feel wide and slightly restless. Good for platforms and marketplaces. In a short name it can feel large; in a long name it can wash the other letters out. It does not usually feed the Soul Urge — it is almost always personality, the public weather of the word.","brand":"Use when the product is a place people move through. Do not let W become the whole story or the brand will feel like weather with no building. Pair it with a 4 or 8 if you need the wave to land somewhere."},"X":{"letter":"X","value":6,"title":"The crossing","meaning":"X is responsibility at an intersection — a 6 that looks like a choice. Graphic, modern, a little severe. Care that has to decide. Duty, not decoration. The gift is a visible crossing. The leak is a suffix used as jewelry.","inName":"Strong in tech and experimental brands. It is noticed. Overused as a suffix it becomes decoration instead of duty — the name looks current and means nothing. In the middle it can feel like a junction; at the end, a mark.","brand":"Use it when the product actually stands at a choice: two systems meeting, a responsibility taken. Do not add X to look like the decade. If the company is stewardship, health, or a crossing of markets, this letter already said so — keep the work that serious."},"Y":{"letter":"Y","value":7,"title":"The question","meaning":"Y is the 7 that asks. Wisdom, introspection, a slight otherworldliness. Insight that does not close the door. Either as vowel or consonant it makes a name feel less ordinary and slightly harder to own quickly. The gift is the question. The leak is delay mistaken for depth.","inName":"Goodwin’s working rule: Y is a vowel unless it begins the name or sits between two vowels. When it acts as a vowel it feeds the Soul Urge — the inner hunger becomes inquiry. When it is a consonant it withholds, and the market meets a specialist’s face instead of an inner ask.","brand":"Useful for research, craft, and brands that want to feel slightly other. Do not use Y to look mysterious if the product is a shout. Let the copy ask well. A Y name that over-explains will fight its own 7; a Y name that never answers will stall as a mass brand."},"Z":{"letter":"Z","value":8,"title":"The close of power","meaning":"Z is the last 8 — conclusion, authority, a snap. Capital at the end of the alphabet. Finality, the door that has already closed on the deal. Rare enough to be distinctive. The gift is a hard finish. The leak is a gimmick in the middle of a word that did not earn the sound.","inName":"It ends a name with commercial force and a hint of finality. Strong as a close. In the middle it can feel like a stunt unless the sound is earned. One Z is a seal; more than one in a short name is almost always too much theater.","brand":"Use when the company is meant to finish something — a sale, a category, a position of ownership. Do not hide the 8. A quiet, modest offer under a Z will look smaller than the letter. If you close with Z, close the deal in public too."}},"meanings":{"1":{"value":1,"title":"The Pioneer","keyword":"Authority","meaning":"One is the number of the original. In Goodwin’s system it is the first element of the core — independence, initiative, and the will to begin without permission. A name carrying 1 does not want to sit in a category; it wants to be the category. Energetically it is a vertical current: self-directed, slightly lonely, allergic to being second.","strengths":"Clarity of leadership. The name can stand alone on a deck, a spine, or a storefront. Founders can claim first-mover status without sounding like they borrowed it. Decisions get made. The brand does not wait for a committee to invent its voice.","challenges":"Isolation and imitation-panic. A 1 that is not actually first will spend its life proving it is. Collaboration copy feels fake. The shadow is arrogance, a thin story about uniqueness, and a refusal to let the product be improved by other people.","business":"Best for tools that replace an incumbent, founder-led companies, and anything that must feel like a decision rather than a feature list. Price and positioning should be unapologetic. Partnership-first or marketplace-of-equals stories will fight the number. If you buy this name, be prepared to lead in public.","firstLetter":"The market meets a leader before it meets a product. Opening on 1 (A, J, S) is a handshake that assumes the room will follow. Useful when you are unseating someone; risky if you still need permission from the category. First impression is initiative, not hospitality — your landing page should make a claim, not an invitation to browse.","lastLetter":"The name closes with self-direction. Buyers leave feeling they chose the original, not a variant. A 1 at the end is a period, not a comma: the conversation is over and you are supposed to act. Weak closes (a trailing filler letter) will leak this advantage.","firstVowel":"The inner modifier is autonomy. Whatever the first letter announces, the first vowel tells the body of the brand what it actually wants — and a 1 vowel wants to do it alone. Partnership language, “we’re a community,” and committee-sounding taglines will feel like a costume. Keep the claim singular and sharp."},"2":{"value":2,"title":"The Diplomat","keyword":"Alliance","meaning":"Two is the number of the other. Goodwin reads it as sensitivity, cooperation, and the intelligence of timing. A 2 name does not conquer a room; it tunes it. The energy is horizontal — receptivity, patience, the second yes. Soft power is the asset. Volume is the leak.","strengths":"Trust, tact, and the ability to sit between two parties without becoming either. The name feels safe to invite in. Excellent memory in relationship-heavy categories. People underestimate a 2, which is often how it wins.","challenges":"Indecision and invisibility. A 2 that tries to shout like a 1 or an 8 sounds strained. The shadow is dependence — a brand that cannot exist without a larger partner, or a product that is “nice” and therefore forgettable. Delay can be mistaken for depth.","business":"Built for glue: CRM, legal, finance-for-two, marketplaces, B2B tools that live between teams. Sales motions should be consultative, not theatrical. Pricing can be premium if the promise is care and precision, not dominance. Do not force a warrior narrative onto this name.","firstLetter":"Approach is receptive. Opening on 2 (B, K, T) invites rather than announces. The first second of the name is a chair being pulled out, not a fist on the table. Strong for services that need a second yes — enterprise, advisory, anything that cannot be bought on impulse. Your hero line should welcome, then specify.","lastLetter":"The close is cooperative. People remember being considered, not conquered. A 2 ending leaves the door ajar: there is still a conversation. That is an asset in long sales cycles and a liability if you need a hard conversion close. Pair it with a decisive Destiny or the name will trail off.","firstVowel":"The inner modifier is harmony. Discordant marketing — aggression, fake scarcity, “crush the competition” — will feel off-brand in the body even if the first letter is loud. The vowel is asking the company to stay in relationship. Use it. A 2 inner current that is forced into 8-behavior burns the trust it is made of."},"3":{"value":3,"title":"The Voice","keyword":"Radiance","meaning":"Three is joy given a mouth. In the Goodwin chart it is expression, social intelligence, and the talent for being repeated. A 3 name wants to be said, sung, screenshotted. Visibility is not a vanity metric here; it is the business model of the number. The energy is bright, quick, and a little theatrical.","strengths":"Memorability and word-of-mouth. The name performs. Creative teams will like writing for it. Social proof gathers more easily than for a 4 or a 7. A 3 can make a thin product feel like a scene — which is power, if the product then deserves the scene.","challenges":"Scatter and surface. The shadow of 3 is talk without delivery, charm without craft, a brand that is everywhere and about nothing. Discipline feels like a killjoy, so 3 companies underbuild ops until the audience notices. Gossip is also a 3 problem: the name will be discussed, not always kindly.","business":"Ideal for media, creative tools, consumer apps, education with a personality, and any company that lives or dies on storytelling. Invest in voice, community, and a name people can spell after hearing it once. Do not hide a 3 behind grey enterprise chrome unless you are deliberately cooling it.","firstLetter":"First contact is charm. Opening on 3 (C, L, U) makes the name perform — it wants a tagline and a stage. The ear leans in. Use that opening second for a line people will quote, not for a specification. If the product is sober, the first letter is already doing marketing work you should not waste.","lastLetter":"It finishes expressively. People remember how it sounded more than what it claimed. A 3 close is a rising note: the name wants an encore. That helps consumer and cultural brands and can make a serious B2B name feel slightly informal. Own the sound; do not flatten it in a logo that cannot be spoken.","firstVowel":"Inner current is joy and utterance. A mute, corporate tone will waste the name from the inside out. The first vowel is the emotional weather of the brand — here it is light, verbal, and social. Let the product speak in public. If you need secrecy or severity, this vowel will fight you every quarter."},"4":{"value":4,"title":"The Builder","keyword":"Structure","meaning":"Four is the number of the wall that holds. Goodwin reads it as system, limitation, and the dignity of work. A 4 name is not trying to dazzle; it is trying to last. The energy is rectangular — plans, process, the unglamorous virtue of something that does not break. Flash without foundation will read as a lie next to this number.","strengths":"Reliability as a brand asset. The name can carry infrastructure, compliance, hardware, logistics. Buyers who have been burned by a 5 or a 3 will rest here. Teams can hire against the number: operators, not performers. Permanence is a sales argument.","challenges":"Rigidity and dullness. The shadow is bureaucracy, a product that cannot change, a name that feels like a filing cabinet. 4 also attracts karmic 13 — the lesson that the work cannot be skipped. If you cut corners, the number will stall you in public.","business":"Choose this current for B2B primitives, security, manufacturing, and anything that must not fail. Marketing should show proof, SLAs, and the machine — not a vibe. Price on trust. A 4 name that pretends to be a lifestyle brand will leak credibility in the first case study.","firstLetter":"The approach is methodical. Opening on 4 (D, M, V) makes first impression competence, not charisma. The market assumes there is a system behind the word. Lead with how it works and what it withstands. A playful hero animation on a 4 opening can feel like you are apologizing for the number. Do not.","lastLetter":"The close is solid. Buyers feel they can put weight on it. A 4 ending is a foundation stone: the name stops and stays. Excellent for trust at the point of conversion. If the rest of the name is flighty, this last letter is doing rescue work — honor it with a product that actually holds.","firstVowel":"Inner modifier is order. The brand wants process, documentation, and proof — not vibes. A 4 vowel will punish improvisational go-to-market: missed SLAs, sloppy onboarding, “we’ll figure it out.” Build the machine the vowel is asking for, or the name will feel like a false advertisement."},"5":{"value":5,"title":"The Current","keyword":"Motion","meaning":"Five is freedom with a pulse. In Goodwin it is change, appetite, the senses, and the refusal to be caged. A 5 name wants markets, travel, versions, the next city. The energy is kinetic — light enough to move, restless enough to expand. It is one of the great commercial numbers if discipline is added from another core.","strengths":"Adaptability and growth narrative. The name can follow the user into new contexts. Marketplaces, fintech rails, mobility, media — anything whose customers refuse to sit still. A 5 is easy to update without feeling like a betrayal of the original story.","challenges":"Scatter, hype, and the karmic 14: freedom without discipline. The shadow is a brand that announces a new chapter every quarter and delivers none of them. Excess is a 5 problem — too many features, too many markets, too many promises. Users will forgive motion; they will not forgive a broken promise of motion.","business":"Fits products whose value is optionality: platforms, rails, travel, trading, social. Go-to-market can be fast and public. Guardrails must be operational, not rhetorical. If Destiny is 5 and Soul Urge is also 5, hire a 4 somewhere in the company or the name will outrun the product.","firstLetter":"First contact is restless curiosity. Opening on 5 (E, N, W) opens a door and keeps it swinging. The ear expects movement — a product that will not trap the user. Your first screen should offer a path, a market, or a next step, not a lecture. Static, paternal brands waste a 5 opening.","lastLetter":"It ends in motion. People leave wanting the next version, the next city, the next trade. A 5 close is an ellipsis, not a period — which is perfect for subscription and platform businesses and dangerous for anything that needs to feel finished. Do not promise completion you cannot give.","firstVowel":"Inner drive is freedom. Heavy, paternal messaging will choke the signal. The vowel is asking the company not to become a cage: lock-in pricing, moralizing copy, “we know better than you.” A 5 inner current that is respected becomes loyalty; one that is betrayed becomes churn with a story attached."},"6":{"value":6,"title":"The Steward","keyword":"Care","meaning":"Six is the number of the hearth and the duty beside it. Goodwin reads it as responsibility, family, community, and the aesthetic of care — beauty that serves. A 6 name holds people. The energy is warm and binding. It can become a movement (see 33) or it can become a burden the founder cannot put down.","strengths":"Belonging as a moat. Customers stay because they feel looked after, not because switching costs were engineered. Strong in wellness, education, hospitality, design with a conscience, and any product that sits in the home. Visual beauty is on-brief, not decoration.","challenges":"Martyrdom and meddling. The shadow of 6 is the brand that cannot stop parenting the user, or the founder who cannot stop rescuing the company. Guilt is a 6 sales tactic and it leaves a taste. There is also a risk of prettiness without backbone.","business":"Price on relationship and craft. Community is real here, not a growth hack. Avoid cold, extractive funnels; they sour the name. If you need to be feared rather than trusted, this is the wrong number. Service quality is the product, even when the SKU is software.","firstLetter":"The market meets a caretaker. Opening on 6 (F, O, X) makes warmth the first data point. People assume someone is home. Use that opening to show who is held — a family, a student, a guest — not to perform toughness. A 6 first letter on a ruthless product is a credibility problem waiting for a review.","lastLetter":"The close is belonging. People remember that they were looked after. A 6 ending is a hand on the shoulder as they leave the page. Excellent for hospitality, health, and education. If the product then nickel-and-dimes them, the last letter will testify against you.","firstVowel":"Inner modifier is duty and affection. Cold growth-hacking will sour the name from the inside. The vowel wants the company to mean its care: support that answers, design that respects, a founder who does not disappear after the raise. Ignore that and the 6 becomes a scold."},"7":{"value":7,"title":"The Adept","keyword":"Insight","meaning":"Seven is the number of the inner room. Analysis, research, faith in what cannot be advertised. Goodwin’s 7 is introspective, exacting, and slightly apart. A 7 name does not want a crowd; it wants the right room. The energy is cool, vertical, and private. Hype is a foreign language.","strengths":"Authority among people who know. The name can carry science, intelligence, privacy, premium advisory, and deep tech. Trust, once earned, is unusually durable. Silence can be a feature. Specialists will self-select in.","challenges":"Isolation and opacity. The karmic 16 (the tower) lives near 7: ego and secrecy collapse. The shadow is a brand so inward it cannot be bought, or so superior it cannot be loved. Mass-market noise will thin the signal — and the temptation to add that noise is how 7s ruin themselves.","business":"Best when the buyer is an expert or wants to feel like one. Content should teach, not tease. Sales cycles can be long and should be. Do not dunk a 7 name in growth-hack chrome. If you need virality more than respect, pick another name.","firstLetter":"Approach is reserved and precise. Opening on 7 (G, P, Y-as-consonant) makes first impression “they know something.” The name does not smile first. Let the opening be a door that does not open all the way — a hint of the work behind it. Over-explaining in the hero will waste the 7.","lastLetter":"It finishes as a question answered. The aftertaste is intelligence. A 7 close is a quiet click, not a flourish. People remember that they understood something they did not understand before. If the product then talks down to them, this last letter becomes a broken promise of respect.","firstVowel":"Inner current is inquiry. Hype language will feel like a costume in the body of the brand. The first vowel is asking the company to stay curious and slightly severe with itself. Publish the method. Admit uncertainty. A 7 that fakes omniscience will be taken apart by the very audience it wants."},"8":{"value":8,"title":"The Executive","keyword":"Capital","meaning":"Eight is the number of the material world taken seriously. Power, money, organization, consequence. In Goodwin it is the executive current — the ability to turn vision into a balance sheet. An 8 name wants the boardroom and can carry a valuation without blushing. The energy is heavy in the best sense: weight, not fat.","strengths":"Commercial gravity. The name sounds funded even when it is not. Excellent for fintech, enterprise, luxury with teeth, and any company whose promise is yield or command of a market. People grant authority first and ask questions later — a real advantage in a noisy category.","challenges":"Hardness and the karmic 19 if leadership was not earned. The shadow is domination without delivery, status without substance, a brand that confuses fear with respect. Soft, apologetic copy undercuts the current; cruelty wastes it. 8s also attract scrutiny. The books have to be real.","business":"The classic entrepreneur number. Price high enough to match the posture. Hire operators who can stand in public. Legal and finance are part of the brand, not back office. If the product is actually a 6 (care) wearing an 8 name, the market will eventually feel the mismatch in support tickets.","firstLetter":"First contact is weight. Opening on 8 (H, Q, Z) makes the name arrive already funded in the listener’s mind. The first letter is a mahogany door. Use it. Your opening claim should be about result and scale, not about being liked. A cute illustration on an 8 opening is a contradiction.","lastLetter":"It closes with consequence. People remember status and result. An 8 ending is a stamp: the deal is done, or should be. Strong at conversion if the offer is worthy. If the last interaction is sloppy — a broken checkout, a cheap confirmation — the 8 close will make the failure louder.","firstVowel":"Inner drive is material mastery. Soft, apologetic copy will undercut the current from the inside. The vowel wants competence that can be counted: revenue, uptime, assets under something. Spiritual or purely aesthetic positioning will feel like a sidestep. Be excellent at the worldly thing."},"9":{"value":9,"title":"The Horizon","keyword":"Legacy","meaning":"Nine is the last single digit — completion, compassion, the wide lens. Goodwin’s 9 is humanitarian and final: endings that become movements. A 9 name is bigger than a SKU. The energy is tidal. Small, local, petty framing wastes it; so does a founder who wants to keep everything.","strengths":"Scale of meaning. The name can hold a global thesis, a cultural project, climate, education, a platform that outlives the people who started it. Audiences forgive a 9 a great deal if the cause is real. Endings are on-brief: sunsetting a feature can feel like integrity rather than loss.","challenges":"Diffusion and self-righteousness. The shadow is a brand that loves humanity and neglects the human in the ticket queue. 9s also leak — money, focus, IP — because holding on feels unevolved. A 9 without a 4 or 8 in the chart can be all horizon and no ship.","business":"Fits world-sized theses and products that want to become infrastructure for a value, not just a market. Fundraising stories can be moral if they are honest. Do not use a 9 name to sell a narrow extraction machine; the number will eventually make the contradiction famous.","firstLetter":"The approach is generous and final. Opening on 9 (I, R) makes first impression “this is bigger than a product.” The name arrives like a chapter heading. Your first line should be a thesis, not a feature. Trivia in the hero will shrink a 9 opening to something it is not.","lastLetter":"It ends as a benediction. People remember the cause more than the SKU. A 9 close is a wide last chord. Beautiful for movements and platforms; awkward for a discount tool. If you need the user to remember a price, do not rely on this last letter to do sales work.","firstVowel":"Inner modifier is compassion at scale. Narrow, extractive messaging will clash with the body of the brand. The vowel is asking whether the company can let something go — credit, control, a market it should not own. A 9 that hoards becomes a sermon nobody believes."},"11":{"value":11,"title":"The Visionary","keyword":"Voltage","meaning":"Eleven is a master number: the 2 raised until it sparks. Goodwin treats 11 as illumination under pressure — intuition, charisma, the nervous system of a prophet. A name that holds 11 can magnetize a following. It can also fray into anxiety and noise if the vision is not real. This is not a louder 2; it is a different instrument.","strengths":"Electric first contact. People feel the idea before they parse the offer. Category prophets, new mediums, products that change how a market sees itself — 11 is honest there. Inspiration is a renewable resource if the founder stays aligned. The name can become a symbol, not just a label.","challenges":"Nervous tension and messianic drift. Unfocused 11s become a stream of revelations and no product. The shadow is spiritualized marketing, cultish community, and a team that cannot sleep. 11 needs a 4 or 22 nearby in the company, if not in the name, or the voltage has nowhere to ground.","business":"For products that teach a new seeing. Content is not optional; it is the product’s atmosphere. Integrity is a commercial requirement — one public lie and the magnet reverses. Do not buy an 11 name for a commodity business and then wonder why the audience is disappointed.","firstLetter":"First contact is electric. People feel the idea before they parse the offer. An 11 opening (rare as a single letter; more often the reduced core) makes the first second slightly unnerving and memorable. Do not smother it with stock photography. Let the thought be visible.","lastLetter":"The close is a charge left in the room. Memorable, slightly unnerving. People will talk about the name after they close the tab. That is distribution. It is also a warning: if the product is ordinary, the aftertaste becomes a joke. 11 closings demand a second act.","firstVowel":"Inner current is revelation. The brand must teach, not merely sell. A first vowel that reduces to 11 — or an 11 Soul Urge sitting behind a quieter letter — wants the company to keep telling the truth it saw. Stopping the teaching to “just grow” is how 11 names go dark."},"22":{"value":22,"title":"The Master Builder","keyword":"Empire","meaning":"Twenty-two is the rarest practical master: the 11’s vision plus the 4’s masonry. Goodwin calls it the number that can build for the collective what the 4 builds for the household. A 22 name wants institutions, platforms, cities of software. Half-measures embarrass it. This is not a personality; it is an assignment.","strengths":"The capacity to make the invisible solid at scale. Rails, networks, nations of users. The name can survive the founder. Investors who understand masters will hear ambition that is structural, not theatrical. A 22 that delivers becomes a proper noun.","challenges":"The gap between the blueprint and the brick. 22s that stay in vision become anxious 11s; 22s that only lay brick become heavy 4s. The shadow is monument-building for its own sake — a platform nobody asked to live in. Burnout is occupational.","business":"Only honest when the ambition is structural. Do not put a 22 on a feature. Hiring, capital, and time horizons must match the number or the name will accuse the company every year. Governance matters. This is a name for people who intend to still be building in a decade.","firstLetter":"The approach is monumental. First impression is “this could last.” A 22 opening (as a master Destiny more often than as a letter) makes the first second feel like the cornerstone of a public building. Your first sentence should be about the system, not the mood. Cute is a category error.","lastLetter":"It finishes as architecture. People remember a system, not a slogan. A 22 close is a keystone. If the product is a set of disconnected tools, this last impression will make the mess more obvious. Finish the cathedral or do not use the number.","firstVowel":"Inner drive is to make the invisible solid. Vague mystique without delivery will collapse the number from the inside. The vowel is a project manager in a visionary’s coat. Ship. Document. Leave something that can be maintained when the founding myth is no longer in the room."},"33":{"value":33,"title":"The Teacher","keyword":"Movement","meaning":"Thirty-three is the master of 6 — care raised until it becomes a culture. Goodwin’s higher masters are rare in ordinary names; when a domain reduces to 33 and is held (not broken to 6), the reading is of teaching, healing at scale, and a creed people will live inside. Heavy. Wasted on a thin product. This is not a lifestyle brand with better adjectives.","strengths":"Devotion. The name can call a generation, not a segment. Education, healing, spiritual-adjacent work that is actually disciplined — 33 is honest there. People will work for it and tell their children. The commercial form is a school, a practice, a platform of care that outgrows the founder’s calendar.","challenges":"Savior complex and exhaustion. The shadow is a company that cannot stop rescuing, or a founder who becomes the religion. 33 without boundaries is a clinic that never closes. There is also the risk of grand language around a small app. The number will not forgive that for long.","business":"Reserve this reading for work that is actually formative: education, health at scale, a method people inhabit. Revenue should not contradict the teaching. If you need a faster, colder business, reduce the name to 6 in practice and stop advertising the master. Integrity is the only go-to-market.","firstLetter":"First contact is devotion. The name feels like a calling. An opening that holds 33-energy asks the visitor whether they are a student or a passerby. Do not greet them with a discount code. Greet them with the lesson, then the door.","lastLetter":"It closes as a responsibility handed to the audience. People leave carrying something. That is the point. A 33 last impression that is followed by a cheap upsell is a desecration the market will remember. End with a practice, not a pitch.","firstVowel":"Inner modifier is service so complete it becomes leadership. The vowel is not asking you to be liked; it is asking you to be responsible for what you awaken. Curriculum, care, and succession planning are spiritual technologies here. Ignore them and the master becomes a 6 in pain."}}};
+const DEMO = true;
+const EXAMPLES = ["linear.app", "stripe.com", "mercury.com", "haven.ai"];
+const LETTER_VALUE = {A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+const VOWELS = new Set(["A","E","I","O","U"]);
+const MASTER = new Set([11,22,33]);
+const KARMIC = new Set([13,14,16,19]);
+const FOUNDER = new Set([1,3,5,8,11,22,33]);
+const STRONG_OPEN = new Set([1,3,8,11,22]);
+const STRONG_CLOSE = new Set([1,8,9,22]);
+const INNER = new Set([1,5,8,11]);
+const COMPOUND = new Set(["co.uk","com.au","co.au","com.br","co.nz","co.za","com.mx","co.jp","com.cn","org.uk","ac.uk","net.au","org.au"]);
+
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&" + "amp;", "<": "&" + "lt;", ">": "&" + "gt;", '"': "&" + "quot;", "'": "&" + "#39;" }[c]));
+const digitSum = (n) => String(Math.abs(n)).split("").reduce((a,d)=>a+Number(d),0);
+function reduceNumber(raw) {
+  const steps = [raw];
+  let n = raw;
+  let karmicDebt = KARMIC.has(n) ? n : null;
+  while (n > 9 && !MASTER.has(n)) {
+    n = digitSum(n);
+    steps.push(n);
+  }
+  const found = steps.find((s) => KARMIC.has(s) && s !== n);
+  return { raw, value: n, steps, isMaster: MASTER.has(n), karmicDebt: karmicDebt ?? found ?? null };
+}
+const meaningOf = (v) => DATA.meanings[String(v)] || DATA.meanings[String(((v - 1) % 9) + 1)];
+const formatNumber = (n) => n.isMaster ? String(n.value) : (n.karmicDebt && n.karmicDebt !== n.value ? n.value + " / " + n.karmicDebt : String(n.value));
+function isVowelAt(letters, index) {
+  const ch = letters[index] || "";
+  if (VOWELS.has(ch)) return true;
+  if (ch !== "Y") return false;
+  if (index === 0) return false;
+  const prev = letters[index - 1] || "";
+  const next = letters[index + 1] || "";
+  if (VOWELS.has(prev) && VOWELS.has(next)) return false;
+  return true;
+}
+function parseDomain(input) {
+  let host = input.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0].split("?")[0].split("#")[0].replace(/\.$/, "");
+  if (host.includes("@")) host = host.split("@").pop();
+  const labels = host.split(".").filter(Boolean);
+  let tld = "", sld = host;
+  if (labels.length >= 3) {
+    const compound = labels.slice(-2).join(".");
+    if (COMPOUND.has(compound)) { tld = compound; sld = labels.slice(0, -2).join("."); }
+    else { tld = labels.at(-1) || ""; sld = labels.slice(0, -1).join("."); }
+  } else if (labels.length === 2) { tld = labels[1] || ""; sld = labels[0] || ""; }
+  else sld = labels[0] || host;
+  const letters = sld.toUpperCase().replace(/[^A-Z]/g, "");
+  return { display: tld ? sld + "." + tld : (sld || input.trim()), letters };
+}
+function scoreEnergy(a) {
+  let points = 4.4;
+  const d = a.destiny.value, s = a.soul.value, p = a.face.value;
+  if (d === 22 || d === 33) points += 2.1;
+  else if (d === 11) points += 1.8;
+  else if (d === 8 || d === 1) points += 1.6;
+  else if (d === 3 || d === 5) points += 1.2;
+  else if (d === 7) points += 0.3;
+  else points += 0.1;
+  points += FOUNDER.has(s) ? 1 : 0.15;
+  points += FOUNDER.has(p) ? 0.7 : 0.1;
+  const first = a.first && a.first.value;
+  const last = a.last && a.last.value;
+  const fv = a.vowel && a.vowel.value;
+  if (first && STRONG_OPEN.has(first)) points += 0.65; else if (first) points += 0.1;
+  if (last && STRONG_CLOSE.has(last)) points += 0.4;
+  if (fv && INNER.has(fv)) points += 0.45;
+  if (d === s) points += 0.55;
+  if (d === p) points += 0.25;
+  if (d + s === 10 || d + s === 9) points += 0.3;
+  if (a.destiny.karmicDebt) points -= 0.85;
+  if (a.soul.karmicDebt && a.soul.karmicDebt !== a.destiny.karmicDebt) points -= 0.4;
+  if (Math.abs(d - p) >= 6 && !FOUNDER.has(d)) points -= 0.35;
+  if (a.letters.length < 4) points -= 0.25;
+  if (a.letters.length > 16) points -= 0.2;
+  const score = Math.min(10, Math.max(1, Math.round(points)));
+  let label, summary, potential;
+  if (score >= 10) {
+    label = "Sovereign";
+    summary = "Rare alignment. The name carries founder voltage, a clean close, and a Destiny the market can fund.";
+    potential = "A 10 is not a guarantee of a company. It is a name that will not fight you.";
+  } else if (score >= 8) {
+    label = "Commanding";
+    summary = "Strong commercial current. The name can lead a category if the product matches the number.";
+    potential = "The market will grant more authority than you have yet earned. Make the product as loud as the letters.";
+  } else if (score >= 6) {
+    label = "Aligned";
+    summary = "A workable, professional signature. Refine positioning to the core numbers and it will hold.";
+    potential = "Nothing is broken and nothing is magical. Lean on Soul Urge for voice, Personality for the face, Destiny for the path.";
+  } else if (score >= 4) {
+    label = "Forming";
+    summary = "The energy is present but split. Use the first letter as the positioning lever.";
+    potential = "Pick Destiny as the north star. Trying to honor every number at once keeps a Forming name vague.";
+  } else {
+    label = "Dissonant";
+    summary = "The name fights itself or carries a heavy karmic compound. Compare a variant before you buy.";
+    potential = "Do not buy this spelling because it sounds good. Test a close variant and read it again.";
+  }
+  return { score, label, summary, potential };
+}
+function analyze(input) {
+  const parsed = parseDomain(input);
+  const letters = parsed.letters;
+  if (letters.length < 2) return null;
+  const cells = [];
+  let v = 0, c = 0, all = 0, firstVowel = -1;
+  for (let i = 0; i < letters.length; i++) {
+    const letter = letters[i];
+    const value = LETTER_VALUE[letter] || 0;
+    const vowel = isVowelAt(letters, i);
+    cells.push({ letter, value, index: i, role: vowel ? "vowel" : "consonant", yNote: letter === "Y" });
+    all += value;
+    if (vowel) { v += value; if (firstVowel < 0) firstVowel = i; }
+    else c += value;
+  }
+  const mod = (ch) => {
+    const value = LETTER_VALUE[ch] || 0;
+    const reduced = reduceNumber(value);
+    return { letter: ch, value, reduced, meaning: meaningOf(reduced.value), energy: DATA.letters[ch] };
+  };
+  const a = {
+    display: parsed.display,
+    letters,
+    cells,
+    soul: reduceNumber(v),
+    face: reduceNumber(c),
+    destiny: reduceNumber(all),
+    first: mod(letters[0]),
+    last: letters.length > 1 ? mod(letters.at(-1)) : null,
+    vowel: firstVowel >= 0 ? mod(letters[firstVowel]) : null,
+  };
+  a.energy = scoreEnergy(a);
+  return a;
+}
+function el(tag, cls, text) {
+  const node = document.createElement(tag);
+  if (cls) node.className = cls;
+  if (text != null) node.textContent = text;
+  return node;
+}
+function addBlock(parent, label, text) {
+  const wrap = el("div", "block");
+  wrap.append(el("p", "label", label), el("p", "copy", text));
+  parent.append(wrap);
+}
+function coreCard(kicker, lens, number) {
+  const m = meaningOf(number.value);
+  const art = el("article", "card core");
+  const left = el("div");
+  left.append(el("p", "label", kicker), el("p", "num", formatNumber(number)));
+  if (number.steps.length > 1) left.append(el("p", "steps", number.steps.join(" → ")));
+  const right = el("div");
+  const title = el("p", "label", m.title);
+  title.style.cssText = "color:var(--fg);font-family:var(--display);font-size:1.45rem;letter-spacing:0;text-transform:none";
+  right.append(title, el("p", "label", m.keyword), el("p", "sub", lens));
+  addBlock(right, "Meaning", m.meaning);
+  addBlock(right, "Strengths", m.strengths);
+  addBlock(right, "On the brand", m.business);
+  art.append(left, right);
+  return art;
+}
+function endCard(position, mod) {
+  if (!mod) return null;
+  const e = mod.energy;
+  const pos = position === "First letter" ? mod.meaning.firstLetter : mod.meaning.lastLetter;
+  const art = el("article", "card end-card");
+  art.append(el("p", "label", position));
+  const head = el("p");
+  head.append(el("span", "letter", mod.letter), document.createTextNode(" "), el("span", "mono", mod.value + " · " + (e ? e.title : "")));
+  art.append(head, el("p", "copy", pos));
+  addBlock(art, "Meaning", e.meaning);
+  addBlock(art, "In this name", e.inName);
+  addBlock(art, "On the brand", e.brand);
+  return art;
+}
+function render(a) {
+  const out = document.getElementById("out");
+  out.replaceChildren();
+  const circ = 2 * Math.PI * 42;
+  const offset = circ - (a.energy.score / 10) * circ;
+  const score = el("section", "card panel score-grid");
+  const gauge = el("div", "gauge");
+  gauge.innerHTML = '<svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" fill="none" stroke="#2a251c" stroke-width="4"></circle><circle cx="50" cy="50" r="42" fill="none" stroke="#c4a265" stroke-width="4" stroke-linecap="round" stroke-dasharray="' + circ.toFixed(2) + '" stroke-dashoffset="' + offset.toFixed(2) + '"></circle></svg>';
+  const strong = el("strong", null, String(a.energy.score));
+  strong.append(el("span", null, "OF 10"));
+  gauge.append(strong);
+  const meta = el("div");
+  meta.append(el("p", "label", "Reading"), el("h2", null, a.display), el("p", "mono", a.letters), el("p", "copy", a.energy.summary + " " + a.energy.potential));
+  score.append(gauge, meta);
+  const coresWrap = el("div");
+  coresWrap.append(el("h3", null, "Core numbers"), el("p", "copy", "Soul Urge, Personality, and Destiny — meaning, strengths, and how each one steers a brand."));
+  const cores = el("div", "cores");
+  cores.append(
+    coreCard("Soul Urge", "Vowels, including Y when it acts as a vowel. The inner motive of the brand.", a.soul),
+    coreCard("Personality", "Consonants. The public face — how the market first judges the name.", a.face),
+    coreCard("Destiny", "Every letter. The path the name is built to walk.", a.destiny)
+  );
+  coresWrap.append(cores);
+  const letters = el("section", "card panel");
+  letters.append(el("h3", null, "First and last letter"), el("p", "copy", "The opening and the close are the letters that land. Full reading for those two. Gold tiles are the ends; lighter gold marks vowels."));
+  const tiles = el("div", "tiles");
+  a.cells.forEach((cell) => {
+    const end = cell.index === 0 || cell.index === a.cells.length - 1;
+    const tile = el("div", "tile" + (end ? " end" : "") + (cell.role === "vowel" ? " vowel" : ""));
+    tile.append(el("b", null, cell.letter), el("i", null, String(cell.value)));
+    tiles.append(tile);
+  });
+  letters.append(tiles);
+  if (a.cells.some((c) => c.yNote)) letters.append(el("p", "note", "Y is a vowel unless it begins the name or sits between two vowels."));
+  const ends = el("div", "ends");
+  ends.style.marginTop = "1rem";
+  const first = endCard("First letter", a.first);
+  const last = endCard("Last letter", a.last);
+  if (first) ends.append(first);
+  if (last) ends.append(last);
+  letters.append(ends);
+  const actions = el("div", "actions");
+  const print = el("button", "ghost", "Print this reading");
+  print.type = "button";
+  print.onclick = () => window.print();
+  actions.append(print);
+  out.append(score, coresWrap, letters, actions);
+  document.getElementById("empty").hidden = true;
+  document.getElementById("empty").style.display = "none";
+  out.hidden = false;
+  out.style.display = "";
+}
+const form = document.getElementById("form");
+const input = document.getElementById("domain");
+const err = document.getElementById("err");
+const chips = document.getElementById("chips");
+function isSample(value) {
+  const key = value.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/$/, "");
+  return EXAMPLES.indexOf(key) !== -1;
+}
+function run(value, scroll) {
+  if (DEMO && !isSample(value)) {
+    err.hidden = false;
+    err.textContent = "This demo reads the four sample names. Your own domains are in the NumeraKey file you keep.";
+    document.getElementById("out").hidden = true;
+    document.getElementById("out").style.display = "none";
+    document.getElementById("empty").hidden = false;
+    document.getElementById("empty").style.display = "";
+    return;
+  }
+  const next = analyze(value);
+  if (!next) {
+    err.hidden = false;
+    err.textContent = "Enter a name with at least two letters.";
+    return;
+  }
+  err.hidden = true;
+  input.value = value;
+  history.replaceState(null, "", "#" + encodeURIComponent(value.trim()));
+  [...chips.children].forEach((b) => b.classList.toggle("on", b.dataset.q === value));
+  render(next);
+  if (scroll) document.getElementById("out").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+EXAMPLES.forEach((ex) => {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "chip";
+  b.dataset.q = ex;
+  b.textContent = ex;
+  b.onclick = () => run(ex, true);
+  chips.appendChild(b);
+});
+document.getElementById("empty").innerHTML = [
+  ["Soul Urge", "Vowels, including Y when it acts as a vowel, reveal the inner motive of the brand."],
+  ["Personality", "Consonants are the public face — how the market first judges the name."],
+  ["Destiny", "Every letter, reduced, with master numbers 11, 22, and 33 held intact."],
+].map(([k,t]) => '<article class="hint"><p class="label">' + k + '</p><p>' + t + "</p></article>").join("");
+form.onsubmit = (e) => { e.preventDefault(); run(input.value, true); };
+if (DEMO) document.getElementById("demo-banner").hidden = false;
+const hash = decodeURIComponent(location.hash.replace(/^#/, ""));
+if (hash) run(hash, false);
+</script>
+</body>
+</html>

@@ -22,6 +22,7 @@ const FILES = {
   "teach-me-palmistry": "private/teach-me-palmistry.html",
   "ledger-noir": "private/ledger-noir.html",
   "tally": "private/tally.html",
+  "domain-energy": "private/domain-energy.html",
   "numera-chaldean": "private/numera-chaldean.html",
   "comet": "private/comet.html",
   "sanctuary": "private/sanctuary.html",

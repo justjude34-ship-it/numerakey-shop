@@ -26,6 +26,7 @@ const AP3 = [
 {
   slug:"domain-energy", name:"Domain Energy", cat:"numerology", price:59, status:"live", ready:true,
   cover:"covers/domain-energy.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/domain-energy/",
   desc:"Read a domain's Soul Urge, Personality and Destiny before you spend money on it.",
   tag:"For founders, before the invoice.",
   body:[
