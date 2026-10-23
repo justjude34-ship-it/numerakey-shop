@@ -74,7 +74,8 @@ const FILES = {
   "coming-home": "private/coming-home.html",
   "lumen-tarot": "private/lumen-tarot.html",
   "indomita": "private/indomita.html",
-  "numerakey-learn": "private/numerakey-learn.html"
+  "numerakey-learn": "private/numerakey-learn.html",
+  "mysomni": "private/mysomni.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
