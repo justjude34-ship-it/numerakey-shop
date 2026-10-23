@@ -119,15 +119,16 @@ const AP3 = [
   inside:["A big catalogue of names across seven species","Analyse any name you're considering","Expression, soul urge and personality","Cornerstone, first vowel and capstone","Letter meanings reference","Save a shortlist to decide later"]
 },
 {
-  slug:"testimony", name:"Testimony", cat:"narc", price:39, status:"soon",
+  slug:"testimony", name:"Testimony", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/testimony.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/testimony/",
   desc:"Turns what happened into a book, one guided question at a time.",
   tag:"Your account, in order.",
   body:[
-    "For the story that needs telling properly \u2014 the relationship, the family, the alienation \u2014 rather than in fragments to whoever happens to ask. Testimony puts the questions in an order that makes a book and assembles the chapters as you answer.",
+    "For the story that needs telling properly \u2014 the relationship, the family, the alienation \u2014 rather than in fragments to whoever happens to ask. Testimony puts the questions in an order that makes a book and assembles the chapters as you answer. You can speak instead of typing, keep a dated timeline, and swap real names for book names when it is time to share it.",
     "Some people write it to be read. Some write it so it exists somewhere outside their own head. Either is a reason."
   ],
-  inside:["Guided interview, chapter by chapter","A timeline that builds as you answer","Draft chapters assembled for you","Export the manuscript","Entirely private while you write"]
+  inside:["Guided interview, chapter by chapter","A timeline that builds as you answer","Dictate instead of typing","Swap real names for book names in the finished manuscript","Optional draft and tidy help, using your own API key","Print or save as PDF, or download as Markdown, text or HTML","PIN lock and a quick-leave button","Works offline, saved only on your device"]
 },
 {
   slug:"teint", name:"Teint", cat:"style", price:39, status:"live", ready:true,

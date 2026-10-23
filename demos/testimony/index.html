@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex"><script>window.NK_DEMO={"lock": ["[data-go=\"timeline\"]", "[data-go=\"people\"]", "[data-go=\"manuscript\"]", "[data-go=\"settings\"]", "#aiDraft", "#aiPolish"], "lockMsg": "Part of the full app", "slug": "testimony", "name": "Testimony", "url": "https://numerakey-shop.vercel.app/#/app/testimony"};</script><script>/* NumeraKey demo layer: banner, locks, caps, no persistence, no export/print. */
+(function(){
+"use strict";
+var C = window.NK_DEMO || {}; var SHOP = C.url || "https://numerakey-shop.vercel.app";
+var KEY = "nkdemo:" + (C.slug || location.hostname);
+var realLS = null; try { realLS = window.localStorage; } catch(e) {}
+function rget(k,d){ try{ var v=realLS&&realLS.getItem(KEY+":"+k); return v==null?d:JSON.parse(v);}catch(e){return d;} }
+function rset(k,v){ try{ realLS&&realLS.setItem(KEY+":"+k, JSON.stringify(v)); }catch(e){} }
+
+/* 1. Nothing the user enters is kept: localStorage lives in memory for this visit only. */
+function MemStorage(){ var m = new Map(); var o = {
+  getItem:function(k){ k=String(k); return m.has(k)?m.get(k):null; },
+  setItem:function(k,v){ m.set(String(k), String(v)); },
+  removeItem:function(k){ m.delete(String(k)); },
+  clear:function(){ m.clear(); },
+  key:function(i){ return Array.from(m.keys())[i] ?? null; }
+}; Object.defineProperty(o,"length",{get:function(){return m.size;}});
+  return new Proxy(o,{ get:function(t,p){ if(p in t) return t[p]; return typeof p==="string"&&m.has(p)?m.get(p):undefined; },
+    set:function(t,p,v){ if(p in t) return false; m.set(String(p),String(v)); return true; },
+    deleteProperty:function(t,p){ m.delete(String(p)); return true; },
+    ownKeys:function(){ return Array.from(m.keys()); },
+    getOwnPropertyDescriptor:function(t,p){ return m.has(p)?{value:m.get(p),enumerable:true,configurable:true,writable:true}:undefined; } });
+}
+try { Object.defineProperty(window, "localStorage", { value: MemStorage(), configurable: true }); } catch(e) {}
+/* IndexedDB: a fresh, throwaway database per visit; older demo databases are removed. */
+try {
+  var idb = window.indexedDB, run = Math.random().toString(36).slice(2,8), origOpen = idb.open.bind(idb), origDel = idb.deleteDatabase.bind(idb);
+  idb.open = function(name, v){ return v===undefined ? origOpen("nkdemo-"+run+"-"+name) : origOpen("nkdemo-"+run+"-"+name, v); };
+  idb.deleteDatabase = function(name){ return origDel("nkdemo-"+run+"-"+name); };
+  if (idb.databases) idb.databases().then(function(l){ l.forEach(function(d){ if(d.name && d.name.indexOf("nkdemo-"+run)!==0) origDel(d.name); }); }).catch(function(){});
+} catch(e) {}
+/* No offline install of the demo. */
+try { if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function(r){ r.forEach(function(x){ x.unregister(); }); }).catch(function(){});
+  navigator.serviceWorker.register = function(){ return new Promise(function(){}); };
+} } catch(e) {}
+try { window.showSaveFilePicker = undefined; window.showDirectoryPicker = undefined; } catch(e) {}
+
+/* 2. Overlay */
+var css = ""
++ "#nkd-bar{position:fixed;top:0;left:0;right:0;height:44px;z-index:2147483646;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 12px;"
++ "background:rgba(12,12,16,.96);border-bottom:1px solid rgba(214,196,140,.38);font:500 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ece8df;letter-spacing:.01em;box-sizing:border-box}"
++ "#nkd-bar .nkd-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#nkd-bar b{color:#e3cf8f;font-weight:600}"
++ ".nkd-btn{display:inline-block;padding:7px 14px;border-radius:999px;border:1px solid rgba(214,196,140,.7);color:#f3e7bf!important;background:linear-gradient(180deg,rgba(214,196,140,.16),rgba(214,196,140,.05));text-decoration:none!important;font:600 14px/1.1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;white-space:nowrap;cursor:pointer}"
++ "#nkd-ov{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:rgba(6,6,9,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:20px;box-sizing:border-box}"
++ "#nkd-ov.on{display:flex}#nkd-card{max-width:380px;width:100%;background:#15151b;border:1px solid rgba(214,196,140,.35);border-radius:18px;padding:28px 24px 22px;text-align:center;color:#e9e6de;box-shadow:0 20px 60px rgba(0,0,0,.6);font:400 17px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}"
++ "#nkd-card h2{margin:0 0 10px;font:600 23px/1.25 Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#f6e7b0,#cdb36b 55%,#efe0a6);-webkit-background-clip:text;background-clip:text;color:transparent}"
++ "#nkd-card p{margin:0 0 20px;color:#cfcac0}#nkd-card .nkd-btn{font-size:16px;padding:11px 22px}"
++ "#nkd-close{display:block;margin:14px auto 0;background:none;border:0;color:#a9a49a;font:500 15px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}"
++ ".nkd-locked{position:relative;opacity:.55!important}"
++ ".nkd-locked::after{content:'\\1F512';position:absolute;top:2px;right:2px;font-size:11px;line-height:1;opacity:.9;pointer-events:none;filter:grayscale(1)}"
++ ".nkd-hide{display:none!important}"
++ "#nkd-bar.nkd-light{background:rgba(251,249,244,.97);border-bottom-color:rgba(150,128,60,.35);color:#2b2a28}#nkd-bar.nkd-light b{color:#1d1d1f}"
++ "#nkd-bar.nkd-light .nkd-btn{color:#2b2a28!important;border-color:rgba(160,135,60,.75);background:linear-gradient(180deg,rgba(214,190,110,.22),rgba(214,190,110,.08))}"
++ "html{scroll-padding-top:44px}body{padding-top:44px!important}"
++ (C.css||"");
+function inject(){
+  if (document.getElementById("nkd-bar")) return;
+  var st = document.createElement("style"); st.id="nkd-style"; st.textContent = css; (document.head||document.documentElement).appendChild(st);
+  var bar = document.createElement("div"); bar.id="nkd-bar"; bar.setAttribute("role","note");
+  bar.innerHTML = '<span class="nkd-t"><b>Demo version</b><span id="nkd-info"></span></span><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a>';
+  document.body.appendChild(bar);
+  var ov = document.createElement("div"); ov.id="nkd-ov"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+  ov.innerHTML = '<div id="nkd-card"><h2 id="nkd-h">Available in the full app</h2><p id="nkd-p"></p><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a><button id="nkd-close" type="button">Keep exploring the demo</button></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener("click", function(e){ if(e.target===ov && !ov.dataset.hard) hide(); });
+  document.getElementById("nkd-close").addEventListener("click", function(){ if(!ov.dataset.hard) hide(); });
+  try { var bg = "", els=[]; var pe = document.elementFromPoint(innerWidth/2, innerHeight*0.6); while (pe && pe!==document.documentElement) { if (!(pe.id||"").startsWith("nkd-")) els.push(pe); pe = pe.parentElement; } els.push(document.body, document.documentElement);
+    for (var i=0;i<els.length;i++){ var c = getComputedStyle(els[i]).backgroundColor; if (c && !/rgba\(\s*0,\s*0,\s*0,\s*0\)|transparent/.test(c) && !/rgba\([^)]*,\s*0?\.[0-4]\d*\)/.test(c)) { bg = c; break; } var gi = getComputedStyle(els[i]).backgroundImage; var gm = gi && gi.match(/rgba?\([^)]*\)/); if (gm) { bg = gm[0]; break; } }
+    var mm = bg.match(/\d+(\.\d+)?/g); if (C.theme==="light" || (C.theme!=="dark" && mm && (0.299*mm[0]+0.587*mm[1]+0.114*mm[2]) > 160)) bar.classList.add("nkd-light"); } catch(e){}
+  info(); mark(); shift();
+}
+function hide(){ var ov=document.getElementById("nkd-ov"); if(ov) ov.classList.remove("on"); }
+function show(msg, head, hard){
+  inject(); var ov=document.getElementById("nkd-ov");
+  document.getElementById("nkd-h").textContent = head || "Available in the full app";
+  document.getElementById("nkd-p").textContent = msg || (C.lockMsg || ("This part of " + (C.name||"the app") + " is available in the full app."));
+  var cl = document.getElementById("nkd-close"); if (hard) { ov.dataset.hard="1"; cl.style.display="none"; } else { delete ov.dataset.hard; cl.style.display=""; }
+  ov.classList.add("on");
+}
+window.NKDemo = { show: show };
+function info(){ var el=document.getElementById("nkd-info"); if(!el) return; var t="";
+  if (C.cap) { var left = Math.max(0, C.cap.n - rget("cap",0)); t = " \u00b7 " + left + " of " + C.cap.n + " free " + (C.cap.label||"uses") + " left"; }
+  if (C.timer) t = " \u00b7 " + C.timer + "-minute listening session";
+  if (C.info) t = " \u00b7 " + C.info;
+  el.textContent = t; }
+
+/* 3. Locks and caps (capture phase, before the app sees the click) */
+function matches(el, list){ if(!list||!el||!el.closest) return null; for (var i=0;i<list.length;i++){ var m = el.closest(list[i]); if (m) return m; } return null; }
+function textMatch(el){ if(!C.lockText||!el||!el.closest) return null; var b = el.closest("button,a,[role=button],[role=tab],li,[onclick],[data-tab],[data-view],[data-go],[data-nav],[data-page],label,.card,.tile");
+  if(!b) return null; var t=(b.innerText||b.getAttribute("aria-label")||"").trim().toLowerCase();
+  for (var i=0;i<C.lockText.length;i++){ var k=C.lockText[i]; if (k instanceof RegExp ? k.test(t) : t===k.toLowerCase()) return b; } return null; }
+function isLocked(el){ if (matches(el, C.allow)) return null; var m = matches(el, C.lock) || textMatch(el); if (m) return m;
+  if (C.lockIf) { try { var r = C.lockIf(el); if (r) return r; } catch(e){} } return null; }
+function guard(e){
+  var t = e.target; if (!t || !t.closest) return;
+  if (t.closest("#nkd-bar,#nkd-ov")) return;
+  if (window.__nkdHard) { e.preventDefault(); e.stopImmediatePropagation(); show(window.__nkdHard, "Thank you for trying the demo", true); return; }
+  var a = t.closest("a[download]");
+  if (a || isLocked(t)) {
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type==="click"||e.type==="submit") show(a ? "Saving and exporting are available in the full app." : null);
+    return;
+  }
+  if (C.cap && e.type==="keydown" && C.cap.keySel && t.matches && t.matches(C.cap.keySel) && e.key==="Enter") { var u0 = rget("cap",0);
+    if (u0 >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+    if ((t.value||"").trim()) { rset("cap", u0+1); setTimeout(info,0); } return; }
+  if (C.cap && e.type==="click") { var c = matches(t, C.cap.sel); if (!c && C.cap.textSel) { var bb = t.closest("button,a,[role=button],input[type=submit]"); if (bb && C.cap.textSel.test((bb.innerText||bb.value||"").trim().toLowerCase())) c = bb; }
+    if (c) { var used = rget("cap",0);
+      if (used >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+      if (!C.cap.valid || C.cap.valid(c)) { rset("cap", used+1); setTimeout(info,0); }
+    } }
+}
+["click","pointerdown","mousedown","touchstart","keydown","submit","change","input"].forEach(function(ev){
+  window.addEventListener(ev, function(e){
+    if (ev==="keydown" && !(e.key==="Enter"||e.key===" ")) return;
+    if (ev==="change"||ev==="input") { if (isLocked(e.target)) { e.stopImmediatePropagation(); } return; }
+    if (ev!=="click"&&ev!=="submit"&&ev!=="keydown") { var t=e.target; if(t&&t.closest&&!t.closest("#nkd-bar,#nkd-ov")&&(isLocked(t)||window.__nkdHard)) { e.stopImmediatePropagation(); } return; }
+    guard(e);
+  }, true);
+});
+/* anchors clicked from code with a download attribute */
+var aclick = HTMLAnchorElement.prototype.click;
+HTMLAnchorElement.prototype.click = function(){ if (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||"")) { show("Saving and exporting are available in the full app."); return; } return aclick.apply(this, arguments); };
+var adisp = HTMLAnchorElement.prototype.dispatchEvent;
+HTMLAnchorElement.prototype.dispatchEvent = function(ev){ if (ev && ev.type==="click" && (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||""))) { show("Saving and exporting are available in the full app."); return false; } return adisp.apply(this, arguments); };
+window.print = function(){ show("Printing is available in the full app."); };
+try { var ws = window.open; window.open = function(u){ if (u===undefined || u==="" || /^blob:|^data:|about:blank/.test(String(u))) { show("Saving and exporting are available in the full app."); return null; } return ws.apply(window, arguments); }; } catch(e) {}
+try { if (navigator.share) navigator.share = function(){ show("Sharing and exporting are available in the full app."); return Promise.reject(new Error("demo")); }; } catch(e) {}
+window.addEventListener("beforeprint", function(){ document.documentElement.style.display="none"; });
+window.addEventListener("afterprint", function(){ document.documentElement.style.display=""; });
+
+function mark(){
+  var list = (C.lock||[]).concat(C.markOnly||[]);
+  list.forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ if(!matches(el,C.allow)) el.classList.add("nkd-locked"); }); } catch(e){} });
+  if (C.lockText) document.querySelectorAll("button,a,[role=tab],[data-tab],[data-view],[data-go],[data-nav],.card,.tile").forEach(function(el){ if (!el.classList.contains("nkd-locked") && textMatch(el)===el && !matches(el,C.allow)) el.classList.add("nkd-locked"); });
+  (C.hide||[]).forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ el.classList.add("nkd-hide"); }); } catch(e){} });
+  document.querySelectorAll('link[rel="manifest"]').forEach(function(l){ l.remove(); });
+}
+function shift(){
+  if (C.noShift) return;
+  var all = document.body ? document.body.querySelectorAll("*") : [];
+  for (var i=0;i<all.length;i++){ var el = all[i]; if (el.id && el.id.indexOf("nkd-")===0) continue;
+    if (el.dataset.nkdShift) continue;
+    var cs = getComputedStyle(el); if (cs.position!=="fixed" && cs.position!=="sticky") continue;
+    var top = parseFloat(cs.top); if (isNaN(top) || top > 4) continue;
+    el.style.setProperty("top", (top+44)+"px", "important"); el.dataset.nkdShift = "1"; }
+}
+var pend=false; function soon(){ if(pend) return; pend=true; setTimeout(function(){ pend=false; mark(); shift(); }, 120); }
+function start(){ inject(); new MutationObserver(soon).observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:["class","style","hidden"]}); if (C.onReady) try{ C.onReady(); }catch(e){} }
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+
+/* hash routes that belong to the full app */
+if (C.lockHash) { var okHash = location.hash && !C.lockHash.test(location.hash) ? location.hash : (C.homeHash||"#/");
+  if (location.hash && C.lockHash.test(location.hash)) { try { history.replaceState(null, "", location.pathname + location.search + okHash); } catch(e){} }
+  window.addEventListener("hashchange", function(e){ if (C.lockHash.test(location.hash)) { e.stopImmediatePropagation(); history.replaceState(null, "", location.pathname + location.search + okHash); show(); } else okHash = location.hash; }, true); }
+
+/* 4. Listening session limit for audio apps */
+if (C.timer) {
+  var ctxs = [], LIMIT = C.timer*60*1000, HOLD = 12*3600*1000;
+  var startAt = rget("t0", 0); if (startAt && Date.now()-startAt > LIMIT + HOLD) { startAt = 0; rset("t0", 0); }
+  var endMsg = "Your " + C.timer + "-minute demo session has ended. The full app has no time limit.";
+  function expired(){ return startAt && Date.now()-startAt >= LIMIT; }
+  function begin(){ if (!startAt) { startAt = Date.now(); rset("t0", startAt); } }
+  function stopAll(){
+    window.__nkdHard = endMsg;
+    ctxs.forEach(function(c){ try{ c.suspend(); }catch(e){} });
+    document.querySelectorAll("audio,video").forEach(function(m){ try{ m.pause(); m.muted=true; }catch(e){} });
+    show(endMsg, "Thank you for trying the demo", true);
+  }
+  ["AudioContext","webkitAudioContext"].forEach(function(n){ var O = window[n]; if (!O) return;
+    var W = function(){ var c = new (Function.prototype.bind.apply(O, [null].concat([].slice.call(arguments))))(); ctxs.push(c); return c; };
+    W.prototype = O.prototype; try{ Object.setPrototypeOf(W, O); }catch(e){} window[n] = W; });
+  var oResume = window.AudioContext && AudioContext.prototype.resume;
+  if (oResume) AudioContext.prototype.resume = function(){ if (expired()) { stopAll(); return Promise.resolve(); } begin(); return oResume.apply(this, arguments); };
+  var oStart = window.AudioScheduledSourceNode && AudioScheduledSourceNode.prototype.start;
+  if (oStart) AudioScheduledSourceNode.prototype.start = function(){ if (expired()) { stopAll(); return; } begin(); return oStart.apply(this, arguments); };
+  var oPlay = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function(){ if (expired()) { stopAll(); return Promise.reject(new Error("demo")); } begin(); return oPlay.apply(this, arguments); };
+  setInterval(function(){ if (startAt) { var left = Math.max(0, LIMIT-(Date.now()-startAt)); var el=document.getElementById("nkd-info");
+      if (el) el.textContent = left>0 ? " \u00b7 " + Math.ceil(left/60000) + " min of listening left" : " \u00b7 session ended";
+      if (left<=0 && !window.__nkdHard) stopAll(); } }, 1000);
+}
+})();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Testimony</title>
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Testimony">
+<meta name="description" content="Tell your story in your own words and assemble it into a book. Everything stays on your device.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23000'/%3E%3Cpath d='M14 12h16c4 0 6 2 6 5v35c0-3-2-5-6-5H14z' fill='%23e3ba82'/%3E%3Cpath d='M50 12H34c-4 0-6 2-6 5v35c0-3 2-5 6-5h16z' fill='%239d8bdf'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --black:#000000;
+    --panel:#0b0a0e;
+    --panel-2:#131118;
+    --line:rgba(255,255,255,.10);
+    --line-soft:rgba(255,255,255,.05);
+    --ink:#efeaf3;
+    --dim:#9b93a6;
+    --dimmer:#6f6879;
+    --gold:#e3ba82;
+    --violet:#9d8bdf;
+    --rose:#d98fa0;
+    --paper:#f4ece0;
+    --paper-ink:#231c18;
+    --paper-dim:#6b5c50;
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+    --r:10px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--black);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.55;
+    -webkit-text-size-adjust:100%;
+    overflow-wrap:break-word;
+  }
+  button,input,select,textarea{font:inherit;color:inherit}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px}
+  a{color:var(--gold)}
+
+  /* ---------- shell ---------- */
+  .wrap{max-width:760px;margin:0 auto;padding:0 18px 120px}
+  header.bar{
+    position:sticky;top:0;z-index:20;background:rgba(0,0,0,.86);
+    backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft);
+  }
+  .bar-in{max-width:760px;margin:0 auto;padding:12px 18px;display:flex;align-items:center;gap:12px}
+  .mark{
+    font-family:var(--serif);font-size:22px;letter-spacing:.02em;
+    background:linear-gradient(100deg,var(--gold),var(--rose) 45%,var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .bar-spacer{flex:1}
+  .leave{
+    border:1px solid var(--line);background:transparent;color:var(--dim);
+    padding:6px 11px;border-radius:999px;font-size:13px;cursor:pointer;
+  }
+  .leave:hover{color:var(--ink);border-color:var(--gold)}
+  nav.rail{
+    display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;
+    max-width:760px;margin:0 auto;padding:0 12px 8px;
+  }
+  nav.rail::-webkit-scrollbar{display:none}
+  nav.rail button{
+    flex:0 0 auto;background:none;border:none;color:var(--dimmer);
+    padding:7px 12px;border-radius:999px;cursor:pointer;font-size:14px;white-space:nowrap;
+  }
+  nav.rail button.on{color:var(--black);background:linear-gradient(100deg,var(--gold),var(--rose))}
+  nav.rail button:hover:not(.on){color:var(--ink)}
+
+  h1.view-title{
+    font-family:var(--serif);font-weight:400;font-size:30px;line-height:1.2;
+    margin:26px 0 6px;letter-spacing:.01em;
+    background:linear-gradient(100deg,var(--gold),var(--violet));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .lede{color:var(--dim);margin:0 0 24px;max-width:60ch}
+  h2.sec{font-family:var(--serif);font-weight:400;font-size:20px;margin:32px 0 10px}
+
+  /* ---------- fields ---------- */
+  label.f{display:block;margin:0 0 16px}
+  label.f > span{display:block;font-size:13px;color:var(--dim);margin-bottom:5px}
+  input[type=text],input[type=date],input[type=password],select,textarea{
+    width:100%;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--r);padding:10px 12px;color:var(--ink);
+  }
+  textarea{resize:vertical;min-height:88px;font-family:var(--serif);font-size:17px;line-height:1.7}
+  input::placeholder,textarea::placeholder{color:var(--dimmer)}
+  .btn{
+    background:var(--panel-2);border:1px solid var(--line);color:var(--ink);
+    padding:9px 15px;border-radius:999px;cursor:pointer;font-size:14px;
+  }
+  .btn:hover{border-color:var(--gold)}
+  .btn.primary{
+    background:linear-gradient(100deg,var(--gold),var(--rose));color:#1a1014;border:none;font-weight:600;
+  }
+  .btn.quiet{background:none;color:var(--dim);border-color:var(--line-soft)}
+  .btn.danger{color:#e78d8d;border-color:rgba(231,141,141,.35)}
+  .btn:disabled{opacity:.45;cursor:default}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:520px){.two{grid-template-columns:1fr}}
+
+  .card{background:var(--panel);border:1px solid var(--line-soft);border-radius:14px;padding:16px;margin:0 0 12px}
+  .muted{color:var(--dim);font-size:14px}
+  .tiny{color:var(--dimmer);font-size:12.5px}
+  .empty{
+    border:1px dashed var(--line);border-radius:14px;padding:26px 18px;text-align:center;color:var(--dim);
+  }
+  .empty p{margin:0 0 14px}
+
+  /* ---------- contents list ---------- */
+  ol.contents{list-style:none;margin:0;padding:0;counter-reset:ch}
+  ol.contents li{border-bottom:1px solid var(--line-soft)}
+  .ch-row{display:flex;align-items:baseline;gap:10px;width:100%;background:none;border:none;
+    text-align:left;padding:14px 2px;cursor:pointer;color:var(--ink);font-family:var(--serif);font-size:18px}
+  .ch-row:hover .ch-name{color:var(--gold)}
+  .ch-num{font-family:var(--sans);font-size:12px;color:var(--dimmer);min-width:1.4em}
+  .ch-name{flex:0 1 auto}
+  .ch-dots{flex:1 1 auto;border-bottom:1px dotted rgba(255,255,255,.16);transform:translateY(-4px);min-width:14px}
+  .ch-words{font-family:var(--sans);font-size:12px;color:var(--dimmer);white-space:nowrap}
+  .ch-tools{display:flex;gap:4px;padding:0 0 12px}
+  .ch-tools button{background:none;border:none;color:var(--dimmer);font-size:12px;cursor:pointer;padding:2px 6px;border-radius:6px}
+  .ch-tools button:hover{color:var(--ink);background:var(--panel-2)}
+
+  /* ---------- editor ---------- */
+  .prompt{margin:0 0 22px}
+  .prompt > p{font-family:var(--serif);font-size:16px;color:var(--gold);margin:0 0 7px;opacity:.92}
+  .counter{font-size:12px;color:var(--dimmer);text-align:right;margin-top:4px}
+  .back{background:none;border:none;color:var(--dim);cursor:pointer;padding:6px 0;font-size:14px}
+  .back:hover{color:var(--gold)}
+
+  /* ---------- people / timeline ---------- */
+  .item{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;
+    padding:13px 0;border-bottom:1px solid var(--line-soft)}
+  .item h3{margin:0 0 3px;font-family:var(--serif);font-weight:400;font-size:17px}
+  .swap{color:var(--violet)}
+  .x{background:none;border:none;color:var(--dimmer);cursor:pointer;font-size:16px;line-height:1;padding:4px 6px}
+  .x:hover{color:#e78d8d}
+
+  /* ---------- manuscript ---------- */
+  .paper{
+    background:var(--paper);color:var(--paper-ink);border-radius:6px;
+    padding:44px 40px 56px;font-family:var(--serif);font-size:17.5px;line-height:1.72;
+    box-shadow:0 30px 70px rgba(0,0,0,.6);
+  }
+  @media (max-width:520px){.paper{padding:30px 22px 38px;font-size:16.5px}}
+  .paper .title-page{text-align:center;padding:22px 0 40px;border-bottom:1px solid rgba(0,0,0,.14);margin-bottom:34px}
+  .paper .title-page h1{font-weight:400;font-size:34px;line-height:1.15;margin:0 0 8px;letter-spacing:.01em}
+  .paper .title-page .sub{font-style:italic;color:var(--paper-dim);margin:0 0 22px}
+  .paper .title-page .by{font-size:15px;letter-spacing:.06em}
+  .paper .epi{font-style:italic;color:var(--paper-dim);max-width:38ch;margin:26px auto 0;font-size:16px}
+  .paper .ded{text-align:center;font-style:italic;color:var(--paper-dim);margin:0 0 40px}
+  .paper h2{font-weight:400;font-size:23px;margin:44px 0 4px;line-height:1.25}
+  .paper .chnum{font-family:var(--sans);font-size:11.5px;letter-spacing:.14em;color:var(--paper-dim);margin:0 0 14px}
+  .paper p{margin:0 0 1.05em;text-align:justify;hyphens:auto}
+  .paper p.first::first-letter{
+    float:left;font-size:3.1em;line-height:.82;padding:.06em .09em 0 0;font-weight:400;
+  }
+  .paper .blank{color:var(--paper-dim);font-style:italic;text-align:left}
+  .paper hr{border:none;border-top:1px solid rgba(0,0,0,.12);margin:38px 0}
+
+  /* ---------- ai panel ---------- */
+  .draft{border:1px solid rgba(157,139,223,.4);background:rgba(157,139,223,.06);border-radius:14px;padding:16px;margin:16px 0}
+  .draft h3{margin:0 0 8px;font-family:var(--serif);font-weight:400;font-size:17px;color:var(--violet)}
+  .draft .out{font-family:var(--serif);font-size:16.5px;line-height:1.7;white-space:pre-wrap;max-height:340px;overflow:auto;margin-bottom:12px}
+  .note{border-left:2px solid var(--line);padding-left:12px;color:var(--dim);font-size:14px;margin:14px 0}
+
+  /* ---------- dictation ---------- */
+  .mic{
+    display:inline-flex;align-items:center;gap:8px;margin:8px 0 0;
+    background:var(--panel-2);border:1px solid var(--line);color:var(--dim);
+    padding:8px 15px;border-radius:999px;cursor:pointer;font-size:14px;
+  }
+  .mic:hover{color:var(--ink);border-color:var(--gold)}
+  .mic .dot{width:9px;height:9px;border-radius:50%;background:var(--dimmer);flex:0 0 auto}
+  .mic.live{color:var(--ink);border-color:var(--rose);background:rgba(217,143,160,.10)}
+  .mic.live .dot{background:#ef5f6b;animation:pulse 1.4s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+  .mic-hint{font-size:12.5px;color:var(--dimmer);margin:6px 0 0}
+
+  /* ---------- lock ---------- */
+  #lock{position:fixed;inset:0;background:var(--black);z-index:100;display:none;
+    align-items:center;justify-content:center;padding:24px}
+  #lock.on{display:flex}
+  #lock .box{width:100%;max-width:300px;text-align:center}
+  #lock .mark{font-size:30px;display:block;margin-bottom:22px}
+  #lock input{text-align:center;letter-spacing:.4em;font-size:20px;padding:12px}
+
+  .toast{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);
+    background:var(--panel-2);border:1px solid var(--line);border-radius:999px;
+    padding:9px 18px;font-size:14px;opacity:0;pointer-events:none;transition:.22s;z-index:60;
+  }
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+  @media print{
+    header.bar,nav.rail,.noprint{display:none!important}
+    body{background:#fff}
+    .wrap{padding:0;max-width:none}
+    .paper{box-shadow:none;background:#fff;color:#000;padding:0;font-size:12pt}
+    .paper h2{page-break-before:always;page-break-after:avoid}
+    .paper .title-page{page-break-after:always;border:none}
+    .paper p{orphans:3;widows:3}
+  }
+</style>
+</head>
+<body>
+
+<div id="lock">
+  <div class="box">
+    <span class="mark">Testimony</span>
+    <input id="pinIn" type="password" inputmode="numeric" autocomplete="off" placeholder="····" aria-label="PIN">
+    <p id="pinMsg" class="tiny" style="min-height:18px;margin:10px 0 0">Enter your PIN to open your book.</p>
+  </div>
+</div>
+
+<header class="bar">
+  <div class="bar-in">
+    <span class="mark">Testimony</span>
+    <span class="bar-spacer"></span>
+    <button class="leave" id="leaveBtn" title="Closes this and opens a search page">Leave</button>
+  </div>
+  <nav class="rail" id="rail"></nav>
+</header>
+
+<main class="wrap" id="view"></main>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+
+/* ============================================================
+   Testimony — single file. Everything lives in this device's
+   local storage. Nothing is sent anywhere unless you add a key.
+   ============================================================ */
+
+const KEY = "testimony.v1";
+const KEYKEY = "testimony.apikey";
+
+const TEMPLATES = {
+  partner: {
+    label: "A relationship with a narcissistic partner",
+    chapters: [
+      ["Before", [
+        "Who were you before you met them? Describe an ordinary week.",
+        "What did you want your life to become?",
+        "Who was close to you then, and how often did you see them?",
+        "What were you good at, or proud of, that had nothing to do with anyone else?"
+      ]],
+      ["How it began", [
+        "Where and how did you meet? Set the scene.",
+        "What did they say about you in the first few weeks?",
+        "What did it feel like to be chosen like that?",
+        "Was there anything you noticed early and set aside?"
+      ]],
+      ["The turn", [
+        "When did something first not add up?",
+        "What was the first time you apologised for something you hadn't done?",
+        "How did they explain the things that hurt you?",
+        "What did you tell yourself so you could keep going?"
+      ]],
+      ["Living inside it", [
+        "Describe an ordinary day near the worst of it, hour by hour.",
+        "What rules had you learned to follow by then?",
+        "What did you stop doing, and who did you stop seeing?",
+        "What happened when something good happened to you?"
+      ]],
+      ["What it cost", [
+        "What did you lose that you can put a number on — money, work, years?",
+        "What did it do to your sleep, your body, your health?",
+        "What did you start to believe about yourself?",
+        "Who did you become in order to survive it?"
+      ]],
+      ["Leaving", [
+        "What was the moment you knew you were going?",
+        "What did leaving actually involve, step by step?",
+        "Who helped you, and who didn't?",
+        "What did they do once you were gone?"
+      ]],
+      ["After", [
+        "What was the first week on your own like?",
+        "What came back to you first — a habit, a person, a feeling?",
+        "What did you have to rebuild from nothing?",
+        "What still catches you off guard?"
+      ]],
+      ["What I know now", [
+        "What do you understand now that you couldn't see then?",
+        "What would you say to yourself at the beginning, if you could?",
+        "What do you want a reader in the middle of it to take from this?",
+        "What are you no longer willing to accept from anyone?"
+      ]]
+    ]
+  },
+  alienation: {
+    label: "Parental alienation — a child kept from me",
+    chapters: [
+      ["Our life before", [
+        "What was your life with your children like? Describe an ordinary evening.",
+        "What did they call you? What were your rituals together?",
+        "What kind of parent were you trying to be?",
+        "What did they love that you gave them?"
+      ]],
+      ["When it broke", [
+        "How did the separation happen?",
+        "What was agreed at the start, and by whom?",
+        "What changed first?",
+        "What did you believe would happen next?"
+      ]],
+      ["The first signs", [
+        "When did your child first say something that didn't sound like them?",
+        "What began happening around handovers and phone calls?",
+        "Who else noticed — family, teachers, friends?",
+        "What did you do about it at the time?"
+      ]],
+      ["The campaign", [
+        "What were your children told about you?",
+        "How did contact change over months? Put dates to it if you can.",
+        "What was said in writing, and what was said in front of them?",
+        "What were you accused of?"
+      ]],
+      ["Doors and desks", [
+        "What did you take to lawyers, courts, schools, or police?",
+        "What happened when you did?",
+        "What did professionals see, and what did they miss?",
+        "What did it cost you to keep going — money, work, health?"
+      ]],
+      ["The silence", [
+        "When did contact stop?",
+        "What do you do on birthdays and at Christmas?",
+        "What happens to the letters, the presents, the messages?",
+        "What is the hardest hour of your week?"
+      ]],
+      ["Holding the door open", [
+        "How do you keep a record for them?",
+        "What have you refused to say about their other parent?",
+        "What have you kept for the day they come back?",
+        "What do you do to stay someone they can return to?"
+      ]],
+      ["What I want them to know", [
+        "Write this part to them directly. Start with their name.",
+        "What do you want them to understand about why you weren't there?",
+        "What do you not blame them for?",
+        "What will you say on the day they knock?"
+      ]]
+    ]
+  },
+  family: {
+    label: "The family I grew up in",
+    chapters: [
+      ["The house", [
+        "Describe the house you grew up in — rooms, smells, sounds.",
+        "What was the mood when the front door opened?",
+        "Who set that mood, and how did everyone else read it?",
+        "What did feeling safe depend on?"
+      ]],
+      ["Who they were", [
+        "Describe them to a stranger who has never met them.",
+        "What were they like in public?",
+        "What were they like once the door was shut?",
+        "What did they say they had sacrificed for you?"
+      ]],
+      ["The rules", [
+        "What were you never allowed to say?",
+        "What happened if you said it anyway?",
+        "What was your job in that family?",
+        "What were you praised for, and what did the praise cost?"
+      ]],
+      ["The child I became", [
+        "What did you learn to watch for in a room?",
+        "What did you do with your anger?",
+        "What did you stop asking for?",
+        "What were you told about yourself so often that you believed it?"
+      ]],
+      ["Getting out", [
+        "How did you leave?",
+        "What did going cost you?",
+        "What did they tell people about you afterwards?",
+        "What did you miss, and what surprised you about missing it?"
+      ]],
+      ["The echo", [
+        "Where has the same pattern shown up since — partners, work, friendships?",
+        "When did you first recognise it as the same thing?",
+        "What have you done differently?",
+        "Who helped you see it?"
+      ]],
+      ["Naming it", [
+        "When did you first put a word to what happened?",
+        "Who believed you, and who didn't?",
+        "What did the rest of the family do when you said it out loud?",
+        "What did naming it change?"
+      ]],
+      ["What I keep", [
+        "What do you keep of them, honestly?",
+        "What have you set down for good?",
+        "What are you building instead?",
+        "What do you want for the people who come after you?"
+      ]]
+    ]
+  },
+  open: {
+    label: "Something else — I'll build my own chapters",
+    chapters: [
+      ["Chapter one", [
+        "Where does your story start? Set the scene.",
+        "Who is in it?",
+        "What did it cost you?",
+        "What do you want the reader to understand?"
+      ]]
+    ]
+  }
+};
+
+/* ---------------- state ---------------- */
+
+const uid = () => Math.random().toString(36).slice(2, 10);
+
+const blank = () => ({
+  v: 1,
+  started: false,
+  meta: { title: "", subtitle: "", author: "", dedication: "", epigraph: "", type: "" },
+  chapters: [],
+  people: [],
+  events: [],
+  fragments: [],
+  settings: { pinHash: "", useBookNames: true, model: "claude-sonnet-5-5" }
+});
+
+let S = load();
+let view = S.started ? "chapters" : "book";
+let openChapter = null;
+let draft = null; // {chapterId, text, kind}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return blank();
+    const d = JSON.parse(raw);
+    return Object.assign(blank(), d, { settings: Object.assign(blank().settings, d.settings || {}) });
+  } catch (e) {
+    return blank();
+  }
+}
+
+let saveTimer = null;
+function save(now) {
+  clearTimeout(saveTimer);
+  const write = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { toast("Storage is full — export a backup."); } };
+  if (now) write(); else saveTimer = setTimeout(write, 400);
+}
+
+function toast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.classList.remove("on"), 2200);
+}
+
+const esc = s => (s || "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const words = s => (s || "").trim() ? s.trim().split(/\s+/).length : 0;
+
+function chapterText(c) {
+  if ((c.body || "").trim()) return c.body.trim();
+  return (c.prompts || []).map(p => (p.a || "").trim()).filter(Boolean).join("\n\n");
+}
+function chapterWords(c) { return words(chapterText(c)); }
+function totalWords() { return S.chapters.reduce((n, c) => n + chapterWords(c), 0); }
+
+/* pseudonyms */
+function applyNames(text) {
+  if (!S.settings.useBookNames) return text;
+  let out = text;
+  S.people.filter(p => p.real && p.book).forEach(p => {
+    const pat = p.real.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    out = out.replace(new RegExp("\\b" + pat + "\\b", "gi"), p.book);
+  });
+  return out;
+}
+
+/* ---------------- nav ---------------- */
+
+const VIEWS = [
+  ["book", "Book"],
+  ["chapters", "Chapters"],
+  ["timeline", "Timeline"],
+  ["people", "People"],
+  ["manuscript", "Manuscript"],
+  ["settings", "Settings"]
+];
+
+function renderRail() {
+  document.getElementById("rail").innerHTML = VIEWS.map(([k, l]) =>
+    `<button data-go="${k}" class="${view === k ? "on" : ""}">${l}</button>`).join("");
+}
+
+function go(v) {
+  view = v;
+  openChapter = null;
+  draft = null;
+  renderRail();
+  render();
+  window.scrollTo(0, 0);
+}
+
+/* ---------------- render ---------------- */
+
+const V = () => document.getElementById("view");
+
+function render() {
+  if (D.on) stopDictation(true);
+  const el = V();
+  if (view === "book") el.innerHTML = viewBook();
+  else if (view === "chapters") el.innerHTML = openChapter ? viewChapter() : viewChapters();
+  else if (view === "timeline") el.innerHTML = viewTimeline();
+  else if (view === "people") el.innerHTML = viewPeople();
+  else if (view === "manuscript") el.innerHTML = viewManuscript();
+  else if (view === "settings") el.innerHTML = viewSettings();
+  bind();
+}
+
+/* ---- Book ---- */
+
+function viewBook() {
+  const opts = Object.entries(TEMPLATES).map(([k, t]) =>
+    `<option value="${k}" ${S.meta.type === k ? "selected" : ""}>${t.label}</option>`).join("");
+
+  const setup = !S.started ? `
+    <div class="card">
+      <h2 class="sec" style="margin-top:0">Choose a starting shape</h2>
+      <p class="muted">This lays out a set of chapters with questions inside them. You can rename, reorder, add or delete any of it afterwards.</p>
+      <label class="f"><span>What is this story about?</span>
+        <select id="tpl"><option value="">Choose one</option>${opts}</select></label>
+      <button class="btn primary" id="startBtn">Set up my chapters</button>
+    </div>` : "";
+
+  return `
+    <h1 class="view-title">Your book</h1>
+    <p class="lede">Write it in pieces. Nothing here is graded, nothing has to be in order, and you can leave any question blank.</p>
+    ${setup}
+    <label class="f"><span>Title</span><input type="text" id="m-title" value="${esc(S.meta.title)}" placeholder="Untitled"></label>
+    <label class="f"><span>Subtitle</span><input type="text" id="m-subtitle" value="${esc(S.meta.subtitle)}" placeholder="Optional"></label>
+    <label class="f"><span>Written by</span><input type="text" id="m-author" value="${esc(S.meta.author)}" placeholder="Your name, or a name you'd rather use"></label>
+    <label class="f"><span>Dedication</span><input type="text" id="m-dedication" value="${esc(S.meta.dedication)}" placeholder="For ..."></label>
+    <label class="f"><span>Epigraph</span><textarea id="m-epigraph" placeholder="A line you want at the front. Optional.">${esc(S.meta.epigraph)}</textarea></label>
+    ${S.started ? `<p class="muted">${S.chapters.length} chapters · ${totalWords().toLocaleString()} words so far.</p>` : ""}
+    <div class="note">Everything you write stays in this browser on this device. Nothing is uploaded. Take a backup from Settings now and then, and keep it somewhere only you can reach.</div>
+  `;
+}
+
+/* ---- Chapters ---- */
+
+function viewChapters() {
+  if (!S.chapters.length) {
+    return `<h1 class="view-title">Chapters</h1>
+      <div class="empty"><p>No chapters yet. Pick a starting shape on the Book page, or add one of your own.</p>
+      <button class="btn" id="addCh">Add a chapter</button></div>`;
+  }
+  const list = S.chapters.map((c, i) => `
+    <li>
+      <button class="ch-row" data-open="${c.id}">
+        <span class="ch-num">${i + 1}</span>
+        <span class="ch-name">${esc(c.title || "Untitled")}</span>
+        <span class="ch-dots"></span>
+        <span class="ch-words">${chapterWords(c) ? chapterWords(c).toLocaleString() + " words" : "empty"}</span>
+      </button>
+      <div class="ch-tools">
+        <button data-up="${c.id}" ${i === 0 ? "disabled" : ""}>Move up</button>
+        <button data-down="${c.id}" ${i === S.chapters.length - 1 ? "disabled" : ""}>Move down</button>
+        <button data-delch="${c.id}">Delete</button>
+      </div>
+    </li>`).join("");
+
+  const unfiled = S.fragments.filter(f => !f.chapterId);
+  const fragList = unfiled.length ? unfiled.map(f => `
+    <div class="item">
+      <div style="flex:1">
+        <p style="margin:0 0 6px;font-family:var(--serif)">${esc(f.text)}</p>
+        <select data-filefrag="${f.id}" style="max-width:280px">
+          <option value="">File this into a chapter…</option>
+          ${S.chapters.map(c => `<option value="${c.id}">${esc(c.title)}</option>`).join("")}
+        </select>
+      </div>
+      <button class="x" data-delfrag="${f.id}" aria-label="Delete note">✕</button>
+    </div>`).join("") : `<p class="tiny">Nothing waiting.</p>`;
+
+  return `
+    <h1 class="view-title">Chapters</h1>
+    <p class="lede">${S.chapters.length} chapters · ${totalWords().toLocaleString()} words. Open any one and answer what you can.</p>
+    <ol class="contents">${list}</ol>
+    <div class="row" style="margin:16px 0 0"><button class="btn" id="addCh">Add a chapter</button></div>
+
+    <h2 class="sec">Things you've just remembered</h2>
+    <p class="muted">Catch it here now, put it where it belongs later.</p>
+    <label class="f"><textarea id="fragIn" placeholder="A memory, a line, a date, a thing they said."></textarea></label>
+    <button class="btn" id="addFrag">Keep this</button>
+    <div style="margin-top:18px">${fragList}</div>
+  `;
+}
+
+function viewChapter() {
+  const c = S.chapters.find(x => x.id === openChapter);
+  if (!c) { openChapter = null; return viewChapters(); }
+  const idx = S.chapters.indexOf(c) + 1;
+
+  const prompts = (c.prompts || []).map((p, i) => `
+    <div class="prompt">
+      <p>${esc(p.q)}</p>
+      <textarea data-ans="${i}" placeholder="Write as little or as much as you want.">${esc(p.a || "")}</textarea>
+    </div>`).join("");
+
+  const filed = S.fragments.filter(f => f.chapterId === c.id);
+  const linked = S.events.filter(e => e.chapterId === c.id);
+
+  return `
+    <button class="back" id="backCh">Back to chapters</button>
+    <h1 class="view-title">Chapter ${idx}</h1>
+    <label class="f"><span>Chapter title</span><input type="text" id="ch-title" value="${esc(c.title)}"></label>
+
+    ${prompts || `<p class="muted">This chapter has no questions. Write it straight into the box below, or add a question.</p>`}
+    <div class="row" style="margin:-6px 0 26px"><button class="btn quiet" id="addPrompt">Add a question</button></div>
+
+    ${filed.length ? `<h2 class="sec">Notes you filed here</h2>` + filed.map(f =>
+      `<div class="item"><p style="margin:0;font-family:var(--serif);flex:1">${esc(f.text)}</p>
+       <button class="x" data-delfrag="${f.id}" aria-label="Delete note">✕</button></div>`).join("") : ""}
+
+    ${linked.length ? `<h2 class="sec">Events on your timeline</h2>` + linked.map(e =>
+      `<div class="item"><div><h3>${esc(e.title)}</h3><p class="tiny" style="margin:0">${esc(e.date || "no date")}</p></div></div>`).join("") : ""}
+
+    <h2 class="sec">The chapter itself</h2>
+    <p class="muted">Leave this empty and your answers above become the chapter. Write here and this is used instead.</p>
+    <textarea id="ch-body" style="min-height:280px" placeholder="Or write it as one piece, in your own voice.">${esc(c.body || "")}</textarea>
+    <div class="counter" id="chCount">${chapterWords(c).toLocaleString()} words</div>
+
+    <div class="row" style="margin-top:16px">
+      <button class="btn" id="aiDraft">Draft this chapter from my answers</button>
+      <button class="btn" id="aiPolish">Tidy what's written</button>
+    </div>
+    <p class="tiny" style="margin-top:8px">These two need an API key, added in Settings. Everything else works without one.</p>
+    <div id="draftSlot">${draft && draft.chapterId === c.id ? draftPanel() : ""}</div>
+  `;
+}
+
+function draftPanel() {
+  return `<div class="draft">
+    <h3>${draft.kind === "draft" ? "A draft, from your answers" : "A tidied version"}</h3>
+    <div class="out">${esc(draft.text)}</div>
+    <div class="row">
+      <button class="btn primary" id="keepDraft">Use this as the chapter</button>
+      <button class="btn quiet" id="dropDraft">Discard</button>
+    </div>
+    <p class="tiny" style="margin:10px 0 0">Your original answers are untouched either way.</p>
+  </div>`;
+}
+
+/* ---- Timeline ---- */
+
+function viewTimeline() {
+  const sorted = [...S.events].sort((a, b) => (a.date || "9999").localeCompare(b.date || "9999"));
+  const list = sorted.length ? sorted.map(e => `
+    <div class="item">
+      <div style="flex:1">
+        <h3>${esc(e.title)}</h3>
+        <p class="tiny" style="margin:0 0 6px">${esc(e.date || "date unknown")}</p>
+        ${e.what ? `<p class="muted" style="margin:0 0 4px">${esc(e.what)}</p>` : ""}
+        ${e.cost ? `<p class="muted" style="margin:0 0 6px"><span class="swap">Cost:</span> ${esc(e.cost)}</p>` : ""}
+        <select data-linkev="${e.id}" style="max-width:280px">
+          <option value="">Not linked to a chapter</option>
+          ${S.chapters.map(c => `<option value="${c.id}" ${e.chapterId === c.id ? "selected" : ""}>${esc(c.title)}</option>`).join("")}
+        </select>
+      </div>
+      <button class="x" data-delev="${e.id}" aria-label="Delete event">✕</button>
+    </div>`).join("") : `<div class="empty"><p>Nothing on the timeline yet. Add the events you're sure of first — the rest tends to arrive once the order is there.</p></div>`;
+
+  return `
+    <h1 class="view-title">Timeline</h1>
+    <p class="lede">Dates hold a story together, especially when someone has spent years telling you it didn't happen that way.</p>
+    <div class="card">
+      <div class="two">
+        <label class="f"><span>When</span><input type="date" id="ev-date"></label>
+        <label class="f"><span>What to call it</span><input type="text" id="ev-title" placeholder="The night of the phone call"></label>
+      </div>
+      <label class="f"><span>What happened</span><textarea id="ev-what" placeholder="Plainly, as you'd tell it to someone you trust."></textarea></label>
+      <label class="f"><span>What it cost you</span><textarea id="ev-cost" placeholder="Optional. Money, sleep, a friendship, a year." style="min-height:60px"></textarea></label>
+      <button class="btn primary" id="addEv">Add to timeline</button>
+    </div>
+    ${list}
+  `;
+}
+
+/* ---- People ---- */
+
+function viewPeople() {
+  const list = S.people.length ? S.people.map(p => `
+    <div class="item">
+      <div>
+        <h3>${esc(p.real)} <span class="muted" style="font-family:var(--sans);font-size:14px">becomes</span> <span class="swap">${esc(p.book)}</span></h3>
+        <p class="tiny" style="margin:0">${esc([p.rel, p.note].filter(Boolean).join(" · ")) || "&nbsp;"}</p>
+      </div>
+      <button class="x" data-delp="${p.id}" aria-label="Remove person">✕</button>
+    </div>`).join("") : `<div class="empty"><p>No one added yet. If you'd rather write with real names and change them later, that works too — add them here whenever you're ready.</p></div>`;
+
+  return `
+    <h1 class="view-title">People</h1>
+    <p class="lede">Write using whatever name comes naturally. Give each person a name for the book here and the manuscript swaps them over for you.</p>
+    <div class="card">
+      <div class="two">
+        <label class="f"><span>The name you write</span><input type="text" id="p-real" placeholder="Michael"></label>
+        <label class="f"><span>The name in the book</span><input type="text" id="p-book" placeholder="M."></label>
+      </div>
+      <div class="two">
+        <label class="f"><span>Who they are</span><input type="text" id="p-rel" placeholder="My ex-husband"></label>
+        <label class="f"><span>Note to yourself</span><input type="text" id="p-note" placeholder="Optional"></label>
+      </div>
+      <button class="btn primary" id="addP">Add person</button>
+    </div>
+    ${list}
+    <p class="tiny" style="margin-top:16px">Swapping names is only in the finished manuscript. A place name, a job, or one particular story can identify someone just as well — read it back with that in mind before you show anyone.</p>
+  `;
+}
+
+/* ---- Manuscript ---- */
+
+function viewManuscript() {
+  const m = S.meta;
+  const has = S.chapters.some(c => chapterWords(c) > 0);
+  const body = S.chapters.map((c, i) => {
+    const t = chapterText(c);
+    const paras = t ? applyNames(t).split(/\n\s*\n/).filter(x => x.trim()) : [];
+    return `
+      <h2>${esc(applyNames(c.title || "Untitled"))}</h2>
+      <p class="chnum">Chapter ${i + 1}</p>
+      ${paras.length
+        ? paras.map((p, j) => `<p class="${j === 0 ? "first" : ""}">${esc(p.trim()).replace(/\n/g, "<br>")}</p>`).join("")
+        : `<p class="blank">This chapter is still empty.</p>`}`;
+  }).join("");
+
+  return `
+    <h1 class="view-title noprint">Manuscript</h1>
+    <p class="lede noprint">${totalWords().toLocaleString()} words across ${S.chapters.length} chapters. This is the whole thing, assembled.</p>
+    <div class="row noprint" style="margin-bottom:18px">
+      <button class="btn primary" id="printBtn">Print or save as PDF</button>
+      <button class="btn" id="dlMd">Download .md</button>
+      <button class="btn" id="dlTxt">Download .txt</button>
+      <button class="btn" id="dlHtml">Download .html</button>
+    </div>
+    <label class="row noprint" style="margin-bottom:20px;color:var(--dim);font-size:14px">
+      <input type="checkbox" id="useNames" ${S.settings.useBookNames ? "checked" : ""} style="width:auto;margin-right:8px">
+      Use the names I chose on the People page
+    </label>
+    <div class="paper" id="paper">
+      <div class="title-page">
+        <h1>${esc(applyNames(m.title || "Untitled"))}</h1>
+        ${m.subtitle ? `<p class="sub">${esc(applyNames(m.subtitle))}</p>` : ""}
+        ${m.author ? `<p class="by">${esc(m.author)}</p>` : ""}
+        ${m.epigraph ? `<p class="epi">${esc(applyNames(m.epigraph))}</p>` : ""}
+      </div>
+      ${m.dedication ? `<p class="ded">${esc(applyNames(m.dedication))}</p>` : ""}
+      ${has ? body : `<p class="blank">Nothing written yet. Open a chapter and answer one question — that's a start.</p>`}
+    </div>
+  `;
+}
+
+/* ---- Settings ---- */
+
+function viewSettings() {
+  const hasKey = !!localStorage.getItem(KEYKEY);
+  return `
+    <h1 class="view-title">Settings</h1>
+
+    <h2 class="sec">PIN</h2>
+    <p class="muted">A PIN hides your book behind a lock screen when Testimony opens. It doesn't encrypt what's stored — someone with access to this device and some determination could still read it.</p>
+    ${S.settings.pinHash
+      ? `<button class="btn danger" id="clearPin">Remove PIN</button> <button class="btn" id="lockNow">Lock now</button>`
+      : `<label class="f" style="max-width:220px"><span>Set a PIN</span><input type="password" inputmode="numeric" id="newPin" placeholder="4 digits or more"></label>
+         <button class="btn" id="setPin">Save PIN</button>`}
+
+    <h2 class="sec">Backups</h2>
+    <p class="muted">Your book lives in this browser. Clearing site data, or a browser doing its own housekeeping, will take it with them. Export a copy regularly.</p>
+    <div class="row">
+      <button class="btn primary" id="exportJson">Export a backup</button>
+      <button class="btn" id="importBtn">Restore from a backup</button>
+      <input type="file" id="importFile" accept="application/json" style="display:none">
+    </div>
+
+    <h2 class="sec">Writing help</h2>
+    <p class="muted">Optional. Paste an Anthropic API key and the two buttons inside a chapter will work: one turns your answers into flowing prose, one tidies what you've already written. It is sent to Anthropic only when you press those buttons, and stored on this device. Nothing else in Testimony needs it.</p>
+    <label class="f"><span>API key</span><input type="password" id="apikey" placeholder="${hasKey ? "•••••••• saved on this device" : "sk-ant-..."}"></label>
+    <label class="f" style="max-width:280px"><span>Model</span><input type="text" id="model" value="${esc(S.settings.model)}"></label>
+    <div class="row">
+      <button class="btn" id="saveKey">Save key</button>
+      ${hasKey ? `<button class="btn danger" id="forgetKey">Forget key</button>` : ""}
+    </div>
+
+    <h2 class="sec">Speaking instead of typing</h2>
+    <p class="muted">Every writing box has a Speak button. Tap it, talk, tap Stop. Say “full stop”, “comma”, “question mark” or “new paragraph” and they'll appear as punctuation. It keeps listening while you pause; if it drops out, tap Speak again and it carries on from where you were. Needs Chrome or Safari, a microphone, and a connection — the speech goes to your browser maker's service to be turned into text, the same as the dictation key on your keyboard.</p>
+
+    <h2 class="sec">Leave quickly</h2>
+    <p class="muted">The Leave button at the top, or pressing Escape three times, closes Testimony and opens a search page. It doesn't delete anything.</p>
+
+    <h2 class="sec">Delete everything</h2>
+    <p class="muted">Removes the whole book from this device. There's no undo, so export a backup first.</p>
+    <button class="btn danger" id="wipe">Delete everything</button>
+
+    <div class="note" style="margin-top:34px">Writing about the worst of it can pull you back into it. Go in short sessions, stop when your body says so, and keep someone real in your life to talk to. This app is a place to put the story down; it isn't a therapist and doesn't pretend to be.</div>
+  `;
+}
+
+/* ---------------- bindings ---------------- */
+
+function on(id, ev, fn) { const el = document.getElementById(id); if (el) el.addEventListener(ev, fn); }
+function grow(t) { t.style.height = "auto"; t.style.height = Math.max(t.scrollHeight, 60) + "px"; }
+
+function bind() {
+  document.querySelectorAll("#view textarea").forEach(t => {
+    grow(t);
+    t.addEventListener("input", () => grow(t));
+  });
+  attachMics();
+
+  // meta fields
+  ["title", "subtitle", "author", "dedication", "epigraph"].forEach(k =>
+    on("m-" + k, "input", e => { S.meta[k] = e.target.value; save(); }));
+
+  on("startBtn", "click", () => {
+    const t = document.getElementById("tpl").value;
+    if (!t) return toast("Choose a shape first.");
+    S.meta.type = t;
+    S.chapters = TEMPLATES[t].chapters.map(([title, qs]) => ({
+      id: uid(), title, prompts: qs.map(q => ({ q, a: "" })), body: ""
+    }));
+    S.started = true;
+    save(true);
+    toast("Chapters ready.");
+    go("chapters");
+  });
+
+  // chapter list
+  document.querySelectorAll("[data-open]").forEach(b => b.addEventListener("click", () => {
+    openChapter = b.dataset.open; draft = null; render(); window.scrollTo(0, 0);
+  }));
+  document.querySelectorAll("[data-up]").forEach(b => b.addEventListener("click", () => moveCh(b.dataset.up, -1)));
+  document.querySelectorAll("[data-down]").forEach(b => b.addEventListener("click", () => moveCh(b.dataset.down, 1)));
+  document.querySelectorAll("[data-delch]").forEach(b => b.addEventListener("click", () => {
+    const c = S.chapters.find(x => x.id === b.dataset.delch);
+    if (!confirm(`Delete "${c.title}" and everything written in it?`)) return;
+    S.chapters = S.chapters.filter(x => x.id !== b.dataset.delch);
+    save(true); render();
+  }));
+  on("addCh", "click", () => {
+    S.chapters.push({ id: uid(), title: "New chapter", prompts: [], body: "" });
+    S.started = true; save(true); render();
+  });
+
+  // fragments
+  on("addFrag", "click", () => {
+    const el = document.getElementById("fragIn");
+    if (!el.value.trim()) return;
+    S.fragments.unshift({ id: uid(), text: el.value.trim(), ts: Date.now(), chapterId: "" });
+    save(true); render();
+  });
+  document.querySelectorAll("[data-filefrag]").forEach(s => s.addEventListener("change", () => {
+    const f = S.fragments.find(x => x.id === s.dataset.filefrag);
+    f.chapterId = s.value; save(true); render(); toast("Filed.");
+  }));
+  document.querySelectorAll("[data-delfrag]").forEach(b => b.addEventListener("click", () => {
+    S.fragments = S.fragments.filter(x => x.id !== b.dataset.delfrag); save(true); render();
+  }));
+
+  // chapter editor
+  on("backCh", "click", () => { openChapter = null; draft = null; render(); window.scrollTo(0, 0); });
+  const c = S.chapters.find(x => x.id === openChapter);
+  if (c) {
+    on("ch-title", "input", e => { c.title = e.target.value; save(); });
+    on("ch-body", "input", e => { c.body = e.target.value; save(); count(c); });
+    document.querySelectorAll("[data-ans]").forEach(t => t.addEventListener("input", () => {
+      c.prompts[+t.dataset.ans].a = t.value; save(); count(c);
+    }));
+    on("addPrompt", "click", () => {
+      const q = prompt("What question do you want to answer here?");
+      if (!q) return;
+      c.prompts = c.prompts || [];
+      c.prompts.push({ q, a: "" });
+      save(true); render();
+    });
+    on("aiDraft", "click", () => runAI(c, "draft"));
+    on("aiPolish", "click", () => runAI(c, "polish"));
+    on("keepDraft", "click", () => {
+      c.body = draft.text; draft = null; save(true); render();
+      toast("Saved into the chapter.");
+    });
+    on("dropDraft", "click", () => { draft = null; render(); });
+  }
+
+  // timeline
+  on("addEv", "click", () => {
+    const title = document.getElementById("ev-title").value.trim();
+    const what = document.getElementById("ev-what").value.trim();
+    if (!title && !what) return toast("Give it a name or a description.");
+    S.events.push({
+      id: uid(),
+      date: document.getElementById("ev-date").value,
+      title: title || what.slice(0, 42),
+      what, cost: document.getElementById("ev-cost").value.trim(), chapterId: ""
+    });
+    save(true); render(); toast("Added.");
+  });
+  document.querySelectorAll("[data-delev]").forEach(b => b.addEventListener("click", () => {
+    S.events = S.events.filter(x => x.id !== b.dataset.delev); save(true); render();
+  }));
+  document.querySelectorAll("[data-linkev]").forEach(s => s.addEventListener("change", () => {
+    S.events.find(x => x.id === s.dataset.linkev).chapterId = s.value; save(true);
+  }));
+
+  // people
+  on("addP", "click", () => {
+    const real = document.getElementById("p-real").value.trim();
+    const book = document.getElementById("p-book").value.trim();
+    if (!real || !book) return toast("Both names, please.");
+    S.people.push({ id: uid(), real, book, rel: document.getElementById("p-rel").value.trim(), note: document.getElementById("p-note").value.trim() });
+    save(true); render();
+  });
+  document.querySelectorAll("[data-delp]").forEach(b => b.addEventListener("click", () => {
+    S.people = S.people.filter(x => x.id !== b.dataset.delp); save(true); render();
+  }));
+
+  // manuscript
+  on("useNames", "change", e => { S.settings.useBookNames = e.target.checked; save(true); render(); });
+  on("printBtn", "click", () => window.print());
+  on("dlMd", "click", () => download(buildMd(), fileName("md"), "text/markdown"));
+  on("dlTxt", "click", () => download(buildTxt(), fileName("txt"), "text/plain"));
+  on("dlHtml", "click", () => download(buildHtml(), fileName("html"), "text/html"));
+
+  // settings
+  on("setPin", "click", async () => {
+    const p = document.getElementById("newPin").value.trim();
+    if (p.length < 4) return toast("Use at least four digits.");
+    S.settings.pinHash = await sha(p); save(true); render(); toast("PIN set.");
+  });
+  on("clearPin", "click", () => { S.settings.pinHash = ""; save(true); render(); toast("PIN removed."); });
+  on("lockNow", "click", lock);
+  on("exportJson", "click", () => download(JSON.stringify(S, null, 2), fileName("json", "testimony-backup"), "application/json"));
+  on("importBtn", "click", () => document.getElementById("importFile").click());
+  on("importFile", "change", e => {
+    const f = e.target.files[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        const d = JSON.parse(r.result);
+        if (!d || !Array.isArray(d.chapters)) throw 0;
+        if (!confirm("Replace what's currently on this device with the backup?")) return;
+        S = Object.assign(blank(), d, { settings: Object.assign(blank().settings, d.settings || {}) });
+        save(true); go("chapters"); toast("Backup restored.");
+      } catch (err) { toast("That file isn't a Testimony backup."); }
+    };
+    r.readAsText(f);
+  });
+  on("saveKey", "click", () => {
+    const k = document.getElementById("apikey").value.trim();
+    S.settings.model = document.getElementById("model").value.trim() || "claude-sonnet-5-5";
+    if (k) localStorage.setItem(KEYKEY, k);
+    save(true); render(); toast(k ? "Key saved on this device." : "Model saved.");
+  });
+  on("forgetKey", "click", () => { localStorage.removeItem(KEYKEY); render(); toast("Key removed."); });
+  on("wipe", "click", () => {
+    if (!confirm("Delete the entire book from this device? This cannot be undone.")) return;
+    if (!confirm("Really delete everything?")) return;
+    localStorage.removeItem(KEY);
+    S = blank(); save(true); go("book"); toast("Deleted.");
+  });
+}
+
+document.getElementById("rail").addEventListener("click", e => {
+  const b = e.target.closest("[data-go]");
+  if (b) go(b.dataset.go);
+});
+
+function count(c) {
+  const el = document.getElementById("chCount");
+  if (el) el.textContent = chapterWords(c).toLocaleString() + " words";
+}
+
+function moveCh(id, d) {
+  const i = S.chapters.findIndex(x => x.id === id);
+  const j = i + d;
+  if (j < 0 || j >= S.chapters.length) return;
+  const [c] = S.chapters.splice(i, 1);
+  S.chapters.splice(j, 0, c);
+  save(true); render();
+}
+
+/* ---------------- export builders ---------------- */
+
+function fileName(ext, base) {
+  const t = (base || S.meta.title || "testimony").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  return (t || "testimony") + "." + ext;
+}
+
+function buildMd() {
+  const m = S.meta;
+  let out = "# " + applyNames(m.title || "Untitled") + "\n\n";
+  if (m.subtitle) out += "*" + applyNames(m.subtitle) + "*\n\n";
+  if (m.author) out += m.author + "\n\n";
+  if (m.epigraph) out += "> " + applyNames(m.epigraph).replace(/\n/g, "\n> ") + "\n\n";
+  if (m.dedication) out += "*" + applyNames(m.dedication) + "*\n\n";
+  out += "---\n";
+  S.chapters.forEach((c, i) => {
+    out += "\n## " + (i + 1) + ". " + applyNames(c.title || "Untitled") + "\n\n";
+    const t = chapterText(c);
+    out += t ? applyNames(t) + "\n" : "*(empty)*\n";
+  });
+  return out;
+}
+
+function buildTxt() {
+  return buildMd().replace(/^#+\s*/gm, "").replace(/[*>]/g, "");
+}
+
+function buildHtml() {
+  const paper = document.getElementById("paper");
+  const inner = paper ? paper.innerHTML : "";
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<title>${esc(applyNames(S.meta.title || "Testimony"))}</title>
+<style>body{background:#f4ece0;color:#231c18;font-family:Georgia,serif;font-size:17px;line-height:1.72;margin:0}
+main{max-width:34em;margin:0 auto;padding:60px 24px}
+h1{font-weight:400;font-size:34px;text-align:center}h2{font-weight:400;font-size:23px;margin:44px 0 4px}
+.chnum{font-family:system-ui,sans-serif;font-size:11.5px;letter-spacing:.14em;color:#6b5c50;margin:0 0 14px}
+.title-page{text-align:center;border-bottom:1px solid rgba(0,0,0,.14);padding-bottom:36px;margin-bottom:34px}
+.sub,.epi,.ded,.blank{font-style:italic;color:#6b5c50}.epi{max-width:38ch;margin:26px auto 0}
+.ded{text-align:center;margin-bottom:40px}p{margin:0 0 1.05em;text-align:justify}
+p.first::first-letter{float:left;font-size:3.1em;line-height:.82;padding:.06em .09em 0 0}
+</style></head><body><main>${inner}</main></body></html>`;
+}
+
+function download(text, name, type) {
+  const b = new Blob([text], { type: type + ";charset=utf-8" });
+  const u = URL.createObjectURL(b);
+  const a = document.createElement("a");
+  a.href = u; a.download = name; a.click();
+  setTimeout(() => URL.revokeObjectURL(u), 2000);
+  toast("Downloaded " + name);
+}
+
+/* ---------------- optional AI ---------------- */
+
+async function runAI(c, kind) {
+  const key = localStorage.getItem(KEYKEY);
+  if (!key) { toast("Add an API key in Settings first."); return; }
+
+  const answers = (c.prompts || []).filter(p => (p.a || "").trim())
+    .map(p => p.q + "\n" + p.a.trim()).join("\n\n");
+  const notes = S.fragments.filter(f => f.chapterId === c.id).map(f => "- " + f.text).join("\n");
+  const evs = S.events.filter(e => e.chapterId === c.id)
+    .map(e => "- " + (e.date || "no date") + ": " + e.title + (e.what ? " — " + e.what : "")).join("\n");
+
+  const source = kind === "polish" ? chapterText(c) : [answers, notes && "Notes:\n" + notes, evs && "Dated events:\n" + evs].filter(Boolean).join("\n\n");
+  if (!source.trim()) { toast("Write something first."); return; }
+
+  const instruction = kind === "polish"
+    ? "Below is a chapter of a memoir. Tidy it: fix grammar and repetition, join fragments into paragraphs, keep the writer's own words, rhythm and vocabulary wherever possible. Add no facts, no scenes, no feelings that are not already there. Do not soften what happened and do not make it more dramatic. Return only the chapter text."
+    : "Below are a memoir writer's answers to a set of questions, plus any notes and dated events, for one chapter. Turn them into continuous first-person past-tense prose in the writer's own voice: plain, specific, unsentimental. Use only what is here — invent nothing, add no dialogue that was not given, draw no conclusions the writer did not draw. Keep their phrasing where it is good. Return only the chapter text.";
+
+  const btns = ["aiDraft", "aiPolish"].map(id => document.getElementById(id));
+  btns.forEach(b => { if (b) b.disabled = true; });
+  const target = kind === "draft" ? btns[0] : btns[1];
+  const label = target ? target.textContent : "";
+  if (target) target.textContent = "Working…";
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": key,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true"
+      },
+      body: JSON.stringify({
+        model: S.settings.model || "claude-sonnet-5-5",
+        max_tokens: 4000,
+        messages: [{ role: "user", content: instruction + "\n\nChapter title: " + (c.title || "Untitled") + "\n\n" + source }]
+      })
+    });
+    if (!res.ok) {
+      const t = await res.text();
+      throw new Error(res.status === 401 ? "That key was refused. Check it in Settings." :
+        res.status === 429 ? "Rate limited. Wait a minute and try again." :
+        "The request failed (" + res.status + "). " + t.slice(0, 140));
+    }
+    const data = await res.json();
+    const text = (data.content || []).filter(x => x.type === "text").map(x => x.text).join("\n").trim();
+    if (!text) throw new Error("Nothing came back. Try again.");
+    draft = { chapterId: c.id, text, kind };
+    render();
+    document.querySelector(".draft").scrollIntoView({ block: "center", behavior: "smooth" });
+  } catch (e) {
+    toast(e.message || "That didn't work. Check your connection and key.");
+    btns.forEach(b => { if (b) b.disabled = false; });
+    if (target) target.textContent = label;
+  }
+}
+
+/* ---------------- dictation ---------------- */
+
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const D = { rec: null, on: false, target: null, btn: null, base: "", said: "", fails: 0 };
+
+function tidySpeech(s) {
+  let t = s
+    .replace(/\bnew paragraph\b/gi, "\n\n")
+    .replace(/\bnew line\b/gi, "\n")
+    .replace(/\b(?:full stop|period)\b/gi, ".")
+    .replace(/\bcomma\b/gi, ",")
+    .replace(/\bquestion mark\b/gi, "?")
+    .replace(/\b(?:exclamation mark|exclamation point)\b/gi, "!")
+    .replace(/\bdot dot dot\b/gi, "…")
+    .replace(/\s+([.,?!…])/g, "$1")
+    .replace(/[ \t]{2,}/g, " ");
+  t = t.replace(/\bi\b/g, "I");
+  t = t.replace(/(^|[.!?…]\s+|\n\s*)([a-z])/g, (m, a, b) => a + b.toUpperCase());
+  return t;
+}
+
+function paint(interim) {
+  if (!D.target) return;
+  const said = tidySpeech(D.said);
+  const gap = D.base && !/[\s\n]$/.test(D.base) && said ? " " : "";
+  D.target.value = D.base + gap + said + (interim ? (said && !/[\s\n]$/.test(said) ? " " : "") + interim : "");
+  grow(D.target);
+  D.target.scrollTop = D.target.scrollHeight;
+}
+
+function commit() {
+  if (!D.target) return;
+  D.target.dispatchEvent(new Event("input", { bubbles: true }));
+  D.base = D.target.value;
+  D.said = "";
+}
+
+function stopDictation(quiet) {
+  D.on = false;
+  if (D.rec) { try { D.rec.stop(); } catch (e) {} }
+  commit();
+  if (D.btn) { D.btn.classList.remove("live"); D.btn.querySelector("span.lbl").textContent = "Speak"; D.btn.setAttribute("aria-pressed", "false"); }
+  D.target = null; D.btn = null;
+  if (!quiet) save(true);
+}
+
+function startDictation(t, btn) {
+  if (!SR) { toast("This browser can't turn speech into text. Chrome or Safari can."); return; }
+  if (D.on && D.target === t) { stopDictation(); return; }
+  if (D.on) stopDictation(true);
+
+  D.target = t; D.btn = btn; D.base = t.value; D.said = ""; D.fails = 0; D.on = true;
+  btn.classList.add("live");
+  btn.querySelector("span.lbl").textContent = "Stop";
+  btn.setAttribute("aria-pressed", "true");
+
+  const rec = new SR();
+  D.rec = rec;
+  rec.continuous = true;
+  rec.interimResults = true;
+  rec.lang = navigator.language || "en-AU";
+
+  rec.onresult = e => {
+    let interim = "";
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const txt = e.results[i][0].transcript;
+      if (e.results[i].isFinal) { D.said += (D.said ? " " : "") + txt.trim(); D.fails = 0; }
+      else interim += txt;
+    }
+    paint(interim.trim());
+    if (D.said.length > 400) commit();
+  };
+
+  rec.onerror = e => {
+    if (e.error === "not-allowed" || e.error === "service-not-allowed") {
+      toast("Microphone access is blocked. Allow it in your browser settings.");
+      stopDictation();
+    } else if (e.error === "audio-capture") {
+      toast("No microphone found.");
+      stopDictation();
+    } else if (e.error === "network") {
+      toast("Speech needs a connection. Reconnect and tap Speak again.");
+      stopDictation();
+    }
+  };
+
+  rec.onend = () => {
+    if (!D.on) return;
+    commit();
+    D.fails++;
+    if (D.fails > 4) {
+      toast("Paused. Tap Speak to keep going.");
+      stopDictation();
+      return;
+    }
+    try { rec.start(); } catch (err) {
+      toast("Paused. Tap Speak to keep going.");
+      stopDictation();
+    }
+  };
+
+  try { rec.start(); }
+  catch (e) { toast("Couldn't start the microphone. Tap Speak again."); stopDictation(); }
+}
+
+function attachMics() {
+  document.querySelectorAll("#view textarea").forEach(t => {
+    if (t.dataset.mic) return;
+    t.dataset.mic = "1";
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "mic";
+    b.innerHTML = '<span class="dot"></span><span class="lbl">Speak</span>';
+    b.addEventListener("click", e => { e.preventDefault(); t.blur(); startDictation(t, b); });
+    t.insertAdjacentElement("afterend", b);
+  });
+}
+
+/* ---------------- lock & leave ---------------- */
+
+async function sha(s) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s));
+  return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function lock() {
+  document.getElementById("lock").classList.add("on");
+  const i = document.getElementById("pinIn");
+  i.value = ""; i.focus();
+}
+
+document.getElementById("pinIn").addEventListener("keydown", async e => {
+  if (e.key !== "Enter") return;
+  const ok = await sha(e.target.value.trim()) === S.settings.pinHash;
+  if (ok) { document.getElementById("lock").classList.remove("on"); e.target.value = ""; }
+  else { document.getElementById("pinMsg").textContent = "That PIN doesn't match. Try again."; e.target.value = ""; }
+});
+
+function leave() {
+  try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (err) {}
+  location.replace("https://www.google.com");
+}
+document.getElementById("leaveBtn").addEventListener("click", leave);
+
+let escapes = 0, escTimer = null;
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+  escapes++;
+  clearTimeout(escTimer);
+  escTimer = setTimeout(() => { escapes = 0; }, 1200);
+  if (escapes >= 3) leave();
+});
+
+/* ---------------- installable ---------------- */
+
+(function manifest() {
+  const m = {
+    name: "Testimony", short_name: "Testimony", start_url: ".", display: "standalone",
+    background_color: "#000000", theme_color: "#000000",
+    description: "Tell your story in your own words and assemble it into a book.",
+    icons: [{
+      src: "data:image/svg+xml," + encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="#000"/><path d="M112 96h128c32 0 48 16 48 40v280c0-24-16-40-48-40H112z" fill="#e3ba82"/><path d="M400 96H272c-32 0-48 16-48 40v280c0-24 16-40 48-40h128z" fill="#9d8bdf"/></svg>`),
+      sizes: "512x512", type: "image/svg+xml", purpose: "any"
+    }]
+  };
+  const link = document.createElement("link");
+  link.rel = "manifest";
+  link.href = URL.createObjectURL(new Blob([JSON.stringify(m)], { type: "application/manifest+json" }));
+  document.head.appendChild(link);
+})();
+
+/* ---------------- boot ---------------- */
+
+if (S.settings.pinHash) lock();
+renderRail();
+render();
+window.addEventListener("beforeunload", () => save(true));
+</script>
+</body>
+</html>

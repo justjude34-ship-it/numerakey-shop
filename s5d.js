@@ -27,6 +27,7 @@ const FILES = {
   "palmistry-studio": "private/palmistry-studio.html",
   "kindling": "private/kindling.html",
   "sky-almanac": "private/sky-almanac.html",
+  "testimony": "private/testimony.html",
   "bloom-from-within": "private/bloom-from-within.html",
   "narc-escape-guide": "private/narc-escape-guide.html",
   "right-action": "private/right-action.html",
