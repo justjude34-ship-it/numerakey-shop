@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex"><script>window.NK_DEMO={"lock": ["label[for=\"tab-safety\"]", "label[for^=\"q7-\"]", "label[for^=\"q8-\"]", "label[for^=\"q9-\"]", "label[for^=\"q10-\"]", "label[for^=\"q11-\"]", "label[for^=\"q12-\"]", "label[for^=\"q13-\"]", "label[for^=\"q14-\"]", "label[for^=\"q15-\"]", "label[for^=\"q16-\"]", "label[for^=\"q17-\"]", "label[for^=\"q18-\"]"], "lockMsg": "This part of Lantern is in the full app. The demo has the first six questions, the Ground tab and Help.", "slug": "lantern", "name": "Lantern", "url": "https://numerakey-shop.vercel.app/#/app/lantern"};</script><script>/* NumeraKey demo layer: banner, locks, caps, no persistence, no export/print. */
+(function(){
+"use strict";
+var C = window.NK_DEMO || {}; var SHOP = C.url || "https://numerakey-shop.vercel.app";
+var KEY = "nkdemo:" + (C.slug || location.hostname);
+var realLS = null; try { realLS = window.localStorage; } catch(e) {}
+function rget(k,d){ try{ var v=realLS&&realLS.getItem(KEY+":"+k); return v==null?d:JSON.parse(v);}catch(e){return d;} }
+function rset(k,v){ try{ realLS&&realLS.setItem(KEY+":"+k, JSON.stringify(v)); }catch(e){} }
+
+/* 1. Nothing the user enters is kept: localStorage lives in memory for this visit only. */
+function MemStorage(){ var m = new Map(); var o = {
+  getItem:function(k){ k=String(k); return m.has(k)?m.get(k):null; },
+  setItem:function(k,v){ m.set(String(k), String(v)); },
+  removeItem:function(k){ m.delete(String(k)); },
+  clear:function(){ m.clear(); },
+  key:function(i){ return Array.from(m.keys())[i] ?? null; }
+}; Object.defineProperty(o,"length",{get:function(){return m.size;}});
+  return new Proxy(o,{ get:function(t,p){ if(p in t) return t[p]; return typeof p==="string"&&m.has(p)?m.get(p):undefined; },
+    set:function(t,p,v){ if(p in t) return false; m.set(String(p),String(v)); return true; },
+    deleteProperty:function(t,p){ m.delete(String(p)); return true; },
+    ownKeys:function(){ return Array.from(m.keys()); },
+    getOwnPropertyDescriptor:function(t,p){ return m.has(p)?{value:m.get(p),enumerable:true,configurable:true,writable:true}:undefined; } });
+}
+try { Object.defineProperty(window, "localStorage", { value: MemStorage(), configurable: true }); } catch(e) {}
+/* IndexedDB: a fresh, throwaway database per visit; older demo databases are removed. */
+try {
+  var idb = window.indexedDB, run = Math.random().toString(36).slice(2,8), origOpen = idb.open.bind(idb), origDel = idb.deleteDatabase.bind(idb);
+  idb.open = function(name, v){ return v===undefined ? origOpen("nkdemo-"+run+"-"+name) : origOpen("nkdemo-"+run+"-"+name, v); };
+  idb.deleteDatabase = function(name){ return origDel("nkdemo-"+run+"-"+name); };
+  if (idb.databases) idb.databases().then(function(l){ l.forEach(function(d){ if(d.name && d.name.indexOf("nkdemo-"+run)!==0) origDel(d.name); }); }).catch(function(){});
+} catch(e) {}
+/* No offline install of the demo. */
+try { if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function(r){ r.forEach(function(x){ x.unregister(); }); }).catch(function(){});
+  navigator.serviceWorker.register = function(){ return new Promise(function(){}); };
+} } catch(e) {}
+try { window.showSaveFilePicker = undefined; window.showDirectoryPicker = undefined; } catch(e) {}
+
+/* 2. Overlay */
+var css = ""
++ "#nkd-bar{position:fixed;top:0;left:0;right:0;height:44px;z-index:2147483646;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 12px;"
++ "background:rgba(12,12,16,.96);border-bottom:1px solid rgba(214,196,140,.38);font:500 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ece8df;letter-spacing:.01em;box-sizing:border-box}"
++ "#nkd-bar .nkd-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#nkd-bar b{color:#e3cf8f;font-weight:600}"
++ ".nkd-btn{display:inline-block;padding:7px 14px;border-radius:999px;border:1px solid rgba(214,196,140,.7);color:#f3e7bf!important;background:linear-gradient(180deg,rgba(214,196,140,.16),rgba(214,196,140,.05));text-decoration:none!important;font:600 14px/1.1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;white-space:nowrap;cursor:pointer}"
++ "#nkd-ov{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:rgba(6,6,9,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:20px;box-sizing:border-box}"
++ "#nkd-ov.on{display:flex}#nkd-card{max-width:380px;width:100%;background:#15151b;border:1px solid rgba(214,196,140,.35);border-radius:18px;padding:28px 24px 22px;text-align:center;color:#e9e6de;box-shadow:0 20px 60px rgba(0,0,0,.6);font:400 17px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}"
++ "#nkd-card h2{margin:0 0 10px;font:600 23px/1.25 Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#f6e7b0,#cdb36b 55%,#efe0a6);-webkit-background-clip:text;background-clip:text;color:transparent}"
++ "#nkd-card p{margin:0 0 20px;color:#cfcac0}#nkd-card .nkd-btn{font-size:16px;padding:11px 22px}"
++ "#nkd-close{display:block;margin:14px auto 0;background:none;border:0;color:#a9a49a;font:500 15px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}"
++ ".nkd-locked{position:relative;opacity:.55!important}"
++ ".nkd-locked::after{content:'\\1F512';position:absolute;top:2px;right:2px;font-size:11px;line-height:1;opacity:.9;pointer-events:none;filter:grayscale(1)}"
++ ".nkd-hide{display:none!important}"
++ "#nkd-bar.nkd-light{background:rgba(251,249,244,.97);border-bottom-color:rgba(150,128,60,.35);color:#2b2a28}#nkd-bar.nkd-light b{color:#1d1d1f}"
++ "#nkd-bar.nkd-light .nkd-btn{color:#2b2a28!important;border-color:rgba(160,135,60,.75);background:linear-gradient(180deg,rgba(214,190,110,.22),rgba(214,190,110,.08))}"
++ "html{scroll-padding-top:44px}body{padding-top:44px!important}"
++ (C.css||"");
+function inject(){
+  if (document.getElementById("nkd-bar")) return;
+  var st = document.createElement("style"); st.id="nkd-style"; st.textContent = css; (document.head||document.documentElement).appendChild(st);
+  var bar = document.createElement("div"); bar.id="nkd-bar"; bar.setAttribute("role","note");
+  bar.innerHTML = '<span class="nkd-t"><b>Demo version</b><span id="nkd-info"></span></span><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a>';
+  document.body.appendChild(bar);
+  var ov = document.createElement("div"); ov.id="nkd-ov"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+  ov.innerHTML = '<div id="nkd-card"><h2 id="nkd-h">Available in the full app</h2><p id="nkd-p"></p><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a><button id="nkd-close" type="button">Keep exploring the demo</button></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener("click", function(e){ if(e.target===ov && !ov.dataset.hard) hide(); });
+  document.getElementById("nkd-close").addEventListener("click", function(){ if(!ov.dataset.hard) hide(); });
+  try { var bg = "", els=[]; var pe = document.elementFromPoint(innerWidth/2, innerHeight*0.6); while (pe && pe!==document.documentElement) { if (!(pe.id||"").startsWith("nkd-")) els.push(pe); pe = pe.parentElement; } els.push(document.body, document.documentElement);
+    for (var i=0;i<els.length;i++){ var c = getComputedStyle(els[i]).backgroundColor; if (c && !/rgba\(\s*0,\s*0,\s*0,\s*0\)|transparent/.test(c) && !/rgba\([^)]*,\s*0?\.[0-4]\d*\)/.test(c)) { bg = c; break; } var gi = getComputedStyle(els[i]).backgroundImage; var gm = gi && gi.match(/rgba?\([^)]*\)/); if (gm) { bg = gm[0]; break; } }
+    var mm = bg.match(/\d+(\.\d+)?/g); if (C.theme==="light" || (C.theme!=="dark" && mm && (0.299*mm[0]+0.587*mm[1]+0.114*mm[2]) > 160)) bar.classList.add("nkd-light"); } catch(e){}
+  info(); mark(); shift();
+}
+function hide(){ var ov=document.getElementById("nkd-ov"); if(ov) ov.classList.remove("on"); }
+function show(msg, head, hard){
+  inject(); var ov=document.getElementById("nkd-ov");
+  document.getElementById("nkd-h").textContent = head || "Available in the full app";
+  document.getElementById("nkd-p").textContent = msg || (C.lockMsg || ("This part of " + (C.name||"the app") + " is available in the full app."));
+  var cl = document.getElementById("nkd-close"); if (hard) { ov.dataset.hard="1"; cl.style.display="none"; } else { delete ov.dataset.hard; cl.style.display=""; }
+  ov.classList.add("on");
+}
+window.NKDemo = { show: show };
+function info(){ var el=document.getElementById("nkd-info"); if(!el) return; var t="";
+  if (C.cap) { var left = Math.max(0, C.cap.n - rget("cap",0)); t = " \u00b7 " + left + " of " + C.cap.n + " free " + (C.cap.label||"uses") + " left"; }
+  if (C.timer) t = " \u00b7 " + C.timer + "-minute listening session";
+  if (C.info) t = " \u00b7 " + C.info;
+  el.textContent = t; }
+
+/* 3. Locks and caps (capture phase, before the app sees the click) */
+function matches(el, list){ if(!list||!el||!el.closest) return null; for (var i=0;i<list.length;i++){ var m = el.closest(list[i]); if (m) return m; } return null; }
+function textMatch(el){ if(!C.lockText||!el||!el.closest) return null; var b = el.closest("button,a,[role=button],[role=tab],li,[onclick],[data-tab],[data-view],[data-go],[data-nav],[data-page],label,.card,.tile");
+  if(!b) return null; var t=(b.innerText||b.getAttribute("aria-label")||"").trim().toLowerCase();
+  for (var i=0;i<C.lockText.length;i++){ var k=C.lockText[i]; if (k instanceof RegExp ? k.test(t) : t===k.toLowerCase()) return b; } return null; }
+function isLocked(el){ if (matches(el, C.allow)) return null; var m = matches(el, C.lock) || textMatch(el); if (m) return m;
+  if (C.lockIf) { try { var r = C.lockIf(el); if (r) return r; } catch(e){} } return null; }
+function guard(e){
+  var t = e.target; if (!t || !t.closest) return;
+  if (t.closest("#nkd-bar,#nkd-ov")) return;
+  if (window.__nkdHard) { e.preventDefault(); e.stopImmediatePropagation(); show(window.__nkdHard, "Thank you for trying the demo", true); return; }
+  var a = t.closest("a[download]");
+  if (a || isLocked(t)) {
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type==="click"||e.type==="submit") show(a ? "Saving and exporting are available in the full app." : null);
+    return;
+  }
+  if (C.cap && e.type==="keydown" && C.cap.keySel && t.matches && t.matches(C.cap.keySel) && e.key==="Enter") { var u0 = rget("cap",0);
+    if (u0 >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+    if ((t.value||"").trim()) { rset("cap", u0+1); setTimeout(info,0); } return; }
+  if (C.cap && e.type==="click") { var c = matches(t, C.cap.sel); if (!c && C.cap.textSel) { var bb = t.closest("button,a,[role=button],input[type=submit]"); if (bb && C.cap.textSel.test((bb.innerText||bb.value||"").trim().toLowerCase())) c = bb; }
+    if (c) { var used = rget("cap",0);
+      if (used >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+      if (!C.cap.valid || C.cap.valid(c)) { rset("cap", used+1); setTimeout(info,0); }
+    } }
+}
+["click","pointerdown","mousedown","touchstart","keydown","submit","change","input"].forEach(function(ev){
+  window.addEventListener(ev, function(e){
+    if (ev==="keydown" && !(e.key==="Enter"||e.key===" ")) return;
+    if (ev==="change"||ev==="input") { if (isLocked(e.target)) { e.stopImmediatePropagation(); } return; }
+    if (ev!=="click"&&ev!=="submit"&&ev!=="keydown") { var t=e.target; if(t&&t.closest&&!t.closest("#nkd-bar,#nkd-ov")&&(isLocked(t)||window.__nkdHard)) { e.stopImmediatePropagation(); } return; }
+    guard(e);
+  }, true);
+});
+/* anchors clicked from code with a download attribute */
+var aclick = HTMLAnchorElement.prototype.click;
+HTMLAnchorElement.prototype.click = function(){ if (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||"")) { show("Saving and exporting are available in the full app."); return; } return aclick.apply(this, arguments); };
+var adisp = HTMLAnchorElement.prototype.dispatchEvent;
+HTMLAnchorElement.prototype.dispatchEvent = function(ev){ if (ev && ev.type==="click" && (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||""))) { show("Saving and exporting are available in the full app."); return false; } return adisp.apply(this, arguments); };
+window.print = function(){ show("Printing is available in the full app."); };
+try { var ws = window.open; window.open = function(u){ if (u===undefined || u==="" || /^blob:|^data:|about:blank/.test(String(u))) { show("Saving and exporting are available in the full app."); return null; } return ws.apply(window, arguments); }; } catch(e) {}
+try { if (navigator.share) navigator.share = function(){ show("Sharing and exporting are available in the full app."); return Promise.reject(new Error("demo")); }; } catch(e) {}
+window.addEventListener("beforeprint", function(){ document.documentElement.style.display="none"; });
+window.addEventListener("afterprint", function(){ document.documentElement.style.display=""; });
+
+function mark(){
+  var list = (C.lock||[]).concat(C.markOnly||[]);
+  list.forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ if(!matches(el,C.allow)) el.classList.add("nkd-locked"); }); } catch(e){} });
+  if (C.lockText) document.querySelectorAll("button,a,[role=tab],[data-tab],[data-view],[data-go],[data-nav],.card,.tile").forEach(function(el){ if (!el.classList.contains("nkd-locked") && textMatch(el)===el && !matches(el,C.allow)) el.classList.add("nkd-locked"); });
+  (C.hide||[]).forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ el.classList.add("nkd-hide"); }); } catch(e){} });
+  document.querySelectorAll('link[rel="manifest"]').forEach(function(l){ l.remove(); });
+}
+function shift(){
+  if (C.noShift) return;
+  var all = document.body ? document.body.querySelectorAll("*") : [];
+  for (var i=0;i<all.length;i++){ var el = all[i]; if (el.id && el.id.indexOf("nkd-")===0) continue;
+    if (el.dataset.nkdShift) continue;
+    var cs = getComputedStyle(el); if (cs.position!=="fixed" && cs.position!=="sticky") continue;
+    var top = parseFloat(cs.top); if (isNaN(top) || top > 4) continue;
+    el.style.setProperty("top", (top+44)+"px", "important"); el.dataset.nkdShift = "1"; }
+}
+var pend=false; function soon(){ if(pend) return; pend=true; setTimeout(function(){ pend=false; mark(); shift(); }, 120); }
+function start(){ inject(); new MutationObserver(soon).observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:["class","style","hidden"]}); if (C.onReady) try{ C.onReady(); }catch(e){} }
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+
+/* hash routes that belong to the full app */
+if (C.lockHash) { var okHash = location.hash && !C.lockHash.test(location.hash) ? location.hash : (C.homeHash||"#/");
+  if (location.hash && C.lockHash.test(location.hash)) { try { history.replaceState(null, "", location.pathname + location.search + okHash); } catch(e){} }
+  window.addEventListener("hashchange", function(e){ if (C.lockHash.test(location.hash)) { e.stopImmediatePropagation(); history.replaceState(null, "", location.pathname + location.search + okHash); show(); } else okHash = location.hash; }, true); }
+
+/* 4. Listening session limit for audio apps */
+if (C.timer) {
+  var ctxs = [], LIMIT = C.timer*60*1000, HOLD = 12*3600*1000;
+  var startAt = rget("t0", 0); if (startAt && Date.now()-startAt > LIMIT + HOLD) { startAt = 0; rset("t0", 0); }
+  var endMsg = "Your " + C.timer + "-minute demo session has ended. The full app has no time limit.";
+  function expired(){ return startAt && Date.now()-startAt >= LIMIT; }
+  function begin(){ if (!startAt) { startAt = Date.now(); rset("t0", startAt); } }
+  function stopAll(){
+    window.__nkdHard = endMsg;
+    ctxs.forEach(function(c){ try{ c.suspend(); }catch(e){} });
+    document.querySelectorAll("audio,video").forEach(function(m){ try{ m.pause(); m.muted=true; }catch(e){} });
+    show(endMsg, "Thank you for trying the demo", true);
+  }
+  ["AudioContext","webkitAudioContext"].forEach(function(n){ var O = window[n]; if (!O) return;
+    var W = function(){ var c = new (Function.prototype.bind.apply(O, [null].concat([].slice.call(arguments))))(); ctxs.push(c); return c; };
+    W.prototype = O.prototype; try{ Object.setPrototypeOf(W, O); }catch(e){} window[n] = W; });
+  var oResume = window.AudioContext && AudioContext.prototype.resume;
+  if (oResume) AudioContext.prototype.resume = function(){ if (expired()) { stopAll(); return Promise.resolve(); } begin(); return oResume.apply(this, arguments); };
+  var oStart = window.AudioScheduledSourceNode && AudioScheduledSourceNode.prototype.start;
+  if (oStart) AudioScheduledSourceNode.prototype.start = function(){ if (expired()) { stopAll(); return; } begin(); return oStart.apply(this, arguments); };
+  var oPlay = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function(){ if (expired()) { stopAll(); return Promise.reject(new Error("demo")); } begin(); return oPlay.apply(this, arguments); };
+  setInterval(function(){ if (startAt) { var left = Math.max(0, LIMIT-(Date.now()-startAt)); var el=document.getElementById("nkd-info");
+      if (el) el.textContent = left>0 ? " \u00b7 " + Math.ceil(left/60000) + " min of listening left" : " \u00b7 session ended";
+      if (left<=0 && !window.__nkdHard) stopAll(); } }, 1000);
+}
+})();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f0e14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lantern">
+<title>Lantern</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0e14; --surface:#17151f; --elev:#1e1b2a;
+  --fg:#f4efe8; --muted:#b7b0c4; --faint:#8a8298;
+  --line:rgba(196,184,230,.16);
+  --teal:#7ee0d6; --purple:#a78bfa; --gold:#e7d7b1;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font-family:Outfit,system-ui,sans-serif;line-height:1.5;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+img{display:block;max-width:100%}
+.wrap{max-width:680px;margin:0 auto}
+.hero{position:relative;height:38vh;min-height:220px;max-height:420px;overflow:hidden;background:#0a0810}
+.hero img{width:100%;height:100%;object-fit:cover;object-position:center 62%}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(to top, #0f0e14 0%, rgba(15,14,20,.15) 42%, rgba(15,14,20,.25) 100%);pointer-events:none}
+.intro{padding:4px 20px 8px}
+h1{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:2.4rem;margin:0;letter-spacing:-.02em;color:#f7f1e8}
+.tag{margin:.35rem 0 0;color:var(--muted);font-size:.98rem}
+.kicker{color:var(--teal);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;margin:0 0 .35rem}
+.card{margin:14px 16px;background:linear-gradient(180deg,rgba(255,255,255,.03),transparent 40%),var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px;overflow:hidden}
+.card h2{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:1.45rem;margin:0 0 .35rem}
+.card p{margin:.35rem 0;color:var(--muted)}
+.shot{width:100%;height:180px;object-fit:cover;object-position:center 55%;border-radius:16px;margin-bottom:12px}
+.tools{display:grid;gap:10px;padding:6px 16px 10px}
+.tool{display:flex;gap:12px;align-items:center;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px;color:var(--fg);cursor:pointer}
+.tool b{display:block;font-weight:600}
+.tool span{color:var(--muted);font-size:.88rem}
+.dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:#0c0b12;border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:5}
+nav label{flex:1;text-align:center;color:var(--faint);font-size:.72rem;font-weight:600;padding:8px 2px;border-radius:12px;cursor:pointer}
+nav label i{display:block;height:6px;margin-bottom:4px}
+.view{display:none}
+input.tab{position:absolute;opacity:0;pointer-events:none;width:1px;height:1px;padding:0;border:0;background:transparent}
+#tab-home:checked ~ #view-home,
+#tab-assess:checked ~ #view-assess,
+#tab-ground:checked ~ #view-ground,
+#tab-safety:checked ~ #view-safety,
+#tab-help:checked ~ #view-help{display:block}
+#tab-home:checked ~ nav label[for="tab-home"],
+#tab-assess:checked ~ nav label[for="tab-assess"],
+#tab-ground:checked ~ nav label[for="tab-ground"],
+#tab-safety:checked ~ nav label[for="tab-safety"],
+#tab-help:checked ~ nav label[for="tab-help"]{color:var(--fg)}
+#tab-home:checked ~ nav label[for="tab-home"] i,
+#tab-assess:checked ~ nav label[for="tab-assess"] i,
+#tab-ground:checked ~ nav label[for="tab-ground"] i,
+#tab-safety:checked ~ nav label[for="tab-safety"] i,
+#tab-help:checked ~ nav label[for="tab-help"] i{width:6px;height:6px;border-radius:50%;background:var(--teal);margin:0 auto 4px}
+.q{font-size:1.05rem;color:var(--fg)}
+.choices{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.choices input{position:absolute;opacity:0;width:1px;height:1px;padding:0;border:0}
+.choices label{display:block;text-align:left;background:var(--elev);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer}
+.choices input:checked + label{border-color:var(--purple);background:rgba(167,139,250,.16);color:#fff}
+.insight{margin-top:12px}
+.row{display:flex;gap:8px;margin-top:14px}
+.btn{flex:1;border:0;border-radius:999px;padding:12px 14px;font-weight:600;cursor:pointer}
+.btn.gold{background:var(--teal);color:#10211f}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--fg)}
+.note{font-size:.8rem;color:var(--faint)}
+label.f{display:block;font-size:.82rem;color:var(--gold);margin:10px 0 4px}
+input[type="text"],textarea{width:100%;background:var(--elev);border:1px solid var(--line);border-radius:12px;padding:12px}
+textarea{min-height:72px;resize:vertical}
+.step{padding:10px 0;border-top:1px solid var(--line);color:var(--muted);font-size:.95rem}
+.step b{color:var(--fg)}
+.warn{font-size:.82rem;color:var(--faint);margin:8px 16px 0}
+a{color:var(--teal)}
+</style>
+</head>
+<body>
+<input class="tab" type="radio" name="screen" id="tab-home" checked>
+<input class="tab" type="radio" name="screen" id="tab-assess">
+<input class="tab" type="radio" name="screen" id="tab-ground">
+<input class="tab" type="radio" name="screen" id="tab-safety">
+<input class="tab" type="radio" name="screen" id="tab-help">
+
+<div id="view-home" class="view">
+  <div class="hero"><img id="heroImg" alt="A soft glowing lantern on a quiet stone path at night" src="data:image/jpeg;base64,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"></div>
+  <div class="wrap intro">
+    <p class="kicker">Private · On this device</p>
+    <h1>Lantern</h1>
+    <p class="tag">A calm space to understand relationship patterns, steady yourself, and take healthy next steps — at your pace, without shame.</p>
+  </div>
+  <div class="card">
+    <p>You are not “too sensitive” for noticing what hurts. Lantern keeps your notes private, works in this file, and is written to leave you feeling stronger — not more broken.</p>
+  </div>
+  <div class="tools">
+    <label class="tool" for="tab-assess"><span class="dot" style="background:#a78bfa"></span><div><b>Assess</b><span>A gentle quiz on red flags and emotional impact — clarity without harsh labels.</span></div></label>
+    <label class="tool" for="tab-ground"><span class="dot" style="background:#7ee0d6"></span><div><b>Ground</b><span>Breathing, 5-4-3-2-1, body scan, and self-validation when you feel shaken.</span></div></label>
+    <label class="tool" for="tab-safety"><span class="dot" style="background:#9ecbff"></span><div><b>Safety</b><span>Contacts, exit notes, digital privacy tips — stored only on this device.</span></div></label>
+    <label class="tool" for="tab-help"><span class="dot" style="background:#86efac"></span><div><b>Help</b><span>Hotlines, next-step guidance, and books if you stay, set boundaries, or leave.</span></div></label>
+  </div>
+  <p class="warn">Not a diagnosis or crisis service. If you are in danger in Australia, call 000. 1800RESPECT is 1800 737 732.</p>
+</div>
+
+<div id="view-assess" class="view">
+  <div class="wrap intro">
+    <p class="kicker">Assess</p>
+    <h1 style="font-size:2rem">Relationship patterns</h1>
+    <p class="tag">Answer honestly for yourself. There are no wrong answers. Private on this screen. Not a diagnosis.</p>
+  </div>
+  <div class="card">
+    <img class="shot" id="assessImg" alt="An open book with soft purple and teal light" src="data:image/jpeg;base64,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">
+    <p>All 18 questions are on this screen. Tap an answer to mark it. The note under each question is the reflection that used to appear after you answered.</p>
+  </div>
+  <div class="card qcard">
+    <p class="note">Question 1 of 18 · Idealization &amp; love-bombing</p>
+    <p class="q">At the start (or after conflict), they flooded you with praise, gifts, or intense attention that felt almost too good to be true.</p>
+    <div class="choices"><input type="radio" name="q1" id="q1-0"><label for="q1-0">Never</label><input type="radio" name="q1" id="q1-1"><label for="q1-1">Rarely</label><input type="radio" name="q1" id="q1-2"><label for="q1-2">Sometimes</label><input type="radio" name="q1" id="q1-3"><label for="q1-3">Often</label><input type="radio" name="q1" id="q1-4"><label for="q1-4">Almost always</label></div>
+    <p class="note insight">Love-bombing can create a powerful bond quickly. The intensity is the point — it can make later coldness or criticism feel like a loss of something precious you must earn back.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 2 of 18 · Idealization &amp; love-bombing</p>
+    <p class="q">They talked about a perfect shared future (moving in, marriage, big plans) very early, before you really knew each other.</p>
+    <div class="choices"><input type="radio" name="q2" id="q2-0"><label for="q2-0">Never</label><input type="radio" name="q2" id="q2-1"><label for="q2-1">Rarely</label><input type="radio" name="q2" id="q2-2"><label for="q2-2">Sometimes</label><input type="radio" name="q2" id="q2-3"><label for="q2-3">Often</label><input type="radio" name="q2" id="q2-4"><label for="q2-4">Almost always</label></div>
+    <p class="note insight">Future-faking paints a beautiful picture that may never be followed through. It can keep you invested in a story rather than the present reality.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 3 of 18 · Gaslighting &amp; reality distortion</p>
+    <p class="q">They deny saying or doing things you clearly remember — or insist you are “too sensitive,” “crazy,” or “remembering wrong.”</p>
+    <div class="choices"><input type="radio" name="q3" id="q3-0"><label for="q3-0">Never</label><input type="radio" name="q3" id="q3-1"><label for="q3-1">Rarely</label><input type="radio" name="q3" id="q3-2"><label for="q3-2">Sometimes</label><input type="radio" name="q3" id="q3-3"><label for="q3-3">Often</label><input type="radio" name="q3" id="q3-4"><label for="q3-4">Almost always</label></div>
+    <p class="note insight">Gaslighting erodes trust in yourself. Over time you may second-guess every feeling. Your memory and feelings are still valid, even when someone works hard to rewrite them.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 4 of 18 · Gaslighting &amp; reality distortion</p>
+    <p class="q">After arguments, you often end up apologizing for something you didn’t do — or feel confused about what actually happened.</p>
+    <div class="choices"><input type="radio" name="q4" id="q4-0"><label for="q4-0">Never</label><input type="radio" name="q4" id="q4-1"><label for="q4-1">Rarely</label><input type="radio" name="q4" id="q4-2"><label for="q4-2">Sometimes</label><input type="radio" name="q4" id="q4-3"><label for="q4-3">Often</label><input type="radio" name="q4" id="q4-4"><label for="q4-4">Almost always</label></div>
+    <p class="note insight">When conflict consistently leaves you disoriented or blamed, it may be a pattern of deflection rather than repair. Healthy repair feels clarifying, not foggy.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 5 of 18 · Devaluation &amp; criticism</p>
+    <p class="q">Compliments or affection alternate with put-downs, mockery, or cold silence — sometimes without clear reason.</p>
+    <div class="choices"><input type="radio" name="q5" id="q5-0"><label for="q5-0">Never</label><input type="radio" name="q5" id="q5-1"><label for="q5-1">Rarely</label><input type="radio" name="q5" id="q5-2"><label for="q5-2">Sometimes</label><input type="radio" name="q5" id="q5-3"><label for="q5-3">Often</label><input type="radio" name="q5" id="q5-4"><label for="q5-4">Almost always</label></div>
+    <p class="note insight">The idealize–devalue cycle keeps you chasing the “good” version of them. Intermittent warmth is powerfully reinforcing; you deserve steadier respect.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 6 of 18 · Devaluation &amp; criticism</p>
+    <p class="q">They criticize your appearance, intelligence, friends, family, or achievements in ways that leave you smaller.</p>
+    <div class="choices"><input type="radio" name="q6" id="q6-0"><label for="q6-0">Never</label><input type="radio" name="q6" id="q6-1"><label for="q6-1">Rarely</label><input type="radio" name="q6" id="q6-2"><label for="q6-2">Sometimes</label><input type="radio" name="q6" id="q6-3"><label for="q6-3">Often</label><input type="radio" name="q6" id="q6-4"><label for="q6-4">Almost always</label></div>
+    <p class="note insight">Chronic criticism isn’t “honesty” or “helping you grow.” It’s a way of keeping you off-balance. Kind feedback builds up; this kind of talk wears down.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 7 of 18 · Control &amp; isolation</p>
+    <p class="q">They monitor your phone, messages, location, spending, or social life — or get angry when you spend time with others.</p>
+    <div class="choices"><input type="radio" name="q7" id="q7-0"><label for="q7-0">Never</label><input type="radio" name="q7" id="q7-1"><label for="q7-1">Rarely</label><input type="radio" name="q7" id="q7-2"><label for="q7-2">Sometimes</label><input type="radio" name="q7" id="q7-3"><label for="q7-3">Often</label><input type="radio" name="q7" id="q7-4"><label for="q7-4">Almost always</label></div>
+    <p class="note insight">Control often disguises itself as protection or love. Autonomy and privacy are normal in healthy relationships.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 8 of 18 · Control &amp; isolation</p>
+    <p class="q">You feel you must manage their moods — walking on eggshells to avoid anger, sulking, or punishment.</p>
+    <div class="choices"><input type="radio" name="q8" id="q8-0"><label for="q8-0">Never</label><input type="radio" name="q8" id="q8-1"><label for="q8-1">Rarely</label><input type="radio" name="q8" id="q8-2"><label for="q8-2">Sometimes</label><input type="radio" name="q8" id="q8-3"><label for="q8-3">Often</label><input type="radio" name="q8" id="q8-4"><label for="q8-4">Almost always</label></div>
+    <p class="note insight">Hypervigilance is exhausting. You are not responsible for regulating another adult’s every emotion, especially through fear of consequences.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 9 of 18 · Empathy &amp; accountability</p>
+    <p class="q">When you share hurt feelings, they dismiss, mock, or turn the conversation back to how hard things are for them.</p>
+    <div class="choices"><input type="radio" name="q9" id="q9-0"><label for="q9-0">Never</label><input type="radio" name="q9" id="q9-1"><label for="q9-1">Rarely</label><input type="radio" name="q9" id="q9-2"><label for="q9-2">Sometimes</label><input type="radio" name="q9" id="q9-3"><label for="q9-3">Often</label><input type="radio" name="q9" id="q9-4"><label for="q9-4">Almost always</label></div>
+    <p class="note insight">Lack of empathy leaves wounds unattended. Being heard and taken seriously is a baseline of care, not a luxury.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 10 of 18 · Empathy &amp; accountability</p>
+    <p class="q">They rarely take real responsibility — blame shifts to you, circumstances, or “jokes,” with little lasting change.</p>
+    <div class="choices"><input type="radio" name="q10" id="q10-0"><label for="q10-0">Never</label><input type="radio" name="q10" id="q10-1"><label for="q10-1">Rarely</label><input type="radio" name="q10" id="q10-2"><label for="q10-2">Sometimes</label><input type="radio" name="q10" id="q10-3"><label for="q10-3">Often</label><input type="radio" name="q10" id="q10-4"><label for="q10-4">Almost always</label></div>
+    <p class="note insight">Accountability means owning impact and changing behaviour. Empty apologies without change keep the cycle spinning.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 11 of 18 · How you feel</p>
+    <p class="q">You feel anxious, drained, or “not yourself” more often around them than with other people in your life.</p>
+    <div class="choices"><input type="radio" name="q11" id="q11-0"><label for="q11-0">Never</label><input type="radio" name="q11" id="q11-1"><label for="q11-1">Rarely</label><input type="radio" name="q11" id="q11-2"><label for="q11-2">Sometimes</label><input type="radio" name="q11" id="q11-3"><label for="q11-3">Often</label><input type="radio" name="q11" id="q11-4"><label for="q11-4">Almost always</label></div>
+    <p class="note insight">Your nervous system notices patterns before your mind fully names them. Persistent dread or depletion is meaningful information.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 12 of 18 · How you feel</p>
+    <p class="q">You second-guess your worth, needs, or reality more than you used to — or feel lonely even when you’re together.</p>
+    <div class="choices"><input type="radio" name="q12" id="q12-0"><label for="q12-0">Never</label><input type="radio" name="q12" id="q12-1"><label for="q12-1">Rarely</label><input type="radio" name="q12" id="q12-2"><label for="q12-2">Sometimes</label><input type="radio" name="q12" id="q12-3"><label for="q12-3">Often</label><input type="radio" name="q12" id="q12-4"><label for="q12-4">Almost always</label></div>
+    <p class="note insight">Emotional loneliness inside a relationship is a deep form of pain. Reconnecting with your own voice is a brave, healthy step.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 13 of 18 · Gaslighting &amp; reality distortion</p>
+    <p class="q">They use private information you shared in trust against you later — during fights or to humiliate you.</p>
+    <div class="choices"><input type="radio" name="q13" id="q13-0"><label for="q13-0">Never</label><input type="radio" name="q13" id="q13-1"><label for="q13-1">Rarely</label><input type="radio" name="q13" id="q13-2"><label for="q13-2">Sometimes</label><input type="radio" name="q13" id="q13-3"><label for="q13-3">Often</label><input type="radio" name="q13" id="q13-4"><label for="q13-4">Almost always</label></div>
+    <p class="note insight">Weaponizing vulnerability breaks safety. Trust thrives when soft spots are protected, not stored as ammunition.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 14 of 18 · Control &amp; isolation</p>
+    <p class="q">They make big decisions that affect you without real input — or punish you (silent treatment, threats, guilt) if you disagree.</p>
+    <div class="choices"><input type="radio" name="q14" id="q14-0"><label for="q14-0">Never</label><input type="radio" name="q14" id="q14-1"><label for="q14-1">Rarely</label><input type="radio" name="q14" id="q14-2"><label for="q14-2">Sometimes</label><input type="radio" name="q14" id="q14-3"><label for="q14-3">Often</label><input type="radio" name="q14" id="q14-4"><label for="q14-4">Almost always</label></div>
+    <p class="note insight">Partnership includes mutual say. Coercion and punishment for differing opinions are not compromise.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 15 of 18 · Empathy &amp; accountability</p>
+    <p class="q">They show little curiosity about your inner world, yet expect deep attention to theirs.</p>
+    <div class="choices"><input type="radio" name="q15" id="q15-0"><label for="q15-0">Never</label><input type="radio" name="q15" id="q15-1"><label for="q15-1">Rarely</label><input type="radio" name="q15" id="q15-2"><label for="q15-2">Sometimes</label><input type="radio" name="q15" id="q15-3"><label for="q15-3">Often</label><input type="radio" name="q15" id="q15-4"><label for="q15-4">Almost always</label></div>
+    <p class="note insight">One-way emotional labour is depleting. Reciprocal care means both people matter — including you.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 16 of 18 · Devaluation &amp; criticism</p>
+    <p class="q">Publicly they may seem charming; privately you experience a harsher, colder, or more critical version.</p>
+    <div class="choices"><input type="radio" name="q16" id="q16-0"><label for="q16-0">Never</label><input type="radio" name="q16" id="q16-1"><label for="q16-1">Rarely</label><input type="radio" name="q16" id="q16-2"><label for="q16-2">Sometimes</label><input type="radio" name="q16" id="q16-3"><label for="q16-3">Often</label><input type="radio" name="q16" id="q16-4"><label for="q16-4">Almost always</label></div>
+    <p class="note insight">A large gap between public image and private behaviour can leave you feeling crazy or isolated — “no one else sees this.” You are not imagining it.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 17 of 18 · Idealization &amp; love-bombing</p>
+    <p class="q">After you try to leave or set a boundary, they become unusually loving, apologetic, or desperate — until things settle, then the old patterns return.</p>
+    <div class="choices"><input type="radio" name="q17" id="q17-0"><label for="q17-0">Never</label><input type="radio" name="q17" id="q17-1"><label for="q17-1">Rarely</label><input type="radio" name="q17" id="q17-2"><label for="q17-2">Sometimes</label><input type="radio" name="q17" id="q17-3"><label for="q17-3">Often</label><input type="radio" name="q17" id="q17-4"><label for="q17-4">Almost always</label></div>
+    <p class="note insight">Hoovering (pulling you back in) often resets the cycle rather than ending it. Lasting change shows up in consistent behaviour over time, not crisis romance.</p>
+  </div><div class="card qcard">
+    <p class="note">Question 18 of 18 · How you feel</p>
+    <p class="q">You feel guilty for needing space, boundaries, or support — as if your needs are selfish or “too much.”</p>
+    <div class="choices"><input type="radio" name="q18" id="q18-0"><label for="q18-0">Never</label><input type="radio" name="q18" id="q18-1"><label for="q18-1">Rarely</label><input type="radio" name="q18" id="q18-2"><label for="q18-2">Sometimes</label><input type="radio" name="q18" id="q18-3"><label for="q18-3">Often</label><input type="radio" name="q18" id="q18-4"><label for="q18-4">Almost always</label></div>
+    <p class="note insight">Needs for safety, respect, and rest are human. Guilt about having needs is often trained, not innate. You are allowed to take up space.</p>
+  </div>
+  <div class="card">
+    <h2>How a pattern can read</h2>
+    <p>This file no longer calculates a score. These are the four readings the questions were written around. They are a mirror, not a verdict.</p>
+    <div class="step"><b>Fewer patterns showing up</b> A lighter load is good news. Stay kind to yourself either way.<br>Based on what you shared, many of the more intense narcissistic patterns don’t appear frequent. That can be reassuring — and this result is still only a mirror of your answers, not a diagnosis of anyone.<div class="step">Keep trusting your gut when something feels off — low scores don’t erase single harmful incidents.</div><div class="step">Healthy relationships still need boundaries, repair, and mutual respect.</div><div class="step">If something still feels wrong, you can use Ground tools or talk with a trusted person or therapist.</div></div><div class="step"><b>Some patterns worth noticing</b> Clarity is strength. You don’t need certainty to take care of yourself.<br>You’re noticing behaviours that can show up in narcissistic dynamics — not always, but often enough to matter. Patterns matter more than labels. What you’re feeling is information, not overreacting.<div class="step">Name specific behaviours rather than trying to prove a label.</div><div class="step">Practice small, clear boundaries and notice how they respond over time.</div><div class="step">Lean on grounding tools when interactions leave you shaky or confused.</div><div class="step">Consider journaling incidents — dates, what was said, how you felt — to keep your reality steady.</div></div><div class="step"><b>Several patterns appear often</b> You’re not broken for being affected. You’re human — and you’re allowed to protect your peace.<br>Your answers suggest frequent experiences that align with narcissistic abuse dynamics — gaslighting, control, devaluation, or one-way empathy. This is not a clinical diagnosis; it is validation that what you’ve lived may be seriously harmful.<div class="step">Prioritize safety and emotional recovery over winning arguments or changing them.</div><div class="step">Build support outside the relationship — friends, family, a counsellor, or a hotline.</div><div class="step">Use the Safety section to plan contacts and exits if you feel unsafe.</div><div class="step">Boundaries may be met with pushback; that reaction is data, not proof you were wrong.</div></div><div class="step"><b>Strong, recurring patterns</b> You are not alone, and you are not “too much.” Support exists, and strength includes asking for it.<br>What you described points to a high frequency of behaviours associated with narcissistic abuse and significant emotional impact. Please hear this gently: your experiences matter, and you deserve safety and support. This is not a diagnosis of your partner — it is a compassionate reading of your answers.<div class="step">If you feel unsafe, contact local emergency services or a domestic violence hotline (see Help).</div><div class="step">Consider a safety plan before big conversations, separations, or moves.</div><div class="step">You do not have to confront them or get them to agree in order to heal.</div><div class="step">Leaving is one option; so are boundaries and staged exits — only you know your situation.</div></div>
+    <p class="note">Not a medical or legal diagnosis. Only a qualified professional can assess personality disorders.</p>
+  </div>
+</div>
+
+<div id="view-ground" class="view">
+  <div class="wrap intro">
+    <p class="kicker">Ground</p>
+    <h1 style="font-size:2rem">Come back to now</h1>
+  </div>
+  <div class="card">
+    <img class="shot" id="groundImg" alt="A still pond with a single stone and gentle ripples" src="data:image/jpeg;base64,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">
+    <h2>5-4-3-2-1</h2>
+    <p>After an argument, a spiral, or feeling far away.</p>
+    <div class="step"><b>5</b> things you can see. Colours, shapes, light.</div>
+    <div class="step"><b>4</b> things you can feel. Feet, fabric, temperature.</div>
+    <div class="step"><b>3</b> sounds. Near or far, including your breath.</div>
+    <div class="step"><b>2</b> scents, or imagine two safe ones.</div>
+    <div class="step"><b>1</b> taste, or a slow sip of water.</div>
+  </div>
+  <div class="card">
+    <h2>Box breathing</h2>
+    <p>For a racing heart, or before a hard conversation. In for 4, hold 4, out for 4, hold 4. Four rounds is enough.</p>
+    <h2 style="margin-top:14px">Body scan</h2>
+    <p>Feet, legs, belly, chest, jaw. Soften a millimetre if you can. You are allowed to rest your face.</p>
+  </div>
+  <div class="card">
+    <h2>A steady inner voice</h2>
+    <div class="step">My feeling is allowed. Feelings are messengers, not verdicts.</div>
+    <div class="step">My memory matters. Disagreement does not erase what I lived.</div>
+    <div class="step">My needs are human. Respect, rest, and safety are not selfish.</div>
+    <div class="step">I am not the problem for noticing.</div>
+  </div>
+</div>
+
+<div id="view-safety" class="view">
+  <div class="wrap intro">
+    <p class="kicker">Safety</p>
+    <h1 style="font-size:2rem">A quiet plan</h1>
+    <p class="tag">Nothing is required. If you are in immediate danger, call emergency services now.</p>
+  </div>
+  <form class="card">
+    <img class="shot" id="privacyImg" alt="A warm flame held safely inside a soft protective light" style="object-position:center 45%;height:220px" src="data:image/jpeg;base64,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">
+    <label class="f" for="safePlace">A place you could go</label>
+    <input id="safePlace" type="text" placeholder="Friend, family, shelter">
+    <label class="f" for="codeWord">Code word with one trusted person</label>
+    <input id="codeWord" type="text" placeholder="A word that means call me or come get me">
+    <label class="f" for="bag">What to take</label>
+    <textarea id="bag" placeholder="ID, meds, keys, charger, a little cash"></textarea>
+    <label class="f" for="contacts">People who can help</label>
+    <textarea id="contacts" placeholder="Name and number, one per line"></textarea>
+    <p class="note">These notes stay in the form until you clear them or leave the page. This screen does not save them.</p>
+    <div class="row"><button class="btn ghost" type="reset">Clear plan</button></div>
+  </form>
+  <div class="card">
+    <h2>While you are in contact</h2>
+    <div class="step"><b>Grey rock.</b> Short, dull answers. “Okay.” “I’ll check.”</div>
+    <div class="step"><b>Broken record.</b> One boundary, repeated. “I’m not discussing this tonight.”</div>
+    <div class="step"><b>Pause.</b> “I need time to think — I’ll reply tomorrow.”</div>
+    <div class="step"><b>Leave.</b> “I’m ending this call now.” You don’t need permission to stop.</div>
+  </div>
+</div>
+
+<div id="view-help" class="view">
+  <div class="wrap intro">
+    <p class="kicker">Help</p>
+    <h1 style="font-size:2rem">You don’t have to do this alone</h1>
+  </div>
+  <div class="card" id="helpCard">
+    <div class="step"><b><a href="https://www.1800respect.org.au/" target="_blank" rel="noopener">1800RESPECT (Australia)</a></b><br>National sexual assault, domestic and family violence counselling — 24/7. Call 1800 737 732.</div><div class="step"><b><a href="https://www.thehotline.org/" target="_blank" rel="noopener">National Domestic Violence Hotline (US)</a></b><br>Confidential support, 24/7. Call 1-800-799-7233 or text START to 88788.</div><div class="step"><b><a href="https://www.nationaldahelpline.org.uk/" target="_blank" rel="noopener">National Domestic Abuse Helpline (UK)</a></b><br>Free, confidential support. Call 0808 2000 247.</div><div class="step"><b><a href="https://www.hotpeachpages.net/" target="_blank" rel="noopener">Hot Peach Pages</a></b><br>Global directory of domestic violence agencies.</div><div class="step"><b><a href="https://www.iasp.info/suicidalthoughts/" target="_blank" rel="noopener">IASP</a></b><br>Find a local crisis line if you are in emotional distress.</div><div class="step"><b>If you stay for now</b><br>Staying can be a safety choice, money, or hope. You are not failing by staying.</div><div class="step"><b>If you set boundaries</b><br>Boundaries are your limits, not a way to control them.</div><div class="step"><b>If you are considering leaving</b><br>Leaving can raise risk for a time. Plan when you can.</div><div class="step"><b>Why Does He Do That? — Lundy Bancroft</b><br>A clear look at abusive thinking, often recommended by advocates.</div><div class="step"><b><a href="https://outofthefog.website/" target="_blank" rel="noopener">Out of the FOG</a></b><br>Fear, obligation, and guilt in personality-disordered relationships.</div>
+  </div>
+</div>
+
+<nav>
+  <label for="tab-home"><i></i>Home</label>
+  <label for="tab-assess"><i></i>Assess</label>
+  <label for="tab-ground"><i></i>Ground</label>
+  <label for="tab-safety"><i></i>Safety</label>
+  <label for="tab-help"><i></i>Help</label>
+</nav>
+</body>
+</html>
