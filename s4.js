@@ -50,7 +50,7 @@ const AP4 = [
 {
   slug:"kindling", name:"Kindling", cat:"neuro", price:59, status:"live", ready:true,
   cover:"covers/kindling.jpg",
-  demo:"https://numerakey-kindling-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/kindling/",
   desc:"For finding out late \u2014 a quiet coach for adults who got the ADHD or AuDHD answer in middle age.",
   tag:"You found out late. That changes the map.",
   body:[
