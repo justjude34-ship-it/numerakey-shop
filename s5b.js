@@ -48,6 +48,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
   slug:"somni-plus", name:"Somni Plus", cat:"sound", price:79, status:"live", ready:true,
+  cover:"covers/somni-plus.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/somni-plus/",
   desc:"Exclusive binaural sound, with ocean, rain or storm underneath. One voice, made on your device.",
   tag:"Exclusive sound.",
