@@ -388,3 +388,17 @@ APPS.push({
   inside:["Freyr's ætt: eight runes, in full, now","Old English, Norwegian and Icelandic poems, explained plainly","An everyday example for each rune","Honest about which runes have no reverse","A private journal that stays on your phone","Hagal's and Tyr's ætt, quiz and casts — free updates","No account, works offline, nothing sent away"]
 });
 artFor(APPS[APPS.length - 1]).motif = "wave";
+
+APPS.push({
+  slug:"teach-me-palmistry", name:"Teach Me Palmistry", cat:"divine", price:39, status:"live", ready:true,
+  cover:"covers/teach-me-palmistry.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/teach-me-palmistry/",
+  desc:"Palmistry for beginners \u2014 six lines and six mounts, each marked on a real palm, with a quiz to test your eye.",
+  tag:"Read the hand. One line at a time.",
+  body:[
+    "Most palmistry guides assume you can already find the lines. This one starts there. A real palm, one line at a time, marked in pink so you can see exactly where it sits: Heart, Head, Life, Fate, Sun and Mercury, with what each is read to mean and what a clear, faint or broken line is said to show.",
+    "Then the mounts, the raised pads under each finger, a short method for how to look, and a practice quiz where you name the highlighted line. It offers tendencies, not verdicts, and says plainly that the lines do not decide a life. Educational and reflective, not medical advice and not a fortune."
+  ],
+  inside:["Six lines marked on a real palm","Six mounts, read with the lines that cross them","What a deep, faint or broken line is said to mean","A short method for how to look","A practice quiz: name the highlighted line","Tendencies, not verdicts","One file, works offline"]
+});
+artFor(APPS[APPS.length - 1]).motif = "orbits";
