@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head><meta name="robots" content="noindex"><script>window.NK_DEMO={"lock": [".nav button[data-v=\"journal\"]", ".nav button[data-v=\"check\"]", ".nav button[data-v=\"care\"]"], "lockMsg": "Part of the full app", "slug": "hearthaven", "name": "HeartHaven", "url": "https://numerakey-shop.vercel.app/#/app/hearthaven"};</script><script>/* NumeraKey demo layer: banner, locks, caps, no persistence, no export/print. */
+(function(){
+"use strict";
+var C = window.NK_DEMO || {}; var SHOP = C.url || "https://numerakey-shop.vercel.app";
+var KEY = "nkdemo:" + (C.slug || location.hostname);
+var realLS = null; try { realLS = window.localStorage; } catch(e) {}
+function rget(k,d){ try{ var v=realLS&&realLS.getItem(KEY+":"+k); return v==null?d:JSON.parse(v);}catch(e){return d;} }
+function rset(k,v){ try{ realLS&&realLS.setItem(KEY+":"+k, JSON.stringify(v)); }catch(e){} }
+
+/* 1. Nothing the user enters is kept: localStorage lives in memory for this visit only. */
+function MemStorage(){ var m = new Map(); var o = {
+  getItem:function(k){ k=String(k); return m.has(k)?m.get(k):null; },
+  setItem:function(k,v){ m.set(String(k), String(v)); },
+  removeItem:function(k){ m.delete(String(k)); },
+  clear:function(){ m.clear(); },
+  key:function(i){ return Array.from(m.keys())[i] ?? null; }
+}; Object.defineProperty(o,"length",{get:function(){return m.size;}});
+  return new Proxy(o,{ get:function(t,p){ if(p in t) return t[p]; return typeof p==="string"&&m.has(p)?m.get(p):undefined; },
+    set:function(t,p,v){ if(p in t) return false; m.set(String(p),String(v)); return true; },
+    deleteProperty:function(t,p){ m.delete(String(p)); return true; },
+    ownKeys:function(){ return Array.from(m.keys()); },
+    getOwnPropertyDescriptor:function(t,p){ return m.has(p)?{value:m.get(p),enumerable:true,configurable:true,writable:true}:undefined; } });
+}
+try { Object.defineProperty(window, "localStorage", { value: MemStorage(), configurable: true }); } catch(e) {}
+/* IndexedDB: a fresh, throwaway database per visit; older demo databases are removed. */
+try {
+  var idb = window.indexedDB, run = Math.random().toString(36).slice(2,8), origOpen = idb.open.bind(idb), origDel = idb.deleteDatabase.bind(idb);
+  idb.open = function(name, v){ return v===undefined ? origOpen("nkdemo-"+run+"-"+name) : origOpen("nkdemo-"+run+"-"+name, v); };
+  idb.deleteDatabase = function(name){ return origDel("nkdemo-"+run+"-"+name); };
+  if (idb.databases) idb.databases().then(function(l){ l.forEach(function(d){ if(d.name && d.name.indexOf("nkdemo-"+run)!==0) origDel(d.name); }); }).catch(function(){});
+} catch(e) {}
+/* No offline install of the demo. */
+try { if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function(r){ r.forEach(function(x){ x.unregister(); }); }).catch(function(){});
+  navigator.serviceWorker.register = function(){ return new Promise(function(){}); };
+} } catch(e) {}
+try { window.showSaveFilePicker = undefined; window.showDirectoryPicker = undefined; } catch(e) {}
+
+/* 2. Overlay */
+var css = ""
++ "#nkd-bar{position:fixed;top:0;left:0;right:0;height:44px;z-index:2147483646;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 12px;"
++ "background:rgba(12,12,16,.96);border-bottom:1px solid rgba(214,196,140,.38);font:500 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ece8df;letter-spacing:.01em;box-sizing:border-box}"
++ "#nkd-bar .nkd-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#nkd-bar b{color:#e3cf8f;font-weight:600}"
++ ".nkd-btn{display:inline-block;padding:7px 14px;border-radius:999px;border:1px solid rgba(214,196,140,.7);color:#f3e7bf!important;background:linear-gradient(180deg,rgba(214,196,140,.16),rgba(214,196,140,.05));text-decoration:none!important;font:600 14px/1.1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;white-space:nowrap;cursor:pointer}"
++ "#nkd-ov{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:rgba(6,6,9,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:20px;box-sizing:border-box}"
++ "#nkd-ov.on{display:flex}#nkd-card{max-width:380px;width:100%;background:#15151b;border:1px solid rgba(214,196,140,.35);border-radius:18px;padding:28px 24px 22px;text-align:center;color:#e9e6de;box-shadow:0 20px 60px rgba(0,0,0,.6);font:400 17px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}"
++ "#nkd-card h2{margin:0 0 10px;font:600 23px/1.25 Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#f6e7b0,#cdb36b 55%,#efe0a6);-webkit-background-clip:text;background-clip:text;color:transparent}"
++ "#nkd-card p{margin:0 0 20px;color:#cfcac0}#nkd-card .nkd-btn{font-size:16px;padding:11px 22px}"
++ "#nkd-close{display:block;margin:14px auto 0;background:none;border:0;color:#a9a49a;font:500 15px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}"
++ ".nkd-locked{position:relative;opacity:.55!important}"
++ ".nkd-locked::after{content:'\\1F512';position:absolute;top:2px;right:2px;font-size:11px;line-height:1;opacity:.9;pointer-events:none;filter:grayscale(1)}"
++ ".nkd-hide{display:none!important}"
++ "#nkd-bar.nkd-light{background:rgba(251,249,244,.97);border-bottom-color:rgba(150,128,60,.35);color:#2b2a28}#nkd-bar.nkd-light b{color:#1d1d1f}"
++ "#nkd-bar.nkd-light .nkd-btn{color:#2b2a28!important;border-color:rgba(160,135,60,.75);background:linear-gradient(180deg,rgba(214,190,110,.22),rgba(214,190,110,.08))}"
++ "html{scroll-padding-top:44px}body{padding-top:44px!important}"
++ (C.css||"");
+function inject(){
+  if (document.getElementById("nkd-bar")) return;
+  var st = document.createElement("style"); st.id="nkd-style"; st.textContent = css; (document.head||document.documentElement).appendChild(st);
+  var bar = document.createElement("div"); bar.id="nkd-bar"; bar.setAttribute("role","note");
+  bar.innerHTML = '<span class="nkd-t"><b>Demo version</b><span id="nkd-info"></span></span><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a>';
+  document.body.appendChild(bar);
+  var ov = document.createElement("div"); ov.id="nkd-ov"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+  ov.innerHTML = '<div id="nkd-card"><h2 id="nkd-h">Available in the full app</h2><p id="nkd-p"></p><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a><button id="nkd-close" type="button">Keep exploring the demo</button></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener("click", function(e){ if(e.target===ov && !ov.dataset.hard) hide(); });
+  document.getElementById("nkd-close").addEventListener("click", function(){ if(!ov.dataset.hard) hide(); });
+  try { var bg = "", els=[]; var pe = document.elementFromPoint(innerWidth/2, innerHeight*0.6); while (pe && pe!==document.documentElement) { if (!(pe.id||"").startsWith("nkd-")) els.push(pe); pe = pe.parentElement; } els.push(document.body, document.documentElement);
+    for (var i=0;i<els.length;i++){ var c = getComputedStyle(els[i]).backgroundColor; if (c && !/rgba\(\s*0,\s*0,\s*0,\s*0\)|transparent/.test(c) && !/rgba\([^)]*,\s*0?\.[0-4]\d*\)/.test(c)) { bg = c; break; } var gi = getComputedStyle(els[i]).backgroundImage; var gm = gi && gi.match(/rgba?\([^)]*\)/); if (gm) { bg = gm[0]; break; } }
+    var mm = bg.match(/\d+(\.\d+)?/g); if (C.theme==="light" || (C.theme!=="dark" && mm && (0.299*mm[0]+0.587*mm[1]+0.114*mm[2]) > 160)) bar.classList.add("nkd-light"); } catch(e){}
+  info(); mark(); shift();
+}
+function hide(){ var ov=document.getElementById("nkd-ov"); if(ov) ov.classList.remove("on"); }
+function show(msg, head, hard){
+  inject(); var ov=document.getElementById("nkd-ov");
+  document.getElementById("nkd-h").textContent = head || "Available in the full app";
+  document.getElementById("nkd-p").textContent = msg || (C.lockMsg || ("This part of " + (C.name||"the app") + " is available in the full app."));
+  var cl = document.getElementById("nkd-close"); if (hard) { ov.dataset.hard="1"; cl.style.display="none"; } else { delete ov.dataset.hard; cl.style.display=""; }
+  ov.classList.add("on");
+}
+window.NKDemo = { show: show };
+function info(){ var el=document.getElementById("nkd-info"); if(!el) return; var t="";
+  if (C.cap) { var left = Math.max(0, C.cap.n - rget("cap",0)); t = " \u00b7 " + left + " of " + C.cap.n + " free " + (C.cap.label||"uses") + " left"; }
+  if (C.timer) t = " \u00b7 " + C.timer + "-minute listening session";
+  if (C.info) t = " \u00b7 " + C.info;
+  el.textContent = t; }
+
+/* 3. Locks and caps (capture phase, before the app sees the click) */
+function matches(el, list){ if(!list||!el||!el.closest) return null; for (var i=0;i<list.length;i++){ var m = el.closest(list[i]); if (m) return m; } return null; }
+function textMatch(el){ if(!C.lockText||!el||!el.closest) return null; var b = el.closest("button,a,[role=button],[role=tab],li,[onclick],[data-tab],[data-view],[data-go],[data-nav],[data-page],label,.card,.tile");
+  if(!b) return null; var t=(b.innerText||b.getAttribute("aria-label")||"").trim().toLowerCase();
+  for (var i=0;i<C.lockText.length;i++){ var k=C.lockText[i]; if (k instanceof RegExp ? k.test(t) : t===k.toLowerCase()) return b; } return null; }
+function isLocked(el){ if (matches(el, C.allow)) return null; var m = matches(el, C.lock) || textMatch(el); if (m) return m;
+  if (C.lockIf) { try { var r = C.lockIf(el); if (r) return r; } catch(e){} } return null; }
+function guard(e){
+  var t = e.target; if (!t || !t.closest) return;
+  if (t.closest("#nkd-bar,#nkd-ov")) return;
+  if (window.__nkdHard) { e.preventDefault(); e.stopImmediatePropagation(); show(window.__nkdHard, "Thank you for trying the demo", true); return; }
+  var a = t.closest("a[download]");
+  if (a || isLocked(t)) {
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type==="click"||e.type==="submit") show(a ? "Saving and exporting are available in the full app." : null);
+    return;
+  }
+  if (C.cap && e.type==="keydown" && C.cap.keySel && t.matches && t.matches(C.cap.keySel) && e.key==="Enter") { var u0 = rget("cap",0);
+    if (u0 >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+    if ((t.value||"").trim()) { rset("cap", u0+1); setTimeout(info,0); } return; }
+  if (C.cap && e.type==="click") { var c = matches(t, C.cap.sel); if (!c && C.cap.textSel) { var bb = t.closest("button,a,[role=button],input[type=submit]"); if (bb && C.cap.textSel.test((bb.innerText||bb.value||"").trim().toLowerCase())) c = bb; }
+    if (c) { var used = rget("cap",0);
+      if (used >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+      if (!C.cap.valid || C.cap.valid(c)) { rset("cap", used+1); setTimeout(info,0); }
+    } }
+}
+["click","pointerdown","mousedown","touchstart","keydown","submit","change","input"].forEach(function(ev){
+  window.addEventListener(ev, function(e){
+    if (ev==="keydown" && !(e.key==="Enter"||e.key===" ")) return;
+    if (ev==="change"||ev==="input") { if (isLocked(e.target)) { e.stopImmediatePropagation(); } return; }
+    if (ev!=="click"&&ev!=="submit"&&ev!=="keydown") { var t=e.target; if(t&&t.closest&&!t.closest("#nkd-bar,#nkd-ov")&&(isLocked(t)||window.__nkdHard)) { e.stopImmediatePropagation(); } return; }
+    guard(e);
+  }, true);
+});
+/* anchors clicked from code with a download attribute */
+var aclick = HTMLAnchorElement.prototype.click;
+HTMLAnchorElement.prototype.click = function(){ if (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||"")) { show("Saving and exporting are available in the full app."); return; } return aclick.apply(this, arguments); };
+var adisp = HTMLAnchorElement.prototype.dispatchEvent;
+HTMLAnchorElement.prototype.dispatchEvent = function(ev){ if (ev && ev.type==="click" && (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||""))) { show("Saving and exporting are available in the full app."); return false; } return adisp.apply(this, arguments); };
+window.print = function(){ show("Printing is available in the full app."); };
+try { var ws = window.open; window.open = function(u){ if (u===undefined || u==="" || /^blob:|^data:|about:blank/.test(String(u))) { show("Saving and exporting are available in the full app."); return null; } return ws.apply(window, arguments); }; } catch(e) {}
+try { if (navigator.share) navigator.share = function(){ show("Sharing and exporting are available in the full app."); return Promise.reject(new Error("demo")); }; } catch(e) {}
+window.addEventListener("beforeprint", function(){ document.documentElement.style.display="none"; });
+window.addEventListener("afterprint", function(){ document.documentElement.style.display=""; });
+
+function mark(){
+  var list = (C.lock||[]).concat(C.markOnly||[]);
+  list.forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ if(!matches(el,C.allow)) el.classList.add("nkd-locked"); }); } catch(e){} });
+  if (C.lockText) document.querySelectorAll("button,a,[role=tab],[data-tab],[data-view],[data-go],[data-nav],.card,.tile").forEach(function(el){ if (!el.classList.contains("nkd-locked") && textMatch(el)===el && !matches(el,C.allow)) el.classList.add("nkd-locked"); });
+  (C.hide||[]).forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ el.classList.add("nkd-hide"); }); } catch(e){} });
+  document.querySelectorAll('link[rel="manifest"]').forEach(function(l){ l.remove(); });
+}
+function shift(){
+  if (C.noShift) return;
+  var all = document.body ? document.body.querySelectorAll("*") : [];
+  for (var i=0;i<all.length;i++){ var el = all[i]; if (el.id && el.id.indexOf("nkd-")===0) continue;
+    if (el.dataset.nkdShift) continue;
+    var cs = getComputedStyle(el); if (cs.position!=="fixed" && cs.position!=="sticky") continue;
+    var top = parseFloat(cs.top); if (isNaN(top) || top > 4) continue;
+    el.style.setProperty("top", (top+44)+"px", "important"); el.dataset.nkdShift = "1"; }
+}
+var pend=false; function soon(){ if(pend) return; pend=true; setTimeout(function(){ pend=false; mark(); shift(); }, 120); }
+function start(){ inject(); new MutationObserver(soon).observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:["class","style","hidden"]}); if (C.onReady) try{ C.onReady(); }catch(e){} }
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+
+/* hash routes that belong to the full app */
+if (C.lockHash) { var okHash = location.hash && !C.lockHash.test(location.hash) ? location.hash : (C.homeHash||"#/");
+  if (location.hash && C.lockHash.test(location.hash)) { try { history.replaceState(null, "", location.pathname + location.search + okHash); } catch(e){} }
+  window.addEventListener("hashchange", function(e){ if (C.lockHash.test(location.hash)) { e.stopImmediatePropagation(); history.replaceState(null, "", location.pathname + location.search + okHash); show(); } else okHash = location.hash; }, true); }
+
+/* 4. Listening session limit for audio apps */
+if (C.timer) {
+  var ctxs = [], LIMIT = C.timer*60*1000, HOLD = 12*3600*1000;
+  var startAt = rget("t0", 0); if (startAt && Date.now()-startAt > LIMIT + HOLD) { startAt = 0; rset("t0", 0); }
+  var endMsg = "Your " + C.timer + "-minute demo session has ended. The full app has no time limit.";
+  function expired(){ return startAt && Date.now()-startAt >= LIMIT; }
+  function begin(){ if (!startAt) { startAt = Date.now(); rset("t0", startAt); } }
+  function stopAll(){
+    window.__nkdHard = endMsg;
+    ctxs.forEach(function(c){ try{ c.suspend(); }catch(e){} });
+    document.querySelectorAll("audio,video").forEach(function(m){ try{ m.pause(); m.muted=true; }catch(e){} });
+    show(endMsg, "Thank you for trying the demo", true);
+  }
+  ["AudioContext","webkitAudioContext"].forEach(function(n){ var O = window[n]; if (!O) return;
+    var W = function(){ var c = new (Function.prototype.bind.apply(O, [null].concat([].slice.call(arguments))))(); ctxs.push(c); return c; };
+    W.prototype = O.prototype; try{ Object.setPrototypeOf(W, O); }catch(e){} window[n] = W; });
+  var oResume = window.AudioContext && AudioContext.prototype.resume;
+  if (oResume) AudioContext.prototype.resume = function(){ if (expired()) { stopAll(); return Promise.resolve(); } begin(); return oResume.apply(this, arguments); };
+  var oStart = window.AudioScheduledSourceNode && AudioScheduledSourceNode.prototype.start;
+  if (oStart) AudioScheduledSourceNode.prototype.start = function(){ if (expired()) { stopAll(); return; } begin(); return oStart.apply(this, arguments); };
+  var oPlay = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function(){ if (expired()) { stopAll(); return Promise.reject(new Error("demo")); } begin(); return oPlay.apply(this, arguments); };
+  setInterval(function(){ if (startAt) { var left = Math.max(0, LIMIT-(Date.now()-startAt)); var el=document.getElementById("nkd-info");
+      if (el) el.textContent = left>0 ? " \u00b7 " + Math.ceil(left/60000) + " min of listening left" : " \u00b7 session ended";
+      if (left<=0 && !window.__nkdHard) stopAll(); } }, 1000);
+}
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>HeartHaven</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjIwJSIgeTE9IjEwJSIgeDI9IjgwJSIgeTI9IjkwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNFNkQwRjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1NSUiIHN0b3AtY29sb3I9IiNCMDdERTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNUMxRjdBIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJnbG93IiBjeD0iNTAlIiBjeT0iNDIlIiByPSI0OCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRjVFNkZGIiBzdG9wLW9wYWNpdHk9IjAuNTUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDUwNTA1IiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTEyIiBmaWxsPSIjMDUwNTA1Ii8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjM2IiByPSIxOTAiIGZpbGw9InVybCgjZ2xvdykiLz4KICA8cGF0aCBkPSJNMjU2IDQwNCBDOTIgMjkyIDY0IDE5OCA2NCAxNDggQzY0IDkyIDEwOCA1NiAxNTggNTYgQzE5NiA1NiAyMjggNzYgMjU2IDExMiBDMjg0IDc2IDMxNiA1NiAzNTQgNTYgQzQwNCA1NiA0NDggOTIgNDQ4IDE0OCBDNDQ4IDE5OCA0MjAgMjkyIDI1NiA0MDQgWiIgZmlsbD0idXJsKCNnKSIvPgo8L3N2Zz4K">
+<style>
+:root{--bg:#050505;--card:rgba(16,16,20,.92);--border:rgba(255,255,255,.08);--text:#f4f4f8;--muted:#9a9aac;--lilac:#e0c8f0;--deep:#5c1f7a;--rose:#e8a0b5;--radius:16px;--font:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.55}
+.app{max-width:480px;margin:0 auto;padding:18px 16px 92px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 16px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:15px;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,rgba(224,200,240,.2),rgba(92,31,122,.28));border-color:rgba(224,200,240,.3)}
+.cover{text-align:center;padding:28px 16px 18px}
+.cover img{width:100%;max-width:420px;border-radius:18px;border:1px solid var(--border)}
+.cover h1{font-family:Georgia,serif;font-size:2rem;margin:16px 0 6px;font-weight:600}
+.cover p{color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.view{display:none}.view.on{display:block}
+.nav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;height:68px;background:rgba(8,8,10,.96);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;z-index:20}
+.nav button{background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer}
+.nav button.on{color:var(--lilac)}
+.heart-orb{width:180px;height:180px;margin:12px auto;border-radius:50%;background:radial-gradient(circle at 40% 35%,#f5e6ff,#d4b8e8 40%,#5c1f7a 78%);filter:drop-shadow(0 0 24px rgba(176,125,232,.45));transform:scale(.9);transition:transform 5s ease,filter 5s ease,background 5s ease}
+.heart-orb.in{transform:scale(1.22);background:radial-gradient(circle at 40% 35%,#e6d0f0,#6b2d8b 55%,#3a1252 85%);filter:drop-shadow(0 0 40px rgba(107,45,139,.7))}
+#chat{min-height:90px;color:#d4c4f0;margin-bottom:10px}
+textarea,input,select{width:100%;background:#111;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px;margin:8px 0;font:inherit}
+.pin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:240px;margin:12px auto}
+.hidden{display:none!important}
+@media (prefers-reduced-motion:reduce){.heart-orb{transition:none}}
+</style>
+</head>
+<body>
+<div id="lock" class="app">
+  <div class="cover"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDYzMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImxpbGFjRGVlcCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNFNkQwRjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI0NSUiIHN0b3AtY29sb3I9IiNDOUEwRTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNUMxRjdBIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJvcmIiIGN4PSIyOCUiIGN5PSI0NiUiIHI9IjQyJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGNUU2RkYiIHN0b3Atb3BhY2l0eT0iMC45NSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjM1JSIgc3RvcC1jb2xvcj0iI0Q0QjhFOCIgc3RvcC1vcGFjaXR5PSIwLjc1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNzAlIiBzdG9wLWNvbG9yPSIjNkIyRDhCIiBzdG9wLW9wYWNpdHk9IjAuMzUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDUwNTA1IiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgICA8cmFkaWFsR3JhZGllbnQgaWQ9Im1pc3QiIGN4PSI3MCUiIGN5PSI3MCUiIHI9IjUwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5QjZERTgiIHN0b3Atb3BhY2l0eT0iMC4xOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwNTA1MDUiIHN0b3Atb3BhY2l0eT0iMCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9InNvZnRHbG93IiB4PSItNDAlIiB5PSItNDAlIiB3aWR0aD0iMTgwJSIgaGVpZ2h0PSIxODAlIj4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMTAiIHJlc3VsdD0iYiIvPgogICAgICA8ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImIiLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjMwIiBmaWxsPSIjMDUwNTA1Ii8+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjMwIiBmaWxsPSJ1cmwoI29yYikiLz4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MzAiIGZpbGw9InVybCgjbWlzdCkiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNjgsMTY4KSIgZmlsdGVyPSJ1cmwoI3NvZnRHbG93KSI+CiAgICA8cGF0aCBkPSJNMTQ3IDI1OCBDNDAgMTc2IDE4IDExMCAxOCA3MiBDMTggMzIgNDggOCA4NCA4IEMxMTAgOCAxMzIgMjIgMTQ3IDQ2IEMxNjIgMjIgMTg0IDggMjEwIDggQzI0NiA4IDI3NiAzMiAyNzYgNzIgQzI3NiAxMTAgMjU0IDE3NiAxNDcgMjU4IFoiIGZpbGw9InVybCgjbGlsYWNEZWVwKSIgb3BhY2l0eT0iMC45MiIvPgogIDwvZz4KICA8dGV4dCB4PSI1MDAiIHk9IjI4NiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsICdUaW1lcyBOZXcgUm9tYW4nLCBzZXJpZiIgZm9udC1zaXplPSI3NiIgZmlsbD0iI0Y0RjRGOCI+SGVhcnRIYXZlbjwvdGV4dD4KICA8dGV4dCB4PSI1MDAiIHk9IjM0OCIgZm9udC1mYW1pbHk9InN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNiIgZmlsbD0iI0Q0QzRGMCI+WW91ciBwcml2YXRlIHNhbmN0dWFyeSBmb3IgcmVhbGl0eSwgcmVzdCBhbmQgcmVjb3Zlcnk8L3RleHQ+CiAgPHRleHQgeD0iNTAwIiB5PSIzOTgiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5QTlBQUMiPkEgcXVpZXQgY29tcGFuaW9uLiBQcml2YXRlLiBZb3Vycy48L3RleHQ+Cjwvc3ZnPgo=" alt="HeartHaven cover"><h1>HeartHaven</h1><p>Your private sanctuary</p></div>
+  <div class="card">
+    <p id="lockMsg">Choose a 4-digit PIN to keep this space private.</p>
+    <input id="pinShow" readonly placeholder="••••" style="text-align:center;letter-spacing:8px;font-size:22px">
+    <div class="pin" id="pad"></div>
+  </div>
+</div>
+<div id="main" class="app hidden">
+  <section id="home" class="view on">
+    <div class="cover"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDYzMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImxpbGFjRGVlcCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNFNkQwRjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI0NSUiIHN0b3AtY29sb3I9IiNDOUEwRTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNUMxRjdBIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJvcmIiIGN4PSIyOCUiIGN5PSI0NiUiIHI9IjQyJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGNUU2RkYiIHN0b3Atb3BhY2l0eT0iMC45NSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjM1JSIgc3RvcC1jb2xvcj0iI0Q0QjhFOCIgc3RvcC1vcGFjaXR5PSIwLjc1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNzAlIiBzdG9wLWNvbG9yPSIjNkIyRDhCIiBzdG9wLW9wYWNpdHk9IjAuMzUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDUwNTA1IiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgICA8cmFkaWFsR3JhZGllbnQgaWQ9Im1pc3QiIGN4PSI3MCUiIGN5PSI3MCUiIHI9IjUwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5QjZERTgiIHN0b3Atb3BhY2l0eT0iMC4xOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwNTA1MDUiIHN0b3Atb3BhY2l0eT0iMCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9InNvZnRHbG93IiB4PSItNDAlIiB5PSItNDAlIiB3aWR0aD0iMTgwJSIgaGVpZ2h0PSIxODAlIj4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMTAiIHJlc3VsdD0iYiIvPgogICAgICA8ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImIiLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjMwIiBmaWxsPSIjMDUwNTA1Ii8+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjMwIiBmaWxsPSJ1cmwoI29yYikiLz4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MzAiIGZpbGw9InVybCgjbWlzdCkiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNjgsMTY4KSIgZmlsdGVyPSJ1cmwoI3NvZnRHbG93KSI+CiAgICA8cGF0aCBkPSJNMTQ3IDI1OCBDNDAgMTc2IDE4IDExMCAxOCA3MiBDMTggMzIgNDggOCA4NCA4IEMxMTAgOCAxMzIgMjIgMTQ3IDQ2IEMxNjIgMjIgMTg0IDggMjEwIDggQzI0NiA4IDI3NiAzMiAyNzYgNzIgQzI3NiAxMTAgMjU0IDE3NiAxNDcgMjU4IFoiIGZpbGw9InVybCgjbGlsYWNEZWVwKSIgb3BhY2l0eT0iMC45MiIvPgogIDwvZz4KICA8dGV4dCB4PSI1MDAiIHk9IjI4NiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsICdUaW1lcyBOZXcgUm9tYW4nLCBzZXJpZiIgZm9udC1zaXplPSI3NiIgZmlsbD0iI0Y0RjRGOCI+SGVhcnRIYXZlbjwvdGV4dD4KICA8dGV4dCB4PSI1MDAiIHk9IjM0OCIgZm9udC1mYW1pbHk9InN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNiIgZmlsbD0iI0Q0QzRGMCI+WW91ciBwcml2YXRlIHNhbmN0dWFyeSBmb3IgcmVhbGl0eSwgcmVzdCBhbmQgcmVjb3Zlcnk8L3RleHQ+CiAgPHRleHQgeD0iNTAwIiB5PSIzOTgiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5QTlBQUMiPkEgcXVpZXQgY29tcGFuaW9uLiBQcml2YXRlLiBZb3Vycy48L3RleHQ+Cjwvc3ZnPgo=" alt="HeartHaven"></div>
+    <div class="card">
+      <div id="chat">Hello. It’s really good to see you. You don’t have to earn kindness here.</div>
+      <div class="row">
+        <button class="btn btn-primary" onclick="startRoutine()">Self-care routine</button>
+        <button class="btn" onclick="say('I’m here. You matter, and this space is for you.')">Talk with me</button>
+        <button class="btn" onclick="show('check')">Reality check</button>
+        <button class="btn" id="installBtn" class="hidden">Install HeartHaven</button>
+      </div>
+      <input id="userIn" placeholder="Type to the companion…">
+      <button class="btn btn-primary" onclick="userTalk()">Send</button>
+    </div>
+  </section>
+  <section id="breath" class="view">
+    <div class="card">
+      <h2>Glowing Heart Breath</h2>
+      <p class="muted" id="guide">Breathe in as the heart fills from soft lilac to deep purple.</p>
+      <div class="heart-orb" id="orb"></div>
+      <div class="row">
+        <button class="btn btn-primary" onclick="toggleOrb()">Start 10s breath</button>
+        <button class="btn" onclick="playChant()">Deep resonant voice</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Singing bowls</h2>
+      <div class="row" id="bowls"></div>
+    </div>
+    <div class="card">
+      <h2>Binaural beats</h2>
+      <p style="color:var(--muted);font-size:.95rem">Best with stereo headphones. Pure tones generated on your device.</p>
+      <div class="row">
+        <button class="btn" onclick="binaural(2.5,'Deep Sleep')">Delta 2.5</button>
+        <button class="btn" onclick="binaural(5.5,'Meditation')">Theta 5.5</button>
+        <button class="btn" onclick="binaural(10,'Calm Focus')">Alpha 10</button>
+        <button class="btn" onclick="stopAudio()">Stop</button>
+      </div>
+    </div>
+  </section>
+  <section id="journal" class="view">
+    <div class="card">
+      <h2>Journal</h2>
+      <textarea id="jtext" rows="6" placeholder="What feels true right now?"></textarea>
+      <div class="row">
+        <button class="btn" onclick="listenJ()">Speak</button>
+        <button class="btn" onclick="readJ()">Read aloud</button>
+        <button class="btn btn-primary" onclick="saveJ()">Save</button>
+      </div>
+      <div id="jlist"></div>
+    </div>
+  </section>
+  <section id="check" class="view">
+    <div class="card">
+      <h2>Reality check</h2>
+      <p>It is understandable to feel confused when your reality is questioned. Your feelings are valid data.</p>
+      <p style="margin-top:10px;color:var(--muted)">Hypervigilance and second-guessing can be the nervous system trying to keep you safe. You are allowed to rest from that monitoring here.</p>
+    </div>
+    <div class="card" id="routineBox"></div>
+  </section>
+  <section id="care" class="view">
+    <div class="card">
+      <h2>Self-care</h2>
+      <p>A short sequence. Skip anything. You are in charge.</p>
+      <ol style="margin:12px 0 12px 18px;color:#d4c4f0">
+        <li>Receive a kind sentence</li>
+        <li>Sip of water or three slow breaths</li>
+        <li>Optional bowl, heart breath, or rest</li>
+        <li>Close: you showed up for yourself</li>
+      </ol>
+      <button class="btn btn-primary" onclick="startRoutine()">Start short routine</button>
+    </div>
+    <div class="card">
+      <h2>Appointments</h2>
+      <input id="aptTitle" placeholder="Title">
+      <input id="aptWhen" type="datetime-local">
+      <button class="btn" onclick="addApt()">Remember this</button>
+      <div id="apts"></div>
+    </div>
+    <div class="card">
+      <h2>About</h2>
+      <p style="color:var(--muted)">HeartHaven is a private self-care companion. It is not therapy or medical advice. Everything stays on your device.</p>
+    </div>
+  </section>
+</div>
+<nav class="nav hidden" id="nav">
+  <button data-v="home" class="on" onclick="show('home')">Home</button>
+  <button data-v="breath" onclick="show('breath')">Breath</button>
+  <button data-v="journal" onclick="show('journal')">Journal</button>
+  <button data-v="check" onclick="show('check')">Reality</button>
+  <button data-v="care" onclick="show('care')">Care</button>
+</nav>
+<script>
+const $ = id => document.getElementById(id);
+let pinBuf='', ctx, nodes=[], orbOn=false, deferred;
+const bowls=[{hz:396,n:'Liberation'},{hz:417,n:'Change'},{hz:432,n:'Calm'},{hz:528,n:'Love'},{hz:639,n:'Connection'},{hz:741,n:'Expression'}];
+function store(k,v){localStorage.setItem('hh_'+k,JSON.stringify(v))}
+function load(k,d){try{return JSON.parse(localStorage.getItem('hh_'+k))??d}catch{return d}}
+$('pad').innerHTML=[1,2,3,4,5,6,7,8,9,'C',0,'OK'].map(n=>`<button class="btn" onclick="pad('${n}')">${n}</button>`).join('');
+function pad(n){
+  if(n==='C'){pinBuf='';}
+  else if(n==='OK'){enterPin();return;}
+  else if(pinBuf.length<4) pinBuf+=n;
+  $('pinShow').value='•'.repeat(pinBuf.length);
+}
+function enterPin(){
+  const saved=load('pin',null);
+  if(!saved){if(pinBuf.length===4){store('pin',pinBuf);unlock();}}
+  else if(pinBuf===saved) unlock();
+  else {$('lockMsg').textContent='That PIN does not match. Try again.';pinBuf='';$('pinShow').value='';}
+}
+function unlock(){$('lock').classList.add('hidden');$('main').classList.remove('hidden');$('nav').classList.remove('hidden');greet();renderJ();renderApts();}
+function greet(){
+  const lines=['Hello. It’s really good to see you.','Welcome back. You matter, and this space is for you.','Hi. You don’t have to earn kindness here.'];
+  $('chat').textContent=lines[Math.floor(Math.random()*lines.length)];
+}
+function say(t){$('chat').textContent=t;}
+function userTalk(){
+  const t=$('userIn').value.trim(); if(!t) return; $('userIn').value='';
+  const low=t.toLowerCase();
+  let r='I hear you. You are allowed to take up space here.';
+  if(/tired|exhaust/.test(low)) r='Rest is allowed. Would you like the short self-care routine or a soft bowl?';
+  else if(/confus|gaslight|crazy/.test(low)) r='That fog is a common response to unpredictability. Your experience is valid.';
+  else if(/scared|anxi/.test(low)) r='You are safe in this moment. A sigh of relief or the 10-second heart breath can help.';
+  say(r);
+}
+function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===id));}
+function startRoutine(){show('check');$('routineBox').innerHTML='<h3>Gentle routine</h3><p>You are worthy of care, simply because you exist.</p><p>Take a sip of water if you can. Three slow breaths. Optional heart breath below.</p><p>You showed up for yourself. That is meaningful.</p>';say('We will keep this very gentle. You can stop at any time.');}
+function acx(){if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)(); if(ctx.state==='suspended') ctx.resume(); return ctx;}
+function stopAudio(){nodes.forEach(n=>{try{n.stop()}catch(e){}});nodes=[];}
+function tone(hz,sec=6){
+  const c=acx(); stopAudio();
+  const o=c.createOscillator(); const g=c.createGain();
+  o.type='sine'; o.frequency.value=hz; g.gain.setValueAtTime(0,c.currentTime); g.gain.linearRampToValueAtTime(.08,c.currentTime+1); g.gain.exponentialRampToValueAtTime(.001,c.currentTime+sec);
+  o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime+sec); nodes=[o];
+}
+$('bowls').innerHTML=bowls.map(b=>`<button class="btn" onclick="tone(${b.hz})">${b.hz} · ${b.n}</button>`).join('');
+function binaural(beat,label){
+  const c=acx(); stopAudio();
+  const merge=c.createChannelMerger(2), g=c.createGain(); g.gain.value=.06;
+  const L=c.createOscillator(), R=c.createOscillator();
+  L.type=R.type='sine'; L.frequency.value=200; R.frequency.value=200+beat;
+  const gL=c.createGain(), gR=c.createGain();
+  L.connect(gL); R.connect(gR); gL.connect(merge,0,0); gR.connect(merge,0,1); merge.connect(g); g.connect(c.destination);
+  L.start(); R.start(); nodes=[L,R]; say(label+' binaural is playing. Headphones help.');
+}
+function playChant(){
+  const u=new SpeechSynthesisUtterance('Oooooommmmm. I am here. I am safe in this moment.');
+  const vs=speechSynthesis.getVoices();
+  const m=vs.find(v=>/male|david|daniel|james|mark/i.test(v.name))||vs[0];
+  if(m) u.voice=m; u.pitch=.7; u.rate=.78; speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+function toggleOrb(){
+  const el=$('orb');
+  if(!orbOn){orbOn=true; el.classList.add('in'); $('guide').textContent='Breathe in… the heart fills from lilac to deep purple.'; setTimeout(()=>{el.classList.remove('in'); $('guide').textContent='Breathe out… the colour softens.'; if(orbOn) setTimeout(()=>{if(orbOn){orbOn=false; toggleOrb();}},5000);},5000);}
+  else {orbOn=false; el.classList.remove('in');}
+}
+function saveJ(){const t=$('jtext').value.trim(); if(!t) return; const all=load('journal',[]); all.unshift({t,d:new Date().toISOString()}); store('journal',all); $('jtext').value=''; renderJ();}
+function renderJ(){$('jlist').innerHTML=load('journal',[]).slice(0,8).map(e=>`<p style="margin-top:8px;color:#d4c4f0">${e.t}</p>`).join('')||'<p style="color:var(--muted)">No entries yet.</p>';}
+function listenJ(){const R=window.SpeechRecognition||window.webkitSpeechRecognition; if(!R) return; const r=new R(); r.onresult=e=>$('jtext').value+=e.results[0][0].transcript; r.start();}
+function readJ(){const u=new SpeechSynthesisUtterance($('jtext').value||$('chat').textContent); u.rate=.9; speechSynthesis.speak(u);}
+function addApt(){const title=$('aptTitle').value, when=$('aptWhen').value; if(!title||!when) return; const all=load('apts',[]); all.push({title,when}); store('apts',all); renderApts();}
+function renderApts(){$('apts').innerHTML=load('apts',[]).map(a=>`<p>${a.title} — ${a.when}</p>`).join('');}
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+window.addEventListener('beforeinstallprompt', e=>{e.preventDefault(); deferred=e; const b=$('installBtn'); b.classList.remove('hidden'); b.onclick=()=>deferred.prompt();});
+</script>
+</body>
+</html>

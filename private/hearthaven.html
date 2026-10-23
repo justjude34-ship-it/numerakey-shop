@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#050505">
+<title>HeartHaven</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjIwJSIgeTE9IjEwJSIgeDI9IjgwJSIgeTI9IjkwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNFNkQwRjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI1NSUiIHN0b3AtY29sb3I9IiNCMDdERTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNUMxRjdBIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJnbG93IiBjeD0iNTAlIiBjeT0iNDIlIiByPSI0OCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjRjVFNkZGIiBzdG9wLW9wYWNpdHk9IjAuNTUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDUwNTA1IiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTEyIiBmaWxsPSIjMDUwNTA1Ii8+CiAgPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjM2IiByPSIxOTAiIGZpbGw9InVybCgjZ2xvdykiLz4KICA8cGF0aCBkPSJNMjU2IDQwNCBDOTIgMjkyIDY0IDE5OCA2NCAxNDggQzY0IDkyIDEwOCA1NiAxNTggNTYgQzE5NiA1NiAyMjggNzYgMjU2IDExMiBDMjg0IDc2IDMxNiA1NiAzNTQgNTYgQzQwNCA1NiA0NDggOTIgNDQ4IDE0OCBDNDQ4IDE5OCA0MjAgMjkyIDI1NiA0MDQgWiIgZmlsbD0idXJsKCNnKSIvPgo8L3N2Zz4K">
+<style>
+:root{--bg:#050505;--card:rgba(16,16,20,.92);--border:rgba(255,255,255,.08);--text:#f4f4f8;--muted:#9a9aac;--lilac:#e0c8f0;--deep:#5c1f7a;--rose:#e8a0b5;--radius:16px;--font:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.55}
+.app{max-width:480px;margin:0 auto;padding:18px 16px 92px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 16px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:var(--text);font-size:15px;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,rgba(224,200,240,.2),rgba(92,31,122,.28));border-color:rgba(224,200,240,.3)}
+.cover{text-align:center;padding:28px 16px 18px}
+.cover img{width:100%;max-width:420px;border-radius:18px;border:1px solid var(--border)}
+.cover h1{font-family:Georgia,serif;font-size:2rem;margin:16px 0 6px;font-weight:600}
+.cover p{color:var(--muted)}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.view{display:none}.view.on{display:block}
+.nav{position:fixed;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;height:68px;background:rgba(8,8,10,.96);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;z-index:20}
+.nav button{background:none;border:none;color:var(--muted);font-size:11px;cursor:pointer}
+.nav button.on{color:var(--lilac)}
+.heart-orb{width:180px;height:180px;margin:12px auto;border-radius:50%;background:radial-gradient(circle at 40% 35%,#f5e6ff,#d4b8e8 40%,#5c1f7a 78%);filter:drop-shadow(0 0 24px rgba(176,125,232,.45));transform:scale(.9);transition:transform 5s ease,filter 5s ease,background 5s ease}
+.heart-orb.in{transform:scale(1.22);background:radial-gradient(circle at 40% 35%,#e6d0f0,#6b2d8b 55%,#3a1252 85%);filter:drop-shadow(0 0 40px rgba(107,45,139,.7))}
+#chat{min-height:90px;color:#d4c4f0;margin-bottom:10px}
+textarea,input,select{width:100%;background:#111;border:1px solid var(--border);color:var(--text);border-radius:10px;padding:12px;margin:8px 0;font:inherit}
+.pin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:240px;margin:12px auto}
+.hidden{display:none!important}
+@media (prefers-reduced-motion:reduce){.heart-orb{transition:none}}
+</style>
+</head>
+<body>
+<div id="lock" class="app">
+  <div class="cover"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDYzMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImxpbGFjRGVlcCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNFNkQwRjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI0NSUiIHN0b3AtY29sb3I9IiNDOUEwRTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNUMxRjdBIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJvcmIiIGN4PSIyOCUiIGN5PSI0NiUiIHI9IjQyJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGNUU2RkYiIHN0b3Atb3BhY2l0eT0iMC45NSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjM1JSIgc3RvcC1jb2xvcj0iI0Q0QjhFOCIgc3RvcC1vcGFjaXR5PSIwLjc1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNzAlIiBzdG9wLWNvbG9yPSIjNkIyRDhCIiBzdG9wLW9wYWNpdHk9IjAuMzUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDUwNTA1IiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgICA8cmFkaWFsR3JhZGllbnQgaWQ9Im1pc3QiIGN4PSI3MCUiIGN5PSI3MCUiIHI9IjUwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5QjZERTgiIHN0b3Atb3BhY2l0eT0iMC4xOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwNTA1MDUiIHN0b3Atb3BhY2l0eT0iMCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9InNvZnRHbG93IiB4PSItNDAlIiB5PSItNDAlIiB3aWR0aD0iMTgwJSIgaGVpZ2h0PSIxODAlIj4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMTAiIHJlc3VsdD0iYiIvPgogICAgICA8ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImIiLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjMwIiBmaWxsPSIjMDUwNTA1Ii8+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjMwIiBmaWxsPSJ1cmwoI29yYikiLz4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MzAiIGZpbGw9InVybCgjbWlzdCkiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNjgsMTY4KSIgZmlsdGVyPSJ1cmwoI3NvZnRHbG93KSI+CiAgICA8cGF0aCBkPSJNMTQ3IDI1OCBDNDAgMTc2IDE4IDExMCAxOCA3MiBDMTggMzIgNDggOCA4NCA4IEMxMTAgOCAxMzIgMjIgMTQ3IDQ2IEMxNjIgMjIgMTg0IDggMjEwIDggQzI0NiA4IDI3NiAzMiAyNzYgNzIgQzI3NiAxMTAgMjU0IDE3NiAxNDcgMjU4IFoiIGZpbGw9InVybCgjbGlsYWNEZWVwKSIgb3BhY2l0eT0iMC45MiIvPgogIDwvZz4KICA8dGV4dCB4PSI1MDAiIHk9IjI4NiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsICdUaW1lcyBOZXcgUm9tYW4nLCBzZXJpZiIgZm9udC1zaXplPSI3NiIgZmlsbD0iI0Y0RjRGOCI+SGVhcnRIYXZlbjwvdGV4dD4KICA8dGV4dCB4PSI1MDAiIHk9IjM0OCIgZm9udC1mYW1pbHk9InN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNiIgZmlsbD0iI0Q0QzRGMCI+WW91ciBwcml2YXRlIHNhbmN0dWFyeSBmb3IgcmVhbGl0eSwgcmVzdCBhbmQgcmVjb3Zlcnk8L3RleHQ+CiAgPHRleHQgeD0iNTAwIiB5PSIzOTgiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5QTlBQUMiPkEgcXVpZXQgY29tcGFuaW9uLiBQcml2YXRlLiBZb3Vycy48L3RleHQ+Cjwvc3ZnPgo=" alt="HeartHaven cover"><h1>HeartHaven</h1><p>Your private sanctuary</p></div>
+  <div class="card">
+    <p id="lockMsg">Choose a 4-digit PIN to keep this space private.</p>
+    <input id="pinShow" readonly placeholder="••••" style="text-align:center;letter-spacing:8px;font-size:22px">
+    <div class="pin" id="pad"></div>
+  </div>
+</div>
+<div id="main" class="app hidden">
+  <section id="home" class="view on">
+    <div class="cover"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjAwIDYzMCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImxpbGFjRGVlcCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNFNkQwRjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSI0NSUiIHN0b3AtY29sb3I9IiNDOUEwRTgiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjNUMxRjdBIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJvcmIiIGN4PSIyOCUiIGN5PSI0NiUiIHI9IjQyJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNGNUU2RkYiIHN0b3Atb3BhY2l0eT0iMC45NSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjM1JSIgc3RvcC1jb2xvcj0iI0Q0QjhFOCIgc3RvcC1vcGFjaXR5PSIwLjc1Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iNzAlIiBzdG9wLWNvbG9yPSIjNkIyRDhCIiBzdG9wLW9wYWNpdHk9IjAuMzUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDUwNTA1IiBzdG9wLW9wYWNpdHk9IjAiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgICA8cmFkaWFsR3JhZGllbnQgaWQ9Im1pc3QiIGN4PSI3MCUiIGN5PSI3MCUiIHI9IjUwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM5QjZERTgiIHN0b3Atb3BhY2l0eT0iMC4xOCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwNTA1MDUiIHN0b3Atb3BhY2l0eT0iMCIvPgogICAgPC9yYWRpYWxHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9InNvZnRHbG93IiB4PSItNDAlIiB5PSItNDAlIiB3aWR0aD0iMTgwJSIgaGVpZ2h0PSIxODAlIj4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iMTAiIHJlc3VsdD0iYiIvPgogICAgICA8ZmVNZXJnZT48ZmVNZXJnZU5vZGUgaW49ImIiLz48ZmVNZXJnZU5vZGUgaW49IlNvdXJjZUdyYXBoaWMiLz48L2ZlTWVyZ2U+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjMwIiBmaWxsPSIjMDUwNTA1Ii8+CiAgPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iNjMwIiBmaWxsPSJ1cmwoI29yYikiLz4KICA8cmVjdCB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI2MzAiIGZpbGw9InVybCgjbWlzdCkiLz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxNjgsMTY4KSIgZmlsdGVyPSJ1cmwoI3NvZnRHbG93KSI+CiAgICA8cGF0aCBkPSJNMTQ3IDI1OCBDNDAgMTc2IDE4IDExMCAxOCA3MiBDMTggMzIgNDggOCA4NCA4IEMxMTAgOCAxMzIgMjIgMTQ3IDQ2IEMxNjIgMjIgMTg0IDggMjEwIDggQzI0NiA4IDI3NiAzMiAyNzYgNzIgQzI3NiAxMTAgMjU0IDE3NiAxNDcgMjU4IFoiIGZpbGw9InVybCgjbGlsYWNEZWVwKSIgb3BhY2l0eT0iMC45MiIvPgogIDwvZz4KICA8dGV4dCB4PSI1MDAiIHk9IjI4NiIgZm9udC1mYW1pbHk9Ikdlb3JnaWEsICdUaW1lcyBOZXcgUm9tYW4nLCBzZXJpZiIgZm9udC1zaXplPSI3NiIgZmlsbD0iI0Y0RjRGOCI+SGVhcnRIYXZlbjwvdGV4dD4KICA8dGV4dCB4PSI1MDAiIHk9IjM0OCIgZm9udC1mYW1pbHk9InN5c3RlbS11aSwgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIyNiIgZmlsbD0iI0Q0QzRGMCI+WW91ciBwcml2YXRlIHNhbmN0dWFyeSBmb3IgcmVhbGl0eSwgcmVzdCBhbmQgcmVjb3Zlcnk8L3RleHQ+CiAgPHRleHQgeD0iNTAwIiB5PSIzOTgiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWksIC1hcHBsZS1zeXN0ZW0sIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiM5QTlBQUMiPkEgcXVpZXQgY29tcGFuaW9uLiBQcml2YXRlLiBZb3Vycy48L3RleHQ+Cjwvc3ZnPgo=" alt="HeartHaven"></div>
+    <div class="card">
+      <div id="chat">Hello. It’s really good to see you. You don’t have to earn kindness here.</div>
+      <div class="row">
+        <button class="btn btn-primary" onclick="startRoutine()">Self-care routine</button>
+        <button class="btn" onclick="say('I’m here. You matter, and this space is for you.')">Talk with me</button>
+        <button class="btn" onclick="show('check')">Reality check</button>
+        <button class="btn" id="installBtn" class="hidden">Install HeartHaven</button>
+      </div>
+      <input id="userIn" placeholder="Type to the companion…">
+      <button class="btn btn-primary" onclick="userTalk()">Send</button>
+    </div>
+  </section>
+  <section id="breath" class="view">
+    <div class="card">
+      <h2>Glowing Heart Breath</h2>
+      <p class="muted" id="guide">Breathe in as the heart fills from soft lilac to deep purple.</p>
+      <div class="heart-orb" id="orb"></div>
+      <div class="row">
+        <button class="btn btn-primary" onclick="toggleOrb()">Start 10s breath</button>
+        <button class="btn" onclick="playChant()">Deep resonant voice</button>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Singing bowls</h2>
+      <div class="row" id="bowls"></div>
+    </div>
+    <div class="card">
+      <h2>Binaural beats</h2>
+      <p style="color:var(--muted);font-size:.95rem">Best with stereo headphones. Pure tones generated on your device.</p>
+      <div class="row">
+        <button class="btn" onclick="binaural(2.5,'Deep Sleep')">Delta 2.5</button>
+        <button class="btn" onclick="binaural(5.5,'Meditation')">Theta 5.5</button>
+        <button class="btn" onclick="binaural(10,'Calm Focus')">Alpha 10</button>
+        <button class="btn" onclick="stopAudio()">Stop</button>
+      </div>
+    </div>
+  </section>
+  <section id="journal" class="view">
+    <div class="card">
+      <h2>Journal</h2>
+      <textarea id="jtext" rows="6" placeholder="What feels true right now?"></textarea>
+      <div class="row">
+        <button class="btn" onclick="listenJ()">Speak</button>
+        <button class="btn" onclick="readJ()">Read aloud</button>
+        <button class="btn btn-primary" onclick="saveJ()">Save</button>
+      </div>
+      <div id="jlist"></div>
+    </div>
+  </section>
+  <section id="check" class="view">
+    <div class="card">
+      <h2>Reality check</h2>
+      <p>It is understandable to feel confused when your reality is questioned. Your feelings are valid data.</p>
+      <p style="margin-top:10px;color:var(--muted)">Hypervigilance and second-guessing can be the nervous system trying to keep you safe. You are allowed to rest from that monitoring here.</p>
+    </div>
+    <div class="card" id="routineBox"></div>
+  </section>
+  <section id="care" class="view">
+    <div class="card">
+      <h2>Self-care</h2>
+      <p>A short sequence. Skip anything. You are in charge.</p>
+      <ol style="margin:12px 0 12px 18px;color:#d4c4f0">
+        <li>Receive a kind sentence</li>
+        <li>Sip of water or three slow breaths</li>
+        <li>Optional bowl, heart breath, or rest</li>
+        <li>Close: you showed up for yourself</li>
+      </ol>
+      <button class="btn btn-primary" onclick="startRoutine()">Start short routine</button>
+    </div>
+    <div class="card">
+      <h2>Appointments</h2>
+      <input id="aptTitle" placeholder="Title">
+      <input id="aptWhen" type="datetime-local">
+      <button class="btn" onclick="addApt()">Remember this</button>
+      <div id="apts"></div>
+    </div>
+    <div class="card">
+      <h2>About</h2>
+      <p style="color:var(--muted)">HeartHaven is a private self-care companion. It is not therapy or medical advice. Everything stays on your device.</p>
+    </div>
+  </section>
+</div>
+<nav class="nav hidden" id="nav">
+  <button data-v="home" class="on" onclick="show('home')">Home</button>
+  <button data-v="breath" onclick="show('breath')">Breath</button>
+  <button data-v="journal" onclick="show('journal')">Journal</button>
+  <button data-v="check" onclick="show('check')">Reality</button>
+  <button data-v="care" onclick="show('care')">Care</button>
+</nav>
+<script>
+const $ = id => document.getElementById(id);
+let pinBuf='', ctx, nodes=[], orbOn=false, deferred;
+const bowls=[{hz:396,n:'Liberation'},{hz:417,n:'Change'},{hz:432,n:'Calm'},{hz:528,n:'Love'},{hz:639,n:'Connection'},{hz:741,n:'Expression'}];
+function store(k,v){localStorage.setItem('hh_'+k,JSON.stringify(v))}
+function load(k,d){try{return JSON.parse(localStorage.getItem('hh_'+k))??d}catch{return d}}
+$('pad').innerHTML=[1,2,3,4,5,6,7,8,9,'C',0,'OK'].map(n=>`<button class="btn" onclick="pad('${n}')">${n}</button>`).join('');
+function pad(n){
+  if(n==='C'){pinBuf='';}
+  else if(n==='OK'){enterPin();return;}
+  else if(pinBuf.length<4) pinBuf+=n;
+  $('pinShow').value='•'.repeat(pinBuf.length);
+}
+function enterPin(){
+  const saved=load('pin',null);
+  if(!saved){if(pinBuf.length===4){store('pin',pinBuf);unlock();}}
+  else if(pinBuf===saved) unlock();
+  else {$('lockMsg').textContent='That PIN does not match. Try again.';pinBuf='';$('pinShow').value='';}
+}
+function unlock(){$('lock').classList.add('hidden');$('main').classList.remove('hidden');$('nav').classList.remove('hidden');greet();renderJ();renderApts();}
+function greet(){
+  const lines=['Hello. It’s really good to see you.','Welcome back. You matter, and this space is for you.','Hi. You don’t have to earn kindness here.'];
+  $('chat').textContent=lines[Math.floor(Math.random()*lines.length)];
+}
+function say(t){$('chat').textContent=t;}
+function userTalk(){
+  const t=$('userIn').value.trim(); if(!t) return; $('userIn').value='';
+  const low=t.toLowerCase();
+  let r='I hear you. You are allowed to take up space here.';
+  if(/tired|exhaust/.test(low)) r='Rest is allowed. Would you like the short self-care routine or a soft bowl?';
+  else if(/confus|gaslight|crazy/.test(low)) r='That fog is a common response to unpredictability. Your experience is valid.';
+  else if(/scared|anxi/.test(low)) r='You are safe in this moment. A sigh of relief or the 10-second heart breath can help.';
+  say(r);
+}
+function show(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===id));}
+function startRoutine(){show('check');$('routineBox').innerHTML='<h3>Gentle routine</h3><p>You are worthy of care, simply because you exist.</p><p>Take a sip of water if you can. Three slow breaths. Optional heart breath below.</p><p>You showed up for yourself. That is meaningful.</p>';say('We will keep this very gentle. You can stop at any time.');}
+function acx(){if(!ctx) ctx=new (window.AudioContext||window.webkitAudioContext)(); if(ctx.state==='suspended') ctx.resume(); return ctx;}
+function stopAudio(){nodes.forEach(n=>{try{n.stop()}catch(e){}});nodes=[];}
+function tone(hz,sec=6){
+  const c=acx(); stopAudio();
+  const o=c.createOscillator(); const g=c.createGain();
+  o.type='sine'; o.frequency.value=hz; g.gain.setValueAtTime(0,c.currentTime); g.gain.linearRampToValueAtTime(.08,c.currentTime+1); g.gain.exponentialRampToValueAtTime(.001,c.currentTime+sec);
+  o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime+sec); nodes=[o];
+}
+$('bowls').innerHTML=bowls.map(b=>`<button class="btn" onclick="tone(${b.hz})">${b.hz} · ${b.n}</button>`).join('');
+function binaural(beat,label){
+  const c=acx(); stopAudio();
+  const merge=c.createChannelMerger(2), g=c.createGain(); g.gain.value=.06;
+  const L=c.createOscillator(), R=c.createOscillator();
+  L.type=R.type='sine'; L.frequency.value=200; R.frequency.value=200+beat;
+  const gL=c.createGain(), gR=c.createGain();
+  L.connect(gL); R.connect(gR); gL.connect(merge,0,0); gR.connect(merge,0,1); merge.connect(g); g.connect(c.destination);
+  L.start(); R.start(); nodes=[L,R]; say(label+' binaural is playing. Headphones help.');
+}
+function playChant(){
+  const u=new SpeechSynthesisUtterance('Oooooommmmm. I am here. I am safe in this moment.');
+  const vs=speechSynthesis.getVoices();
+  const m=vs.find(v=>/male|david|daniel|james|mark/i.test(v.name))||vs[0];
+  if(m) u.voice=m; u.pitch=.7; u.rate=.78; speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+function toggleOrb(){
+  const el=$('orb');
+  if(!orbOn){orbOn=true; el.classList.add('in'); $('guide').textContent='Breathe in… the heart fills from lilac to deep purple.'; setTimeout(()=>{el.classList.remove('in'); $('guide').textContent='Breathe out… the colour softens.'; if(orbOn) setTimeout(()=>{if(orbOn){orbOn=false; toggleOrb();}},5000);},5000);}
+  else {orbOn=false; el.classList.remove('in');}
+}
+function saveJ(){const t=$('jtext').value.trim(); if(!t) return; const all=load('journal',[]); all.unshift({t,d:new Date().toISOString()}); store('journal',all); $('jtext').value=''; renderJ();}
+function renderJ(){$('jlist').innerHTML=load('journal',[]).slice(0,8).map(e=>`<p style="margin-top:8px;color:#d4c4f0">${e.t}</p>`).join('')||'<p style="color:var(--muted)">No entries yet.</p>';}
+function listenJ(){const R=window.SpeechRecognition||window.webkitSpeechRecognition; if(!R) return; const r=new R(); r.onresult=e=>$('jtext').value+=e.results[0][0].transcript; r.start();}
+function readJ(){const u=new SpeechSynthesisUtterance($('jtext').value||$('chat').textContent); u.rate=.9; speechSynthesis.speak(u);}
+function addApt(){const title=$('aptTitle').value, when=$('aptWhen').value; if(!title||!when) return; const all=load('apts',[]); all.push({title,when}); store('apts',all); renderApts();}
+function renderApts(){$('apts').innerHTML=load('apts',[]).map(a=>`<p>${a.title} — ${a.when}</p>`).join('');}
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js').catch(()=>{});
+window.addEventListener('beforeinstallprompt', e=>{e.preventDefault(); deferred=e; const b=$('installBtn'); b.classList.remove('hidden'); b.onclick=()=>deferred.prompt();});
+</script>
+</body>
+</html>

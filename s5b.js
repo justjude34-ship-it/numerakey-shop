@@ -256,7 +256,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
   slug:"hearthaven", name:"HeartHaven", cat:"wellness", price:39, status:"live", ready:true, cover:"covers/hearthaven.jpg",
-  demo:"https://numerakey-hearthaven-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/hearthaven/",
   desc:"A private sanctuary for reality, rest and recovery — reality-check language, grounding, singing-bowl tones and a journal, behind your own PIN.",
   tag:"Your private sanctuary.",
   body:[
@@ -270,7 +270,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 APPS.push({
   slug:"lumina-sleep", name:"Lumina Sleep", cat:"sound", price:39, status:"live", ready:true,
   cover:"covers/lumina-sleep.jpg",
-  demo:"https://numerakey-lumina-sleep-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/lumina-sleep/",
   desc:"Ocean, rain and brown noise with delta, theta and alpha tones for drifting off — generated on your phone, with a sleep timer that fades out.",
   tag:"Sound for sleep. No voice.",
   body:[
@@ -311,7 +311,7 @@ artFor(APPS[APPS.length - 1]).motif = "rings";
 APPS.push({
   slug:"cadence", name:"Cadence", cat:"numerology", price:89, status:"live", ready:true,
   cover:"covers/cadence.jpg",
-  demo:"https://cadence-numbers.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/cadence/",
   desc:"A numerology guide to your personal year, month and day, coloured by the essence you carry from your name.",
   tag:"Find the rhythm you are already in.",
   body:[
@@ -339,7 +339,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 APPS.push({
   slug:"sizeshift", name:"SizeShift", cat:"style", price:29, status:"live", ready:true,
   cover:"covers/sizeshift.jpg",
-  demo:"https://size-shift.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/sizeshift/",
   desc:"Women’s dress and shoe sizes converted between Australia, the US, the UK and Europe.",
   tag:"Know your size, wherever you shop.",
   body:[
@@ -353,7 +353,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 APPS.push({
   slug:"astra-nova", name:"Astra Nova", cat:"divine", price:89, status:"live", ready:true,
   cover:"covers/astra-nova.jpg",
-  demo:"https://astra-novaapp.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/astra-nova/",
   desc:"Your natal chart and a written reading, built from your birth date, time and place.",
   tag:"Discover. Align with the stars.",
   body:[

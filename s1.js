@@ -45,7 +45,7 @@ const AP1 = [
 {
   slug:"bloom-from-within", name:"Bloom From Within", cat:"ptsd", price:39, status:"live",
   cover:"covers/bloom-from-within.jpg",
-  demo:"https://bloom-from-withinapp.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/bloom-from-within/",
   desc:"Trauma recovery you can see moving — practices, check-ins and a progress view.",
   tag:"Recovery, measured gently.",
   body:[
@@ -81,7 +81,7 @@ const AP1 = [
 {
   slug:"haven", name:"Haven", cat:"narc", price:39, status:"live",
   cover:"covers/haven.jpg",
-  demo:"https://haven-6.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/haven/",
   desc:"Nervous system first \u2014 for the pull, the contact, and the days after.",
   tag:"Nothing is required of you here.",
   body:[
@@ -153,14 +153,14 @@ const AP1 = [
 {
   slug:"narc-escape-guide", name:"Narc Escape Guide", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/narc-escape-guide.jpg",
-  demo:"https://narc-escape-guide.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/narc-escape-guide/",
   desc:"Name the tactics, check your own reality, and plan a quieter way out.",
   tag:"Name the pattern. Find the door.",
   body:[
     "For anyone living with someone who keeps rewriting them. The cycle has a vocabulary \u2014 love bombing, gaslighting, DARVO, hoovering \u2014 and having the words for it is where the fog starts to take a shape.",
-    "It treats leaving as a safety problem before it is a conversation: gather quietly, don't announce the plan. Then the part nobody prepares you for, which is what happens after the latch clicks. Not therapy, not a courtroom. Crisis lines are one tap away inside. Nothing you type is saved \u2014 not on a server, not even on the phone \u2014 so there is nothing for anyone to find later."
+    "It treats leaving as a safety problem before it is a conversation: gather quietly, don't announce the plan. Then the part nobody prepares you for, which is what happens after the latch clicks. Not therapy, not a courtroom. Crisis lines are one tap away inside. Nothing you type is sent anywhere, and the pattern matcher stores nothing. The only thing kept on the phone is your two quiet-prep checklists, so you can tick them off over time."
   ],
-  inside:["A plain vocabulary for the tactics","A private reality check, not a diagnosis","Leaving planned as a safety problem","What no contact actually looks like","Nothing is saved, anywhere","Crisis lines one tap away"]
+  inside:["A plain vocabulary for the tactics","A private reality check, not a diagnosis","Leaving planned as a safety problem","What no contact actually looks like","Checklists stay on your device only","Crisis lines one tap away"]
 },
 {
   slug:"auraflow", name:"AuraFlow Plus", cat:"sound", price:39, status:"live",
@@ -189,7 +189,7 @@ const AP1 = [
 {
   slug:"binaural-studio", name:"Binaural Studio", cat:"sound", price:39, status:"live",
   cover:"covers/binaural-studio.jpg",
-  demo:"https://numerakey-binaural-studio-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/binaural-studio/",
   desc:"Five binaural presets layered with music and nature. Headphones required.",
   tag:"Headphones on.",
   body:[

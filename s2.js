@@ -2,7 +2,7 @@ const AP2 = [
 {
   slug:"clarify", name:"Clarify", cat:"wellness", price:39, status:"live",
   cover:"covers/clarify.jpg",
-  demo:"https://numerakey-clarify-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/clarify/",
   desc:"For the decision you keep going round on, and the overwhelm underneath it.",
   tag:"A quiet place to work out what you think.",
   body:[
@@ -74,7 +74,7 @@ const AP2 = [
 {
   slug:"adhd-companion", name:"ADHD Wellness Companion", cat:"neuro", price:39, status:"live", ready:true,
   cover:"covers/adhd-companion.jpg",
-  demo:"https://adhd-wellness.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/adhd-companion/",
   desc:"Built around the hard part \u2014 starting \u2014 with a toolkit, a daily pulse, and five modules on how ADHD actually works.",
   tag:"Starting is the expensive part. The rest is momentum.",
   body:[
@@ -122,7 +122,7 @@ const AP2 = [
 {
   slug:"numera-plus", name:"Numera Plus", cat:"numerology", price:89, status:"live", ready:true,
   cover:"covers/numera-plus.jpg",
-  demo:"https://numerakey-numera-plus-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/numera-plus/",
   desc:"Your birth date in Phillips' 3\u00d73 grid \u2014 the arrows, the empty squares, and what they ask of you.",
   tag:"Nine squares. Eight arrows. One date.",
   body:[

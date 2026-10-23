@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex"><script>window.NK_DEMO={"lock": ["nav button[data-page=\"tools\"]", "nav button[data-page=\"escape\"]", "nav button[data-page=\"leave\"]"], "lockMsg": "Part of the full app", "slug": "narc-escape-guide", "name": "Narc Escape Guide", "url": "https://numerakey-shop.vercel.app/#/app/narc-escape-guide", "cap": {"n": 3, "sel": ["#go"], "label": "pattern matches", "msg": "That is the end of the trial. The full guide has no limit."}};</script><script>/* NumeraKey demo layer: banner, locks, caps, no persistence, no export/print. */
+(function(){
+"use strict";
+var C = window.NK_DEMO || {}; var SHOP = C.url || "https://numerakey-shop.vercel.app";
+var KEY = "nkdemo:" + (C.slug || location.hostname);
+var realLS = null; try { realLS = window.localStorage; } catch(e) {}
+function rget(k,d){ try{ var v=realLS&&realLS.getItem(KEY+":"+k); return v==null?d:JSON.parse(v);}catch(e){return d;} }
+function rset(k,v){ try{ realLS&&realLS.setItem(KEY+":"+k, JSON.stringify(v)); }catch(e){} }
+
+/* 1. Nothing the user enters is kept: localStorage lives in memory for this visit only. */
+function MemStorage(){ var m = new Map(); var o = {
+  getItem:function(k){ k=String(k); return m.has(k)?m.get(k):null; },
+  setItem:function(k,v){ m.set(String(k), String(v)); },
+  removeItem:function(k){ m.delete(String(k)); },
+  clear:function(){ m.clear(); },
+  key:function(i){ return Array.from(m.keys())[i] ?? null; }
+}; Object.defineProperty(o,"length",{get:function(){return m.size;}});
+  return new Proxy(o,{ get:function(t,p){ if(p in t) return t[p]; return typeof p==="string"&&m.has(p)?m.get(p):undefined; },
+    set:function(t,p,v){ if(p in t) return false; m.set(String(p),String(v)); return true; },
+    deleteProperty:function(t,p){ m.delete(String(p)); return true; },
+    ownKeys:function(){ return Array.from(m.keys()); },
+    getOwnPropertyDescriptor:function(t,p){ return m.has(p)?{value:m.get(p),enumerable:true,configurable:true,writable:true}:undefined; } });
+}
+try { Object.defineProperty(window, "localStorage", { value: MemStorage(), configurable: true }); } catch(e) {}
+/* IndexedDB: a fresh, throwaway database per visit; older demo databases are removed. */
+try {
+  var idb = window.indexedDB, run = Math.random().toString(36).slice(2,8), origOpen = idb.open.bind(idb), origDel = idb.deleteDatabase.bind(idb);
+  idb.open = function(name, v){ return v===undefined ? origOpen("nkdemo-"+run+"-"+name) : origOpen("nkdemo-"+run+"-"+name, v); };
+  idb.deleteDatabase = function(name){ return origDel("nkdemo-"+run+"-"+name); };
+  if (idb.databases) idb.databases().then(function(l){ l.forEach(function(d){ if(d.name && d.name.indexOf("nkdemo-"+run)!==0) origDel(d.name); }); }).catch(function(){});
+} catch(e) {}
+/* No offline install of the demo. */
+try { if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function(r){ r.forEach(function(x){ x.unregister(); }); }).catch(function(){});
+  navigator.serviceWorker.register = function(){ return new Promise(function(){}); };
+} } catch(e) {}
+try { window.showSaveFilePicker = undefined; window.showDirectoryPicker = undefined; } catch(e) {}
+
+/* 2. Overlay */
+var css = ""
++ "#nkd-bar{position:fixed;top:0;left:0;right:0;height:44px;z-index:2147483646;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 12px;"
++ "background:rgba(12,12,16,.96);border-bottom:1px solid rgba(214,196,140,.38);font:500 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ece8df;letter-spacing:.01em;box-sizing:border-box}"
++ "#nkd-bar .nkd-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#nkd-bar b{color:#e3cf8f;font-weight:600}"
++ ".nkd-btn{display:inline-block;padding:7px 14px;border-radius:999px;border:1px solid rgba(214,196,140,.7);color:#f3e7bf!important;background:linear-gradient(180deg,rgba(214,196,140,.16),rgba(214,196,140,.05));text-decoration:none!important;font:600 14px/1.1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;white-space:nowrap;cursor:pointer}"
++ "#nkd-ov{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:rgba(6,6,9,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:20px;box-sizing:border-box}"
++ "#nkd-ov.on{display:flex}#nkd-card{max-width:380px;width:100%;background:#15151b;border:1px solid rgba(214,196,140,.35);border-radius:18px;padding:28px 24px 22px;text-align:center;color:#e9e6de;box-shadow:0 20px 60px rgba(0,0,0,.6);font:400 17px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}"
++ "#nkd-card h2{margin:0 0 10px;font:600 23px/1.25 Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#f6e7b0,#cdb36b 55%,#efe0a6);-webkit-background-clip:text;background-clip:text;color:transparent}"
++ "#nkd-card p{margin:0 0 20px;color:#cfcac0}#nkd-card .nkd-btn{font-size:16px;padding:11px 22px}"
++ "#nkd-close{display:block;margin:14px auto 0;background:none;border:0;color:#a9a49a;font:500 15px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}"
++ ".nkd-locked{position:relative;opacity:.55!important}"
++ ".nkd-locked::after{content:'\\1F512';position:absolute;top:2px;right:2px;font-size:11px;line-height:1;opacity:.9;pointer-events:none;filter:grayscale(1)}"
++ ".nkd-hide{display:none!important}"
++ "#nkd-bar.nkd-light{background:rgba(251,249,244,.97);border-bottom-color:rgba(150,128,60,.35);color:#2b2a28}#nkd-bar.nkd-light b{color:#1d1d1f}"
++ "#nkd-bar.nkd-light .nkd-btn{color:#2b2a28!important;border-color:rgba(160,135,60,.75);background:linear-gradient(180deg,rgba(214,190,110,.22),rgba(214,190,110,.08))}"
++ "html{scroll-padding-top:44px}body{padding-top:44px!important}"
++ (C.css||"");
+function inject(){
+  if (document.getElementById("nkd-bar")) return;
+  var st = document.createElement("style"); st.id="nkd-style"; st.textContent = css; (document.head||document.documentElement).appendChild(st);
+  var bar = document.createElement("div"); bar.id="nkd-bar"; bar.setAttribute("role","note");
+  bar.innerHTML = '<span class="nkd-t"><b>Demo version</b><span id="nkd-info"></span></span><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a>';
+  document.body.appendChild(bar);
+  var ov = document.createElement("div"); ov.id="nkd-ov"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+  ov.innerHTML = '<div id="nkd-card"><h2 id="nkd-h">Available in the full app</h2><p id="nkd-p"></p><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a><button id="nkd-close" type="button">Keep exploring the demo</button></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener("click", function(e){ if(e.target===ov && !ov.dataset.hard) hide(); });
+  document.getElementById("nkd-close").addEventListener("click", function(){ if(!ov.dataset.hard) hide(); });
+  try { var bg = "", els=[]; var pe = document.elementFromPoint(innerWidth/2, innerHeight*0.6); while (pe && pe!==document.documentElement) { if (!(pe.id||"").startsWith("nkd-")) els.push(pe); pe = pe.parentElement; } els.push(document.body, document.documentElement);
+    for (var i=0;i<els.length;i++){ var c = getComputedStyle(els[i]).backgroundColor; if (c && !/rgba\(\s*0,\s*0,\s*0,\s*0\)|transparent/.test(c) && !/rgba\([^)]*,\s*0?\.[0-4]\d*\)/.test(c)) { bg = c; break; } var gi = getComputedStyle(els[i]).backgroundImage; var gm = gi && gi.match(/rgba?\([^)]*\)/); if (gm) { bg = gm[0]; break; } }
+    var mm = bg.match(/\d+(\.\d+)?/g); if (C.theme==="light" || (C.theme!=="dark" && mm && (0.299*mm[0]+0.587*mm[1]+0.114*mm[2]) > 160)) bar.classList.add("nkd-light"); } catch(e){}
+  info(); mark(); shift();
+}
+function hide(){ var ov=document.getElementById("nkd-ov"); if(ov) ov.classList.remove("on"); }
+function show(msg, head, hard){
+  inject(); var ov=document.getElementById("nkd-ov");
+  document.getElementById("nkd-h").textContent = head || "Available in the full app";
+  document.getElementById("nkd-p").textContent = msg || (C.lockMsg || ("This part of " + (C.name||"the app") + " is available in the full app."));
+  var cl = document.getElementById("nkd-close"); if (hard) { ov.dataset.hard="1"; cl.style.display="none"; } else { delete ov.dataset.hard; cl.style.display=""; }
+  ov.classList.add("on");
+}
+window.NKDemo = { show: show };
+function info(){ var el=document.getElementById("nkd-info"); if(!el) return; var t="";
+  if (C.cap) { var left = Math.max(0, C.cap.n - rget("cap",0)); t = " \u00b7 " + left + " of " + C.cap.n + " free " + (C.cap.label||"uses") + " left"; }
+  if (C.timer) t = " \u00b7 " + C.timer + "-minute listening session";
+  if (C.info) t = " \u00b7 " + C.info;
+  el.textContent = t; }
+
+/* 3. Locks and caps (capture phase, before the app sees the click) */
+function matches(el, list){ if(!list||!el||!el.closest) return null; for (var i=0;i<list.length;i++){ var m = el.closest(list[i]); if (m) return m; } return null; }
+function textMatch(el){ if(!C.lockText||!el||!el.closest) return null; var b = el.closest("button,a,[role=button],[role=tab],li,[onclick],[data-tab],[data-view],[data-go],[data-nav],[data-page],label,.card,.tile");
+  if(!b) return null; var t=(b.innerText||b.getAttribute("aria-label")||"").trim().toLowerCase();
+  for (var i=0;i<C.lockText.length;i++){ var k=C.lockText[i]; if (k instanceof RegExp ? k.test(t) : t===k.toLowerCase()) return b; } return null; }
+function isLocked(el){ if (matches(el, C.allow)) return null; var m = matches(el, C.lock) || textMatch(el); if (m) return m;
+  if (C.lockIf) { try { var r = C.lockIf(el); if (r) return r; } catch(e){} } return null; }
+function guard(e){
+  var t = e.target; if (!t || !t.closest) return;
+  if (t.closest("#nkd-bar,#nkd-ov")) return;
+  if (window.__nkdHard) { e.preventDefault(); e.stopImmediatePropagation(); show(window.__nkdHard, "Thank you for trying the demo", true); return; }
+  var a = t.closest("a[download]");
+  if (a || isLocked(t)) {
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type==="click"||e.type==="submit") show(a ? "Saving and exporting are available in the full app." : null);
+    return;
+  }
+  if (C.cap && e.type==="keydown" && C.cap.keySel && t.matches && t.matches(C.cap.keySel) && e.key==="Enter") { var u0 = rget("cap",0);
+    if (u0 >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+    if ((t.value||"").trim()) { rset("cap", u0+1); setTimeout(info,0); } return; }
+  if (C.cap && e.type==="click") { var c = matches(t, C.cap.sel); if (!c && C.cap.textSel) { var bb = t.closest("button,a,[role=button],input[type=submit]"); if (bb && C.cap.textSel.test((bb.innerText||bb.value||"").trim().toLowerCase())) c = bb; }
+    if (c) { var used = rget("cap",0);
+      if (used >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+      if (!C.cap.valid || C.cap.valid(c)) { rset("cap", used+1); setTimeout(info,0); }
+    } }
+}
+["click","pointerdown","mousedown","touchstart","keydown","submit","change","input"].forEach(function(ev){
+  window.addEventListener(ev, function(e){
+    if (ev==="keydown" && !(e.key==="Enter"||e.key===" ")) return;
+    if (ev==="change"||ev==="input") { if (isLocked(e.target)) { e.stopImmediatePropagation(); } return; }
+    if (ev!=="click"&&ev!=="submit"&&ev!=="keydown") { var t=e.target; if(t&&t.closest&&!t.closest("#nkd-bar,#nkd-ov")&&(isLocked(t)||window.__nkdHard)) { e.stopImmediatePropagation(); } return; }
+    guard(e);
+  }, true);
+});
+/* anchors clicked from code with a download attribute */
+var aclick = HTMLAnchorElement.prototype.click;
+HTMLAnchorElement.prototype.click = function(){ if (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||"")) { show("Saving and exporting are available in the full app."); return; } return aclick.apply(this, arguments); };
+var adisp = HTMLAnchorElement.prototype.dispatchEvent;
+HTMLAnchorElement.prototype.dispatchEvent = function(ev){ if (ev && ev.type==="click" && (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||""))) { show("Saving and exporting are available in the full app."); return false; } return adisp.apply(this, arguments); };
+window.print = function(){ show("Printing is available in the full app."); };
+try { var ws = window.open; window.open = function(u){ if (u===undefined || u==="" || /^blob:|^data:|about:blank/.test(String(u))) { show("Saving and exporting are available in the full app."); return null; } return ws.apply(window, arguments); }; } catch(e) {}
+try { if (navigator.share) navigator.share = function(){ show("Sharing and exporting are available in the full app."); return Promise.reject(new Error("demo")); }; } catch(e) {}
+window.addEventListener("beforeprint", function(){ document.documentElement.style.display="none"; });
+window.addEventListener("afterprint", function(){ document.documentElement.style.display=""; });
+
+function mark(){
+  var list = (C.lock||[]).concat(C.markOnly||[]);
+  list.forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ if(!matches(el,C.allow)) el.classList.add("nkd-locked"); }); } catch(e){} });
+  if (C.lockText) document.querySelectorAll("button,a,[role=tab],[data-tab],[data-view],[data-go],[data-nav],.card,.tile").forEach(function(el){ if (!el.classList.contains("nkd-locked") && textMatch(el)===el && !matches(el,C.allow)) el.classList.add("nkd-locked"); });
+  (C.hide||[]).forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ el.classList.add("nkd-hide"); }); } catch(e){} });
+  document.querySelectorAll('link[rel="manifest"]').forEach(function(l){ l.remove(); });
+}
+function shift(){
+  if (C.noShift) return;
+  var all = document.body ? document.body.querySelectorAll("*") : [];
+  for (var i=0;i<all.length;i++){ var el = all[i]; if (el.id && el.id.indexOf("nkd-")===0) continue;
+    if (el.dataset.nkdShift) continue;
+    var cs = getComputedStyle(el); if (cs.position!=="fixed" && cs.position!=="sticky") continue;
+    var top = parseFloat(cs.top); if (isNaN(top) || top > 4) continue;
+    el.style.setProperty("top", (top+44)+"px", "important"); el.dataset.nkdShift = "1"; }
+}
+var pend=false; function soon(){ if(pend) return; pend=true; setTimeout(function(){ pend=false; mark(); shift(); }, 120); }
+function start(){ inject(); new MutationObserver(soon).observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:["class","style","hidden"]}); if (C.onReady) try{ C.onReady(); }catch(e){} }
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+
+/* hash routes that belong to the full app */
+if (C.lockHash) { var okHash = location.hash && !C.lockHash.test(location.hash) ? location.hash : (C.homeHash||"#/");
+  if (location.hash && C.lockHash.test(location.hash)) { try { history.replaceState(null, "", location.pathname + location.search + okHash); } catch(e){} }
+  window.addEventListener("hashchange", function(e){ if (C.lockHash.test(location.hash)) { e.stopImmediatePropagation(); history.replaceState(null, "", location.pathname + location.search + okHash); show(); } else okHash = location.hash; }, true); }
+
+/* 4. Listening session limit for audio apps */
+if (C.timer) {
+  var ctxs = [], LIMIT = C.timer*60*1000, HOLD = 12*3600*1000;
+  var startAt = rget("t0", 0); if (startAt && Date.now()-startAt > LIMIT + HOLD) { startAt = 0; rset("t0", 0); }
+  var endMsg = "Your " + C.timer + "-minute demo session has ended. The full app has no time limit.";
+  function expired(){ return startAt && Date.now()-startAt >= LIMIT; }
+  function begin(){ if (!startAt) { startAt = Date.now(); rset("t0", startAt); } }
+  function stopAll(){
+    window.__nkdHard = endMsg;
+    ctxs.forEach(function(c){ try{ c.suspend(); }catch(e){} });
+    document.querySelectorAll("audio,video").forEach(function(m){ try{ m.pause(); m.muted=true; }catch(e){} });
+    show(endMsg, "Thank you for trying the demo", true);
+  }
+  ["AudioContext","webkitAudioContext"].forEach(function(n){ var O = window[n]; if (!O) return;
+    var W = function(){ var c = new (Function.prototype.bind.apply(O, [null].concat([].slice.call(arguments))))(); ctxs.push(c); return c; };
+    W.prototype = O.prototype; try{ Object.setPrototypeOf(W, O); }catch(e){} window[n] = W; });
+  var oResume = window.AudioContext && AudioContext.prototype.resume;
+  if (oResume) AudioContext.prototype.resume = function(){ if (expired()) { stopAll(); return Promise.resolve(); } begin(); return oResume.apply(this, arguments); };
+  var oStart = window.AudioScheduledSourceNode && AudioScheduledSourceNode.prototype.start;
+  if (oStart) AudioScheduledSourceNode.prototype.start = function(){ if (expired()) { stopAll(); return; } begin(); return oStart.apply(this, arguments); };
+  var oPlay = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function(){ if (expired()) { stopAll(); return Promise.reject(new Error("demo")); } begin(); return oPlay.apply(this, arguments); };
+  setInterval(function(){ if (startAt) { var left = Math.max(0, LIMIT-(Date.now()-startAt)); var el=document.getElementById("nkd-info");
+      if (el) el.textContent = left>0 ? " \u00b7 " + Math.ceil(left/60000) + " min of listening left" : " \u00b7 session ended";
+      if (left<=0 && !window.__nkdHard) stopAll(); } }, 1000);
+}
+})();
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0b0b">
+<meta name="description" content="Narc Escape Guide — name the pattern, plan a safer next step. Education, not diagnosis.">
+<meta name="robots" content="noindex,nofollow">
+<title>Narc Escape Guide</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMjggMTI4Ij4KPHJlY3Qgd2lkdGg9IjEyOCIgaGVpZ2h0PSIxMjgiIHJ4PSIyOCIgZmlsbD0iIzBiMGIwYiIvPgo8Y2lyY2xlIGN4PSI2NCIgY3k9IjY0IiByPSIzNiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZDk3NzA2IiBzdHJva2Utd2lkdGg9IjgiLz4KPHBhdGggZD0iTTY0IDQwdjI0bDE2IDEwIiBmaWxsPSJub25lIiBzdHJva2U9IiNlOGMzNmEiIHN0cm9rZS13aWR0aD0iNyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjwvc3ZnPgo=">
+<style>
+:root{--bg:#0b0b0b;--card:#171717;--line:#2a2a2a;--text:#f3f3f3;--muted:#a3a3a3;--accent:#d97706;--gold:#e8c36a;--danger:#b91c1c}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;line-height:1.5}
+header.hero{padding:22px 18px 10px;background:linear-gradient(180deg,#1a1208 0%,#0b0b0b 100%);position:relative}
+h1{margin:0 0 6px;font-size:1.55rem;color:var(--accent)}
+.sub{color:var(--muted);margin:0 0 10px;max-width:40rem}
+.qx{position:absolute;top:14px;right:14px;background:#222;color:#ddd;border:1px solid var(--line);border-radius:999px;padding:7px 12px;font-size:.85rem;text-decoration:none}
+.qx:hover{background:#333}
+.crisis{display:flex;gap:8px;overflow:auto;padding:0 18px 10px;font-size:.82rem}
+.crisis a{flex:0 0 auto;color:var(--gold);text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:6px 10px;background:#141414}
+nav{display:flex;gap:8px;overflow:auto;padding:0 18px 12px;position:sticky;top:0;background:#0b0b0b;z-index:5}
+nav button{flex:0 0 auto;border:1px solid var(--line);background:#141414;color:var(--text);border-radius:999px;padding:8px 14px}
+nav button.on{background:var(--accent);color:#111;border-color:var(--accent);font-weight:700}
+main{padding:0 18px 110px}
+.page{display:none}.page.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0}
+.card h2,.card h3{margin:0 0 8px;color:var(--gold)}
+.card ul{margin:8px 0 0;padding-left:1.1rem}
+.card li{margin:4px 0}
+textarea,input[type=search]{width:100%;background:#111;color:var(--text);border:1px solid var(--line);border-radius:12px;padding:12px;font-size:16px}
+button.act{width:100%;margin-top:10px;background:var(--accent);color:#111;border:0;border-radius:12px;padding:12px;font-weight:700}
+button.copy{margin-top:8px;background:#222;color:var(--gold);border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.muted{color:var(--muted);font-size:.95rem}
+.check{display:flex;gap:10px;align-items:flex-start;margin:8px 0;cursor:pointer}
+.check input{margin-top:4px;accent-color:var(--accent);width:18px;height:18px;flex:0 0 auto}
+.tel{color:var(--gold);text-decoration:none;font-weight:600}
+.warn{border-color:#5b3a10;background:#1a140c}
+.okline{color:var(--gold)}
+a{color:var(--gold)}
+.progress{color:var(--muted);font-size:.9rem;margin-top:6px}
+</style>
+</head>
+<body>
+<header class="hero">
+  <a class="qx" href="https://www.google.com.au" rel="noreferrer">Quick exit</a>
+  <h1>Narc Escape Guide.</h1>
+  <p class="sub">Type what happened. The guide names the pattern and tells you what to do next. You are not crazy.</p>
+</header>
+<div class="crisis">
+  <a href="tel:000">000 emergency</a>
+  <a href="tel:1800737732">1800RESPECT</a>
+  <a href="tel:1800656463">NSW DV Line</a>
+  <a href="tel:131114">Lifeline</a>
+</div>
+<nav>
+  <button class="on" data-page="home">Home</button>
+  <button data-page="cycle">Cycle</button>
+  <button data-page="patterns">Patterns</button>
+  <button data-page="tools">Tools</button>
+  <button data-page="escape">Escape</button>
+  <button data-page="leave">After</button>
+  <button data-page="safety">Safety</button>
+</nav>
+<main>
+<section id="home" class="page on">
+  <div class="card warn">
+    <h2>Device safety</h2>
+    <p>If this phone or computer is shared or watched, use a safer device. Quick exit opens Google. It does not wipe history.</p>
+  </div>
+  <div class="card">
+    <h2>What just happened?</h2>
+    <textarea id="q" placeholder="Example: He said he has changed and wants to try again."></textarea>
+    <button class="act" id="go">Show the pattern</button>
+    <div id="out"></div>
+  </div>
+  <div class="card">
+    <h2>How to use this</h2>
+    <p>This is a knowledge guide, not a diagnosis. Type the words or behaviour. Read the match. If it is thin, open Patterns and read the full card.</p>
+    <p class="muted">If and when you choose to leave, use the Escape tab and call a service to make a plan that fits your life. Leaving can raise risk. You do not have to do it alone.</p>
+  </div>
+</section>
+
+<section id="cycle" class="page">
+  <div class="card"><h2>The cycle</h2><p>Idealize (love bombing) &rarr; Devalue &rarr; Discard &rarr; Hoover. The good version is used to hook you. The cruel version is used to control you. The return is used to pull you back.</p></div>
+  <div class="card"><h3>1. Idealize</h3><p>Intense attention, soulmate talk, future plans, gifts. It moves too fast on purpose.</p></div>
+  <div class="card"><h3>2. Devalue</h3><p>Criticism, contempt, silence, moving goalposts. You chase the person you met at the start.</p></div>
+  <div class="card"><h3>3. Discard</h3><p>Sudden coldness, replacement, blame. You are treated as disposable.</p></div>
+  <div class="card"><h3>4. Hoover</h3><p>Sorry, I have changed, the kids, one conversation. It targets hope. Watch actions for a long time, not words.</p></div>
+</section>
+
+<section id="patterns" class="page">
+  <input type="search" id="find" placeholder="Search patterns">
+  <div id="plist"></div>
+</section>
+
+<section id="tools" class="page">
+  <div class="card"><h2>Grey rock</h2><p>Be boring. Short. No emotion. No extra story. This is short-term, when you cannot go quiet yet. Not a life plan.</p><p>Okay. I see. That is not something I can discuss.</p><button class="copy" data-c="Okay. I see. That is not something I can discuss.">Copy</button></div>
+  <div class="card"><h2>Do not JADE</h2><p>Do not Justify, Argue, Defend, Explain. State once, then stop.</p><p>I am not discussing this.</p><button class="copy" data-c="I am not discussing this.">Copy</button></div>
+  <div class="card"><h2>Lines you can copy</h2>
+    <p>I will only communicate about the children, in writing.</p><button class="copy" data-c="I will only communicate about the children, in writing.">Copy</button>
+    <p>No. That meeting is not happening.</p><button class="copy" data-c="No. That meeting is not happening.">Copy</button>
+    <p>I have already answered that.</p><button class="copy" data-c="I have already answered that.">Copy</button>
+    <p>Do not contact me except about the children.</p><button class="copy" data-c="Do not contact me except about the children.">Copy</button>
+    <p>Pickup is at the time in the plan.</p><button class="copy" data-c="Pickup is at the time in the plan.">Copy</button>
+  </div>
+  <div class="card"><h2>Write it down</h2><p>Date. Exact words. Who was there. What happened next. Keep it private and factual. Store it off a shared device.</p></div>
+  <div class="card"><h2>No contact or low contact</h2><p>No contact if you can. If there are children, low contact in writing only.</p></div>
+</section>
+
+<section id="escape" class="page">
+  <div class="card warn">
+    <h2>Read this first</h2>
+    <p>The most dangerous time can be when you leave or when they find out you plan to. Do not announce the plan. If it is safe, build it with 1800RESPECT or the NSW DV Line. This page is a checklist, not a personal safety plan.</p>
+  </div>
+
+  <div class="card">
+    <h2>Quiet prep</h2>
+    <p class="muted">Tick what you can do without raising suspicion. Skip anything that would put you at risk.</p>
+    <div id="prep"></div>
+    <p class="progress" id="prep-p"></p>
+  </div>
+
+  <div class="card">
+    <h2>Go-bag</h2>
+    <p class="muted">Keep it small. Leave a copy of papers with a trusted person if you can.</p>
+    <div id="bag"></div>
+    <p class="progress" id="bag-p"></p>
+  </div>
+
+  <div class="card">
+    <h2>Money and housing</h2>
+    <ul>
+      <li>Leaving Violence Program — up to $5,155 and 12 weeks of support. Any gender. Visa holders can apply. <a href="https://leavingviolenceprogram.org.au" target="_blank" rel="noreferrer">leavingviolenceprogram.org.au</a> or call <a class="tel" href="tel:1800253283">1800 253 283</a>.</li>
+      <li>NSW DV Line can help with crisis accommodation: <a class="tel" href="tel:1800656463">1800 656 463</a>.</li>
+      <li>Link2Home housing: <a class="tel" href="tel:1800152152">1800 152 152</a>.</li>
+      <li>Centrelink Crisis Payment and a social worker at Services Australia.</li>
+      <li>National Debt Helpline <a class="tel" href="tel:1800880052">1800 880 052</a>.</li>
+      <li>In NSW you may be able to end a tenancy immediately for domestic violence, with no break fee. Ask Fair Trading <a class="tel" href="tel:133220">13 32 20</a> or a local tenants service via tenants.org.au.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Pets</h2>
+    <p>People delay leaving because of animals. That is common. Plan the animals as part of the exit, not after it.</p>
+    <ul>
+      <li>RSPCA NSW Domestic and Family Violence Support can board or foster while you get safe.</li>
+      <li>Weekdays <a class="tel" href="tel:0297824408">02 9782 4408</a>. After hours <a class="tel" href="tel:0297707555">02 9770 7555</a>.</li>
+      <li>Pack food, medication, lead or carrier, and microchip or vet papers if you can.</li>
+      <li>An AVO can include harm to animals.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Legal doors in NSW</h2>
+    <ul>
+      <li>Police can apply for an ADVO for you. You can also apply at a Local Court. No filing fee.</li>
+      <li>Legal Aid NSW Domestic Violence Unit <a class="tel" href="tel:1800979529">1800 979 529</a>.</li>
+      <li>Women’s Domestic Violence Court Advocacy Service <a class="tel" href="tel:1800938227">1800 938 227</a>.</li>
+      <li>Women’s Legal Service NSW <a class="tel" href="tel:0287456988">02 8745 6988</a> or rural <a class="tel" href="tel:1800810784">1800 810 784</a>.</li>
+      <li>Coercive control is a crime in NSW. A pattern of abuse against a current or former intimate partner can be charged. You do not have to name the law. Tell police what has been happening.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Day of leaving</h2>
+    <ul>
+      <li>Take people and animals first. Possessions can wait.</li>
+      <li>Leave when the risk is lower if you have a choice. A calm window is often safer than a fight.</li>
+      <li>Have a place to go that they do not control.</li>
+      <li>Use a code word with one trusted person.</li>
+      <li>If you are in danger now, call 000.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="leave" class="page">
+  <div class="card"><h2>After you leave</h2><p>The pull-back is common. Missing them does not mean it was safe. The bond is often a trauma bond, not proof they changed.</p></div>
+  <div class="card"><h3>First days</h3><p>Keep contact narrow. Do not debate the past. Eat, sleep, tell one safe person.</p></div>
+  <div class="card"><h3>If they say they have changed</h3><p>That is usually hoovering. Change is shown over a long time with no pressure. You do not have to test it.</p></div>
+  <div class="card"><h3>Smear and flying monkeys</h3><p>They may tell a story first. Document facts. Tell safe people once. Do not chase every rumour. Do not explain your case to their messengers.</p></div>
+  <div class="card"><h3>Kids</h3><p>Do not badmouth. Stay steady. Document put-downs. Your calm presence is the counter.</p></div>
+  <div class="card"><h3>Healing is not</h3><p>Convincing them. Winning the story with mutual friends. Going back to check if this time is different.</p></div>
+</section>
+
+<section id="safety" class="page">
+  <div class="card"><h2>If you are in danger now</h2><p>Australia <a class="tel" href="tel:000">000</a>. UK 999. US 911. Canada 911.</p></div>
+  <div class="card">
+    <h3>Australia</h3>
+    <ul>
+      <li>1800RESPECT <a class="tel" href="tel:1800737732">1800 737 732</a> · text 0458 737 732 · chat at 1800respect.org.au</li>
+      <li>NSW DV Line <a class="tel" href="tel:1800656463">1800 656 463</a> (24/7, accommodation and referrals)</li>
+      <li>Lifeline <a class="tel" href="tel:131114">13 11 14</a></li>
+      <li>13YARN <a class="tel" href="tel:139276">13 92 76</a> (First Nations)</li>
+      <li>Full Stop Australia <a class="tel" href="tel:1800385578">1800 385 578</a></li>
+      <li>Daisy app — local services. Only install on a device that is not watched.</li>
+    </ul>
+  </div>
+  <div class="card"><h3>UK</h3><p>National Domestic Abuse Helpline 0808 2000 247. Samaritans 116 123.</p></div>
+  <div class="card"><h3>US</h3><p>National Domestic Violence Hotline 1-800-799-7233 or text START to 88788. 988 Suicide and Crisis Lifeline.</p></div>
+  <div class="card"><h3>Canada</h3><p>911. 211. 988. Hope for Wellness 1-855-242-3310. ShelterSafe. Canada has no single national domestic-violence number.</p></div>
+  <div class="card"><p class="muted">This app is education and self-reflection. It does not diagnose anyone. It is not legal advice. One interaction is not a clinical label.</p></div>
+</section>
+</main>
+<script>
+const P=[
+{n:"Love Bombing",k:"soulmate never felt meant to be gifts attention future perfect can't live",d:"A flood of affection and future talk used to create fast dependency.",s:["I've never felt this way","You're my soulmate","We should build a life"],w:"To hook you before you see the rest.",i:"The drop later feels like losing the love of your life.",t:"Slow down. Watch pace and consistency."},
+{n:"Hoovering",k:"changed miss you try again still love one conversation sorry kids realised",d:"The pull-back after you leave or pull away.",s:["I've changed","Just one coffee","The kids need us"],w:"To get supply and control back.",i:"Hope comes back. Many people reopen the door.",t:"Treat words as cheap. Need long consistent action with no pressure."},
+{n:"Gaslighting",k:"never happened too sensitive crazy remembering wrong overreacting imagining",d:"Making you doubt your memory and sanity.",s:["That never happened","You're too sensitive","You're remembering it wrong"],w:"If you stop trusting yourself, you are easier to control.",i:"You feel crazy-making confusion.",t:"Write it down. Trust the first memory. Tell a safe person."},
+{n:"DARVO",k:"deny attack victim you're the problem after everything accusing",d:"Deny, Attack, Reverse Victim and Offender.",s:["I never did that","You're always attacking me","I'm the one hurt"],w:"To dodge accountability.",i:"You leave the talk feeling like the villain.",t:"Name it and stop. Do not finish their argument."},
+{n:"JADE Trap",k:"justify argue defend explain make them understand why did you",d:"They bait you into justifying and explaining.",s:["Why would you think that","Explain yourself"],w:"Your extra words become new ammunition.",i:"Hours of circles. Exhaustion.",t:"Say it once. Stop. Grey rock."},
+{n:"Isolation",k:"your friends family they don't care better with me cut off",d:"Separating you from support.",s:["They don't really like you","We're better on our own"],w:"Fewer outside voices means more control.",i:"You feel alone and dependent.",t:"Protect some relationships on purpose."},
+{n:"Parental Alienation",k:"your mother don't listen nothing she says kids son daughter poison",d:"Turning a child against you with put-downs and loyalty tests.",s:["You don't have to listen to her","Mum is the problem"],w:"To win the child and punish you.",i:"The bond with your child is attacked.",t:"Stay calm with the child. Do not badmouth. Document."},
+{n:"Projection",k:"you're the one lying cheating selfish crazy narcissist",d:"Accusing you of what they are doing.",s:["You're the liar","You're the narcissist"],w:"To dump shame and confuse you.",i:"You defend against a false charge.",t:"Do not defend the projection. Leave the topic."},
+{n:"Triangulation",k:"ex friend coworker everyone agrees admirer kids choose",d:"Bringing a third person in to create rivalry or pressure.",s:["My ex never complained","Everyone agrees with me"],w:"Jealousy and isolation keep you off balance.",t:"Do not compete. Come back to the actual issue or exit."},
+{n:"Flying Monkeys",k:"friends family message on their behalf they said you should",d:"People used to pressure, spy, or smear for them.",s:["They just want you to talk"],w:"To reach you when direct contact fails.",t:"Do not explain your case to recruits. Keep boundaries."},
+{n:"Smear Campaign",k:"crazy liar unstable gold digger rumour reputation story",d:"A twisted story told to others so you look like the problem.",s:["She's unstable","He's making it up"],w:"To own the narrative first.",t:"Document. Tell safe people facts. Do not chase every rumour."},
+{n:"Silent Treatment",k:"silent ignore stonewall one word days no reply",d:"Withholding contact as punishment.",s:["..."],w:"To make you chase and self-blame.",t:"Do not perform for the silence. Hold your day."},
+{n:"Future Faking",k:"marriage house trip next year we'll change forever",d:"Big promises with no plan to keep them.",s:["We'll get married","I'll change after this"],w:"To keep you invested.",t:"Ask for present behaviour, not future speeches."},
+{n:"Devaluation",k:"lucky I stay you've changed no one else too much comparison",d:"The shift from idealising you to tearing you down.",s:["You're lucky I put up with you"],w:"To lower you and raise them.",t:"The drop is the pattern, not your worth."},
+{n:"Discard",k:"done with you ruined everything ghost replace cold",d:"Sudden exit or emotional abandonment.",s:["I'm done","You ruined this"],w:"When you are no longer useful or a new supply appears.",t:"Do not bargain for the old version. Protect yourself."},
+{n:"Intermittent Reinforcement",k:"hot cold kind cruel good times hope mixed confused",d:"Unpredictable kindness and cruelty that bonds you.",s:[],w:"The same hook as a poker machine.",t:"Name the mix. Judge the pattern, not the good hour."},
+{n:"Trauma Bond",k:"can't leave miss them addicted hope cycle",d:"Attachment formed by fear plus relief plus occasional warmth.",s:[],w:"Your nervous system chases the relief after danger.",t:"Missing them can be the bond, not proof it was love."},
+{n:"Cognitive Dissonance",k:"going crazy two realities loves me evil nice awful",d:"Holding he loves me and he harms me at the same time.",s:[],w:"The split keeps you hoping.",t:"Write both lists. Believe the whole pattern."},
+{n:"Breadcrumbing",k:"just enough text late night I miss you then gone",d:"Tiny bits of attention that keep you hanging.",s:["I miss you"],w:"To keep access without commitment.",t:"No response to breadcrumbs."},
+{n:"Word Salad",k:"circular confuse hours off topic what about you",d:"Chaotic talk that buries the original point.",s:["What about that time you"],w:"To exhaust you instead of answering.",t:"Repeat the one point or end the talk."},
+{n:"Reactive Abuse",k:"you yelled you snapped now you're the crazy one",d:"They push until you react, then use the reaction as proof.",s:["See, you're unstable"],w:"To flip the story.",t:"Step out before the explosion. Your reaction is not the start."},
+{n:"Pity Play",k:"ill crisis nobody loves me after all I've done",d:"Sudden victimhood when accountability appears.",s:["You don't care if I fall apart"],w:"To make you drop the boundary.",t:"Compassion is not a yes. Keep the line."},
+{n:"FOG / Emotional Blackmail",k:"guilt fear obligation if you loved me after everything",d:"Fear, Obligation, Guilt used as levers.",s:["If you loved me you would"],w:"To make you abandon yourself.",t:"Name FOG. Choose the boundary anyway."},
+{n:"Moving the Goalposts",k:"never enough new demand you met it now this",d:"You meet one test and a new one appears.",s:["That's not what I meant"],w:"So you can never win.",t:"Stop playing the new test."},
+{n:"Financial Control",k:"money allowance job accounts not allowed",d:"Limiting money so you cannot leave easily.",s:["You don't need your own money"],w:"Dependence.",t:"Quietly gather documents if it is safe. Get advice."},
+{n:"Legal Abuse",k:"court threaten lawyer false report papers",d:"Using systems to intimidate or exhaust you.",s:["I'll take the kids"],w:"Fear and cost.",t:"Get legal advice. Keep records. Do not handle this alone."},
+{n:"Baiting",k:"provoke push buttons start a fight",d:"Needling you to get a reaction.",s:["Go on, prove it"],w:"Your reaction is supply.",t:"Do not take the bait. Leave the room."},
+{n:"Stonewalling",k:"shut down refuse to talk wall",d:"Refusing any real conversation as control.",s:["I'm not talking about this"],w:"To keep power.",t:"Use writing. Stop chasing a talk they will not have."},
+{n:"Blame-shifting",k:"your fault you made me you started it",d:"Every harm is rewritten as your doing.",s:["Look what you made me do"],w:"To stay innocent in their story.",t:"Do not accept the rewrite."},
+{n:"Pathologizing you",k:"bipolar crazy unstable need help diagnosis",d:"Calling you mentally unwell to dismiss you.",s:["You need help","You're unwell"],w:"To make others distrust you.",t:"Your reaction to abuse is not proof you are the problem."},
+{n:"Mirroring",k:"same interests same wounds same dreams too perfect",d:"Copying you in the beginning so you feel uniquely seen.",s:["We're the same"],w:"To fast-track trust.",t:"See if the match survives ordinary life."}
+];
+function card(p,open){return `<div class="card pat" data-n="${p.n}"><h3>${p.n}</h3><p>${p.d}</p>${open?`<p><b>They say:</b> ${(p.s||[]).join(' / ')||'—'}</p><p><b>Why:</b> ${p.w||''}</p>${p.i?`<p><b>Impact:</b> ${p.i}</p>`:''}<p><b>What to do:</b> ${p.t}</p>`:''}</div>`}
+function renderList(filter=''){const f=filter.toLowerCase();plist.innerHTML=P.filter(p=>!f||(p.n+' '+p.k+' '+p.d+' '+(p.s||[]).join(' ')).toLowerCase().includes(f)).map(p=>card(p,true)).join('')}
+const plist=document.getElementById('plist');renderList();
+document.getElementById('find').oninput=e=>renderList(e.target.value);
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('nav button').forEach(x=>x.classList.remove('on'));b.classList.add('on');document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));document.getElementById(b.dataset.page).classList.add('on');window.scrollTo(0,0)});
+function score(p,q){
+  let s=0;
+  (p.s||[]).forEach(ph=>{if(ph && q.includes(ph.toLowerCase())) s+=3});
+  p.k.split(' ').forEach(w=>{if(w && q.includes(w)) s+=1});
+  if(q.includes(p.n.toLowerCase())) s+=4;
+  return s;
+}
+document.getElementById('go').onclick=()=>{
+  const q=document.getElementById('q').value.toLowerCase();
+  const out=document.getElementById('out');
+  if(!q.trim()){out.innerHTML='<p class="muted">Type what was said or done.</p>';return;}
+  const hits=P.map(p=>({p,score:score(p,q)})).filter(x=>x.score).sort((a,b)=>b.score-a.score).slice(0,3);
+  out.innerHTML=hits.length?hits.map(h=>card(h.p,true)).join(''):'<div class="card"><h3>No clear match yet</h3><p>Add more of the exact words. Or open Patterns and browse.</p></div>';
+};
+document.querySelectorAll('button.copy').forEach(b=>b.onclick=async()=>{try{await navigator.clipboard.writeText(b.dataset.c);b.textContent='Copied';setTimeout(()=>b.textContent='Copy',1200)}catch(e){b.textContent='Select and copy'}});
+
+const LISTS={
+  prep:[
+    'Tell one safe person outside their circle',
+    'Call 1800RESPECT or NSW DV Line from a safe device',
+    'Open a private email they do not know',
+    'Copy IDs, Medicare, bank and legal papers off this device',
+    'Note account numbers and important dates on paper',
+    'Keep a little cash if you can do it unnoticed',
+    'Memorise one phone number in case the phone is taken',
+    'Agree a code word that means I need help',
+    'Plan where you would go at 2am and at 2pm'
+  ],
+  bag:[
+    'Photo ID and Medicare card',
+    'Birth certificates and kids’ papers',
+    'Bank cards in your name, and any cash',
+    'Medication and prescriptions',
+    'Keys, charger, spare phone if you have one',
+    'AVO or court papers if you have them',
+    'Pet food, meds, lead or carrier',
+    'A few days of clothes'
+  ]
+};
+function drawList(id, items){
+  const box=document.getElementById(id);
+  const key='neg-'+id;
+  let saved={};
+  try{saved=JSON.parse(localStorage.getItem(key)||'{}')}catch(e){}
+  box.innerHTML=items.map((t,i)=>{
+    const on=!!saved[i];
+    return `<label class="check"><input type="checkbox" data-list="${id}" data-i="${i}" ${on?'checked':''}><span>${t}</span></label>`;
+  }).join('');
+  const upd=()=>{
+    const boxes=[...box.querySelectorAll('input')];
+    const n=boxes.filter(x=>x.checked).length;
+    document.getElementById(id+'-p').textContent=n+' of '+items.length+' ticked. Saved on this device only.';
+  };
+  box.onchange=e=>{
+    const t=e.target;
+    if(t.type!=='checkbox')return;
+    saved[t.dataset.i]=t.checked;
+    try{localStorage.setItem(key,JSON.stringify(saved))}catch(err){}
+    upd();
+  };
+  upd();
+}
+drawList('prep',LISTS.prep);
+drawList('bag',LISTS.bag);
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});}
+</script>
+</body>
+</html>

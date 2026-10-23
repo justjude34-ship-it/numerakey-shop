@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08070b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Right Action — a personal-year companion inspired by Juno Jordan. What this year is for, and the next useful step. Stays on the phone.">
+<title>Right Action</title>
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon.svg">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08070b; --card:#121018; --ink:#f4efe6; --muted:#b7b0a4;
+  --gold:#e8c872; --teal:#5eead4; --violet:#c4b5fd; --line:rgba(232,200,114,.22);
+  --good:#5eead4; --lesson:#f9a8d4; --warn:#fdba74;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Outfit,system-ui,sans-serif;line-height:1.55;-webkit-text-size-adjust:100%}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(720px 380px at 8% -10%,rgba(94,234,212,.16),transparent 55%),
+  radial-gradient(640px 360px at 96% 0%,rgba(196,181,253,.14),transparent 50%),
+  radial-gradient(500px 280px at 50% 100%,rgba(232,200,114,.08),transparent 55%)}
+.wrap{max-width:820px;margin:0 auto;padding:1rem 1rem 6.8rem}
+header.app{text-align:center;padding:.55rem 0 .9rem}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.22rem .7rem;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:#d7d0c4;margin-bottom:.4rem}
+.wordmark{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(2.35rem,10vw,3.5rem);margin:0;letter-spacing:.02em;
+  background:linear-gradient(120deg,var(--teal),var(--gold),var(--violet),var(--teal));background-size:220% 220%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 9s ease-in-out infinite}
+.tag{color:var(--muted);margin:.3rem 0 0;font-size:.92rem}
+@keyframes shimmer{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:1rem 1.05rem 1.15rem;margin:0 0 1rem}
+.kicker{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 .3rem}
+h2{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.7rem;margin:.1rem 0 .5rem;font-weight:600}
+h3{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.28rem;margin:.15rem 0 .35rem;font-weight:600}
+label{display:block;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin:.65rem 0 .28rem}
+input,select,textarea{width:100%;background:#0b0a10;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:.72rem .8rem;font:inherit}
+input:focus,select:focus,textarea:focus{outline:1px solid var(--gold)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.65rem}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem}
+@media(max-width:620px){.row2{grid-template-columns:1fr}}
+.hint{color:var(--muted);font-size:.8rem;margin:.4rem 0 0}
+.actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.85rem}
+button{font:inherit;border:0;border-radius:999px;padding:.68rem 1.1rem;cursor:pointer}
+.primary{background:linear-gradient(120deg,var(--teal),var(--gold));color:#102019;font-weight:600}
+.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.tiny{background:rgba(8,10,20,.55);color:var(--ink);border:1px solid var(--line);padding:.42rem .78rem;font-size:.82rem}
+.nums{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin:.2rem 0 .8rem}
+.num{background:#0b0a10;border:1px solid var(--line);border-radius:16px;padding:.7rem .4rem .75rem;text-align:center}
+.num b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:2.15rem;line-height:1;color:var(--teal)}
+.num span{display:block;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:.25rem}
+.num.is-year b{color:var(--gold)}
+.num.is-day b{color:var(--violet)}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.18rem .55rem;font-size:.72rem;color:var(--muted);margin:.15rem .2rem 0 0}
+.list{margin:.2rem 0 0;padding:0 0 0 1.1rem}
+.list li{margin:.28rem 0}
+.month{border:1px solid var(--line);border-radius:16px;padding:.8rem .9rem;margin:.55rem 0 0;background:#0b0a10}
+.month.now{border-color:rgba(232,200,114,.55);box-shadow:0 0 0 1px rgba(232,200,114,.18)}
+.month .top{display:flex;justify-content:space-between;align-items:baseline;gap:.6rem}
+.month .pm{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.45rem;color:var(--gold)}
+.cycle{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+.cy{background:#0b0a10;border:1px solid var(--line);border-radius:14px;padding:.7rem .55rem .75rem;text-align:center;cursor:pointer}
+.cy b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:1.55rem;color:var(--teal)}
+.cy.now{border-color:rgba(232,200,114,.6)}
+.cy.now b{color:var(--gold)}
+.cy.past{opacity:.62}
+.people{display:flex;flex-direction:column;gap:.45rem}
+.person{display:flex;justify-content:space-between;align-items:center;gap:.6rem;background:#0b0a10;border:1px solid var(--line);border-radius:14px;padding:.7rem .85rem}
+.person.active{border-color:rgba(94,234,212,.45)}
+.muted{color:var(--muted)}
+.fine{font-size:.78rem;color:var(--muted);line-height:1.5}
+hr.soft{border:0;border-top:1px solid var(--line);margin:1rem 0}
+.cover-hero{text-align:center;padding:1.4rem .4rem 1.2rem}
+.cover-hero p.lead{font-family:"Cormorant Garamond",Georgia,serif;font-size:1.35rem;margin:.4rem 0 1.1rem}
+.tabs{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:space-around;gap:.15rem;
+  background:rgba(8,7,11,.86);backdrop-filter:blur(14px);border-top:1px solid var(--line);
+  padding:.35rem .35rem calc(.45rem + env(safe-area-inset-bottom));z-index:20}
+.tabs button{flex:1;background:transparent;color:var(--muted);border:0;border-radius:12px;padding:.45rem .2rem .4rem;font-size:.72rem;letter-spacing:.04em}
+.tabs button.on{color:var(--gold)}
+.hidden{display:none !important}
+.note{width:100%;min-height:4.2rem;resize:vertical}
+.do{color:var(--teal)}
+.dont{color:var(--warn)}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<nav class="tabs hidden" id="tabs">
+  <button data-go="today">Today</button>
+  <button data-go="year">Year</button>
+  <button data-go="months">Months</button>
+  <button data-go="cycle">Cycle</button>
+  <button data-go="people">People</button>
+  <button data-go="solve">Ask</button>
+</nav>
+<script>
+const STORE = "right-action-v1";
+const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+const DAYS = {
+  1:{name:"Begin", use:"Start the small thing. Make the first call. Do not wait for a prettier hour."},
+  2:{name:"Pair", use:"Ask, wait, listen. Do the detail. Do not force a yes today."},
+  3:{name:"Speak", use:"Write it, say it, show it. Keep one next step attached."},
+  4:{name:"Build", use:"Lists, body, money, desk. The unglamorous hour is the point."},
+  5:{name:"Vary", use:"Change the route. Take the unexpected opening. Keep one root down."},
+  6:{name:"Tend", use:"Home, a person, a repair. Include yourself on the list."},
+  7:{name:"Study", use:"Protect quiet. Read, walk, decide later. Do not launch loudly."},
+  8:{name:"Transact", use:"Money, a clean ask, a measured risk. Be fair while you are strong."},
+  9:{name:"Close", use:"Finish, forgive, give away. Do not start a nine-day empire."}
+};
+
+const YEARS = {
+  1: {
+    name:"Begin", verb:"plant",
+    kicker:"A new nine-year chapter",
+    theme:"The slate is clean enough to write on. What you start now becomes the furniture of the next eight years. Courage and a plan matter more than a committee.",
+    right:"Name the direction. Take the first real step without waiting for permission. Keep it small enough to finish this week.",
+    caution:"Do not drag last cycle's unfinished business into the seed bed. A 1 year is for beginnings, not for polishing old endings.",
+    work:"Launch, name the work, take the first public step. The next eight years will live inside what you plant.",
+    money:"Spend on the new direction, not on the old leak. A beginning still needs shoes.",
+    love:"New terms. A new honesty. Do not restart a finished story just because it is familiar.",
+    home:"Tell the household what is starting. Rearrange the room to match the new chapter.",
+    body:"Use the fresh energy. Do not burn it all in January.",
+    travel:"Short scouting trips. Movement in service of the new map.",
+    avoidStart:"A second beginning on top of the first. A reunion with what year 9 already closed.",
+    do:["Start one true thing","Say the new name out loud","Act before you feel ready"],
+    dont:["Wait for perfect confidence","Reopen the last nine years as a project","Collect opinions instead of taking a step"]
+  },
+  2: {
+    name:"Cooperate", verb:"tend",
+    kicker:"The seed is underground",
+    theme:"Progress is quiet and relational. Results come through patience, pairing, tact, and the second yes. Last year asked for nerve. This year asks for timing.",
+    right:"Listen. Wait. Pair up. Tend the detail that nobody else wants. Let partnership do some of the carrying.",
+    caution:"Do not force a launch. Do not swallow your own need just to keep the peace.",
+    work:"Share the load. Diplomacy over force. Results come through the other person as much as through you.",
+    money:"Joint decisions. Fairness. Do not sign a rushed deal to end the waiting.",
+    love:"Tact. Repair. New friendship or a slower deepening. Breaking a tie wants care, not theatre.",
+    home:"Two people making one rhythm. Details and promises kept small and real.",
+    body:"Nerves and patience. Rest the system that last year pushed.",
+    travel:"With someone, or not far. The journey is relational.",
+    avoidStart:"A solo empire. An ultimatum. A launch that needs last year's 1-energy.",
+    do:["Ask one person to walk with you","Notice timing instead of pushing","Keep the small promises"],
+    dont:["Force an outcome","Go it alone out of pride","Mistake delay for failure"]
+  },
+  3: {
+    name:"Express", verb:"show",
+    kicker:"Colour returns",
+    theme:"Voice, craft, and company want air. A quickening runs through the year. Creative and social life are not extras — they are the work.",
+    right:"Show the work. Speak. Write. Gather people. Keep it light enough to move.",
+    caution:"Scatter is the leak. Talk without a next step becomes noise.",
+    work:"Put the best foot forward. Use the ideas that flood in. Improve how you are seen.",
+    money:"Joy can still have a price. Ask to be booked or paid. Do not spend only on the performance.",
+    love:"Friendship, pleasure, honest charm. Say the true sentence. Do not perform instead of connecting.",
+    home:"Bring colour into the room. Invite. Let the kitchen hear the laugh.",
+    body:"Throat, mood, the wish to sparkle. Sleep still counts.",
+    travel:"Pleasure trips. A change of scene that feeds the voice.",
+    avoidStart:"Five projects with no finish line. A grim isolation plan.",
+    do:["Finish one piece and share it","Say the true sentence","Let joy be useful"],
+    dont:["Start five things and water none","Perform instead of connecting","Hide the gift because it is not perfect"]
+  },
+  4: {
+    name:"Build", verb:"order",
+    kicker:"Timber and a timetable",
+    theme:"A practical year. Last year's plans want a body. Work, health, and money keep pulling you back to earth, whether you feel like it or not.",
+    right:"Put a frame around the work. Budget. Repair. Show up for the unglamorous hour. Rest is part of the foundation.",
+    caution:"Martyrdom and rigidity. A wall without a door is not a house.",
+    work:"Put inspiration into concrete form. Stay on the job. Systems beat mood.",
+    money:"Look at the books without flinching. Repair leaks. Build a number you can live on.",
+    love:"Love looks like reliability. Be the person who does what they said. Romance may wait.",
+    home:"Fix the house. Order the papers. The room you return to is part of the work.",
+    body:"Health is on the list. Sleep, food, the body as a tool you will need later.",
+    travel:"Short necessary trips. Not a wandering year.",
+    avoidStart:"A brand-new empire, a chaotic romance, a leap with no floor.",
+    do:["Make one system you will still use in December","Do the body-and-desk basics","Keep a budget you can see"],
+    dont:["Skip the foundation for a shortcut","Work until you vanish","Treat rest as a failure"]
+  },
+  5: {
+    name:"Change", verb:"loosen",
+    kicker:"Windows open",
+    theme:"Changing conditions add colour and force you into step with progress. Freedom from a stale routine is the assignment — chosen movement, not a smash.",
+    right:"Try the next version. Loosen what is tight. Say yes to movement that is chosen, not escaped into.",
+    caution:"Chaos for its own sake. Keep one root in the ground while the rest of you moves.",
+    work:"A new method, a new room, a new offer. Progress wants a different step.",
+    money:"Budget the experiment so freedom lasts past the thrill.",
+    love:"New people, new terms, honest restlessness. Tell the truth about what feels too small.",
+    home:"Do not use freedom as an excuse to neglect the people who live with you.",
+    body:"Restlessness lives in the body. Walk it. Do not only think it.",
+    travel:"Yes. Location, class, trip. Movement is medicine this year.",
+    avoidStart:"Burning the house down for a breeze. Saying yes to everything.",
+    do:["Change one routine on purpose","Take the trip or the class","Tell the truth about what feels too small"],
+    dont:["Burn the house down for a breeze","Confuse freedom with fleeing","Say yes to everything"]
+  },
+  6: {
+    name:"Care", verb:"repair",
+    kicker:"Home and the people who belong to you",
+    theme:"Duty, obligations, and service sit in the doorway. Unselfishness, justice, and a kinder room are how results arrive — including a result for you.",
+    right:"Repair. Host. Finish family business. Make the room easier to live in — including for yourself.",
+    caution:"Rescuing everyone and abandoning the one who lives in your body.",
+    work:"Service that is chosen. Teaching, hosting, making something more beautiful and fair.",
+    money:"Family and money in the same room. Fairness now prevents a December fight.",
+    love:"Talk, peace, healing, settling. Say the loving sentence and the boundary.",
+    home:"This is the year's true desk. Duty, beauty, a mended bond.",
+    body:"Care includes your own body. You cannot tend a garden you never stand in.",
+    travel:"Toward people. Homeward. Not a runaway year.",
+    avoidStart:"A new rescue mission. Control dressed as care.",
+    do:["Fix one home or heart thing properly","Keep a boundary that is also kind","Give care that includes you"],
+    dont:["Become the unpaid manager of every life","Stay in a duty that is only self-erasure","Call control love"]
+  },
+  7: {
+    name:"Study", verb:"listen inward",
+    kicker:"A sabbatical of mind and spirit",
+    theme:"Much depends upon a right state of mind. A sabbatical year: quiet pursuits, study, mental house-cleaning. A goal may form that will not show its full shape until later.",
+    right:"Study. Rest. Sit with the question until the inner answer is clean. Trust what arrives in quiet.",
+    caution:"Isolation that turns into avoidance — or forcing a launch the year is not built for.",
+    work:"Research, skill, a quieter craft. Career change through study, not through noise.",
+    money:"Look at money as information, not as a verdict on your worth this year.",
+    love:"Fewer rooms, truer speech. Solitude is not secrecy. Do not disappear.",
+    home:"A closed door that is still kind. Empty hours in the house.",
+    body:"Rest is the assignment. Nerves and sleep. Walks that think.",
+    travel:"A retreat, a class, a short trip in service of insight.",
+    avoidStart:"A loud public launch. A calendar with no silence in it.",
+    do:["Protect empty hours","Read, walk, write it down","Let one goal ripen without advertising it"],
+    dont:["Fill every silence","Demand a public harvest","Use solitude as a hiding place"]
+  },
+  8: {
+    name:"Harvest", verb:"measure",
+    kicker:"Ambition is in season",
+    theme:"Ambition stirs, and with it a wish to better the material conditions of life. Businesslike, efficient, practical — and fair while you are strong.",
+    right:"Negotiate. Organise money. Take the responsible risk. Measure. Ask for what the work is worth.",
+    caution:"Power struggles and cutting corners for a win that will not keep.",
+    work:"Authority, efficiency, the clean ask. Manage the work like it matters.",
+    money:"This is a money year. Improve the conditions. Look the numbers in the eye.",
+    love:"Power wants to be shared on purpose. Do not let the harvest eat the household.",
+    home:"Success that ruins the kitchen is a poor crop. Keep the house in the deal.",
+    body:"Stamina and judgment. Do not live only at the desk.",
+    travel:"In service of the deal, the meeting, the measured risk.",
+    avoidStart:"A win that requires you to become someone you will not respect.",
+    do:["Look the numbers in the eye","Make one clean ask","Build authority by being fair"],
+    dont:["Win ugly","Ignore the books","Confuse control with strength"]
+  },
+  9: {
+    name:"Complete", verb:"clear",
+    kicker:"The field wants emptying",
+    theme:"You are closing a cycle begun nine years ago. Completion and the fulfilment of some dreams sit beside necessary endings. Straighten the life so next year's 1 can be clean.",
+    right:"Finish. Forgive. Give away. Clear the shelf. Serve without starting a new empire.",
+    caution:"Clinging. Or planting next-cycle seeds too early and confusing them with completion.",
+    work:"Finish the chapter. Serve. Do not found the next company inside the goodbye.",
+    money:"Settle the old cycle's debts. Leave no quiet bill for the 1 year to inherit.",
+    love:"Forgive in private if that is kinder. Release what is finished. Endings can be warm.",
+    home:"Pack, give away, leave the room kinder than you found it.",
+    body:"Tiredness at the end of a long walk. Rest is part of completion.",
+    travel:"Travel light. A farewell trip. Not a new suitcase of projects.",
+    avoidStart:"A nine-year project. A new identity worn as armour against the empty space.",
+    do:["Close one long loop","Release what is finished","Leave the room kinder than you found it"],
+    dont:["Start a nine-year project","Hoard the ending","Pretend nothing is over"]
+  }
+};
+
+const MONTH_LAYER = {
+  1:{name:"Initiate", tip:"A month for first steps inside the year's theme."},
+  2:{name:"Pair", tip:"A month for patience, detail, and another person."},
+  3:{name:"Speak", tip:"A month for voice, craft, and company."},
+  4:{name:"Structure", tip:"A month for systems, body, and the unglamorous hour."},
+  5:{name:"Vary", tip:"A month for movement, experiment, and honest change."},
+  6:{name:"Tend", tip:"A month for home, duty, and repair."},
+  7:{name:"Withdraw", tip:"A month for study, rest, and the inner answer."},
+  8:{name:"Transact", tip:"A month for money, authority, and measurable result."},
+  9:{name:"Close", tip:"A month for finishing, clearing, and letting go."}
+};
+
+/* Original month-in-year lines. Not from the book. Year energy first, calendar month second. */
+const BLEND = {
+  1:{
+    1:"Double beginning. Write the first sentence of the next nine years and take one step that cannot be undone by a mood.",
+    2:"Find one ally. A 1 year still needs a second pair of hands. Do not launch only in your own head.",
+    3:"Say the new name of the work out loud. Visibility is part of planting.",
+    4:"Give the beginning a timetable. Inspiration without a frame will not survive April.",
+    5:"Try a small public version. Let the new direction meet the weather.",
+    6:"Tell the people who share your roof what you are starting. Home should not be the last to know.",
+    7:"Sit with the plan in quiet. Keep only what is still true when nobody is watching.",
+    8:"Put money or tools behind the new direction. A beginning that cannot pay for its shoes will limp.",
+    9:"Finish the first chapter so the rest of the year is not all prologue.",
+    10:"Peak start-month in a start-year. If you have been circling, this is the month to step through.",
+    11:"Cooperate with the beginning. Let someone else carry a corner. Pride is a poor co-founder.",
+    12:"Close the calendar year by protecting what you planted. Do not start a second beginning out of restlessness."
+  },
+  2:{
+    1:"Start the year by listening. The first move in a 2 year is often a question, not a speech.",
+    2:"Peak pairing month. Make the alliance official, or notice where you are doing two people's work.",
+    3:"Speak softly and specifically. Charm helps; clarity keeps the peace from becoming fog.",
+    4:"Put the cooperation into a system — shared lists, shared money rules, shared time.",
+    5:"Change the dance, not the partner, unless the partner is the problem. Try a new way of asking.",
+    6:"Tend the house and the bond. A 2 year in a care month is for mending, not scoring points.",
+    7:"Take a quiet week. The answer you need will not arrive in a group chat.",
+    8:"Talk money without theatre. Fairness is the 2-year version of power.",
+    9:"Release one old grievance so the partnership has room.",
+    10:"Begin again inside the relationship — a new agreement, not a new war.",
+    11:"Peak 2 energy. Wait for the second yes. Rushing now creates a year of cleaning up.",
+    12:"Close the year by honouring what grew underground. Quiet progress still counts."
+  },
+  3:{
+    1:"Begin the year by making something small and showing it. A 3 year starves in private.",
+    2:"Find the audience of one who actually hears you. Not every room is your room.",
+    3:"Peak expression month. Publish, perform, invite, write the letter. Keep a next step attached.",
+    4:"Give the creative life a desk and a clock. Talent without craft is a party with no food.",
+    5:"Take the work on the road. A change of scene feeds a 3 year.",
+    6:"Use the voice at home. Joy that never visits the kitchen is only costume.",
+    7:"Edit. A 3 year also needs a closed door and a red pen.",
+    8:"Ask to be paid, booked, or taken seriously. Delight can still have a price.",
+    9:"Finish one piece instead of starting three more. Completion is also creative.",
+    10:"Start a new series or season of the work, not a new identity.",
+    11:"Collaborate. Two voices can carry a tune you cannot sing alone.",
+    12:"Gather people and tell the story of the year. Then rest the throat."
+  },
+  4:{
+    1:"Begin the foundation. January in a 4 year is for tools, lists, and the first honest look at the books.",
+    2:"Do not build alone if the job needs two. Ask for the practical kind of help.",
+    3:"Speak the plan in plain words. A 4 year does not need poetry as much as it needs a sentence people can follow.",
+    4:"Peak build-month. This is the timber month. Systems, body, money, desk. Skip nothing essential.",
+    5:"Change the method, not the standard. A little variety keeps the 4 year from turning to stone.",
+    6:"Build the home as well as the work. The room you return to is part of the foundation.",
+    7:"Review the structure in quiet. What is load-bearing? What is only habit?",
+    8:"Money month inside a work year. Look at the numbers without flinching, then make one repair.",
+    9:"Finish a foundation piece. Leave the year something solid to stand on.",
+    10:"Start the next layer, not a new house. Add a storey to what already stands.",
+    11:"Partner on the unglamorous work. Shared labour is still labour.",
+    12:"Close the year by keeping what works and retiring one broken system."
+  },
+  5:{
+    1:"Open the year with one chosen change. A 5 year rewards the first honest departure from the old map.",
+    2:"Bring someone with you, or at least tell them. Freedom is lonelier when it is a secret.",
+    3:"Talk about the restlessness. Naming it keeps it from driving from the back seat.",
+    4:"Give freedom a container — a budget for the experiment, a date you will review it.",
+    5:"Peak change-month. Travel, pivot, try the version you have been circling. Keep one root down.",
+    6:"Do not use freedom as an excuse to neglect the people who live with you.",
+    7:"Pause the motion long enough to know which change is true.",
+    8:"Put a price and a plan on the new direction so it can last past the thrill.",
+    9:"Drop one old identity. Travel lighter into the last third of the year.",
+    10:"Begin the next experiment from what you learned, not from panic.",
+    11:"Change is easier with a witness. Let one person see the new version of you.",
+    12:"Close the year without slamming every door. Keep the freedom that is still kind."
+  },
+  6:{
+    1:"Begin the year at home. What does this household actually need in the next twelve months?",
+    2:"The relationship is the work. Listen longer than is comfortable.",
+    3:"Say the loving sentence that has been sitting in your mouth. Also say the boundary.",
+    4:"Repair something physical — house, body, papers. Care that never touches matter stays theoretical.",
+    5:"Loosen a duty that has become a cage. Love is not the same as being trapped.",
+    6:"Peak care-month. Host, mend, show up. Include yourself on the list of people who belong here.",
+    7:"Take a quiet day away from being useful. You cannot tend a garden you never stand in.",
+    8:"Money and family in the same room. Fairness now prevents a December fight.",
+    9:"Release a caretaking role that was never yours. Completion can be an act of love.",
+    10:"Begin a new household rhythm, not a new rescue mission.",
+    11:"Two is company. Let someone care for you on purpose.",
+    12:"Close the year by making the room kinder — one shelf, one conversation, one kept promise."
+  },
+  7:{
+    1:"Begin the year by emptying the calendar a little. A 7 year needs space the way a 1 year needs nerve.",
+    2:"Study with someone, or at least tell one person what you are learning. Solitude is not secrecy.",
+    3:"Write it down. The inner life wants a sentence, not only a feeling.",
+    4:"Give the sabbatical a gentle structure so rest does not dissolve into guilt.",
+    5:"A short trip or a change of desk can unstick a 7 year. Motion in service of insight.",
+    6:"Do not disappear from the people who love you. Quiet is not the same as absence.",
+    7:"Peak inner month. Mental house-cleaning. Trust what arrives when you stop performing.",
+    8:"Look at money as information, not as a verdict on your worth this year.",
+    9:"Release a public goal that was only armour. The 7 year is allowed to be unfinished on the outside.",
+    10:"Begin the next inquiry. A new question is the 7-year version of a new project.",
+    11:"Find one fellow student. Two quiet minds can keep each other honest.",
+    12:"Close the year without forcing a reveal. Some harvests are private."
+  },
+  8:{
+    1:"Begin the year with the ledger open. What is the work worth, and who decides?",
+    2:"Power is cleaner when it is shared on purpose. Find the right deputy, not a rival.",
+    3:"Speak the ask. A 8 year that stays polite and unpaid is wasting the season.",
+    4:"Build the machine that can hold the harvest — systems, contracts, a week that can repeat.",
+    5:"Take a calculated risk. Change the offer, the room, or the price.",
+    6:"Do not let ambition eat the household. Success that ruins the kitchen is a poor crop.",
+    7:"Step back and read the board. Strategy is also an 8-year skill.",
+    8:"Peak harvest-month. Negotiate. Collect. Measure. Be fair while you are strong.",
+    9:"Complete a deal or a role. Do not drag a finished chapter into next year as a trophy.",
+    10:"Start the next climb from solid ground, not from a win you have not banked.",
+    11:"Authority with a partner. Two signatures can be wiser than one fist.",
+    12:"Close the books. Gratitude and a clean number are the same gesture this month."
+  },
+  9:{
+    1:"Begin the year by naming what is ending. A 9 year that pretends it is a 1 year will trip.",
+    2:"Forgive one person, including yourself, in private. Do not make a ceremony of it unless that helps.",
+    3:"Tell the true story of the cycle that is closing. Speech can be a form of packing.",
+    4:"Sort the papers, the shelves, the obligations. Completion likes order.",
+    5:"Give something away. Travel light. A 9 year moves better without a museum of the last eight.",
+    6:"Tend the goodbyes at home. Endings that are kind do not have to be cold.",
+    7:"Sit with the empty space. Do not rush to fill it with the next identity.",
+    8:"Settle money that belongs to the old cycle. Leave no quiet debt for the 1 year to inherit.",
+    9:"Peak completion-month. Finish, bless, release. This is the year's true work.",
+    10:"You may feel a 1-year itch. Notice it. Plant only what must live through winter — not a new empire.",
+    11:"Endings are easier with a witness. Let someone stand with you while you close the door.",
+    12:"Walk out of the nine-year house with empty hands and a clean floor. The next 1 is coming."
+  }
+};
+
+function reduce(n){
+  n = Math.abs(Number(n)||0);
+  while(n > 9) n = String(n).split("").reduce((a,d)=>a+Number(d),0);
+  return n || 9;
+}
+function digitSum(n){
+  return String(n).split("").reduce((a,d)=>a+Number(d),0);
+}
+function personalYear(month, day, year){
+  return reduce(digitSum(month) + digitSum(day) + digitSum(year));
+}
+function personalMonth(py, calMonth){ return reduce(py + calMonth); }
+function personalDay(pm, calDay){ return reduce(pm + calDay); }
+
+function load(){
+  try{ return JSON.parse(localStorage.getItem(STORE)) || {people:[], active:null, notes:{}}; }
+  catch(e){ return {people:[], active:null, notes:{}}; }
+}
+function save(s){ localStorage.setItem(STORE, JSON.stringify(s)); }
+
+let state = load();
+let view = state.active ? "today" : "cover";
+let cycleFocus = null;
+let lookYear = new Date().getFullYear();
+
+function activePerson(){
+  return (state.people||[]).find(p=>p.id===state.active) || null;
+}
+function uid(){ return "p"+Math.random().toString(36).slice(2,9); }
+
+function nowNumbers(person, date){
+  const d = date || new Date();
+  const y = d.getFullYear();
+  const m = d.getMonth()+1;
+  const day = d.getDate();
+  const py = personalYear(person.month, person.day, y);
+  const pm = personalMonth(py, m);
+  const pd = personalDay(pm, day);
+  return {y,m,day,py,pm,pd};
+}
+
+function esc(s){
+  return String(s||"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+function render(){
+  const el = document.getElementById("app");
+  const tabs = document.getElementById("tabs");
+  const person = activePerson();
+  if(view==="cover" || !person){
+    tabs.classList.add("hidden");
+    el.innerHTML = coverHTML();
+    bindCover();
+    return;
+  }
+  tabs.classList.remove("hidden");
+  [...tabs.querySelectorAll("button")].forEach(b=>b.classList.toggle("on", b.dataset.go===view));
+  if(view==="today") el.innerHTML = todayHTML(person);
+  if(view==="year") el.innerHTML = yearHTML(person);
+  if(view==="months") el.innerHTML = monthsHTML(person);
+  if(view==="cycle") el.innerHTML = cycleHTML(person);
+  if(view==="people") el.innerHTML = peopleHTML(person);
+  if(view==="solve") el.innerHTML = solveHTML(person);
+  if(view==="about") el.innerHTML = aboutHTML();
+  bindApp();
+}
+
+function coverHTML(){
+  return `
+  <header class="app">
+    <div class="pill">Numerikey</div>
+    <h1 class="wordmark">Right Action</h1>
+    <p class="tag">What this year is for — and the next useful step.</p>
+  </header>
+  <div class="cover-hero">
+    <p class="lead">A nine-year cycle. A month inside it. One honest next step.</p>
+  </div>
+  <section class="panel">
+    <p class="kicker">Begin</p>
+    <h2>Whose year?</h2>
+    <label>Name</label>
+    <input id="nm" placeholder="You, or someone you love" maxlength="40">
+    <div class="row2">
+      <div>
+        <label>Birth month</label>
+        <select id="mo">${MONTHS.map((n,i)=>`<option value="${i+1}">${n}</option>`).join("")}</select>
+      </div>
+      <div>
+        <label>Birth day</label>
+        <input id="dy" type="number" min="1" max="31" value="1">
+      </div>
+    </div>
+    <p class="hint">Birth year is not used. The personal year is month + day + this calendar year.</p>
+    <div class="actions">
+      <button class="primary" id="go">Show my year</button>
+      <button class="ghost" id="about">How it works</button>
+    </div>
+  </section>
+  <p class="fine">Inspired by Juno Jordan's personal-year method in <em>Your Right Action Number</em>. Not affiliated with the Jordan estate or DeVorss &amp; Company. Original wording. A timing lens, not fate. Not therapy. Nothing leaves this phone.</p>`;
+}
+
+function todayHTML(p){
+  const n = nowNumbers(p);
+  const Y = YEARS[n.py];
+  const M = MONTH_LAYER[n.pm];
+  const blend = BLEND[n.py][n.m];
+  const noteKey = `${p.id}-${n.y}-${n.m}-${n.day}`;
+  const note = (state.notes&&state.notes[noteKey]) || "";
+  return `
+  <header class="app">
+    <div class="pill">${esc(p.name||"You")}</div>
+    <h1 class="wordmark">Right Action</h1>
+    <p class="tag">${MONTHS[n.m-1]} ${n.day}, ${n.y}</p>
+  </header>
+  <div class="nums">
+    <div class="num is-year"><b>${n.py}</b><span>Year · ${Y.name}</span></div>
+    <div class="num"><b>${n.pm}</b><span>Month · ${M.name}</span></div>
+    <div class="num is-day"><b>${n.pd}</b><span>Day</span></div>
+  </div>
+  <section class="panel">
+    <p class="kicker">Today's right action</p>
+    <h2>${Y.name} year · ${M.name} month</h2>
+    <p>${esc(blend)}</p>
+    <p class="hint">${esc(M.tip)}</p>
+    <p><strong>Today's day (${n.pd} · ${DAYS[n.pd].name}).</strong> ${esc(DAYS[n.pd].use)}</p>
+  </section>
+  <section class="panel">
+    <p class="kicker">This year in one line</p>
+    <p>${esc(Y.right)}</p>
+    <div class="actions">
+      <button class="tiny" data-go="year">Whole year</button>
+      <button class="tiny" data-go="months">All twelve months</button>
+    </div>
+  </section>
+  <section class="panel">
+    <p class="kicker">A note for today</p>
+    <textarea class="note" id="note" placeholder="What did you actually do? One line is enough.">${esc(note)}</textarea>
+    <div class="actions"><button class="ghost" id="savenote">Keep on this phone</button></div>
+  </section>`;
+}
+
+function yearHTML(p){
+  const n = nowNumbers(p);
+  const y = lookYear || n.y;
+  const py = personalYear(p.month, p.day, y);
+  const Y = YEARS[py];
+  return `
+  <header class="app">
+    <div class="pill">${esc(p.name||"You")} · ${y}</div>
+    <h1 class="wordmark">${py}</h1>
+    <p class="tag">${Y.kicker}</p>
+  </header>
+  <section class="panel">
+    <div class="row2">
+      <div>
+        <label>Look at year</label>
+        <input id="looky" type="number" min="1900" max="2100" value="${y}">
+      </div>
+      <div>
+        <label>&nbsp;</label>
+        <button class="ghost" id="setyear" style="width:100%">Show that year</button>
+      </div>
+    </div>
+  </section>
+  <section class="panel">
+    <p class="kicker">Personal year ${py}</p>
+    <h2>${Y.name}</h2>
+    <p>${esc(Y.theme)}</p>
+    <hr class="soft">
+    <h3 class="do">Right action</h3>
+    <p>${esc(Y.right)}</p>
+    <h3 class="dont">Caution</h3>
+    <p>${esc(Y.caution)}</p>
+  </section>
+  <section class="panel">
+    <p class="kicker">Life areas</p>
+    <h3>Work</h3><p>${esc(Y.work)}</p>
+    <h3>Money</h3><p>${esc(Y.money)}</p>
+    <h3>People</h3><p>${esc(Y.love)}</p>
+    <h3>Home</h3><p>${esc(Y.home)}</p>
+    <h3>Body</h3><p>${esc(Y.body)}</p>
+    <h3>Travel</h3><p>${esc(Y.travel)}</p>
+    <h3 class="dont">What not to start</h3><p>${esc(Y.avoidStart)}</p>
+  </section>
+  <section class="panel">
+    <div class="row2">
+      <div>
+        <p class="kicker">Do</p>
+        <ul class="list">${Y.do.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+      </div>
+      <div>
+        <p class="kicker">Don't</p>
+        <ul class="list">${Y.dont.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+      </div>
+    </div>
+  </section>`;
+}
+
+function monthsHTML(p){
+  const n = nowNumbers(p);
+  const y = lookYear || n.y;
+  const py = personalYear(p.month, p.day, y);
+  const Y = YEARS[py];
+  const cards = MONTHS.map((name,i)=>{
+    const cal = i+1;
+    const pm = personalMonth(py, cal);
+    const M = MONTH_LAYER[pm];
+    const now = (cal===n.m && y===n.y) ? " now" : "";
+    return `<article class="month${now}">
+      <div class="top">
+        <div>
+          <p class="kicker" style="margin:0">${name}${now?" · this month":""}</p>
+          <div class="pm">${pm} · ${M.name}</div>
+        </div>
+        <span class="chip">in a ${py} year</span>
+      </div>
+      <p style="margin:.35rem 0 0">${esc(BLEND[py][cal])}</p>
+    </article>`;
+  }).join("");
+  return `
+  <header class="app">
+    <div class="pill">${esc(p.name||"You")} · ${y}</div>
+    <h1 class="wordmark">Months</h1>
+    <p class="tag">A ${py} ${Y.name} year, month by month.</p>
+  </header>
+  ${cards}`;
+}
+
+function cycleHTML(p){
+  const n = nowNumbers(p);
+  const focus = cycleFocus || n.py;
+  const Y = YEARS[focus];
+  const cells = [1,2,3,4,5,6,7,8,9].map(num=>{
+    const cls = num===n.py ? "cy now" : (num<n.py ? "cy past" : "cy");
+    return `<button class="${cls}" data-cy="${num}"><b>${num}</b>${YEARS[num].name}</button>`;
+  }).join("");
+  const yearsOf = (num)=>{
+    const out=[];
+    for(let y=n.y-12;y<=n.y+8;y++){
+      if(personalYear(p.month,p.day,y)===num) out.push(y);
+    }
+    return out;
+  };
+  const list = yearsOf(focus);
+  return `
+  <header class="app">
+    <div class="pill">Nine-year map</div>
+    <h1 class="wordmark">Cycle</h1>
+    <p class="tag">You are in year ${n.py} now. Tap any number.</p>
+  </header>
+  <div class="cycle">${cells}</div>
+  <section class="panel" style="margin-top:1rem">
+    <p class="kicker">Year ${focus}</p>
+    <h2>${Y.name}</h2>
+    <p>${esc(Y.theme)}</p>
+    <p><strong class="do">Right action.</strong> ${esc(Y.right)}</p>
+    <p class="hint">Years in this seat for ${esc(p.name||"you")}: ${list.map(y=>y===n.y?`<strong>${y} now</strong>`:y).join(" · ")||"—"}</p>
+  </section>`;
+}
+
+function peopleHTML(p){
+  const rows = (state.people||[]).map(x=>`
+    <div class="person${x.id===state.active?" active":""}">
+      <div>
+        <strong>${esc(x.name||"Unnamed")}</strong>
+        <div class="fine">${MONTHS[x.month-1]} ${x.day} · year ${personalYear(x.month,x.day,new Date().getFullYear())} now</div>
+      </div>
+      <div>
+        <button class="tiny" data-use="${x.id}">Open</button>
+        <button class="tiny" data-del="${x.id}">Remove</button>
+      </div>
+    </div>`).join("") || `<p class="muted">No one saved yet.</p>`;
+  return `
+  <header class="app">
+    <div class="pill">On this phone</div>
+    <h1 class="wordmark">People</h1>
+    <p class="tag">Profiles stay here. Nothing is uploaded.</p>
+  </header>
+  <div class="people">${rows}</div>
+  <section class="panel" style="margin-top:1rem">
+    <p class="kicker">Add someone</p>
+    <label>Name</label>
+    <input id="nm" placeholder="Name">
+    <div class="row2">
+      <div>
+        <label>Birth month</label>
+        <select id="mo">${MONTHS.map((n,i)=>`<option value="${i+1}">${n}</option>`).join("")}</select>
+      </div>
+      <div>
+        <label>Birth day</label>
+        <input id="dy" type="number" min="1" max="31" value="1">
+      </div>
+    </div>
+    <div class="actions">
+      <button class="primary" id="add">Save on this phone</button>
+      <button class="ghost" data-go="about">How it works</button>
+    </div>
+  </section>`;
+}
+
+function solveHTML(p){
+  const n = nowNumbers(p);
+  const Y = YEARS[n.py];
+  const M = MONTH_LAYER[n.pm];
+  const D = DAYS[n.pd];
+  return `
+  <header class="app">
+    <div class="pill">${esc(p.name||"You")}</div>
+    <h1 class="wordmark">Ask</h1>
+    <p class="tag">Right action for a problem, in this year and this month.</p>
+  </header>
+  <section class="panel">
+    <p class="kicker">Name the problem</p>
+    <label>What needs a next step?</label>
+    <textarea class="note" id="prob" placeholder="One honest sentence. Work, money, a person, a room, a body, a decision."></textarea>
+    <div class="actions"><button class="primary" id="askgo">What is the right action?</button></div>
+    <div id="askout"></div>
+  </section>
+  <section class="panel">
+    <p class="kicker">The lens you are in</p>
+    <p><strong>Year ${n.py} ${Y.name}.</strong> ${esc(Y.right)}</p>
+    <p><strong>Month ${n.pm} ${M.name}.</strong> ${esc(BLEND[n.py][n.m])}</p>
+    <p><strong>Day ${n.pd} ${D.name}.</strong> ${esc(D.use)}</p>
+  </section>
+  <section class="panel">
+    <p class="kicker">Pick a life area</p>
+    <p>Work — ${esc(Y.work)}</p>
+    <p>Money — ${esc(Y.money)}</p>
+    <p>People — ${esc(Y.love)}</p>
+    <p>Home — ${esc(Y.home)}</p>
+    <p>Body — ${esc(Y.body)}</p>
+    <p>Travel — ${esc(Y.travel)}</p>
+    <p class="dont">Do not start — ${esc(Y.avoidStart)}</p>
+  </section>`;
+}
+
+function aboutHTML(){
+  return `
+  <header class="app">
+    <div class="pill">How it works</div>
+    <h1 class="wordmark">About</h1>
+    <p class="tag">A timing lens. Not a verdict.</p>
+  </header>
+  <section class="panel">
+    <p class="kicker">The method</p>
+    <h2>Juno Jordan's personal year</h2>
+    <p>Dr Juno Jordan (1884–1984) spent fifty years counselling with numbers. In <em>Your Right Action Number</em> she treated the personal year as a practical guide: what kind of action fits this chapter of the nine-year cycle, and what fits this month inside it. The book is a year-and-month almanac, plus — in some editions — her short autobiography.</p>
+    <p>This app uses her calendar method and covers the same map: nine years, twelve months inside each year, days, past and future years, people, and a problem lens. It does not copy her book. The sentences here are original, written in that same constructive spirit — right action, not fortune-telling.</p>
+    <p>Her larger textbook, <em>Numerology: The Romance in Your Name</em>, is a different book (Destiny, Birth Force, Heart's Desire, Pinnacles, Essence). That chart work lives in Numera and the Pythagorean app, not here.</p>
+  </section>
+  <section class="panel">
+    <p class="kicker">The sums</p>
+    <h2>How your numbers are made</h2>
+    <ol class="list">
+      <li>Personal Year = birth month + birth day + calendar year, reduced to 1–9.</li>
+      <li>Personal Month = Personal Year + calendar month, reduced to 1–9.</li>
+      <li>Personal Day = Personal Month + calendar day, reduced to 1–9.</li>
+    </ol>
+    <p class="hint">The year runs 1 January to 31 December. Birth year is not used. Master numbers are reduced so the nine-year walk stays a walk of nine.</p>
+    <p class="hint">Example: 27 December in 2026 → 3 + 9 + 1 = 13 → Personal Year 4.</p>
+  </section>
+  <section class="panel">
+    <p class="kicker">The nine</p>
+    <p>1 plant · 2 tend · 3 show · 4 build · 5 loosen · 6 repair · 7 listen inward · 8 measure · 9 clear.</p>
+  </section>
+  <p class="fine">Inspired by Juno Jordan's personal-year timing method in <em>Your Right Action Number</em> (DeVorss, 1979). Not affiliated with the Juno Jordan estate or DeVorss &amp; Company. Not a reproduction of the book. Not therapy, not medical advice, not fate. Numbers are a lens. The decision stays yours. Nothing leaves this phone.</p>
+  <div class="actions"><button class="ghost" data-go="today">Back</button></div>`;
+}
+
+function bindCover(){
+  document.getElementById("about").onclick = ()=>{ view="about"; render(); };
+  document.getElementById("go").onclick = ()=>{
+    const name = document.getElementById("nm").value.trim() || "Me";
+    const month = Number(document.getElementById("mo").value);
+    const day = Math.min(31, Math.max(1, Number(document.getElementById("dy").value)||1));
+    const person = {id:uid(), name, month, day};
+    state.people = state.people||[];
+    state.people.unshift(person);
+    state.active = person.id;
+    save(state);
+    view="today";
+    render();
+  };
+}
+
+function bindApp(){
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{ view=b.dataset.go; render(); window.scrollTo(0,0); });
+  const note = document.getElementById("note");
+  const savenote = document.getElementById("savenote");
+  if(note && savenote){
+    savenote.onclick = ()=>{
+      const p = activePerson();
+      const n = nowNumbers(p);
+      const key = `${p.id}-${n.y}-${n.m}-${n.day}`;
+      state.notes = state.notes||{};
+      state.notes[key] = note.value;
+      save(state);
+      savenote.textContent = "Kept";
+    };
+  }
+  const setyear = document.getElementById("setyear");
+  if(setyear){
+    setyear.onclick = ()=>{
+      lookYear = Number(document.getElementById("looky").value)||new Date().getFullYear();
+      render();
+    };
+  }
+  document.querySelectorAll("[data-cy]").forEach(b=>b.onclick=()=>{ cycleFocus=Number(b.dataset.cy); render(); });
+  const add = document.getElementById("add");
+  if(add){
+    add.onclick = ()=>{
+      const name = document.getElementById("nm").value.trim() || "Unnamed";
+      const month = Number(document.getElementById("mo").value);
+      const day = Math.min(31, Math.max(1, Number(document.getElementById("dy").value)||1));
+      const person = {id:uid(), name, month, day};
+      state.people.unshift(person);
+      state.active = person.id;
+      save(state);
+      view="today";
+      render();
+    };
+  }
+  const askgo = document.getElementById("askgo");
+  if(askgo){
+    askgo.onclick = ()=>{
+      const p = activePerson();
+      const n = nowNumbers(p);
+      const Y = YEARS[n.py];
+      const txt = (document.getElementById("prob").value||"").toLowerCase();
+      let area = "work";
+      if(/money|bill|pay|debt|price|bank/.test(txt)) area = "money";
+      else if(/love|partner|friend|son|daughter|family|people|him|her|them/.test(txt)) area = "love";
+      else if(/home|house|room|clutter|kitchen|garage/.test(txt)) area = "home";
+      else if(/body|health|sleep|pain|tired/.test(txt)) area = "body";
+      else if(/travel|trip|move|leave/.test(txt)) area = "travel";
+      const out = document.getElementById("askout");
+      out.innerHTML = `<hr class="soft"><p class="kicker">Right action</p>
+        <p>Hold the problem inside a <strong>${n.py} ${Y.name}</strong> year and a <strong>${n.pm} ${MONTH_LAYER[n.pm].name}</strong> month.</p>
+        <p>${esc(Y[area])}</p>
+        <p>${esc(BLEND[n.py][n.m])}</p>
+        <p>${esc(DAYS[n.pd].use)}</p>
+        <p class="hint">If the urge is to start something this year should not carry: ${esc(Y.avoidStart)}</p>`;
+    };
+  }
+  document.querySelectorAll("[data-use]").forEach(b=>b.onclick=()=>{ state.active=b.dataset.use; save(state); view="today"; render(); });
+  document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{
+    const id=b.dataset.del;
+    state.people = state.people.filter(x=>x.id!==id);
+    if(state.active===id) state.active = state.people[0]?state.people[0].id:null;
+    save(state);
+    if(!state.active) view="cover";
+    render();
+  });
+}
+
+document.getElementById("tabs").addEventListener("click", e=>{
+  const b = e.target.closest("button[data-go]");
+  if(!b) return;
+  view = b.dataset.go;
+  render();
+  window.scrollTo(0,0);
+});
+
+if("serviceWorker" in navigator){
+  navigator.serviceWorker.register("./sw.js").catch(()=>{});
+}
+
+render();
+</script>
+</body>
+</html>

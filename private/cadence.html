@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Cadence — your personal year, month and day</title>
+<meta name="description" content="A numerology guide to your personal year, month and day, coloured by the essence you carry from your name.">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href='data:application/manifest+json,{"name":"Cadence","short_name":"Cadence","start_url":".","display":"standalone","background_color":"%23000000","theme_color":"%23000000","icons":[{"src":"data:image/svg%2Bxml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27%3E%3Crect width=%27512%27 height=%27512%27 fill=%27%23000%27/%3E%3Ccircle cx=%27256%27 cy=%27256%27 r=%27170%27 fill=%27none%27 stroke=%27%23333%27 stroke-width=%2710%27/%3E%3Cpath d=%27M256 86 A170 170 0 0 1 400 346%27 fill=%27none%27 stroke=%27%238B7CF6%27 stroke-width=%2718%27 stroke-linecap=%27round%27/%3E%3Ccircle cx=%27400%27 cy=%27346%27 r=%2734%27 fill=%27%23F6D365%27/%3E%3C/svg%3E","sizes":"512x512","type":"image/svg+xml"}]}'>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23000'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%238B7CF6' stroke-width='4'/%3E%3Ccircle cx='50' cy='44' r='6' fill='%23F6D365'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#000;--ink:#EDEBF5;--dim:#9C98AE;--faint:#5E5A6E;--line:#23202E;--panel:#0A0910;
+  --c1:#F25C54;--c2:#F7A072;--c3:#F6D365;--c4:#7BD389;--c5:#3DD6D0;--c6:#5AA9E6;--c7:#8B7CF6;--c8:#D16BE0;--c9:#E8E6F0;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:#000;-webkit-text-size-adjust:100%}
+body{background:#000;color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.55;min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+:focus-visible{outline:2px solid var(--c3);outline-offset:3px;border-radius:4px}
+.wrap{max-width:560px;margin:0 auto;padding:calc(20px + env(safe-area-inset-top)) 20px 24px}
+
+.grad{background:linear-gradient(90deg,var(--c1),var(--c3),var(--c5),var(--c7),var(--c8),var(--c1));background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 14s linear infinite}
+@keyframes flow{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+@media (prefers-reduced-motion:reduce){.grad{animation:none}.pulse{animation:none!important}}
+
+h1{font-family:var(--serif);font-weight:400;font-size:2.6rem;line-height:1.05;letter-spacing:-.01em}
+h2{font-family:var(--serif);font-weight:400;font-size:1.6rem;line-height:1.15;margin-bottom:.35rem}
+h3{font-family:var(--serif);font-weight:400;font-size:1.2rem;line-height:1.2}
+p{max-width:62ch}
+.dim{color:var(--dim)}
+.small{font-size:.875rem}
+
+.top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.brand{font-family:var(--serif);font-size:1.15rem}
+.date{color:var(--dim);font-size:.95rem}
+
+/* hero ring */
+.hero{position:relative;margin:8px auto 4px;max-width:360px}
+.ring{width:100%;height:auto;display:block}
+.pulse{animation:pulse 4s ease-in-out infinite;transform-origin:center;transform-box:fill-box}
+@keyframes pulse{50%{opacity:.35}}
+.legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;color:var(--dim);font-size:.85rem;margin-bottom:26px}
+.legend b{font-weight:600}
+
+.block{padding:22px 0;border-top:1px solid var(--line)}
+.block:first-of-type{border-top:0}
+.num{display:inline-flex;align-items:center;justify-content:center;min-width:2.1rem;height:2.1rem;padding:0 .45rem;border-radius:50%;font-family:var(--serif);font-size:1.2rem;color:#000;margin-right:.6rem;vertical-align:middle}
+.head{display:flex;align-items:center;margin-bottom:10px}
+.head .kicker{color:var(--dim);font-size:.9rem;line-height:1.2}
+.head h3{margin-top:1px}
+.dos{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin-top:12px;font-size:.93rem}
+.dos dt{color:var(--dim)}
+.master{margin-top:10px;padding-left:12px;border-left:2px solid var(--c7);color:var(--dim);font-size:.93rem}
+
+.essence{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:6px}
+.transits{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.tr{text-align:center;padding:10px 4px;border-radius:12px;background:#000;border:1px solid var(--line)}
+.tr .l{font-family:var(--serif);font-size:1.9rem;line-height:1}
+.tr .v{font-size:.8rem;color:var(--dim)}
+.tr .k{font-size:.78rem;color:var(--faint);margin-top:2px}
+.tr.none .l{color:var(--faint)}
+
+/* year view */
+.yearbar{display:flex;align-items:center;justify-content:space-between;margin:6px 0 18px}
+.yearbar button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);font-size:1.2rem}
+.yearbar .y{text-align:center}
+.yearbar .y h1{font-size:2.2rem}
+.month{margin-bottom:26px}
+.month .mh{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;gap:10px}
+.month .mh span{color:var(--dim);font-size:.88rem;text-align:right}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.wd{font-size:.72rem;color:var(--faint);text-align:center;padding-bottom:2px}
+.day{aspect-ratio:1;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:.8rem;line-height:1.1;position:relative}
+.day i{font-style:normal;font-family:var(--serif);font-size:1.05rem}
+.day small{font-size:.62rem;color:var(--dim)}
+.day.today{box-shadow:inset 0 0 0 2px var(--ink)}
+.key{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:.8rem;color:var(--dim);margin-bottom:22px}
+.key span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--k);margin-right:5px;vertical-align:-1px}
+
+/* cycle view */
+.wave{width:100%;height:auto;display:block;margin:6px 0 20px}
+.rows{list-style:none}
+.rows li{display:grid;grid-template-columns:3.4rem 2.6rem 1fr auto;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.rows li.now{background:linear-gradient(90deg,#ffffff0d,transparent);border-radius:10px;padding-left:8px;margin-left:-8px}
+.rows .yr{font-family:var(--serif);font-size:1.1rem}
+.rows .pyn{width:2.3rem;height:2.3rem;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#000;font-family:var(--serif);font-size:1.1rem}
+.rows .t{font-size:.9rem;line-height:1.3}
+.rows .t em{font-style:normal;color:var(--dim);display:block;font-size:.8rem}
+.rows .es{text-align:right;font-size:.8rem;color:var(--dim);line-height:1.25}
+.rows .es b{display:block;font-family:var(--serif);font-weight:400;font-size:1.1rem}
+
+/* you view */
+.core{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 24px}
+.core div{border:1px solid var(--line);border-radius:14px;padding:14px}
+.core b{font-family:var(--serif);font-weight:400;font-size:2rem;display:block;line-height:1}
+.core span{font-size:.85rem;color:var(--dim)}
+
+/* form */
+.field{margin-bottom:18px}
+.field label{display:block;margin-bottom:6px;font-size:.95rem}
+.field .hint{font-size:.82rem;color:var(--dim);margin-top:5px}
+.field input{width:100%;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;font-size:1.05rem;color-scheme:dark}
+.field input:focus{border-color:var(--c7);outline:none}
+.btn{display:block;width:100%;padding:15px;border-radius:14px;background:var(--ink);color:#000;font-weight:600;font-size:1rem}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line);font-weight:500}
+.btn+.btn{margin-top:10px}
+.err{color:var(--c1);font-size:.9rem;margin:-6px 0 14px;min-height:1.2em}
+.intro{margin:36px 0 30px}
+.intro p{margin-top:14px;color:var(--dim)}
+.introart{width:100%;max-width:300px;display:block;margin:0 auto 10px}
+
+/* tabs */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:#000000ee;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:5}
+nav.tabs button{flex:1;max-width:140px;padding:10px 0 12px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--faint);font-size:.75rem}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button[aria-current="page"]{color:var(--ink)}
+
+/* sheet */
+.scrim{position:fixed;inset:0;background:#000b;display:none;z-index:10;align-items:flex-end;justify-content:center}
+.scrim.open{display:flex}
+.sheet{background:#0B0A12;border:1px solid var(--line);border-bottom:0;border-radius:22px 22px 0 0;width:100%;max-width:560px;max-height:88vh;overflow:auto;padding:20px 20px calc(24px + env(safe-area-inset-bottom));animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:0}}
+.sheet .close{float:right;width:40px;height:40px;border-radius:50%;border:1px solid var(--line);font-size:1.1rem}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.trio div{border-radius:14px;padding:12px 8px;text-align:center;color:#000}
+.trio b{font-family:var(--serif);font-weight:400;font-size:1.8rem;display:block;line-height:1}
+.trio span{font-size:.75rem}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<main class="wrap" id="app" aria-live="polite"></main>
+
+<nav class="tabs hidden" id="tabs" aria-label="Sections">
+  <button data-view="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>Today</button>
+  <button data-view="year"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4.5" width="18" height="16" rx="3"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4"/></svg>Year</button>
+  <button data-view="cycle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 14c2.5 0 2.5-6 5-6s2.5 8 5 8 2.5-8 5-8 2.5 6 5 6"/></svg>Cycle</button>
+  <button data-view="you"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c1.2-4 4.3-6 8-6s6.8 2 8 6"/></svg>You</button>
+</nav>
+
+<div class="scrim" id="scrim" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- content ---------- */
+const COL={1:"#F25C54",2:"#F7A072",3:"#F6D365",4:"#7BD389",5:"#3DD6D0",6:"#5AA9E6",7:"#8B7CF6",8:"#D16BE0",9:"#E8E6F0"};
+
+const YEAR={
+1:{t:"A year of beginnings",s:"begin",body:"The first step of a new nine-year cycle. What you start now sets the tone for the years ahead, so choose deliberately. Put yourself forward, make the decision you've been circling, and act without waiting for permission. Independence and courage are favoured.",d:"Start the thing. Choose for yourself.",a:"Waiting for someone else to go first."},
+2:{t:"A year of patience",s:"wait and cooperate",body:"Last year's seeds are underground. Growth is slow and mostly invisible, which can feel frustrating. This year rewards tact, listening, partnership and attention to detail, and relationships deepen. Pushing hard tends to backfire; gentle persistence works.",d:"Collaborate. Notice the small things.",a:"Forcing outcomes or rushing results."},
+3:{t:"A year of expression",s:"create and connect",body:"Energy lifts. Your social world widens and ideas come easily. It's a year to write, make, share and enjoy yourself. The risk is scattering your energy across too many things, so pick what matters and give it your voice.",d:"Say it, make it, show it.",a:"Spreading yourself too thin."},
+4:{t:"A year of foundations",s:"build and organise",body:"A working year. Structure, routine and steady effort bring solid results. Sort out finances, health, home and systems. It can feel restrictive at times, but what you build now carries weight for years.",d:"Plan, then follow through.",a:"Shortcuts, and resenting the work."},
+5:{t:"A year of change",s:"move and explore",body:"The midpoint of the cycle, and things shift. Expect movement: travel, new people, unexpected turns and fresh options. Freedom calls. Stay flexible and say yes to what expands you, while watching for impulsiveness.",d:"Welcome change. Try something new.",a:"Clinging on, or reckless excess."},
+6:{t:"A year of responsibility",s:"care and commit",body:"Home, family and the people who rely on you come into focus. Commitments deepen, love included, and some duties feel heavier. It's a year for service, beauty, healing and putting your house in order, without losing yourself in everyone else's needs.",d:"Show up for the people you love.",a:"Martyrdom and over-giving."},
+7:{t:"A year of reflection",s:"rest and look within",body:"The pace slows and attention turns inward. This is a year for rest, study, spiritual practice and honest reassessment. Outer results may stall while understanding grows. Protect time alone; the answers come in the quiet.",d:"Retreat, learn, reflect.",a:"Chasing worldly results."},
+8:{t:"A year of power",s:"achieve and lead",body:"Last year's inner work turns into outward results. Career, money, authority and recognition are highlighted. Think big, act with confidence and run your affairs like a business. What you've built can pay off now, if you step up to it.",d:"Take charge. Ask for what you're worth.",a:"Burnout, or trading your values for ambition."},
+9:{t:"A year of completion",s:"release and finish",body:"The end of the nine-year cycle. What no longer fits falls away: habits, jobs, relationships, beliefs. Let it go with grace, finish what's unfinished and clear space. Compassion runs strong. A new cycle begins next year.",d:"Let go. Tie up loose ends.",a:"Launching major new ventures."}
+};
+const MASTER={
+11:"This year totals 11 before it reduces. Expect heightened intuition, flashes of inspiration and a more sensitive nervous system than usual. Ground yourself.",
+22:"This year totals 22 before it reduces. There's capacity to build something far larger than yourself, with practical vision on a big scale. The pressure is real too."
+};
+const MONTH={1:"Begin something and take the initiative.",2:"Go gently. Listen, wait and lean on others.",3:"Reach out, create and enjoy people.",4:"Get organised and put in the work.",5:"Expect movement. Loosen your grip.",6:"Tend home, family and commitments.",7:"Slow down and turn inward.",8:"Handle money, business and big decisions.",9:"Clear out and finish up."};
+const DAY={1:"Take the first step on something. Act on your own initiative.",2:"Be patient and cooperative. Small kindnesses land well today.",3:"Talk, write, create or see friends. Keep it light.",4:"Get practical. Clear the list and tidy up.",5:"Leave room for the unexpected. Break your routine.",6:"Look after home and the people close to you.",7:"Keep to yourself where you can. Think, read, rest.",8:"Deal with money, decisions and anything official.",9:"Finish things, clear out, give something away."};
+const DAYWORD={1:"start",2:"soften",3:"share",4:"work",5:"shift",6:"care",7:"rest",8:"act",9:"release"};
+const ESS={
+1:{t:"Independence",body:"A thread of self-reliance runs through this year of your life. Circumstances push you to stand on your own feet, make your own calls and lead."},
+2:{t:"Sensitivity",body:"Feelings and relationships are heightened. You're more receptive and more easily hurt, and cooperation matters more than usual."},
+3:{t:"Expression",body:"Creativity and sociability colour this year. Joy is available when you use your voice, though emotions can scatter."},
+4:{t:"Discipline",body:"Hard work and practical limits shape this year. It asks for effort and patience, and rewards both with security."},
+5:{t:"Freedom",body:"Restlessness and change run underneath. Travel, variety and new experience pull at you, and routines feel tight."},
+6:{t:"Devotion",body:"Love, family and responsibility sit at the centre. You're needed, and you give. Watch the line between care and self-sacrifice."},
+7:{t:"Solitude",body:"An inward, searching influence. Study, spirituality and a need for privacy are strong; people may feel further away."},
+8:{t:"Mastery",body:"Ambition, money and control are active. Your personal power gets tested and, handled well, grows."},
+9:{t:"Compassion",body:"Endings and wide-hearted service. Emotional depth increases, and something is asking to be released."}
+};
+const TRANSIT_KEY={p:"Physical",m:"Mental",s:"Spiritual"};
+const MONTHS=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const WEEK=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+/* ---------- maths ---------- */
+const ds=n=>String(Math.abs(n)).split("").reduce((a,b)=>a+(+b),0);
+function red(n,keep){while(n>9&&!(keep&&(n===11||n===22||n===33)))n=ds(n);return n}
+const letterVal=ch=>((ch.charCodeAt(0)-65)%9)+1;
+const lettersOf=s=>(s||"").toUpperCase().normalize("NFD").replace(/[^A-Z]/g,"");
+
+let P=null; // profile {name, dob}
+const KEY="cadence.profile.v1";
+
+function parts(){
+  const w=P.name.trim().split(/\s+/);
+  return{first:w[0]||"",middle:w.length>2?w.slice(1,-1).join(" "):"",last:w.length>1?w[w.length-1]:""};
+}
+function dobParts(){const[y,m,d]=P.dob.split("-").map(Number);return{y,m,d}}
+
+function personalYear(Y){
+  const b=dobParts();
+  let t=ds(b.m)+ds(b.d)+ds(Y);
+  let chk=t;while(chk>9&&chk!==11&&chk!==22)chk=ds(chk);
+  return{n:red(t),master:(chk===11||chk===22)?chk:null};
+}
+const personalMonth=(Y,m)=>red(personalYear(Y).n+m);
+const personalDay=(Y,m,d)=>red(personalMonth(Y,m)+d);
+
+function ageOn(Y,m,d){const b=dobParts();let a=Y-b.y;if(m<b.m||(m===b.m&&d<b.d))a--;return a}
+
+function transit(str,age){
+  const L=lettersOf(str);if(!L||age<0)return null;
+  const total=[...L].reduce((a,c)=>a+letterVal(c),0);
+  let pos=age%total;
+  for(const c of L){const v=letterVal(c);if(pos<v)return{letter:c,value:v};pos-=v}
+  return null;
+}
+function essence(age){
+  const p=parts();
+  const tp=transit(p.first,age),tm=transit(p.middle,age),ts=transit(p.last,age);
+  const sum=[tp,tm,ts].reduce((a,t)=>a+(t?t.value:0),0);
+  return{p:tp,m:tm,s:ts,compound:sum,n:sum?red(sum):0};
+}
+
+function core(){
+  const b=dobParts();
+  const lp=red(red(b.m,true)+red(b.d,true)+red(ds(b.y),true),true);
+  const all=lettersOf(P.name);
+  const vowels=[...all].filter(c=>"AEIOU".includes(c));
+  const cons=[...all].filter(c=>!"AEIOU".includes(c));
+  const sum=a=>a.reduce((x,c)=>x+letterVal(c),0);
+  return{lp,ex:red(sum([...all]),true),su:red(sum(vowels),true),pe:red(sum(cons),true)};
+}
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const col=n=>COL[red(n)]||"#888";
+const chip=(n,label)=>`<span class="num" style="background:${col(n)}" aria-label="${label||"number"} ${n}">${n}</span>`;
+function now(){const t=new Date();return{Y:t.getFullYear(),m:t.getMonth()+1,d:t.getDate(),w:t.getDay()}}
+function load(){try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null}catch(e){return null}}
+function save(p){try{localStorage.setItem(KEY,JSON.stringify(p))}catch(e){}}
+function wipe(){try{localStorage.removeItem(KEY)}catch(e){}}
+
+/* ---------- illustrations ---------- */
+function polar(cx,cy,r,deg){const a=deg*Math.PI/180;return[cx+r*Math.cos(a),cy+r*Math.sin(a)]}
+
+function ringSVG(py,pm,pd,month,day,daysInMonth){
+  const cx=160,cy=160,R=126,r2=88;
+  let s=`<svg class="ring" viewBox="0 0 320 320" role="img" aria-label="Year ${py} of your nine-year cycle, personal month ${pm}, personal day ${pd}">
+  <defs><radialGradient id="glow"><stop offset="0" stop-color="${COL[py]}" stop-opacity=".55"/><stop offset="1" stop-color="${COL[py]}" stop-opacity="0"/></radialGradient>
+  <radialGradient id="core"><stop offset="0" stop-color="${COL[pd]}" stop-opacity=".22"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient></defs>
+  <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#1E1B28" stroke-width="2"/>`;
+  if(py>1){
+    const [x0,y0]=polar(cx,cy,R,-90),[x1,y1]=polar(cx,cy,R,-90+(py-1)*40);
+    const large=(py-1)*40>180?1:0;
+    s+=`<path d="M${x0} ${y0} A${R} ${R} 0 ${large} 1 ${x1} ${y1}" fill="none" stroke="${COL[py]}" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>`;
+  }
+  // month ring
+  s+=`<circle cx="${cx}" cy="${cy}" r="${r2}" fill="none" stroke="#15131D" stroke-width="10"/>`;
+  const frac=((month-1)+(day-1)/daysInMonth)/12;
+  if(frac>0){
+    const [a0,b0]=polar(cx,cy,r2,-90),[a1,b1]=polar(cx,cy,r2,-90+frac*359.9);
+    s+=`<path d="M${a0} ${b0} A${r2} ${r2} 0 ${frac>.5?1:0} 1 ${a1} ${b1}" fill="none" stroke="${COL[pm]}" stroke-opacity=".8" stroke-width="10" stroke-linecap="round"/>`;
+  }
+  for(let i=0;i<12;i++){const [x,y]=polar(cx,cy,r2+12,-90+i*30);s+=`<circle cx="${x}" cy="${y}" r="${i===month-1?2.4:1.2}" fill="${i===month-1?COL[pm]:"#3A3648"}"/>`}
+  s+=`<circle cx="${cx}" cy="${cy}" r="70" fill="url(#core)"/>`;
+  for(let i=1;i<=9;i++){
+    const [x,y]=polar(cx,cy,R,-90+(i-1)*40);const lit=i===py,past=i<py;
+    if(lit)s+=`<circle class="pulse" cx="${x}" cy="${y}" r="34" fill="url(#glow)"/>`;
+    s+=`<circle cx="${x}" cy="${y}" r="${lit?17:11}" fill="${lit?COL[i]:"#000"}" stroke="${COL[i]}" stroke-opacity="${lit||past?1:.45}" stroke-width="${lit?0:1.5}"/>
+    <text x="${x}" y="${y+(lit?6:4.2)}" text-anchor="middle" font-family="Georgia,serif" font-size="${lit?17:12}" fill="${lit?"#000":(past?COL[i]:"#6E6A80")}">${i}</text>`;
+  }
+  s+=`<text x="${cx}" y="${cy+18}" text-anchor="middle" font-family="Iowan Old Style,Palatino,Georgia,serif" font-size="64" fill="${COL[pd]}">${pd}</text>
+  <text x="${cx}" y="${cy+40}" text-anchor="middle" font-family="-apple-system,Segoe UI,sans-serif" font-size="12" fill="#9C98AE">${DAYWORD[pd]}</text></svg>`;
+  return s;
+}
+
+function introSVG(){
+  let s=`<svg class="introart" viewBox="0 0 300 150" aria-hidden="true"><path d="M0 110 H300" stroke="#1E1B28"/>`;
+  let d="M10 110";
+  for(let i=1;i<=9;i++){const x=10+(i-1)*35,y=110-Math.sin((i-1)/8*Math.PI)*80;d+=` L${x} ${y}`}
+  s+=`<path d="${d.replace("M10 110 L","M")}" fill="none" stroke="#2C2838" stroke-width="2"/>`;
+  for(let i=1;i<=9;i++){const x=10+(i-1)*35,y=110-Math.sin((i-1)/8*Math.PI)*80;s+=`<circle cx="${x}" cy="${y}" r="9" fill="${COL[i]}"/><text x="${x}" y="${y+4}" text-anchor="middle" font-size="11" font-family="Georgia,serif" fill="#000">${i}</text>`}
+  return s+`</svg>`;
+}
+
+function waveSVG(rows,curY){
+  const w=340,h=120,pad=16,step=(w-pad*2)/(rows.length-1);
+  let d="",dots="";
+  rows.forEach((r,i)=>{const x=pad+i*step,y=h-18-(r.py-1)/8*(h-40);d+=(i?" L":"M")+x+" "+y;
+    dots+=`<circle cx="${x}" cy="${y}" r="${r.Y===curY?7:4}" fill="${COL[r.py]}"${r.Y===curY?' stroke="#fff" stroke-width="2"':""}/>`;
+    if(r.py===1)dots+=`<text x="${x}" y="${h-2}" text-anchor="middle" font-size="9" fill="#6E6A80" font-family="-apple-system,sans-serif">${r.Y}</text>`});
+  return `<svg class="wave" viewBox="0 0 ${w} ${h}" role="img" aria-label="Your personal years rising from 1 to 9 and starting again"><path d="${d}" fill="none" stroke="#2C2838" stroke-width="2"/>${dots}</svg>`;
+}
+
+/* ---------- views ---------- */
+let view="today",shownYear=now().Y;
+
+function render(){
+  const app=$("#app"),tabs=$("#tabs");
+  if(!P){tabs.classList.add("hidden");app.innerHTML=setupHTML();bindSetup();return}
+  tabs.classList.remove("hidden");
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-current",b.dataset.view===view?"page":"false"));
+  app.innerHTML=({today:todayHTML,year:yearHTML,cycle:cycleHTML,you:youHTML})[view]();
+  if(view==="year")bindYear();
+  if(view==="you")bindYou();
+  window.scrollTo(0,0);
+}
+
+function setupHTML(edit){
+  const p=edit&&P?P:{name:"",dob:""};
+  return `<section class="intro">${introSVG()}
+  <h1 class="grad">${edit?"Your details":"Cadence"}</h1>
+  <p>Every year, month and day carries a number that shapes what's easy and what's hard. Cadence works yours out from your birth date, then colours it with the essence carried by your name.</p></section>
+  <div id="setup">
+    <div class="field"><label for="fname">Full name at birth</label>
+      <input id="fname" autocomplete="name" value="${esc(p.name)}" placeholder="First, middle and last names">
+      <div class="hint">Use the name on your birth certificate, including every middle name. It drives your essence.</div></div>
+    <div class="field"><label for="fdob">Date of birth</label>
+      <input id="fdob" type="date" value="${esc(p.dob)}" max="${new Date().toISOString().slice(0,10)}"></div>
+    <div class="err" id="err" role="alert"></div>
+    <button class="btn" type="button" id="go">${edit?"Save changes":"Show my cycle"}</button>
+    ${edit?'<button class="btn ghost" type="button" id="cancel">Cancel</button>':""}
+    <p class="dim small" style="margin-top:16px">Your details stay on this device.</p>
+  </div>`;
+}
+function bindSetup(edit){
+  const go=()=>{
+    const name=$("#fname").value.trim().replace(/\s+/g," "),dob=$("#fdob").value;
+    if(lettersOf(name).length<2){$("#err").textContent="Enter your full birth name.";return}
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(dob)){$("#err").textContent="Enter your date of birth.";return}
+    P={name,dob};save(P);view="today";render();
+  };
+  $("#go").addEventListener("click",go);
+  $("#setup").addEventListener("keydown",e=>{if(e.key==="Enter"&&e.target.tagName==="INPUT"){e.preventDefault();go()}});
+  const c=$("#cancel");if(c)c.addEventListener("click",()=>{view="you";render()});
+}
+
+function todayHTML(){
+  const t=now(),py=personalYear(t.Y),pm=personalMonth(t.Y,t.m),pd=personalDay(t.Y,t.m,t.d);
+  const age=ageOn(t.Y,t.m,t.d),e=essence(age),Yc=YEAR[py.n],first=esc(parts().first);
+  const dim=new Date(t.Y,t.m,0).getDate();
+  return `<div class="top"><span class="brand grad">Cadence</span><span class="date">${WEEK[t.w]} ${t.d} ${MONTHS[t.m-1]}</span></div>
+  <div class="hero">${ringSVG(py.n,pm,pd,t.m,t.d,dim)}</div>
+  <div class="legend"><span>Year <b style="color:${COL[py.n]}">${py.master?py.master+"/":""}${py.n}</b></span><span>Month <b style="color:${COL[pm]}">${pm}</b></span><span>Day <b style="color:${COL[pd]}">${pd}</b></span>${e.n?`<span>Essence <b style="color:${COL[e.n]}">${e.n}</b></span>`:""}</div>
+
+  <section class="block"><div class="head">${chip(pd,"personal day")}<div><div class="kicker">Today, ${first}</div><h3>A ${pd} day</h3></div></div>
+  <p>${DAY[pd]}</p>${pd===py.n?`<p class="dim small" style="margin-top:8px">Today echoes your year, so its theme is louder than usual.</p>`:""}</section>
+
+  <section class="block"><div class="head">${chip(pm,"personal month")}<div><div class="kicker">${MONTHS[t.m-1]}</div><h3>A ${pm} month</h3></div></div>
+  <p>${MONTH[pm]}</p><p class="dim small" style="margin-top:8px">It sits inside a year that asks you to ${Yc.s}.</p></section>
+
+  <section class="block"><h2 class="grad">${Yc.t}</h2><p class="dim small" style="margin-bottom:10px">Personal year ${py.n} in ${t.Y}, step ${py.n} of 9</p>
+  <p>${Yc.body}</p>
+  <dl class="dos"><dt>Lean in</dt><dd>${Yc.d}</dd><dt>Ease off</dt><dd>${Yc.a}</dd></dl>
+  ${py.master?`<p class="master">${MASTER[py.master]}</p>`:""}</section>
+
+  ${e.n?essenceHTML(e,age,py.n):""}`;
+}
+
+function essenceHTML(e,age,pyn){
+  const tr=(t,k)=>t?`<div class="tr"><div class="l" style="color:${COL[t.value]}">${t.letter}</div><div class="v">${t.value} years</div><div class="k">${TRANSIT_KEY[k]}</div></div>`:`<div class="tr none"><div class="l">–</div><div class="v">no name</div><div class="k">${TRANSIT_KEY[k]}</div></div>`;
+  const E=ESS[e.n];
+  let blend;
+  if(e.n===pyn)blend=`Your essence and your personal year are both ${e.n}. The same energy is doubled, so you'll feel this year's theme strongly, for better and worse.`;
+  else blend=`Your ${pyn} year asks you to ${YEAR[pyn].s}. The ${e.n} essence underneath means that plays out through ${E.t.toLowerCase()}, so expect the year's events to test and grow that side of you.`;
+  return `<section class="block"><h2 class="grad">Your essence</h2>
+  <p class="dim small">Age ${age} to ${age+1}, birthday to birthday</p>
+  <div class="essence">
+    <div class="head">${chip(e.n,"essence")}<div><div class="kicker">${e.compound!==e.n?e.compound+"/"+e.n:"Essence "+e.n}</div><h3>${E.t}</h3></div></div>
+    <p>${E.body}</p>
+    <div class="transits">${tr(e.p,"p")}${tr(e.m,"m")}${tr(e.s,"s")}</div>
+    <p>${blend}</p>
+  </div></section>`;
+}
+
+function yearHTML(){
+  const t=now(),Y=shownYear,py=personalYear(Y);
+  let h=`<div class="yearbar"><button id="prevY" aria-label="Previous year">‹</button>
+  <div class="y"><h1 class="grad">${Y}</h1><div class="dim small">Personal year ${py.master?py.master+"/":""}${py.n}: ${YEAR[py.n].t.replace("A year of ","")}</div></div>
+  <button id="nextY" aria-label="Next year">›</button></div>
+  <div class="key">${[1,2,3,4,5,6,7,8,9].map(n=>`<span style="--k:${COL[n]}">${n} ${DAYWORD[n]}</span>`).join("")}</div>`;
+  for(let m=1;m<=12;m++){
+    const pm=personalMonth(Y,m),dim=new Date(Y,m,0).getDate(),off=(new Date(Y,m-1,1).getDay()+6)%7;
+    h+=`<section class="month"><div class="mh"><h3>${MONTHS[m-1]} <span style="color:${COL[pm]};font-size:1rem">· ${pm}</span></h3><span>${MONTH[pm]}</span></div>
+    <div class="grid">${["M","T","W","T","F","S","S"].map(x=>`<div class="wd">${x}</div>`).join("")}`;
+    for(let i=0;i<off;i++)h+=`<div></div>`;
+    for(let d=1;d<=dim;d++){
+      const pd=personalDay(Y,m,d),isT=Y===t.Y&&m===t.m&&d===t.d;
+      h+=`<button class="day${isT?" today":""}" data-date="${Y}-${m}-${d}" style="background:${COL[pd]}24" aria-label="${d} ${MONTHS[m-1]}, personal day ${pd}"><i style="color:${COL[pd]}">${pd}</i><small>${d}</small></button>`;
+    }
+    h+=`</div></section>`;
+  }
+  return h;
+}
+function bindYear(){
+  $("#prevY").onclick=()=>{shownYear--;render()};
+  $("#nextY").onclick=()=>{shownYear++;render()};
+  document.querySelectorAll(".day[data-date]").forEach(b=>b.onclick=()=>openDay(...b.dataset.date.split("-").map(Number)));
+  const t=now();
+  if(shownYear===t.Y){const el=document.querySelector(".day.today");if(el)setTimeout(()=>el.closest(".month").scrollIntoView({block:"start"}),0)}
+}
+
+function openDay(Y,m,d){
+  const py=personalYear(Y),pm=personalMonth(Y,m),pd=personalDay(Y,m,d),age=ageOn(Y,m,d),e=age>=0?essence(age):{n:0};
+  const w=new Date(Y,m-1,d).getDay();
+  $("#sheet").innerHTML=`<button class="close" id="closeS" aria-label="Close">✕</button>
+  <p class="dim small">${WEEK[w]}</p><h2 id="sheetTitle" class="grad">${d} ${MONTHS[m-1]} ${Y}</h2>
+  <div class="trio"><div style="background:${COL[py.n]}"><b>${py.n}</b><span>Year</span></div><div style="background:${COL[pm]}"><b>${pm}</b><span>Month</span></div><div style="background:${COL[pd]}"><b>${pd}</b><span>Day</span></div></div>
+  <h3>A ${pd} day</h3><p style="margin:6px 0 16px">${DAY[pd]}</p>
+  <h3>The month</h3><p style="margin:6px 0 16px">${MONTH[pm]}</p>
+  <h3>The year</h3><p style="margin:6px 0 16px">${YEAR[py.n].t}. ${YEAR[py.n].d}</p>
+  ${e.n?`<h3>Essence ${e.n}: ${ESS[e.n].t}</h3><p style="margin:6px 0 0" class="dim">Age ${age}. Transits ${[e.p,e.m,e.s].map(x=>x?x.letter:"–").join(" ")}.</p>`:""}`;
+  $("#scrim").classList.add("open");
+  $("#closeS").focus();
+  $("#closeS").onclick=closeSheet;
+}
+function closeSheet(){$("#scrim").classList.remove("open")}
+
+function cycleHTML(){
+  const t=now(),b=dobParts(),rows=[];
+  const start=t.Y-((personalYear(t.Y).n-1))-9;
+  for(let Y=start;Y<start+27;Y++){if(Y>=b.y)rows.push({Y,py:personalYear(Y).n})}
+  let h=`<div class="top"><span class="brand grad">Cadence</span></div>
+  <h1 class="grad" style="margin:10px 0 6px">Your nine-year cycle</h1>
+  <p class="dim">Personal years rise from 1 to 9 and begin again. Your essence changes on each birthday, as the letters of your name pass through your life.</p>
+  ${waveSVG(rows,t.Y)}<ul class="rows">`;
+  for(let Y=t.Y-4;Y<=t.Y+10;Y++){
+    if(Y<b.y)continue;
+    const py=personalYear(Y).n,age=Y-b.y,e=essence(age);
+    h+=`<li class="${Y===t.Y?"now":""}"><span class="yr">${Y}</span><span class="pyn" style="background:${COL[py]}">${py}</span>
+    <span class="t">${YEAR[py].t.replace("A year of ","").replace(/^./,c=>c.toUpperCase())}<em>${Y===t.Y?"This year":"Turning "+age}</em></span>
+    <span class="es">${e.n?`<b style="color:${COL[e.n]}">${e.n}</b>${[e.p,e.m,e.s].map(x=>x?x.letter:"–").join(" ")}`:""}</span></li>`;
+  }
+  return h+`</ul><p class="dim small" style="margin-top:14px">Right-hand column: essence for the year that starts on that birthday, with your physical, mental and spiritual transit letters.</p>`;
+}
+
+function youHTML(){
+  const c=core(),p=parts(),b=dobParts();
+  return `<div class="top"><span class="brand grad">Cadence</span></div>
+  <h1 class="grad" style="margin:10px 0 4px">${esc(P.name)}</h1>
+  <p class="dim">Born ${b.d} ${MONTHS[b.m-1]} ${b.y}</p>
+  <div class="core">
+    <div><b style="color:${col(c.lp)}">${c.lp}</b><span>Life path</span></div>
+    <div><b style="color:${col(c.ex)}">${c.ex}</b><span>Expression</span></div>
+    <div><b style="color:${col(c.su)}">${c.su}</b><span>Soul urge</span></div>
+    <div><b style="color:${col(c.pe)}">${c.pe}</b><span>Personality</span></div>
+  </div>
+  <h3>How your cycles are worked out</h3>
+  <p class="dim small" style="margin:6px 0 10px">Personal year: birth month and day added to the calendar year, reduced to one digit. It turns over on 1 January.</p>
+  <p class="dim small" style="margin-bottom:10px">Personal month and day: the year number plus the calendar month, then plus the day.</p>
+  <p class="dim small" style="margin-bottom:24px">Essence: each letter of your first name (physical), middle names (mental) and last name (spiritual) lasts as many years as its number. The three letters active at your age add up to your essence.${p.middle?"":" You have no middle name, so there's no mental transit."}</p>
+  <button class="btn ghost" id="edit">Edit details</button>
+  <button class="btn ghost" id="reset">Clear my details</button>`;
+}
+function bindYou(){
+  $("#edit").onclick=()=>{$("#app").innerHTML=setupHTML(true);bindSetup(true);$("#tabs").classList.add("hidden")};
+  $("#reset").onclick=()=>{if(confirm("Clear your saved details from this device?")){wipe();P=null;view="today";render()}};
+}
+
+/* ---------- wiring ---------- */
+document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>{view=b.dataset.view;if(view==="year")shownYear=now().Y;render()}));
+$("#scrim").addEventListener("click",e=>{if(e.target.id==="scrim")closeSheet()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSheet()});
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&P&&view==="today")render()});
+
+P=load();
+render();
+})();
+</script>
+</body>
+</html>

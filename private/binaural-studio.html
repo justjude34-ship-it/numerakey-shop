@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1"/>
+<meta name="theme-color" content="#05070a"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<title>SomniTwo</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;height:100svh;height:100dvh;background:#05070a;color:#f3ead8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;touch-action:manipulation;overflow:hidden}
+body{display:flex;flex-direction:column;align-items:center;padding:max(10px,env(safe-area-inset-top)) 14px max(10px,env(safe-area-inset-bottom));text-align:center}
+.cover{flex:0 0 auto;width:min(400px,100%);padding:6px 16px 4px}
+.cover svg{width:96px;height:96px;display:block;margin:0 auto 8px}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(1.55rem,7.4vw,2.05rem);letter-spacing:.01em;line-height:1.1;margin:0 8px;color:#f0e6d0}
+h1 span{color:#c9a24a}
+.tag{font-size:.8rem;color:#c9a24a;margin:6px 0 8px;letter-spacing:.08em}
+#play{width:72px;height:72px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,#f0d78a,#d4af37 46%,#1a7f78);color:#07141c;font-weight:700;font-size:.95rem;margin:2px 0 4px;box-shadow:0 0 26px rgba(232,195,106,.3);cursor:pointer;touch-action:manipulation;position:relative;z-index:5}
+#play.on{box-shadow:0 0 28px rgba(46,196,182,.45)}
+#clock{font-variant-numeric:tabular-nums;font-size:.86rem;min-height:1.2em;margin-bottom:8px}
+.panel{flex:1 1 auto;min-height:0;width:min(400px,100%);overflow-y:auto;-webkit-overflow-scrolling:touch;background:rgba(7,20,28,.7);border:1px solid rgba(232,195,106,.22);border-radius:16px;padding:10px;position:relative;z-index:4}
+.row{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:8px}
+button{background:rgba(7,20,28,.45);border:1px solid rgba(232,195,106,.28);color:#f3ead8;padding:8px 11px;border-radius:22px;font-size:.74rem;min-height:44px;cursor:pointer;touch-action:manipulation;position:relative;z-index:5;-webkit-user-select:none;user-select:none}
+button.on{background:linear-gradient(135deg,rgba(240,215,138,.92),rgba(46,196,182,.55));color:#07141c;font-weight:600}
+.vol{width:100%;text-align:left;font-size:.68rem;color:rgba(243,234,216,.7);margin:4px 0}
+input[type=range]{width:100%;accent-color:#d4af37;min-height:32px}
+#status{margin-top:6px;font-size:.74rem;color:rgba(243,234,216,.78)}
+#boost{margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="cover">
+<svg viewBox="0 0 200 200" aria-hidden="true">
+<circle cx="100" cy="100" r="88" fill="none" stroke="#1a7f78" stroke-width="1.3"/>
+<circle cx="100" cy="100" r="72" fill="none" stroke="#2ec4b6" stroke-width=".7" opacity=".75"/>
+<g fill="none" stroke="#e8c36a" stroke-width="1.15">
+<circle cx="100" cy="70" r="34"/>
+<circle cx="126" cy="85" r="34"/>
+<circle cx="126" cy="115" r="34"/>
+<circle cx="100" cy="130" r="34"/>
+<circle cx="74" cy="115" r="34"/>
+<circle cx="74" cy="85" r="34"/>
+<circle cx="100" cy="100" r="34"/>
+</g>
+</svg>
+<h1>Somni<span>Two</span></h1>
+<p class="tag">Exclusive sound</p>
+</div>
+<button id="play" type="button">Play</button>
+<p id="clock">Tap Play</p>
+<div class="panel">
+<div class="row" id="modes"></div>
+<div class="row">
+<button class="n on" data-s="none" type="button">None</button>
+<button class="n" data-s="ocean" type="button">Ocean</button>
+<button class="n" data-s="rain" type="button">Rain</button>
+<button class="n" data-s="storm" type="button">Storm</button>
+</div>
+<div class="row">
+<button class="t on" data-m="0" type="button">Off</button>
+<button class="t" data-m="15" type="button">15</button>
+<button class="t" data-m="30" type="button">30</button>
+<button class="t" data-m="60" type="button">60</button>
+</div>
+<button id="boost" type="button" class="on">Hearing boost on</button>
+<div class="vol">Master <input id="mv" type="range" min="0" max="150" value="100"></div>
+<div class="vol">Binaural <input id="bv" type="range" min="0" max="100" value="70"></div>
+<div class="vol">Music <input id="uv" type="range" min="0" max="100" value="40"></div>
+<div class="vol">Nature <input id="nv" type="range" min="0" max="100" value="65"></div>
+<div id="status">Calm / Sleep ready.</div>
+</div>
+<script>
+(function(){
+const MODES=[{name:'Deep Sleep',freq:2},{name:'Calm / Sleep',freq:4},{name:'Relax',freq:6},{name:'De-stress',freq:10},{name:'Focus',freq:15}];
+let ctx,leftOsc,rightOsc,bG,mG,nG,xG,boostG,comp,playing=false,mode=MODES[1],nature='none',musicNodes=[],natureNodes=[],boostOn=true,endsAt=null,timerMin=0,busy=false;
+const status=document.getElementById('status'),playBtn=document.getElementById('play'),box=document.getElementById('modes'),boostBtn=document.getElementById('boost'),clock=document.getElementById('clock');
+function bindPress(el,fn){
+  if(!el)return;
+  var last=0;
+  function fire(ev){
+    if(ev&&typeof ev.button==='number'&&ev.button!==0)return;
+    var now=Date.now();
+    if(now-last<350)return;
+    last=now;
+    fn(ev);
+  }
+  el.addEventListener('pointerup',function(ev){
+    if(ev.pointerType==='mouse')return;
+    if(ev.button!==0)return;
+    try{ev.preventDefault()}catch(e){}
+    fire(ev);
+  });
+  el.addEventListener('click',fire);
+}
+function setBoost(){if(boostG)boostG.gain.value=boostOn?2.2:1}
+bindPress(boostBtn,function(){boostOn=!boostOn;boostBtn.textContent=boostOn?'Hearing boost on':'Hearing boost off';boostBtn.classList.toggle('on',boostOn);setBoost()});
+MODES.forEach(function(m,i){
+  const b=document.createElement('button');
+  b.type='button';
+  b.textContent=m.name.split(' / ')[0]+' '+m.freq;
+  if(i===1)b.classList.add('on');
+  bindPress(b,function(){
+    box.querySelectorAll('button').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    mode=m;
+    status.textContent=m.name+' \u00b7 '+m.freq+' Hz';
+    if(playing)startBin();
+  });
+  box.appendChild(b);
+});
+document.querySelectorAll('.n').forEach(function(b){
+  bindPress(b,function(){
+    document.querySelectorAll('.n').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    nature=b.getAttribute('data-s');
+    if(playing)startNat();
+  });
+});
+document.querySelectorAll('.t').forEach(function(b){
+  bindPress(b,function(){
+    document.querySelectorAll('.t').forEach(function(x){x.classList.remove('on')});
+    b.classList.add('on');
+    timerMin=Number(b.getAttribute('data-m'));
+    if(playing)endsAt=timerMin?Date.now()+timerMin*60000:null;
+    tick();
+  });
+});
+function init(){
+  if(ctx)return;
+  var AC=window.AudioContext||window.webkitAudioContext;
+  ctx=new AC();
+  xG=ctx.createGain();xG.gain.value=1;
+  boostG=ctx.createGain();setBoost();
+  comp=ctx.createDynamicsCompressor();
+  comp.threshold.value=-12;comp.knee.value=18;comp.ratio.value=4;comp.attack.value=.01;comp.release.value=.18;
+  xG.connect(boostG);boostG.connect(comp);comp.connect(ctx.destination);
+  bG=ctx.createGain();bG.gain.value=.7;bG.connect(xG);
+  mG=ctx.createGain();mG.gain.value=.4;mG.connect(xG);
+  nG=ctx.createGain();nG.gain.value=.65;nG.connect(xG);
+}
+function stopList(list){list.forEach(function(n){try{if(n.stop)n.stop();n.disconnect()}catch(e){}})}
+function stopAll(){try{if(leftOsc)leftOsc.stop();if(rightOsc)rightOsc.stop()}catch(e){}leftOsc=rightOsc=null;stopList(musicNodes);stopList(natureNodes);musicNodes=[];natureNodes=[]}
+function routeStereo(leftNode,rightNode,dest){
+  try{
+    if(ctx.createStereoPanner){
+      var lp=ctx.createStereoPanner();lp.pan.value=-1;
+      var rp=ctx.createStereoPanner();rp.pan.value=1;
+      leftNode.connect(lp).connect(dest);
+      rightNode.connect(rp).connect(dest);
+      return;
+    }
+  }catch(e){}
+  try{
+    var merger=ctx.createChannelMerger(2);
+    leftNode.connect(merger,0,0);
+    rightNode.connect(merger,0,1);
+    merger.connect(dest);
+    return;
+  }catch(e2){}
+  leftNode.connect(dest);rightNode.connect(dest);
+}
+function startBin(){
+  try{if(leftOsc)leftOsc.stop();if(rightOsc)rightOsc.stop()}catch(e){}
+  leftOsc=ctx.createOscillator();rightOsc=ctx.createOscillator();
+  leftOsc.type=rightOsc.type='sine';
+  leftOsc.frequency.value=180;rightOsc.frequency.value=180+mode.freq;
+  routeStereo(leftOsc,rightOsc,bG);
+  leftOsc.start();rightOsc.start();
+}
+function noise(){var buf=ctx.createBuffer(2,ctx.sampleRate*2,ctx.sampleRate);for(var c=0;c<2;c++){var d=buf.getChannelData(c);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1}var s=ctx.createBufferSource();s.buffer=buf;s.loop=true;return s}
+function startNat(){stopList(natureNodes);natureNodes=[];if(nature==='none')return;var s=noise(),f=ctx.createBiquadFilter();if(nature==='ocean'){f.type='lowpass';f.frequency.value=420;var g=ctx.createGain();g.gain.value=.9;s.connect(f).connect(g).connect(nG);s.start();natureNodes.push(s,f,g)}else if(nature==='rain'){f.type='highpass';f.frequency.value=1800;var g2=ctx.createGain();g2.gain.value=.7;s.connect(f).connect(g2).connect(nG);s.start();natureNodes.push(s,f,g2)}else{f.type='bandpass';f.frequency.value=2200;var g3=ctx.createGain();g3.gain.value=.65;s.connect(f).connect(g3).connect(nG);var r=noise(),rf=ctx.createBiquadFilter();rf.type='lowpass';rf.frequency.value=140;var rg=ctx.createGain();rg.gain.value=.8;r.connect(rf).connect(rg).connect(nG);s.start();r.start();natureNodes.push(s,f,g3,r,rf,rg)}}
+function startMus(){stopList(musicNodes);musicNodes=[];[130.81,164.81,196,246.94].forEach(function(fq,i){var o=ctx.createOscillator();o.type='sine';o.frequency.value=fq;var g=ctx.createGain();g.gain.value=.16;var l=ctx.createOscillator();l.frequency.value=.04+i*.015;var lg=ctx.createGain();lg.gain.value=.08;l.connect(lg).connect(g.gain);o.connect(g).connect(mG);o.start();l.start();musicNodes.push(o,l,g,lg)})}
+function fmt(sec){var m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
+function tick(){if(!playing){clock.textContent='Tap Play';return}if(endsAt){var left=Math.max(0,Math.ceil((endsAt-Date.now())/1000));clock.textContent=fmt(left);if(left<=0){stopAll();playing=false;playBtn.textContent='Play';playBtn.classList.remove('on');endsAt=null;status.textContent=mode.name+' \u00b7 paused';clock.textContent='Tap Play'}}else clock.textContent='\u221e'}
+function afterResume(){
+  if(playing){
+    stopAll();playing=false;endsAt=null;
+    playBtn.textContent='Play';playBtn.classList.remove('on');
+    status.textContent=mode.name+' \u00b7 paused';
+  }else{
+    try{startBin()}catch(e){status.textContent='Binaural needs headphones'}
+    try{startMus()}catch(e){}
+    try{startNat()}catch(e){}
+    playing=true;
+    endsAt=timerMin?Date.now()+timerMin*60000:null;
+    playBtn.textContent='Stop';playBtn.classList.add('on');
+    status.textContent=mode.name+' \u00b7 '+mode.freq+' Hz playing';
+  }
+  tick();
+}
+function toggle(){
+  if(busy)return;
+  try{
+    init();
+    if(ctx.state==='suspended'){
+      busy=true;
+      var p=ctx.resume();
+      if(p&&p.then){
+        p.then(function(){busy=false;afterResume()}).catch(function(){busy=false;status.textContent='Tap Play once more'});
+        return;
+      }
+      busy=false;
+    }
+    afterResume();
+  }catch(e){busy=false;status.textContent='Tap Play once more'}
+}
+bindPress(playBtn,toggle);
+document.getElementById('mv').oninput=function(e){if(xG)xG.gain.value=e.target.value/100};
+document.getElementById('bv').oninput=function(e){if(bG)bG.gain.value=e.target.value/100};
+document.getElementById('uv').oninput=function(e){if(mG)mG.gain.value=e.target.value/100};
+document.getElementById('nv').oninput=function(e){if(nG)nG.gain.value=e.target.value/100};
+setInterval(tick,250);
+})();
+</script>
+</body>
+</html>

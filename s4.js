@@ -26,7 +26,7 @@ const AP4 = [
 {
   slug:"tend", name:"Tend", cat:"home", price:39, status:"live", ready:true,
   cover:"covers/tend.jpg",
-  demo:"https://numerakey-tend-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/tend/",
   desc:"One small cleaning job a day, worked out from the rooms you actually have.",
   tag:"A little bit of cleaning each day, planned around your home.",
   body:[
@@ -38,7 +38,7 @@ const AP4 = [
 {
   slug:"reclaim", name:"Reclaim", cat:"wellness", price:59, status:"live", ready:true,
   cover:"covers/reclaim.jpg",
-  demo:"https://numerakey-reclaim-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/reclaim/",
   desc:"Someone to sit with \u2014 who asks for one small thing, not the whole mountain.",
   tag:"One gentle day at a time.",
   body:[
@@ -85,7 +85,7 @@ const AP4 = [
 {
   slug:"gentle-clear", name:"Gentle Clear", cat:"wellness", price:39, status:"live",
   cover:"covers/gentle-clear.jpg",
-  demo:"https://numerakey-gentle-clear-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/gentle-clear/",
   desc:"Mira sits with you and asks the only useful question: what would feel doable?",
   tag:"I'll sit with you.",
   body:[
@@ -109,7 +109,7 @@ const AP4 = [
 {
   slug:"right-action", name:"Right Action", cat:"numerology", price:59, status:"live", ready:true,
   cover:"covers/right-action.jpg",
-  demo:"https://right-action.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/right-action/",
   desc:"What this year is actually for, month by month, and the next useful step in it.",
   tag:"The year has a shape. Work with it.",
   body:[
