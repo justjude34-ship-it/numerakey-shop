@@ -9,6 +9,8 @@ const PAYMENTS = {
   "currency-converter": "https://buy.stripe.com/14A14g09L1k552IdBy0RG02"
 };
 const FILES = {
+  "somni-plus": "private/somni-plus.html",
+  "somni-three": "private/somni-three.html",
   "steady-day": "private/steady-day.html",
   "budget-buddy": "private/budget-buddy.html",
   "budgetpilot": "private/budgetpilot.html",
