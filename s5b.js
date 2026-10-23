@@ -62,6 +62,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
   slug:"somni-three", name:"Somni Three", cat:"sound", price:79, status:"live", ready:true,
+  cover:"covers/somni-three.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/somni-three/",
   desc:"Binaural beats, isochronic tones, singing bowls, and a vagus soundscape. One mode at a time.",
   tag:"Rest. Breathe. Sleep.",
