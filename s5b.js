@@ -404,7 +404,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"tally", name:"Tally", cat:"money", price:59, status:"live", ready:true,
+  slug:"tally", name:"Tally", cat:"money", price:59, status:"soon", ready:true,
   cover:"covers/tally.jpg",
   demo:"https://total-tally-4.netlify.app/",
   desc:"A time and fee tracker for anyone who bills by the hour \u2014 a timer, a rate for every client, and a summary ready to invoice.",
