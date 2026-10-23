@@ -47,7 +47,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 
 
 APPS.push({
-  slug:"somni-plus", name:"Somni Plus", cat:"sound", price:39, status:"live", ready:true,
+  slug:"somni-plus", name:"Somni Plus", cat:"sound", price:79, status:"live", ready:true,
   demo:"https://numerakey-shop.vercel.app/demos/somni-plus/",
   desc:"Exclusive binaural sound, with ocean, rain or storm underneath. One voice, made on your device.",
   tag:"Exclusive sound.",
@@ -60,7 +60,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"somni-three", name:"Somni Three", cat:"sound", price:39, status:"live", ready:true,
+  slug:"somni-three", name:"Somni Three", cat:"sound", price:79, status:"live", ready:true,
   demo:"https://numerakey-shop.vercel.app/demos/somni-three/",
   desc:"Binaural beats, isochronic tones, singing bowls, and a vagus soundscape. One mode at a time.",
   tag:"Rest. Breathe. Sleep.",
@@ -128,7 +128,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"mysomni", name:"MySomni", cat:"sound", price:39, status:"live", ready:true,
+  slug:"mysomni", name:"MySomni", cat:"sound", price:79, status:"live", ready:true,
   cover:"covers/mysomni.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/mysomni/",
   desc:"A quieter night. One sound only — binaural beats, a Tibetan singing bowl or a deep temple OM.",
