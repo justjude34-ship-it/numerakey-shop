@@ -23,6 +23,7 @@ const FILES = {
   "ledger-noir": "private/ledger-noir.html",
   "tally": "private/tally.html",
   "domain-energy": "private/domain-energy.html",
+  "still-house": "private/anliu.html",
   "numera-chaldean": "private/numera-chaldean.html",
   "comet": "private/comet.html",
   "sanctuary": "private/sanctuary.html",
