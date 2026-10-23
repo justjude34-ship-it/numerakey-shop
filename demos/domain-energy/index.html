@@ -359,7 +359,7 @@ if (C.timer) {
     <p class="kicker">NumeraKey · for founders</p>
     <h1>Energetic Domain Name Analyzer</h1>
     <p class="lede">Try a sample name. Soul Urge, Personality, and Destiny, in Matthew Goodwin’s system. The file you keep reads any domain you type.</p>
-    <div id="demo-banner" class="demo-banner" hidden><strong>Shop demo</strong><span>Sample names only. The file you buy reads any domain, offline, with nothing to install.</span></div>
+    <div id="demo-banner" class="demo-banner" hidden><strong>Shop demo</strong><span>Try any name or domain, 3 free readings. The file you buy has no limit, works offline, and needs nothing installed.</span></div>
   </section>
   <form id="form">
     <label class="sr" for="domain">Domain name</label>
@@ -613,9 +613,10 @@ function isSample(value) {
   return EXAMPLES.indexOf(key) !== -1;
 }
 function run(value, scroll) {
-  if (DEMO && !isSample(value)) {
+  window.__own = window.__own || 0;
+  if (DEMO && !isSample(value) && ++window.__own > 3) {
     err.hidden = false;
-    err.textContent = "This demo reads the four sample names. Your own domains are in the NumeraKey file you keep.";
+    err.textContent = "That's your 3 free readings of your own names. The full app reads any name or domain, as often as you like.";
     document.getElementById("out").hidden = true;
     document.getElementById("out").style.display = "none";
     document.getElementById("empty").hidden = false;
