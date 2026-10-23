@@ -1,15 +1,5 @@
 const AP3 = [
 {
-  slug:"home-number", name:"Home Number", cat:"numerology", price:29, status:"live", ready:true, cover:"covers/home-number.jpg",
-  desc:"The quick read on a house number \u2014 the arithmetic shown, and whether it suits your Life Path.",
-  tag:"Every door has a number. Every number has a temper.",
-  body:[
-    "The straight Pythagorean reduction, with 11, 22 and 33 kept whole and letters in the address counted on the wheel, so 22B is read as 22B and not as 22. It shows every line of the working. Labels are ignored \u2014 Apt 7, Unit 7 and 7 are the same door, so they give the same number.",
-    "Twelve profiles to browse, each with what the number supports, who it suits, where it gets hard, how to live with it and the colours that settle it. Put your birth date in and it checks the house against your Life Path, which is the question people actually have when they are standing outside deciding."
-  ],
-  inside:["Straight Pythagorean reduction, working shown","Masters 11, 22 and 33 held whole","Letters counted, labels ignored","Twelve full number profiles","Checked against your own Life Path","Living tips and colours for each number","No fonts, no requests \u2014 nothing leaves the file"]
-},
-{
   slug:"sacred-address", name:"Sacred Address", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/sacred-address.jpg",
   demo:"https://sacred-address.vercel.app",
