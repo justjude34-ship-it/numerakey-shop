@@ -58,8 +58,9 @@ const AP3 = [
   inside:["Seven questions, one screen at a time","Estimates welcome \u2014 refine them later","Money for fun counted in, not left out","A finished monthly budget at the end","Warm tone, no lectures about coffee","One file, your numbers stay on your device"]
 },
 {
-  slug:"ledger-noir", name:"Ledger Noir", cat:"money", price:59, status:"live",
+  slug:"ledger-noir", name:"Ledger Noir", cat:"money", price:59, status:"live", ready:true,
   cover:"covers/ledger-noir.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/ledger-noir/",
   desc:"A budget spreadsheet for people who actually want a spreadsheet \u2014 dark, fast, and it saves itself.",
   tag:"Rows, totals, and no lectures.",
   body:[
