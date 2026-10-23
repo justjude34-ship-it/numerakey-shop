@@ -72,7 +72,7 @@ const AP4 = [
   inside:["Amy answers out loud, using your phone's voice","Speak or type \u2014 either works","Mood check-ins that build a picture","Breathing for when thinking won't start","One tiny next step, never a plan","One file, nothing sent anywhere"]
 },
 {
-  slug:"here", name:"Here", cat:"ptsd", price:59, status:"live", ready:true,
+  slug:"here", demo:"https://numerakey-shop.vercel.app/demos/here/", name:"Here", cat:"ptsd", price:59, status:"live", ready:true,
   cover:"covers/here.jpg",
   desc:"A complex PTSD skills kit for the bad hour \u2014 pick a state, get a tool, two minutes.",
   tag:"Phase one only: safety and stabilisation.",

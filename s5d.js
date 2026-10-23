@@ -10,6 +10,10 @@ const PAYMENTS = {
 };
 const FILES = {
   "steady-day": "private/steady-day.html",
+  "budget-buddy": "private/budget-buddy.html",
+  "budgetpilot": "private/budgetpilot.html",
+  "here": "private/here.html",
+  "numera-chaldean": "private/numera-chaldean.html",
   "comet": "private/comet.html",
   "sanctuary": "private/sanctuary.html",
   "serenity": "private/serenity.html",

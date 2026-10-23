@@ -57,7 +57,7 @@ const AP3 = [
   inside:["Bills and due dates in one view","Spending by category, month by month","Planned against actual","Savings goals with real timelines","Runs offline, no bank login"]
 },
 {
-  slug:"budget-buddy", name:"Budget Buddy", cat:"money", price:39, status:"live", ready:true,
+  slug:"budget-buddy", demo:"https://numerakey-shop.vercel.app/demos/budget-buddy/", name:"Budget Buddy", cat:"money", price:39, status:"live", ready:true,
   cover:"covers/budget-buddy.jpg",
   desc:"A budget built by conversation \u2014 seven small questions, and guessing is allowed.",
   tag:"Sit down. We'll do this together.",
@@ -160,7 +160,7 @@ const AP3 = [
   inside:["Built for AuDHD, not one or the other","Rowan, set to the tone you ask for","Unstick, Sit and Rest \u2014 whichever the day needs","Familiar loop, slow body, interest nibble, one-surface tidy","Scripts for leaving, cancelling and asking for accommodations","Crisis lines for Australia, the US, the UK and Canada","One file, runs offline"]
 },
 {
-  slug:"numera-chaldean", name:"Numera Chaldean", cat:"numerology", price:59, status:"live", ready:true, cover:"covers/numera-chaldean.jpg",
+  slug:"numera-chaldean", demo:"https://numerakey-shop.vercel.app/demos/numera-chaldean/", name:"Numera Chaldean", cat:"numerology", price:59, status:"live", ready:true, cover:"covers/numera-chaldean.jpg",
   desc:"The Chaldean system in full \u2014 driver, conductor, name, Lo Shu grid and timing.",
   tag:"The older system, worked properly.",
   body:[
