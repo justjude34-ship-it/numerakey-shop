@@ -2,7 +2,7 @@ const AP3 = [
 {
   slug:"sacred-address", name:"Sacred Address", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/sacred-address.jpg",
-  demo:"https://sacred-address.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/sacred-address/",
   desc:"The number on your door, read after Thomas Muldoon \u2014 what the place supports, and what it asks of whoever lives there.",
   tag:"The place that chose you.",
   body:[
@@ -73,7 +73,7 @@ const AP3 = [
 {
   slug:"paws-of-destiny", name:"Paws of Destiny", cat:"numerology", price:39, status:"live",
   cover:"covers/paws-of-destiny.jpg",
-  demo:"https://numerakey-paws-of-destiny-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/paws-of-destiny/",
   desc:"A numerology reading for the animal who shares your life \u2014 name, date, and the nature they came with.",
   tag:"For the one who shares your life.",
   body:[

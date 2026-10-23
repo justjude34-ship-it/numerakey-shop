@@ -110,7 +110,7 @@ const AP2 = [
 {
   slug:"goodwin-readings", name:"Numerology Reading", cat:"numerology", price:89, status:"live", ready:true,
   cover:"covers/goodwin-readings.jpg",
-  demo:"https://numerakey-goodwin-readings-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/goodwin-readings/",
   desc:"The complete Goodwin reading \u2014 the Core, the karmic debts, the Pinnacles, and the year you are standing in.",
   tag:"The whole method, not the headline.",
   body:[
@@ -134,7 +134,7 @@ const AP2 = [
 {
   slug:"numera", name:"Numera", cat:"numerology", price:89, status:"live",
   cover:"covers/numera.jpg",
-  demo:"https://numerakey-numera-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/numera/",
   desc:"The full reading \u2014 Phillips' birth chart and Goodwin's name numerology, run together on one page.",
   tag:"Name and date, read as one.",
   body:[
@@ -146,7 +146,7 @@ const AP2 = [
 {
   slug:"lumen-tarot", name:"Lumen Tarot", cat:"divine", price:39, status:"live",
   cover:"covers/lumen-tarot.jpg",
-  demo:"https://numerakey-lumen-tarot-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/lumen-tarot/",
   desc:"A full tarot deck with a daily card and a three-card spread \u2014 upright and reversed, entirely private.",
   tag:"Light for the question you are holding.",
   body:[
@@ -158,7 +158,7 @@ const AP2 = [
 {
   slug:"tao", name:"Tao", cat:"divine", price:39, status:"live", ready:true,
   cover:"covers/tao.jpg",
-  demo:"https://numerakey-tao-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/tao/",
   desc:"The Tao Te Ching, one chapter a day for eighty-one days, then round again.",
   tag:"Eighty-one days, then begin again.",
   body:[

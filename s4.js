@@ -121,7 +121,7 @@ const AP4 = [
 {
   slug:"nua", name:"Nua", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/nua.jpg",
-  demo:"https://nua-names.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/nua/",
   desc:"Name a child and see the numbers before the certificate is signed.",
   tag:"Name the child. See the numbers.",
   body:[
@@ -145,7 +145,7 @@ const AP4 = [
 },
 {
   slug:"synergy", name:"Synergy", cat:"numerology", price:59, status:"live", ready:true, cover:"covers/synergy.jpg",
-  demo:"https://pythagorian-numerakey.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/synergy/",
   desc:"Two charts side by side \u2014 where you meet easily, where the friction is structural, and what neither of you carries.",
   tag:"The bond, aspect by aspect.",
   body:[
@@ -157,7 +157,7 @@ const AP4 = [
 {
   slug:"nomen", name:"Nomen", cat:"numerology", price:59, status:"live", ready:true,
   cover:"covers/nomen.jpg",
-  demo:"https://numerakey-nomen-demo.vercel.app",
+  demo:"https://numerakey-shop.vercel.app/demos/nomen/",
   desc:"Read the name you were given, then find one that carries you better.",
   tag:"Your name is a number. Read it, then find one that carries you further.",
   body:[
