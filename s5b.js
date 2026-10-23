@@ -402,3 +402,17 @@ APPS.push({
   inside:["Six lines marked on a real palm","Six mounts, read with the lines that cross them","What a deep, faint or broken line is said to mean","A short method for how to look","A practice quiz: name the highlighted line","Tendencies, not verdicts","One file, works offline"]
 });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
+
+APPS.push({
+  slug:"tally", name:"Tally", cat:"money", price:59, status:"live", ready:true,
+  cover:"covers/tally.jpg",
+  demo:"https://total-tally-4.netlify.app/",
+  desc:"A time and fee tracker for anyone who bills by the hour \u2014 a timer, a rate for every client, and a summary ready to invoice.",
+  tag:"Track time. Bill it right.",
+  body:[
+    "Pick a client, start the timer, stop and save. Every entry keeps the rate it was logged at, so changing a rate next month never quietly rewrites last month's work.",
+    "See what you've billed and what's still unbilled, hours by month and earnings by client. When it's time to invoice, print a clean summary of one client's unbilled time as a PDF, then mark it all as billed. Made for accountants, consultants and freelancers."
+  ],
+  inside:["A one-tap timer that keeps running if you close the app","An hourly rate for every client, plus a default","Hours by month and earnings by client","Billed and unbilled kept separate","Invoice-ready PDF summary for each client","CSV export for Excel and Google Sheets","Any currency symbol, backup and restore","One file, your data stays on your device"]
+});
+artFor(APPS[APPS.length - 1]).motif = "wave";

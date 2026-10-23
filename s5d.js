@@ -21,6 +21,7 @@ const FILES = {
   "habit-swap": "private/habit-swap.html",
   "teach-me-palmistry": "private/teach-me-palmistry.html",
   "ledger-noir": "private/ledger-noir.html",
+  "tally": "private/tally.html",
   "numera-chaldean": "private/numera-chaldean.html",
   "comet": "private/comet.html",
   "sanctuary": "private/sanctuary.html",
