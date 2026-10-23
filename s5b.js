@@ -173,13 +173,14 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 APPS.push({
   slug:"palmistry-studio", name:"Palmistry Studio", cat:"divine", price:39, status:"live", ready:true,
   cover:"covers/palmistry-studio.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/palmistry-studio/",
   desc:"A quiet studio for reading your own left palm — add a photo, see the major lines, and learn what each one means.",
   tag:"Learn palmistry on your own hand.",
   body:[
     "Palmistry Studio teaches by showing. Add a clear photo of your left palm and it estimates the major lines and mounts from the creases in the picture, names your hand type, and explains each finding in plain language: strengths, growth edges and what the lines are said to mean.",
-    "Beyond your own reading there is a palm map to explore, the hand types, a guided read, a short quiz and lessons for beginners. Your photo is read on your device and never uploaded. Educational and reflective, not medical advice and not a fortune."
+    "Beyond your own reading there is a palm map to explore, the hand types, a guided read, a short quiz and lessons for beginners. Your photo is read on your device and never uploaded. The hand-finding step loads from the internet the first time you use the photo reading; without a connection it gives a general estimate and says so. Educational and reflective, not medical advice and not a fortune."
   ],
-  inside:["A photo reading of your left palm","Major lines and mounts, with a strength for each","Your hand type, in plain words","An explorable palm map","Hand types and a guided read","A short quiz and beginner lessons","Your photo stays on your device, nothing uploaded","Educational only, not medical advice or a fortune","One file, works offline"]
+  inside:["A photo reading of your left palm","Major lines and mounts, with a strength for each","Your hand type, in plain words","An explorable palm map","Hand types and a guided read","A short quiz and beginner lessons","Your photo stays on your device, nothing uploaded","Educational only, not medical advice or a fortune","One file; the lessons, palm map and quiz work offline"]
 });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 

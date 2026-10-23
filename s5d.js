@@ -24,6 +24,7 @@ const FILES = {
   "tally": "private/tally.html",
   "domain-energy": "private/domain-energy.html",
   "still-house": "private/anliu.html",
+  "palmistry-studio": "private/palmistry-studio.html",
   "numera-chaldean": "private/numera-chaldean.html",
   "comet": "private/comet.html",
   "sanctuary": "private/sanctuary.html",
