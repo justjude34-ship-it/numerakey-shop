@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#000000"/>
+<title>Somni Three</title>
+<link rel="manifest" href="/manifest.webmanifest"/>
+<link rel="icon" href="/icon.svg" type="image/svg+xml"/>
+<style>
+:root{--fg:#f4f7f6;--muted:#c9d3cf;--subtle:#9aa8a4;--teal:#3dcdc0;--soft:#9ee8e0;--gold:#e6c99a;--border:rgba(255,255,255,.14)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100dvh;background:#000;color:var(--fg);font-family:Georgia,serif}
+.wrap{min-height:100dvh;display:flex;flex-direction:column;padding:max(.6rem,env(safe-area-inset-top)) 1rem max(1.2rem,env(safe-area-inset-bottom))}
+header{display:flex;justify-content:space-between;align-items:center}
+.brand{color:#fff;text-decoration:none;font-size:1.15rem}
+.nav a,.install{color:var(--muted);background:none;border:0;font:inherit;min-height:44px;padding:0 .55rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.install{border:1px solid var(--border);border-radius:999px;color:var(--soft)}
+main{flex:1;display:flex;flex-direction:column;max-width:42rem;width:100%;margin:0 auto}
+.banner{position:relative;margin:.35rem 0 .2rem;border-radius:1.1rem;overflow:hidden;background:#000;min-height:200px}
+.banner video,.banner img,.banner svg{display:block;width:100%;height:auto;max-height:46vh;object-fit:cover;background:#000}
+.stage{text-align:center;padding:.2rem 0 .6rem}
+h1{margin:.35rem 0 0;font-size:clamp(1.45rem,5vw,1.9rem);font-weight:500;color:#fff}
+.line,.session,.hint,.clock,.note,.disc{margin:.3rem 0 0}.line{color:var(--muted)}.session{color:var(--gold)}.hint{color:var(--soft);font-size:.8rem;font-family:system-ui,sans-serif}
+.viz{position:relative;width:168px;height:168px;margin:.55rem auto .2rem;display:grid;place-items:center}
+.ring{position:absolute;inset:0;margin:auto;border-radius:50%;border:1px solid rgba(61,205,192,.18);pointer-events:none}
+.r1{width:168px;height:168px}.r2{width:128px;height:128px}.r3{width:96px;height:96px}
+.orb{position:absolute;width:78px;height:78px;border-radius:50%;background:radial-gradient(circle at 38% 32%,#fff 0%,#9ee8e0 18%,#3dcdc0 46%,#5b3d8a 72%,#0b1214 100%);pointer-events:none}
+body.playing .orb{animation:breathe 4.8s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+.play{position:relative;z-index:2;width:76px;height:76px;border-radius:999px;border:0;background:#fff;color:#000;display:grid;place-items:center;cursor:pointer}
+.play svg{width:28px;height:28px}.clock{font-size:1.1rem;color:#fff}
+.dock{margin-top:auto;background:rgba(12,16,16,.84);border:1px solid var(--border);border-radius:1rem;padding:.85rem}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;background:#000;padding:.28rem;border-radius:.7rem}
+.modes button,.chip{min-height:48px;border:0;border-radius:.5rem;color:var(--muted);background:transparent;font-family:system-ui,sans-serif;font-size:.7rem;cursor:pointer}
+.modes button.active{background:#1a2221;color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.6rem}
+.chip{border:1px solid var(--border);padding:0 .7rem;background:rgba(0,0,0,.35)}
+.chip.active{border-color:rgba(61,205,192,.5);background:rgba(61,205,192,.14);color:var(--soft)}
+.hear button{width:100%;min-height:48px;margin-top:.7rem;border-radius:.6rem;border:1px solid rgba(61,205,192,.45);background:rgba(61,205,192,.16);color:var(--soft);font-family:system-ui,sans-serif;font-size:.9rem}
+.hear button.off{background:transparent;color:var(--muted);border-color:var(--border)}
+.label{margin:.7rem 0 0;font-family:system-ui,sans-serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle)}
+.vols{display:grid;gap:.55rem;margin-top:.6rem}label{color:#fff;font-family:system-ui,sans-serif;font-size:.8rem}
+input[type=range]{width:100%;accent-color:var(--teal)}
+.note{color:var(--muted);font-size:.78rem}.disc{color:var(--subtle);font-size:.72rem}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+<header>
+  <a class="brand" href="#">Somni Three</a>
+  <nav class="nav"><a href="#guide" id="guideLink">Guide</a><button class="install" id="installBtn" type="button">Install</button></nav>
+</header>
+<main>
+<section class="banner" aria-label="Somni Three hero">
+  <video id="heroVideo" autoplay muted loop playsinline poster="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNjAgMjEwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlNvbW5pIFRocmVlIj4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0ib3JiIiBjeD0iMzglIiBjeT0iMzIlIiByPSI2OCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIi8+CjxzdG9wIG9mZnNldD0iMTglIiBzdG9wLWNvbG9yPSIjOWVlOGUwIi8+CjxzdG9wIG9mZnNldD0iNDglIiBzdG9wLWNvbG9yPSIjM2RjZGMwIi8+CjxzdG9wIG9mZnNldD0iNzQlIiBzdG9wLWNvbG9yPSIjMmE2ZjhhIi8+CjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzBiMTIxNCIvPgo8L3JhZGlhbEdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwNzExMGYiLz4KPHN0b3Agb2Zmc2V0PSI1NSUiIHN0b3AtY29sb3I9IiMwNTA3MGEiLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMTIwYzE4Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjM2MCIgaGVpZ2h0PSIyMTAiIGZpbGw9InVybCgjYmcpIi8+CjxjaXJjbGUgY3g9IjE4MCIgY3k9IjEwNCIgcj0iODYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSg2MSwyMDUsMTkyLC4yMikiLz4KPGNpcmNsZSBjeD0iMTgwIiBjeT0iMTA0IiByPSI2NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDEzOSwxMDcsMTg0LC4yOCkiLz4KPGNpcmNsZSBjeD0iMTgwIiBjeT0iMTA0IiByPSI0OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDIzMCwyMDEsMTU0LC4yMikiLz4KPHBhdGggZD0iTTI4IDExOGMyOC0zNCA1Mi0zNCA4MCAwczUyIDM0IDgwIDAgNTItMzQgODAgMCA0MCAyMiA2NCAwIiBmaWxsPSJub25lIiBzdHJva2U9IiM5ZWU4ZTAiIHN0cm9rZS13aWR0aD0iMS40IiBvcGFjaXR5PSIuNyIvPgo8cGF0aCBkPSJNNDAgMTQyYzI0LTIyIDQ2LTIyIDcwIDBzNDYgMjIgNzAgMCA0Ni0yMiA3MCAwIDM2IDE2IDUwIDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhiNmJiOCIgc3Ryb2tlLXdpZHRoPSIxLjIiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMTE4IDE1MGMxOC0yOCA0Mi00MiA2Mi00MnM0NCAxNCA2MiA0MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTZjOTlhIiBzdHJva2Utd2lkdGg9IjEuMyIgb3BhY2l0eT0iLjciLz4KPGNpcmNsZSBjeD0iMTgwIiBjeT0iMTA0IiByPSIzNCIgZmlsbD0idXJsKCNvcmIpIi8+Cjx0ZXh0IHg9IjE4MCIgeT0iMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmNGY3ZjYiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSIxOCI+U29tbmkgVGhyZWU8L3RleHQ+Cjx0ZXh0IHg9IjE4MCIgeT0iMTkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOWVlOGUwIiBmb250LWZhbWlseT0ic3lzdGVtLXVpLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iOSIgbGV0dGVyLXNwYWNpbmc9IjMiPkJJTkFVUkFMIMK3IElTT0NIUk9OSUMgwrcgQk9XTFM8L3RleHQ+Cjwvc3ZnPgo=" style="display:none"></video>
+  <img id="heroStill" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNjAgMjEwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlNvbW5pIFRocmVlIj4KPGRlZnM+CjxyYWRpYWxHcmFkaWVudCBpZD0ib3JiIiBjeD0iMzglIiBjeT0iMzIlIiByPSI2OCUiPgo8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjZmZmZmZmIi8+CjxzdG9wIG9mZnNldD0iMTglIiBzdG9wLWNvbG9yPSIjOWVlOGUwIi8+CjxzdG9wIG9mZnNldD0iNDglIiBzdG9wLWNvbG9yPSIjM2RjZGMwIi8+CjxzdG9wIG9mZnNldD0iNzQlIiBzdG9wLWNvbG9yPSIjMmE2ZjhhIi8+CjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzBiMTIxNCIvPgo8L3JhZGlhbEdyYWRpZW50Pgo8bGluZWFyR3JhZGllbnQgaWQ9ImJnIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMSI+CjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwNzExMGYiLz4KPHN0b3Agb2Zmc2V0PSI1NSUiIHN0b3AtY29sb3I9IiMwNTA3MGEiLz4KPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMTIwYzE4Ii8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPHJlY3Qgd2lkdGg9IjM2MCIgaGVpZ2h0PSIyMTAiIGZpbGw9InVybCgjYmcpIi8+CjxjaXJjbGUgY3g9IjE4MCIgY3k9IjEwNCIgcj0iODYiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSg2MSwyMDUsMTkyLC4yMikiLz4KPGNpcmNsZSBjeD0iMTgwIiBjeT0iMTA0IiByPSI2NiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDEzOSwxMDcsMTg0LC4yOCkiLz4KPGNpcmNsZSBjeD0iMTgwIiBjeT0iMTA0IiByPSI0OCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJyZ2JhKDIzMCwyMDEsMTU0LC4yMikiLz4KPHBhdGggZD0iTTI4IDExOGMyOC0zNCA1Mi0zNCA4MCAwczUyIDM0IDgwIDAgNTItMzQgODAgMCA0MCAyMiA2NCAwIiBmaWxsPSJub25lIiBzdHJva2U9IiM5ZWU4ZTAiIHN0cm9rZS13aWR0aD0iMS40IiBvcGFjaXR5PSIuNyIvPgo8cGF0aCBkPSJNNDAgMTQyYzI0LTIyIDQ2LTIyIDcwIDBzNDYgMjIgNzAgMCA0Ni0yMiA3MCAwIDM2IDE2IDUwIDAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhiNmJiOCIgc3Ryb2tlLXdpZHRoPSIxLjIiIG9wYWNpdHk9Ii41NSIvPgo8cGF0aCBkPSJNMTE4IDE1MGMxOC0yOCA0Mi00MiA2Mi00MnM0NCAxNCA2MiA0MiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZTZjOTlhIiBzdHJva2Utd2lkdGg9IjEuMyIgb3BhY2l0eT0iLjciLz4KPGNpcmNsZSBjeD0iMTgwIiBjeT0iMTA0IiByPSIzNCIgZmlsbD0idXJsKCNvcmIpIi8+Cjx0ZXh0IHg9IjE4MCIgeT0iMjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiNmNGY3ZjYiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhLCBzZXJpZiIgZm9udC1zaXplPSIxOCI+U29tbmkgVGhyZWU8L3RleHQ+Cjx0ZXh0IHg9IjE4MCIgeT0iMTkyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOWVlOGUwIiBmb250LWZhbWlseT0ic3lzdGVtLXVpLHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iOSIgbGV0dGVyLXNwYWNpbmc9IjMiPkJJTkFVUkFMIMK3IElTT0NIUk9OSUMgwrcgQk9XTFM8L3RleHQ+Cjwvc3ZnPgo=" alt="Somni Three. Rest. Breathe. Sleep." onerror="this.style.display='none'">
+</section>
+<section class="stage">
+  <div class="viz" aria-hidden="true"><div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div><div class="orb"></div>
+    <button class="play" id="playBtn" type="button" aria-label="Play"><svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+  </div>
+  <h1 id="title">Binaural beats</h1>
+  <p class="line" id="line">Stereo pulse. Headphones required.</p>
+  <p class="session" id="session">Alpha 10 Hz</p>
+  <p class="clock" id="clock">Tap Play</p>
+</section>
+<section class="dock">
+  <div class="modes" id="modes"></div>
+  <div class="chips" id="presets"></div>
+  <p class="label">Timer</p>
+  <div class="chips" id="timers"></div>
+  <div class="hear"><button id="hearBtn" type="button">Hearing boost on</button></div>
+  <div class="vols">
+    <label>Master <span id="mv">100</span><input id="master" type="range" min="0" max="100" value="100"></label>
+    <label>Mode <span id="ov">100</span><input id="modeVol" type="range" min="0" max="100" value="100"></label>
+  </div>
+  <p class="note">The hero video stays silent so it does not cover the tones.</p>
+  <p class="disc">Vagus support is a calming soundscape, not medical treatment.</p>
+</section>
+</main>
+</div>
+<script>
+const MODES=[{id:'binaural',title:'Binaural beats',line:'Stereo pulse. Headphones required.'},{id:'isochronic',title:'Isochronic tones',line:'A single pulsing tone. No mix.'},{id:'bowls',title:'Singing bowls',line:'Tibetan bronze. Strike only.'},{id:'vagus',title:'Vagus support',line:'Warm settling tones.'}];
+const BINAURAL=[{id:'a10',name:'Alpha 10 Hz',beat:10,c:256},{id:'a8',name:'Alpha 8 Hz',beat:8,c:240},{id:'sch',name:'Schumann 7.83 Hz',beat:7.83,c:220},{id:'t6',name:'Theta 6 Hz',beat:6,c:216},{id:'d4',name:'Delta 4 Hz',beat:4,c:200},{id:'d2',name:'Delta 2 Hz',beat:2,c:196}];
+const ISO=[{id:'i10',name:'Alpha 10 Hz',rate:10,hz:256},{id:'i8',name:'Alpha 8 Hz',rate:8,hz:240},{id:'i4',name:'Delta 4 Hz',rate:4,hz:200},{id:'i2',name:'Delta 2 Hz',rate:2,hz:196}];
+const BOWLS=[{id:'sol',name:'Solfeggio',hz:[396,528,639],def:528},{id:'hrt',name:'Heart',hz:[432,528],def:528}];
+const VAGUS=[{id:'set',name:'Settle',f:174},{id:'warm',name:'Warm ground',f:146}];
+const TIMERS=[15,20,30,45,60,null];
+const S={mode:'binaural',bin:'a10',iso:'i10',bowlHz:528,vag:'set',master:1,modeVol:1,hear:true,timer:20,playing:false,endsAt:null};
+const $=id=>document.getElementById(id);
+let ctx,masterG,modeG,nodes=[],bowlT=null,promptEvt=null;
+function boost(){return S.hear?1.7:1}
+function applyMaster(){if(masterG)masterG.gain.value=Math.min(1.8,S.master*S.modeVol*boost())}
+function stopAll(){if(bowlT){clearTimeout(bowlT);bowlT=null}nodes.forEach(n=>{try{n.stop&&n.stop()}catch(e){}try{n.disconnect&&n.disconnect()}catch(e){}});nodes=[]}
+function ensure(){if(!ctx){ctx=new(window.AudioContext||window.webkitAudioContext)();masterG=ctx.createGain();modeG=ctx.createGain();modeG.connect(masterG);masterG.connect(ctx.destination)}applyMaster();if(ctx.state==='suspended')ctx.resume();return ctx}
+function osc(f){const o=ctx.createOscillator();o.type='sine';o.frequency.value=f;o.start();nodes.push(o);return o}
+function gn(v){const g=ctx.createGain();g.gain.value=v||0;nodes.push(g);return g}
+function playBin(){const p=BINAURAL.find(x=>x.id===S.bin);const L=osc(p.c-p.beat/2),R=osc(p.c+p.beat/2),H=osc(p.c*2);const gl=gn(),gr=gn(),gh=gn();const pl=ctx.createStereoPanner();pl.pan.value=-1;const pr=ctx.createStereoPanner();pr.pan.value=1;L.connect(gl).connect(pl).connect(modeG);R.connect(gr).connect(pr).connect(modeG);H.connect(gh).connect(modeG);const t=ctx.currentTime,a=S.hear?0.5:0.32,h=S.hear?0.22:0.1;gl.gain.setValueAtTime(0.0001,t);gr.gain.setValueAtTime(0.0001,t);gh.gain.setValueAtTime(0.0001,t);gl.gain.exponentialRampToValueAtTime(a,t+0.6);gr.gain.exponentialRampToValueAtTime(a,t+0.6);gh.gain.exponentialRampToValueAtTime(h,t+0.8)}
+function playIso(){const p=ISO.find(x=>x.id===S.iso);const o=osc(p.hz),h=osc(p.hz*2),g=gn(),gh=gn(),lfo=osc(p.rate),lg=gn();const base=S.hear?0.42:0.28;g.gain.value=base;gh.gain.value=S.hear?0.2:0.1;lg.gain.value=base*0.28;lfo.connect(lg).connect(g.gain);o.connect(g).connect(modeG);h.connect(gh).connect(modeG)}
+function strike(hz){const t=ctx.currentTime,k=S.hear?1.7:1;[[1,.42,9],[2,.2,6]].forEach(part=>{const o=osc(hz*part[0]),g=gn(0.0001);o.connect(g).connect(modeG);g.gain.exponentialRampToValueAtTime(part[1]*k,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+part[2])})}
+function schedBowls(){strike(S.bowlHz);bowlT=setTimeout(schedBowls,10000)}
+function playVagus(){const p=VAGUS.find(x=>x.id===S.vag);const a=osc(p.f),b=osc(p.f*2);const ga=gn(S.hear?0.4:0.26),gb=gn(S.hear?0.28:0.16);a.connect(ga).connect(modeG);b.connect(gb).connect(modeG)}
+function startMode(){stopAll();ensure();if(S.mode==='binaural')playBin();else if(S.mode==='isochronic')playIso();else if(S.mode==='bowls')schedBowls();else playVagus()}
+function label(){if(S.mode==='binaural')return BINAURAL.find(x=>x.id===S.bin).name;if(S.mode==='isochronic')return ISO.find(x=>x.id===S.iso).name;if(S.mode==='bowls')return S.bowlHz+' Hz';return VAGUS.find(x=>x.id===S.vag).name}
+function chip(parent,text,on,go){const b=document.createElement('button');b.className='chip'+(on?' active':'');b.textContent=text;b.onclick=()=>{go();render();if(S.playing)startMode()};parent.appendChild(b)}
+function render(){const m=MODES.find(x=>x.id===S.mode);$('title').textContent=m.title;$('line').textContent=m.line;$('session').textContent=label();$('playIcon').innerHTML=S.playing?'<rect x="6" y="5" width="4.5" height="14"/><rect x="13.5" y="5" width="4.5" height="14"/>':'<path d="M8 5v14l11-7z"/>';document.body.classList.toggle('playing',S.playing);$('hearBtn').textContent=S.hear?'Hearing boost on':'Hearing boost off';$('hearBtn').className=S.hear?'':'off';$('modes').innerHTML='';MODES.forEach(item=>{const b=document.createElement('button');b.textContent=item.title.split(' ')[0];b.className=item.id===S.mode?'active':'';b.onclick=()=>{S.mode=item.id;render();if(S.playing)startMode()};$('modes').appendChild(b)});const box=$('presets');box.innerHTML='';if(S.mode==='binaural')BINAURAL.forEach(p=>chip(box,p.name,S.bin===p.id,()=>S.bin=p.id));if(S.mode==='isochronic')ISO.forEach(p=>chip(box,p.name,S.iso===p.id,()=>S.iso=p.id));if(S.mode==='bowls')[396,528,639,432].forEach(hz=>chip(box,hz+' Hz',S.bowlHz===hz,()=>S.bowlHz=hz));if(S.mode==='vagus')VAGUS.forEach(p=>chip(box,p.name,S.vag===p.id,()=>S.vag=p.id));$('timers').innerHTML='';TIMERS.forEach(min=>{const b=document.createElement('button');b.className='chip'+(S.timer===min?' active':'');b.textContent=min?min+'m':'\u221e';b.onclick=()=>{S.timer=min;if(S.playing)S.endsAt=min?Date.now()+min*60000:null;render()};$('timers').appendChild(b)})}
+function play(){ensure();S.playing=true;S.endsAt=S.timer?Date.now()+S.timer*60000:null;startMode();render()}
+function pause(){S.playing=false;stopAll();render()}
+$('playBtn').onclick=()=>S.playing?pause():play();
+$('hearBtn').onclick=()=>{S.hear=!S.hear;applyMaster();render();if(S.playing)startMode()};
+$('master').oninput=e=>{S.master=e.target.value/100;applyMaster();$('mv').textContent=e.target.value};
+$('modeVol').oninput=e=>{S.modeVol=e.target.value/100;applyMaster();$('ov').textContent=e.target.value};
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();promptEvt=e});
+$('installBtn').onclick=()=>{if(promptEvt){promptEvt.prompt();promptEvt=null;return}alert('On Android Chrome: menu, Add to Home screen')};
+const v=$('heroVideo');v.src='hero.mp4';v.addEventListener('loadeddata',()=>{v.style.display='block';$('heroStill').style.display='none';v.play().catch(()=>{})});v.addEventListener('error',()=>{v.style.display='none'});
+if('serviceWorker' in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+setInterval(()=>{if(!S.playing){$('clock').textContent='Tap Play';return}if(!S.endsAt){$('clock').textContent='\u221e';return}const left=Math.max(0,Math.ceil((S.endsAt-Date.now())/1000));if(left<=0){pause();return}$('clock').textContent=Math.floor(left/60)+':'+String(left%60).padStart(2,'0')},250);
+render();
+</script>
+</body>
+</html>
