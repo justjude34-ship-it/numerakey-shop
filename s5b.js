@@ -102,6 +102,7 @@ artFor(APPS[APPS.length - 1]).motif = "rings";
 APPS.push({
   slug:"mysomni", name:"MySomni", cat:"sound", price:39, status:"live", ready:true,
   cover:"covers/mysomni.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/mysomni/",
   desc:"A quieter night. One sound only — binaural beats, a Tibetan singing bowl or a deep temple OM.",
   tag:"One sound. Then night.",
   body:[
