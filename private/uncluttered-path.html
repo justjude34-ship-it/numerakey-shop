@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="description" content="Uncluttered Path — A gentle, supportive decluttering companion inspired by the teachings of Joshua Becker. Designed for anyone experiencing task paralysis. Start small, own less, live more." />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Uncluttered Path · Declutter Companion</title>
+  <link rel="manifest" id="manifestLink" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #e8e8e8;
+      --text-muted: #a0a0a0;
+      --accent-glow: rgba(255, 255, 255, 0.06);
+      --radius: 16px;
+      --font: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Subtle noise texture for expensive feel */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 20px 120px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+
+    .header-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ff6b9d, #c44dff, #00d4ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff6b9d, #c44dff);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(196, 77, 255, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(196, 77, 255, 0.45);
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+    }
+
+    .btn-ghost:hover {
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-sm {
+      padding: 7px 14px;
+      font-size: 0.82rem;
+    }
+
+    .btn-lg {
+      padding: 14px 28px;
+      font-size: 1.05rem;
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      padding: 12px 0 4px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-btn {
+      flex-shrink: 0;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .nav-btn.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: var(--border);
+    }
+
+    /* Sections */
+    section {
+      display: none;
+      padding: 32px 0 20px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Gradient Headings */
+    .grad-hero {
+      background: linear-gradient(135deg, #ff6b9d 0%, #c44dff 50%, #00d4ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .grad-why {
+      background: linear-gradient(90deg, #a18cd1, #fbc2eb);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .grad-micro {
+      background: linear-gradient(135deg, #00f2fe, #4facfe);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .grad-rooms {
+      background: linear-gradient(90deg, #43e97b, #38f9d7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .grad-companion {
+      background: linear-gradient(135deg, #fa709a, #fee140);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .grad-progress {
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .grad-principles {
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 2.75rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 3.5vw, 1.9rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 650;
+      margin-bottom: 8px;
+    }
+
+    p {
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .lead {
+      font-size: 1.1rem;
+      color: #c8c8c8;
+      max-width: 560px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+      margin-bottom: 16px;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .card-glow-pink {
+      box-shadow: 0 0 40px rgba(255, 107, 157, 0.08);
+    }
+
+    .card-glow-cyan {
+      box-shadow: 0 0 40px rgba(0, 242, 254, 0.08);
+    }
+
+    .card-glow-green {
+      box-shadow: 0 0 40px rgba(67, 233, 123, 0.08);
+    }
+
+    .card-glow-gold {
+      box-shadow: 0 0 40px rgba(254, 225, 64, 0.08);
+    }
+
+    .card-glow-purple {
+      box-shadow: 0 0 40px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Welcome Hero */
+    .hero {
+      text-align: center;
+      padding: 40px 0 30px;
+    }
+
+    .hero .lead {
+      margin: 0 auto 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    /* Why Section */
+    .why-display {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #f0f0f0;
+      padding: 20px;
+      border-left: 3px solid #a18cd1;
+      background: rgba(161, 140, 209, 0.08);
+      border-radius: 0 12px 12px 0;
+      margin: 18px 0;
+      min-height: 60px;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 1rem;
+      resize: vertical;
+      min-height: 90px;
+      transition: border-color 0.2s;
+    }
+
+    textarea:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: #a18cd1;
+    }
+
+    /* Micro Sessions */
+    .session-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .session-card {
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .session-card .time {
+      font-size: 0.8rem;
+      color: #00f2fe;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .timer-display {
+      font-size: 3rem;
+      font-weight: 700;
+      text-align: center;
+      margin: 20px 0;
+      font-variant-numeric: tabular-nums;
+      background: linear-gradient(135deg, #00f2fe, #4facfe);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .timer-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Rooms */
+    .room-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .room-item {
+      cursor: pointer;
+    }
+
+    .room-item summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 0;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .room-item summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .room-badge {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(67, 233, 123, 0.15);
+      color: #43e97b;
+      font-weight: 600;
+    }
+
+    .room-badge.hard {
+      background: rgba(255, 107, 157, 0.15);
+      color: #ff6b9d;
+    }
+
+    .room-content {
+      padding: 12px 0 4px 0;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Companion / Chat */
+    .chat-window {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      height: 340px;
+      overflow-y: auto;
+      padding: 16px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .msg {
+      max-width: 85%;
+      padding: 12px 16px;
+      border-radius: 16px;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .msg.bot {
+      align-self: flex-start;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 4px;
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, rgba(250, 112, 154, 0.25), rgba(254, 225, 64, 0.15));
+      border: 1px solid rgba(250, 112, 154, 0.3);
+      border-bottom-right-radius: 4px;
+    }
+
+    .companion-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .voice-select {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      padding: 9px 12px;
+      font-size: 0.85rem;
+      max-width: 220px;
+    }
+
+    .voice-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .voice-controls label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .voice-controls input[type="range"] {
+      width: 90px;
+      accent-color: #c44dff;
+    }
+
+    .voice-note {
+      font-size: 0.78rem;
+      color: #888;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+
+    /* Microphone UI removed */
+
+    /* Progress */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin: 20px 0;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 18px 12px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(90deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Principles */
+    .principle {
+      margin-bottom: 12px;
+    }
+
+    .principle summary {
+      list-style: none;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .principle summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .principle-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #4facfe, #00f2fe);
+      color: #0a0a0a;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .principle-body {
+      padding: 10px 0 6px 38px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 20px 60px;
+      color: #666;
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    footer a {
+      color: #999;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #ccc;
+    }
+
+    /* Floating mic removed */
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(30, 30, 30, 0.95);
+      border: 1px solid var(--border);
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 200;
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Install prompt banner */
+    .install-banner {
+      display: none;
+      background: linear-gradient(135deg, rgba(255, 107, 157, 0.15), rgba(196, 77, 255, 0.15));
+      border: 1px solid rgba(196, 77, 255, 0.3);
+      border-radius: 14px;
+      padding: 16px 18px;
+      margin-bottom: 24px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .install-banner.show {
+      display: flex;
+    }
+
+    /* Utility */
+    .hidden { display: none !important; }
+    .mt-2 { margin-top: 12px; }
+    .mt-3 { margin-top: 18px; }
+    .mb-2 { margin-bottom: 12px; }
+    .text-center { text-align: center; }
+    .flex { display: flex; }
+    .gap-2 { gap: 10px; }
+    .items-center { align-items: center; }
+    .flex-wrap { flex-wrap: wrap; }
+
+    @media (max-width: 600px) {
+      .header-inner {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .chat-window {
+        height: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="logo">Uncluttered Path</div>
+      <div class="header-actions">
+        <button class="btn btn-secondary btn-sm" id="installBtn" title="Install as app">⬇ Install App</button>
+        <button class="btn btn-secondary btn-sm" id="downloadHtmlBtn" title="Download this page">Download HTML</button>
+        <select id="voiceSelect" class="voice-select" title="Choose speaking voice"></select>
+        <button class="btn btn-ghost btn-sm" id="testVoiceBtn" title="Preview the selected voice">Test Voice</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <nav id="mainNav">
+      <button class="nav-btn active" data-section="welcome">Home</button>
+      <button class="nav-btn" data-section="why">Your Why</button>
+      <button class="nav-btn" data-section="micro">Micro-Sessions</button>
+      <button class="nav-btn" data-section="rooms">Rooms</button>
+      <button class="nav-btn" data-section="companion">Companion</button>
+      <button class="nav-btn" data-section="progress">Progress</button>
+      <button class="nav-btn" data-section="habits">Habits</button>
+      <button class="nav-btn" data-section="principles">Principles</button>
+    </nav>
+
+    <!-- INSTALL BANNER -->
+    <div class="install-banner" id="installBanner">
+      <div>
+        <strong>Install Uncluttered Path</strong>
+        <div style="font-size:0.85rem;color:var(--text-muted);margin-top:2px;">Add to your home screen for quick access & offline use.</div>
+      </div>
+      <button class="btn btn-primary btn-sm" id="installBannerBtn">Install</button>
+    </div>
+
+    <!-- ==================== WELCOME ==================== -->
+    <section id="welcome" class="active">
+      <div class="hero">
+        <div class="badge">Supportive companion · Inspired by Joshua Becker</div>
+        <!-- Elegant open-path illustration -->
+        <div style="margin: 0 auto 24px; width: 120px; height: 120px; opacity: 0.9;">
+          <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="pathGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff6b9d"/>
+                <stop offset="50%" stop-color="#c44dff"/>
+                <stop offset="100%" stop-color="#00d4ff"/>
+              </linearGradient>
+            </defs>
+            <!-- Soft ground line -->
+            <path d="M10 95 Q60 85 110 95" stroke="url(#pathGrad)" stroke-width="1.5" stroke-opacity="0.5" fill="none"/>
+            <!-- Gentle path -->
+            <path d="M30 95 Q45 70 60 55 Q75 40 90 30" stroke="url(#pathGrad)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+            <!-- Soft circle of light at the end -->
+            <circle cx="90" cy="28" r="8" fill="url(#pathGrad)" fill-opacity="0.25"/>
+            <circle cx="90" cy="28" r="4" fill="url(#pathGrad)" fill-opacity="0.6"/>
+            <!-- Small calm steps -->
+            <circle cx="38" cy="88" r="2.5" fill="#ff6b9d" fill-opacity="0.7"/>
+            <circle cx="52" cy="68" r="2.5" fill="#c44dff" fill-opacity="0.7"/>
+            <circle cx="68" cy="48" r="2.5" fill="#00d4ff" fill-opacity="0.7"/>
+          </svg>
+        </div>
+        <h1 class="grad-hero">You don’t have to finish<br>the whole house today.</h1>
+        <p class="lead">Task paralysis is real. This gentle companion helps you start small, release what no longer serves you, and reclaim space for the life you actually want — based on the proven teachings of Joshua Becker.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" onclick="showSection('micro')">Start a 5-Minute Session</button>
+          <button class="btn btn-secondary btn-lg" onclick="showSection('companion')">Talk to Companion</button>
+        </div>
+      </div>
+
+      <div class="card card-glow-pink mt-3">
+        <h3>Why this exists</h3>
+        <p>Most decluttering advice assumes you can just “get started.” But when the mountain of stuff feels overwhelming, the hardest part is taking the very first step. Uncluttered Path is built for that moment — offering micro-actions, kind voice guidance, and the calm wisdom of intentional minimalism.</p>
+        <p style="margin-bottom:0;">Minimalism, as Joshua Becker teaches, is not about owning nothing. It is the intentional promotion of the things you value most by removing anything that distracts you from them.</p>
+      </div>
+
+      <div class="card mt-2">
+        <h3>How to use this companion</h3>
+        <p>1. Define your <strong>Why</strong> — the life you want more of.</p>
+        <p>2. Begin with a tiny <strong>Micro-Session</strong> (2–10 minutes).</p>
+        <p>3. Work room-by-room, easiest first.</p>
+        <p>4. Talk to the <strong>Companion</strong> whenever you feel stuck.</p>
+        <p style="margin-bottom:0;">5. Track small wins. They compound into freedom.</p>
+      </div>
+    </section>
+
+    <!-- ==================== YOUR WHY ==================== -->
+    <section id="why">
+      <h2 class="grad-why" style="display:flex;align-items:center;gap:12px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#whyGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <defs><linearGradient id="whyGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop stop-color="#a18cd1"/><stop offset="1" stop-color="#fbc2eb"/></linearGradient></defs>
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M12 7v5l3 3"/>
+        </svg>
+        Your Why
+      </h2>
+      <p class="lead">Clarify the purpose that will carry you when motivation dips. Complete the sentence below. This becomes your mountaintop.</p>
+
+      <div class="card card-glow-pink">
+        <label for="whyInput" style="display:block;margin-bottom:8px;font-weight:600;">I desire to own less so that I can…</label>
+        <textarea id="whyInput" placeholder="…spend more time with my children, travel freely, feel calm at home, create more, rest deeply…"></textarea>
+        <div class="flex gap-2 flex-wrap mt-2">
+          <button class="btn btn-primary" onclick="saveWhy()">Save My Why</button>
+          <button class="btn btn-secondary" onclick="speakWhy()">🔊 Speak My Why</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearWhy()">Clear</button>
+        </div>
+      </div>
+
+      <div id="whySavedBox" class="hidden">
+        <h3 style="margin-top:24px;">Your living purpose</h3>
+        <div class="why-display" id="whyDisplay"></div>
+        <p style="font-size:0.9rem;">Return here anytime. Speak it out loud when resistance appears. This is the life you are making space for.</p>
+      </div>
+    </section>
+
+    <!-- ==================== MICRO-SESSIONS ==================== -->
+    <section id="micro">
+      <h2 class="grad-micro" style="display:flex;align-items:center;gap:12px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#microGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <defs><linearGradient id="microGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop stop-color="#00f2fe"/><stop offset="1" stop-color="#4facfe"/></linearGradient></defs>
+          <circle cx="12" cy="12" r="9"/>
+          <polyline points="12 7 12 12 15 15"/>
+        </svg>
+        Micro-Sessions
+      </h2>
+      <p class="lead">For task paralysis, the only way out is a tiny, completable action. Choose one. Set a timer. Finish it. Celebrate.</p>
+
+      <div id="activeSession" class="card card-glow-cyan hidden">
+        <h3 id="sessionTitle">Session in progress</h3>
+        <div class="timer-display" id="timerDisplay">05:00</div>
+        <div class="timer-controls">
+          <button class="btn btn-primary" id="timerToggle" onclick="toggleTimer()">Pause</button>
+          <button class="btn btn-secondary" onclick="completeSession()">I Finished ✨</button>
+          <button class="btn btn-ghost" onclick="cancelSession()">Cancel</button>
+        </div>
+        <p id="sessionPrompt" class="mt-2" style="text-align:center;color:#c8c8c8;"></p>
+      </div>
+
+      <div class="session-grid" id="sessionGrid">
+        <div class="card session-card" onclick="startSession('surface', 5, 'Clear One Surface', 'Set a 5-minute timer. Choose one small surface (nightstand, bathroom counter, kitchen corner). Remove everything. Wipe it. Put back only what belongs. Put the rest in a temporary box or donation bag. Done.')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v12h14V8"/></svg>
+            <div class="time">5 minutes</div>
+          </div>
+          <h3>Clear One Surface</h3>
+          <p style="margin:0;font-size:0.9rem;">Nightstand, counter, or desk corner. Instant visual win.</p>
+        </div>
+
+        <div class="card session-card" onclick="startSession('oneless', 3, 'One Less of Something', 'Pick any category you can see right now — mugs, pens, shirts, books. Ask: “Can I live with one less of these?” Choose your least favorite and place it in a donation box. That is permanent progress.')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>
+            <div class="time">3 minutes</div>
+          </div>
+          <h3>One Less</h3>
+          <p style="margin:0;font-size:0.9rem;">Becker’s simplest powerful practice. One item. Done.</p>
+        </div>
+
+        <div class="card session-card" onclick="startSession('donation', 4, 'Create a Donation Station', 'Find or place a sturdy box or bag in a convenient spot (entryway, laundry room, closet). Label it “Donate”. From now on, whenever you notice something that no longer serves you, it goes straight into the box. Frictionless release.')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            <div class="time">4 minutes</div>
+          </div>
+          <h3>Donation Station</h3>
+          <p style="margin:0;font-size:0.9rem;">Set up a permanent home for items leaving your life.</p>
+        </div>
+
+        <div class="card session-card" onclick="startSession('junk', 7, 'Junk Drawer or Shelf', 'Open one drawer or shelf. Touch every single item. Sort into three piles: Keep (belongs here), Relocate (belongs elsewhere), Remove (donate / trash / recycle). Put the Keep items back neatly. Process the other two piles.')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 10h20"/><path d="M6 4v16"/></svg>
+            <div class="time">7 minutes</div>
+          </div>
+          <h3>One Drawer / Shelf</h3>
+          <p style="margin:0;font-size:0.9rem;">Touch every item. Three piles only. Classic Becker method.</p>
+        </div>
+
+        <div class="card session-card" onclick="startSession('clothes', 10, 'Easy Clothes Pass', 'Open your closet or a drawer of clothes that belong only to you. Pull out 5–10 items you have not worn in the last year or that no longer feel like “you”. Place them in the donation box. Do not organize the rest yet — just remove the easy no’s.')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.46a1 1 0 0 0 .99.85H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.85l.58-3.46a2 2 0 0 0-1.34-2.23z"/></svg>
+            <div class="time">10 minutes</div>
+          </div>
+          <h3>Easy Clothes Pass</h3>
+          <p style="margin:0;font-size:0.9rem;">Start with your own clothes. Release the obvious.</p>
+        </div>
+
+        <div class="card session-card" onclick="startSession('duplicates', 6, 'Duplicate Hunt', 'In the kitchen or bathroom, look for duplicates (mugs, spatulas, shampoo bottles, towels). Keep the ones you actually love and use. Put the extras in the donation or relocate box. Notice how much lighter the space feels.')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8"><rect x="2" y="2" width="8" height="8" rx="1"/><rect x="14" y="2" width="8" height="8" rx="1"/><rect x="2" y="14" width="8" height="8" rx="1"/><rect x="14" y="14" width="8" height="8" rx="1"/></svg>
+            <div class="time">6 minutes</div>
+          </div>
+          <h3>Duplicate Hunt</h3>
+          <p style="margin:0;font-size:0.9rem;">Kitchen or bathroom. Keep favorites, release the rest.</p>
+        </div>
+
+        <div class="card session-card" onclick="startSession('stuck', 2, 'I’m Completely Stuck', 'Stop. Breathe. Look around and pick the single easiest item you can see that no longer serves you. Put it in a donation bag or trash. That is enough for right now. You have already started.')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+            <div class="time">2 minutes</div>
+          </div>
+          <h3>I’m Completely Stuck</h3>
+          <p style="margin:0;font-size:0.9rem;">For when even 5 minutes feels too big. One item only.</p>
+        </div>
+
+        <div class="card session-card" onclick="startSession('oneminute', 1, 'One Minute Clear', 'Set a 60-second timer. In that time, put away or release as many obvious items as you can. When the timer ends, stop. You are done. Progress counts even when it is tiny.')">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+            <div class="time">1 minute</div>
+          </div>
+          <h3>One Minute Clear</h3>
+          <p style="margin:0;font-size:0.9rem;">The absolute smallest possible win. Perfect for hard days.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== ROOMS ==================== -->
+    <section id="rooms">
+      <h2 class="grad-rooms" style="display:flex;align-items:center;gap:12px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#roomsGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <defs><linearGradient id="roomsGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop stop-color="#43e97b"/><stop offset="1" stop-color="#38f9d7"/></linearGradient></defs>
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        Room-by-Room Guide
+      </h2>
+      <p class="lead">Work from easiest to hardest. Finish one space completely before moving on. Clarify the purpose of the room first — then decide what supports that purpose.</p>
+
+      <div class="room-list" id="roomList">
+        <!-- Rooms will be rendered by JavaScript for interactivity -->
+      </div>
+
+      <div class="card mt-3" style="border-color:rgba(67,233,123,0.25);">
+        <h3>Remember the three piles</h3>
+        <p style="margin-bottom:0;">For every item you touch: <strong>Keep</strong> (belongs in this room and serves its purpose) · <strong>Relocate</strong> (belongs somewhere else in the home) · <strong>Remove</strong> (donate, recycle, or trash). Prefer donation whenever possible.</p>
+      </div>
+
+      <div class="card mt-3" style="border-color:rgba(67,233,123,0.25);">
+        <h3>Remember the three piles</h3>
+        <p style="margin-bottom:0;">For every item you touch: <strong>Keep</strong> (belongs in this room and serves its purpose) · <strong>Relocate</strong> (belongs somewhere else in the home) · <strong>Remove</strong> (donate, recycle, or trash). Prefer donation whenever possible. Once an item leaves the house, the decision is permanent — and freeing.</p>
+      </div>
+    </section>
+
+    <!-- ==================== COMPANION ==================== -->
+    <section id="companion">
+      <h2 class="grad-companion" style="display:flex;align-items:center;gap:12px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#compGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <defs><linearGradient id="compGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop stop-color="#fa709a"/><stop offset="1" stop-color="#fee140"/></linearGradient></defs>
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        Companion
+      </h2>
+      <p class="lead">Type freely. Tell me you’re stuck, name a room, ask for a tip, or simply say “help me start.” I will respond with gentle, practical guidance rooted in Joshua Becker’s approach.</p>
+
+      <div class="card card-glow-gold">
+        <div class="chat-window" id="chatWindow">
+          <div class="msg bot">Hello. I’m here with you. Whenever the clutter feels too big, just type. You can say things like “I’m overwhelmed”, “help with my closet”, “give me a 5-minute idea”, or “remind me of my why”. What would you like to do right now?</div>
+        </div>
+
+        <div class="companion-controls">
+          <input type="text" id="textInput" placeholder="Type your message here…" style="flex:1;min-width:160px;min-height:auto;padding:14px 16px;font-size:1rem;" onkeydown="if(event.key==='Enter')sendText()" />
+          <button class="btn btn-primary" onclick="sendText()">Send</button>
+        </div>
+        <p style="font-size:0.8rem;color:#999;margin-top:12px;margin-bottom:4px;line-height:1.45;">
+          Type anything that’s on your mind. The companion will reply with supportive guidance. You can also choose a voice above so the replies can be spoken aloud if you like.
+        </p>
+      </div>
+    </section>
+
+    <!-- ==================== PROGRESS ==================== -->
+    <section id="progress">
+      <h2 class="grad-progress" style="display:flex;align-items:center;gap:12px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#progGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <defs><linearGradient id="progGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop stop-color="#667eea"/><stop offset="1" stop-color="#764ba2"/></linearGradient></defs>
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+          <polyline points="16 7 22 7 22 13"/>
+        </svg>
+        Your Progress & Wins
+      </h2>
+      <p class="lead">Small completed actions are permanent. They build the muscle of intentional living. Celebrate every one.</p>
+
+      <div class="stats-grid">
+        <div class="card stat-card">
+          <div class="stat-value" id="statSessions">0</div>
+          <div class="stat-label">Sessions completed</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-value" id="statItems">0</div>
+          <div class="stat-label">Items released (est.)</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-value" id="statStreak">0</div>
+          <div class="stat-label">Day streak</div>
+        </div>
+        <div class="card stat-card">
+          <div class="stat-value" id="statOneLess">0</div>
+          <div class="stat-label">One Less streak</div>
+        </div>
+      </div>
+
+      <!-- Daily One Less Challenge -->
+      <div class="card card-glow-purple" style="margin-top:18px;">
+        <h3>Daily One Less Challenge</h3>
+        <p>Joshua Becker’s simplest and most powerful practice. Ask: “Can I live with one less of these?” and release one item today.</p>
+        <div class="flex gap-2 flex-wrap mt-2">
+          <button class="btn btn-primary" onclick="logOneLess()">I did One Less today ✨</button>
+          <button class="btn btn-secondary" onclick="logWin(1)">Just log +1 item</button>
+        </div>
+        <p id="oneLessStatus" style="margin-top:12px;font-size:0.9rem;color:#c8c8c8;"></p>
+      </div>
+
+      <div class="card mt-2">
+        <h3>Log a win manually</h3>
+        <p>Finished something outside a timed session? Record it here.</p>
+        <div class="flex gap-2 flex-wrap">
+          <button class="btn btn-secondary" onclick="logWin(1)">+1 Item Released</button>
+          <button class="btn btn-secondary" onclick="logWin(5)">+5 Items</button>
+          <button class="btn btn-secondary" onclick="logWin(10)">+10 Items</button>
+          <button class="btn btn-ghost" onclick="resetProgress()">Reset All Progress</button>
+        </div>
+      </div>
+
+      <div class="card mt-2">
+        <h3>Your Notes</h3>
+        <p>Jot down anything that helps you stay motivated or remember what worked.</p>
+        <textarea id="notesInput" placeholder="What felt good today? What area is calling you next?" style="min-height:90px;"></textarea>
+        <button class="btn btn-secondary btn-sm mt-2" onclick="saveNotes()">Save Notes</button>
+      </div>
+
+      <div class="card mt-2">
+        <h3>Printable Starter Kit</h3>
+        <p>A clean one-page summary you can print and keep nearby.</p>
+        <button class="btn btn-primary" onclick="openPrintableKit()">Print Starter Kit</button>
+      </div>
+
+      <div class="card mt-2">
+        <h3>Recent activity</h3>
+        <ul id="activityLog" style="list-style:none;padding:0;color:var(--text-muted);font-size:0.95rem;"></ul>
+        <p id="noActivity" style="margin:0;color:#666;">No activity yet. Complete a micro-session or log a win to begin.</p>
+      </div>
+    </section>
+
+    <!-- ==================== HABITS / STOP THE INFLOW ==================== -->
+    <section id="habits">
+      <h2 class="grad-micro" style="display:flex;align-items:center;gap:12px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#habitsGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <defs><linearGradient id="habitsGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop stop-color="#00f2fe"/><stop offset="1" stop-color="#4facfe"/></linearGradient></defs>
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        Stop the Inflow
+      </h2>
+      <p class="lead">Decluttering is an event. Minimalism is a lifestyle. These simple habits help keep clutter from returning.</p>
+
+      <div class="card">
+        <h3>1. The One-In, One-Out Rule</h3>
+        <p>For every new item that comes into your home, one similar item must leave. This single habit dramatically slows accumulation.</p>
+      </div>
+
+      <div class="card">
+        <h3>2. The Donation Station</h3>
+        <p>Keep a permanent box or bag in a convenient place. When something no longer serves you, it goes straight into the box. No second thoughts, no “maybe later.”</p>
+      </div>
+
+      <div class="card">
+        <h3>3. The 5-Minute Evening Reset</h3>
+        <p>Before bed, spend five minutes returning items to their homes in the main living areas. This prevents the “clutter of the day” from becoming the clutter of tomorrow.</p>
+      </div>
+
+      <div class="card">
+        <h3>4. Pause Before Buying</h3>
+        <p>When tempted to buy something non-essential, wait 24–48 hours. Ask: Does this support the life I want? Will I still want it next week?</p>
+      </div>
+
+      <div class="card">
+        <h3>5. Buy Experiences, Not Things</h3>
+        <p>Whenever possible, choose memories, time with people, or learning over material objects. Experiences create joy without filling your home.</p>
+      </div>
+    </section>
+
+    <!-- ==================== PRINCIPLES ==================== -->
+    <section id="principles">
+      <h2 class="grad-principles" style="display:flex;align-items:center;gap:12px;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="url(#prinGrad)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <defs><linearGradient id="prinGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop stop-color="#4facfe"/><stop offset="1" stop-color="#00f2fe"/></linearGradient></defs>
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+        Core Principles
+      </h2>
+      <p class="lead">These practical truths, drawn from Joshua Becker’s years of teaching, form the foundation of lasting change. They are not trends — they are tested approaches to owning less so you can live more.</p>
+
+      <div class="card">
+        <details class="principle" open>
+          <summary><span class="principle-num">1</span> Begin with your own stuff</summary>
+          <div class="principle-body">Lasting change starts when you take responsibility for your own belongings first. Resist the urge to begin with shared spaces or other people’s things.</div>
+        </details>
+        <details class="principle">
+          <summary><span class="principle-num">2</span> Remove excess — do not merely organize it</summary>
+          <div class="principle-body">Organizing is temporary. The real freedom comes from permanently reducing what you own. Containers and systems cannot solve the problem of too much.</div>
+        </details>
+        <details class="principle">
+          <summary><span class="principle-num">3</span> Clarify the purpose of each space</summary>
+          <div class="principle-body">Before deciding what stays, decide what the room is for. A bedroom is for rest. A kitchen is for nourishing. Let that purpose guide every keep-or-release decision.</div>
+        </details>
+        <details class="principle">
+          <summary><span class="principle-num">4</span> Start with the easiest spaces</summary>
+          <div class="principle-body">Build momentum where success is quick. Living surfaces, bathrooms, and entryways before garages, attics, or sentimental collections. Easy wins create the energy for harder ones.</div>
+        </details>
+        <details class="principle">
+          <summary><span class="principle-num">5</span> Ask better questions</summary>
+          <div class="principle-body">Instead of “Could this be useful someday?”, try “Does this serve the life I want right now?” or the simple daily practice: “Can I live with one less of these?”</div>
+        </details>
+        <details class="principle">
+          <summary><span class="principle-num">6</span> Touch every item</summary>
+          <div class="principle-body">Physically handle each possession. Sort into Keep, Relocate, or Remove. This deliberate contact prevents the mindless scanning that leaves clutter in place.</div>
+        </details>
+        <details class="principle">
+          <summary><span class="principle-num">7</span> Stop the inflow</summary>
+          <div class="principle-body">Decluttering is an event; minimalism is a lifestyle. Create boundaries for what enters your home. One-in-one-out is a powerful habit. Buy experiences more than things.</div>
+        </details>
+        <details class="principle">
+          <summary><span class="principle-num">8</span> Keep your eyes on the life you gain</summary>
+          <div class="principle-body">Minimalism is not primarily about the things you remove. It is about the time, money, energy, peace, and relationships you free up. Focus on what you are adding back into your life.</div>
+        </details>
+        <details class="principle">
+          <summary><span class="principle-num">9</span> Make it a lifestyle, not a project</summary>
+          <div class="principle-body">A single big declutter is wonderful, but clutter returns if habits do not change. Build small daily practices: evening resets, donation stations, conscious purchasing.</div>
+        </details>
+        <details class="principle">
+          <summary><span class="principle-num">10</span> Be kind to yourself in the process</summary>
+          <div class="principle-body">Progress is rarely linear. Some days will feel easy; others will feel stuck. Return to your Why, take the next tiny step, and remember that every item released is permanent freedom.</div>
+        </details>
+      </div>
+
+      <div class="card mt-3" style="text-align:center;">
+        <p style="margin-bottom:8px;">Want to go deeper?</p>
+        <a href="https://www.becomingminimalist.com" target="_blank" rel="noopener" class="btn btn-secondary">Visit Becoming Minimalist</a>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>Uncluttered Path is an independent educational companion inspired by the minimalism teachings of Joshua Becker (Becoming Minimalist).</p>
+    <p>It is not affiliated with, endorsed by, or connected to Joshua Becker or Becoming Minimalist.</p>
+    <p style="margin-top:12px;">Made with care for anyone who has ever felt frozen by clutter. Start small. You are already enough.</p>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ==================== STATE ====================
+    const STORAGE_KEY = 'unclutteredPathState_v2';
+    let state = {
+      why: '',
+      sessionsCompleted: 0,
+      itemsReleased: 0,
+      streak: 0,
+      oneLessStreak: 0,
+      lastOneLessDate: null,
+      lastActiveDate: null,
+      activity: [],
+      preferredVoice: null,
+      notes: '',
+      roomProgress: {}
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) state = { ...state, ...JSON.parse(raw) };
+      } catch (e) {}
+      updateProgressUI();
+      if (state.why) {
+        document.getElementById('whyInput').value = state.why;
+        document.getElementById('whyDisplay').textContent = '“I desire to own less so that I can ' + state.why + '.”';
+        document.getElementById('whySavedBox').classList.remove('hidden');
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      updateProgressUI();
+    }
+
+    function updateProgressUI() {
+      document.getElementById('statSessions').textContent = state.sessionsCompleted;
+      document.getElementById('statItems').textContent = state.itemsReleased;
+      document.getElementById('statStreak').textContent = state.streak;
+      const oneLessEl = document.getElementById('statOneLess');
+      if (oneLessEl) oneLessEl.textContent = state.oneLessStreak || 0;
+
+      // One Less status text
+      const statusEl = document.getElementById('oneLessStatus');
+      if (statusEl) {
+        const today = new Date().toDateString();
+        if (state.lastOneLessDate === today) {
+          statusEl.textContent = 'You’ve already done One Less today. Beautiful consistency.';
+        } else if (state.oneLessStreak > 0) {
+          statusEl.textContent = `Current streak: ${state.oneLessStreak} day${state.oneLessStreak > 1 ? 's' : ''}. Keep going.`;
+        } else {
+          statusEl.textContent = 'Start a streak today with just one item.';
+        }
+      }
+
+      // Notes
+      const notesInput = document.getElementById('notesInput');
+      if (notesInput && state.notes) notesInput.value = state.notes;
+
+      const log = document.getElementById('activityLog');
+      const noAct = document.getElementById('noActivity');
+      if (log) {
+        log.innerHTML = '';
+        if (state.activity.length === 0) {
+          if (noAct) noAct.style.display = 'block';
+        } else {
+          if (noAct) noAct.style.display = 'none';
+          state.activity.slice(0, 12).forEach(entry => {
+            const li = document.createElement('li');
+            li.style.padding = '6px 0';
+            li.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+            li.textContent = entry;
+            log.appendChild(li);
+          });
+        }
+      }
+    }
+
+    function logOneLess() {
+      const today = new Date().toDateString();
+      if (state.lastOneLessDate === today) {
+        showToast('You’ve already logged One Less today. Come back tomorrow!');
+        return;
+      }
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      if (state.lastOneLessDate === yesterday.toDateString()) {
+        state.oneLessStreak = (state.oneLessStreak || 0) + 1;
+      } else {
+        state.oneLessStreak = 1;
+      }
+      state.lastOneLessDate = today;
+      state.itemsReleased = (state.itemsReleased || 0) + 1;
+      updateStreak();
+      const entry = new Date().toLocaleDateString() + ' — One Less completed';
+      state.activity.unshift(entry);
+      if (state.activity.length > 30) state.activity.pop();
+      saveState();
+      showToast('Wonderful. One less item. Permanent freedom.');
+      speak('Wonderful. One less item. That is permanent freedom.');
+      // Soft celebration
+      celebrate();
+    }
+
+    function saveNotes() {
+      const input = document.getElementById('notesInput');
+      if (input) {
+        state.notes = input.value.trim();
+        saveState();
+        showToast('Notes saved.');
+      }
+    }
+
+    function celebrate() {
+      // Soft visual celebration
+      const toast = document.getElementById('toast');
+      if (toast) {
+        toast.style.background = 'linear-gradient(135deg, rgba(102,126,234,0.95), rgba(118,75,162,0.95))';
+        setTimeout(() => {
+          toast.style.background = '';
+        }, 2500);
+      }
+    }
+
+    // ==================== NAVIGATION ====================
+    function showSection(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.section === id);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => showSection(btn.dataset.section));
+    });
+
+    // ==================== WHY ====================
+    function saveWhy() {
+      const val = document.getElementById('whyInput').value.trim();
+      if (!val) {
+        showToast('Please write a few words about what you want more of.');
+        return;
+      }
+      state.why = val;
+      saveState();
+      document.getElementById('whyDisplay').textContent = '“I desire to own less so that I can ' + val + '.”';
+      document.getElementById('whySavedBox').classList.remove('hidden');
+      showToast('Your Why is saved. Speak it whenever you need strength.');
+      speak('Your why is saved. I desire to own less so that I can ' + val);
+    }
+
+    function speakWhy() {
+      if (!state.why) {
+        showToast('Save your Why first.');
+        return;
+      }
+      speak('I desire to own less so that I can ' + state.why);
+    }
+
+    function clearWhy() {
+      state.why = '';
+      document.getElementById('whyInput').value = '';
+      document.getElementById('whySavedBox').classList.add('hidden');
+      saveState();
+    }
+
+    // ==================== MICRO SESSIONS / TIMER ====================
+    let timerInterval = null;
+    let remainingSeconds = 0;
+    let currentSession = null;
+    let timerRunning = false;
+
+    function startSession(id, minutes, title, prompt) {
+      currentSession = { id, title, prompt };
+      remainingSeconds = minutes * 60;
+      document.getElementById('sessionTitle').textContent = title;
+      document.getElementById('sessionPrompt').textContent = prompt;
+      document.getElementById('activeSession').classList.remove('hidden');
+      document.getElementById('sessionGrid').classList.add('hidden');
+      updateTimerDisplay();
+      timerRunning = true;
+      document.getElementById('timerToggle').textContent = 'Pause';
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (!timerRunning) return;
+        remainingSeconds--;
+        updateTimerDisplay();
+        if (remainingSeconds <= 0) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          speak('Time is up. How did it go? Tap I Finished when you are done.');
+          showToast('Timer finished. Great work showing up.');
+        }
+      }, 1000);
+      speak('Starting ' + title + '. ' + prompt.split('.')[0] + '.');
+      showSection('micro');
+    }
+
+    function updateTimerDisplay() {
+      const m = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+      const s = (remainingSeconds % 60).toString().padStart(2, '0');
+      document.getElementById('timerDisplay').textContent = m + ':' + s;
+    }
+
+    function toggleTimer() {
+      timerRunning = !timerRunning;
+      document.getElementById('timerToggle').textContent = timerRunning ? 'Pause' : 'Resume';
+    }
+
+    function completeSession() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+      state.sessionsCompleted += 1;
+      // rough estimate of items
+      const est = currentSession && currentSession.id === 'oneless' ? 1 : (currentSession && currentSession.id === 'surface' ? 4 : 6);
+      state.itemsReleased += est;
+      updateStreak();
+      const entry = new Date().toLocaleDateString() + ' — Completed: ' + (currentSession ? currentSession.title : 'Session');
+      state.activity.unshift(entry);
+      if (state.activity.length > 30) state.activity.pop();
+      saveState();
+      document.getElementById('activeSession').classList.add('hidden');
+      document.getElementById('sessionGrid').classList.remove('hidden');
+      showToast('Beautiful. That progress is permanent. ✨');
+      speak('Wonderful. That one completed action is permanent progress. How does it feel to have finished?');
+      celebrate();
+      currentSession = null;
+    }
+
+    function cancelSession() {
+      if (timerInterval) clearInterval(timerInterval);
+      timerInterval = null;
+      document.getElementById('activeSession').classList.add('hidden');
+      document.getElementById('sessionGrid').classList.remove('hidden');
+      currentSession = null;
+    }
+
+    function updateStreak() {
+      const today = new Date().toDateString();
+      if (state.lastActiveDate === today) return;
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      if (state.lastActiveDate === yesterday.toDateString()) {
+        state.streak += 1;
+      } else {
+        state.streak = 1;
+      }
+      state.lastActiveDate = today;
+    }
+
+    function logWin(count) {
+      state.itemsReleased += count;
+      updateStreak();
+      const entry = new Date().toLocaleDateString() + ' — Released ~' + count + ' item' + (count > 1 ? 's' : '');
+      state.activity.unshift(entry);
+      if (state.activity.length > 30) state.activity.pop();
+      saveState();
+      showToast('Logged. Every item that leaves is freedom.');
+      speak('Logged. Every item you release creates permanent space.');
+    }
+
+    function resetProgress() {
+      if (!confirm('Reset all progress data? This cannot be undone.')) return;
+      state.sessionsCompleted = 0;
+      state.itemsReleased = 0;
+      state.streak = 0;
+      state.lastActiveDate = null;
+      state.activity = [];
+      saveState();
+      showToast('Progress cleared.');
+    }
+
+    // ==================== VOICE (Improved for naturalness) ====================
+    let recognition = null;
+    let isListening = false;
+    let preferredVoiceName = state.preferredVoice || null;
+    let speechRate = parseFloat(localStorage.getItem('speechRate')) || 0.90;
+    let speechPitch = parseFloat(localStorage.getItem('speechPitch')) || 1.0;
+
+    function preferredKeywordsMatch(name) {
+      const n = (name || '').toLowerCase();
+      return /neural|premium|enhanced|natural|google|microsoft|samantha|karen|moira|daniel|alex|aria|jenny|zira|victoria|fiona/.test(n);
+    }
+
+    function getBestVoices() {
+      const voices = speechSynthesis.getVoices();
+      const preferredKeywords = [
+        'neural', 'premium', 'enhanced', 'natural', 'google', 'microsoft',
+        'samantha', 'karen', 'moira', 'daniel', 'alex', 'fiona', 'victoria',
+        'zira', 'aria', 'jenny', 'guy', 'sara', 'susan', 'hazel'
+      ];
+      return voices
+        .filter(v => v.lang && (v.lang.startsWith('en') || v.lang.startsWith('en-')))
+        .sort((a, b) => {
+          const score = (v) => {
+            let s = 0;
+            const name = (v.name || '').toLowerCase();
+            preferredKeywords.forEach((k, i) => {
+              if (name.includes(k)) s += (30 - i);
+            });
+            // Prefer non-local (often higher quality cloud voices) slightly
+            if (v.localService === false) s += 8;
+            if (v.default) s += 2;
+            return s;
+          };
+          return score(b) - score(a) || a.name.localeCompare(b.name);
+        });
+    }
+
+    function loadVoices() {
+      const select = document.getElementById('voiceSelect');
+      if (!select) return;
+      select.innerHTML = '';
+      const best = getBestVoices();
+      if (best.length === 0) {
+        const opt = document.createElement('option');
+        opt.textContent = 'No English voices found';
+        select.appendChild(opt);
+        return;
+      }
+      best.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.name;
+        const quality = preferredKeywordsMatch(v.name) ? ' ★' : '';
+        opt.textContent = v.name + quality + (v.localService ? ' (device)' : '');
+        select.appendChild(opt);
+      });
+      // Restore preferred or pick the top-ranked (most natural)
+      if (preferredVoiceName && best.some(v => v.name === preferredVoiceName)) {
+        select.value = preferredVoiceName;
+      } else {
+        select.value = best[0].name;
+        preferredVoiceName = best[0].name;
+        state.preferredVoice = preferredVoiceName;
+      }
+    }
+
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = loadVoices;
+    }
+    // Initial load + delayed retry (voices often load asynchronously)
+    loadVoices();
+    setTimeout(loadVoices, 400);
+    setTimeout(loadVoices, 1200);
+
+    document.getElementById('voiceSelect').addEventListener('change', (e) => {
+      preferredVoiceName = e.target.value;
+      state.preferredVoice = preferredVoiceName;
+      saveState();
+      showToast('Voice updated — try Test Voice');
+    });
+
+    // Rate & Pitch controls (added dynamically for cleanliness)
+    function ensureVoiceControls() {
+      if (document.getElementById('rateSlider')) return;
+      const companion = document.querySelector('#companion .card');
+      if (!companion) return;
+      const controls = document.createElement('div');
+      controls.className = 'voice-controls';
+      controls.innerHTML = `
+        <label>Pace <input type="range" id="rateSlider" min="0.7" max="1.15" step="0.05" value="${speechRate}"></label>
+        <label>Tone <input type="range" id="pitchSlider" min="0.8" max="1.25" step="0.05" value="${speechPitch}"></label>
+        <button class="btn btn-ghost btn-sm" id="testVoiceBtn2">Test Voice</button>
+      `;
+      const note = document.createElement('p');
+      note.className = 'voice-note';
+      note.innerHTML = 'Tip: Chrome & Edge usually offer the most natural voices. Look for ★ marked options or names containing “Google”, “Microsoft”, “Neural” or “Samantha”. Adjust Pace slower for a calmer feel.';
+      companion.appendChild(controls);
+      companion.appendChild(note);
+
+      document.getElementById('rateSlider').addEventListener('input', (e) => {
+        speechRate = parseFloat(e.target.value);
+        localStorage.setItem('speechRate', speechRate);
+      });
+      document.getElementById('pitchSlider').addEventListener('input', (e) => {
+        speechPitch = parseFloat(e.target.value);
+        localStorage.setItem('speechPitch', speechPitch);
+      });
+      document.getElementById('testVoiceBtn2').addEventListener('click', testVoice);
+    }
+
+    // Call after DOM ready
+    setTimeout(ensureVoiceControls, 300);
+
+    function testVoice() {
+      speak("Hi. I'm your Uncluttered Path companion. Let's take this one small step at a time. You don't have to finish everything today.");
+    }
+
+    document.getElementById('testVoiceBtn')?.addEventListener('click', testVoice);
+
+    function speak(text, onEnd) {
+      if (!text || !window.speechSynthesis) return;
+      speechSynthesis.cancel(); // stop any previous speech
+
+      // Split into natural sentence chunks for more human rhythm and less robotic delivery
+      const sentences = text.match(/[^.!?]+[.!?]+|[^.!?]+$/g) || [text];
+      let index = 0;
+
+      function speakNext() {
+        if (index >= sentences.length) {
+          if (typeof onEnd === 'function') onEnd();
+          return;
+        }
+        const chunk = sentences[index].trim();
+        if (!chunk) {
+          index++;
+          speakNext();
+          return;
+        }
+        const utter = new SpeechSynthesisUtterance(chunk);
+        const voices = speechSynthesis.getVoices();
+        const voice = voices.find(v => v.name === preferredVoiceName) ||
+                      voices.find(v => v.lang && v.lang.startsWith('en')) ||
+                      voices[0];
+        if (voice) utter.voice = voice;
+        utter.rate = speechRate;
+        utter.pitch = speechPitch;
+        utter.volume = 1;
+        utter.onend = () => {
+          index++;
+          // Natural pause between sentences (feels more human)
+          setTimeout(speakNext, 260);
+        };
+        utter.onerror = () => {
+          index++;
+          speakNext();
+        };
+        speechSynthesis.speak(utter);
+      }
+      speakNext();
+    }
+
+    // Microphone / SpeechRecognition removed at user request.
+    // Text input is now the only way to talk to the companion.
+    function toggleListening() { /* disabled */ }
+    function startListening() { /* disabled */ }
+    function stopListening() { /* disabled */ }
+
+    function addChatMessage(text, type) {
+      const win = document.getElementById('chatWindow');
+      const div = document.createElement('div');
+      div.className = 'msg ' + type;
+      div.textContent = text;
+      win.appendChild(div);
+      win.scrollTop = win.scrollHeight;
+    }
+
+    function sendText() {
+      const input = document.getElementById('textInput');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      addChatMessage(text, 'user');
+      handleUserSpeech(text);
+    }
+
+    function handleUserSpeech(raw) {
+      const text = raw.toLowerCase();
+      let response = getCompanionResponse(text);
+      addChatMessage(response, 'bot');
+      speak(response);
+    }
+
+    function getCompanionResponse(text) {
+      // Keyword matching — supportive, conversational, and TTS-friendly
+      if (/overwhelm|stuck|paralysis|can't start|cant start|frozen|too much|don't know where|dont know where|help me start|i'm stuck|im stuck/.test(text)) {
+        return "It's completely normal to feel stuck. Let's keep it simple. Look around right now for one easy item or one small surface. Just deal with that for the next two minutes. You don't have to finish the whole room. That single step already creates real progress.";
+      }
+      if (/why|purpose|motivation|remind me why|my why/.test(text)) {
+        if (state.why) {
+          return "Your why is the fuel that carries you. You said: I desire to own less so that I can " + state.why + ". Hold on to that. That is the life you are making space for.";
+        }
+        return "Your why is the most important starting point. Complete this sentence in the Your Why section: I desire to own less so that I can… What do you want more of in your life?";
+      }
+      if (/closet|clothes|wardrobe|shirts|dresses|shoes/.test(text)) {
+        return "For clothes, start with your own. Touch each piece. Keep only what you actually wear and that makes you feel good. Ask: Can I live with one less of these? Release the easy no's first. Momentum will help with the harder ones later.";
+      }
+      if (/kitchen|mugs|utensils|drawers|pantry/.test(text)) {
+        return "In the kitchen, first move anything that doesn't belong there. Then look at duplicates — mugs, spatulas, containers. Keep your favorites. The physical limits of your drawers and cabinets are natural boundaries. You need far less than you think.";
+      }
+      if (/bathroom|expired|products|shampoo/.test(text)) {
+        return "The bathroom is one of the easiest places to begin. Remove expired products, empty bottles, and samples you'll never use. Keep only what helps you care for yourself.";
+      }
+      if (/one less|one-less|simpler|simple practice/.test(text)) {
+        return "Beautiful practice. Pick any category you can see and ask: Can I live with one less of these? Choose your least favorite and put it in a donation box. Repeat tomorrow. Small decisions compound into real freedom.";
+      }
+      if (/donate|donation|remove|release|get rid|throw/.test(text)) {
+        return "Donating is powerful. Every item that leaves your home permanently frees space, time, and energy. You never have to organize it again. Prefer donation whenever the item still has life in it.";
+      }
+      if (/start|begin|what should i do|next step|micro|session|5 minute|five minute/.test(text)) {
+        return "Let's begin with a micro-session. Go to Micro-Sessions and choose Clear One Surface or One Less. Set the timer and finish it. That completed action is permanent progress. Would you like a 5-minute surface clear right now?";
+      }
+      if (/room|which room|where to start|order|easiest/.test(text)) {
+        return "Always start with the easiest spaces. Car or entryway, bathroom, living room surfaces, then bedroom, kitchen, and only later the harder zones like sentimental items or the garage. Finish one space before moving on.";
+      }
+      if (/organize|organizing|containers|bins/.test(text)) {
+        return "A common trap is trying to organize excess instead of removing it. Organizing is temporary. The lasting solution is to own less. Once the excess is gone, the remaining items become easy to care for.";
+      }
+      if (/thank|thanks|grateful|appreciate/.test(text)) {
+        return "You're doing meaningful work. Every small release creates space for what matters most. I'm right here whenever you need the next gentle step.";
+      }
+      if (/hello|hi |hey |good morning|good evening/.test(text)) {
+        return "Hello. I'm glad you're here. Tell me what feels sticky right now, or simply say I'm stuck, and we'll find the tiniest possible next step together.";
+      }
+      // Default supportive response
+      return "I'm here with you. Owning less is about creating space for what matters most. Tell me a room that feels difficult, ask for a tiny next step, or say I'm overwhelmed. What would feel most helpful right now?";
+    }
+
+    // ==================== PWA / INSTALL / DOWNLOAD ====================
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBanner').classList.add('show');
+      document.getElementById('installBtn').style.display = 'inline-flex';
+    });
+
+    function triggerInstall() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => {
+          deferredPrompt = null;
+          document.getElementById('installBanner').classList.remove('show');
+        });
+      } else {
+        // Fallback instructions
+        showToast('To install: open browser menu → “Add to Home Screen” or “Install App”.');
+        // Also offer download
+      }
+    }
+
+    document.getElementById('installBtn').addEventListener('click', triggerInstall);
+    document.getElementById('installBannerBtn').addEventListener('click', triggerInstall);
+
+    // Download the HTML itself
+    document.getElementById('downloadHtmlBtn').addEventListener('click', () => {
+      const html = document.documentElement.outerHTML;
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'uncluttered-path.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('HTML file downloaded. Open it anytime, even offline.');
+    });
+
+    // Simple service worker for offline (best-effort)
+    if ('serviceWorker' in navigator) {
+      const swCode = `
+        const CACHE = 'uncluttered-path-v1';
+        self.addEventListener('install', e => {
+          self.skipWaiting();
+        });
+        self.addEventListener('fetch', e => {
+          e.respondWith(
+            caches.open(CACHE).then(cache => {
+              return cache.match(e.request).then(res => {
+                return res || fetch(e.request).then(fetchRes => {
+                  if (e.request.url.startsWith(self.location.origin)) {
+                    cache.put(e.request, fetchRes.clone());
+                  }
+                  return fetchRes;
+                }).catch(() => res);
+              });
+            })
+          );
+        });
+      `;
+      const blob = new Blob([swCode], { type: 'application/javascript' });
+      const swUrl = URL.createObjectURL(blob);
+      navigator.serviceWorker.register(swUrl).catch(() => {});
+    }
+
+    // Manifest via data URL
+    const manifest = {
+      name: 'Uncluttered Path',
+      short_name: 'Uncluttered',
+      description: 'A supportive decluttering companion inspired by Joshua Becker. For task paralysis and intentional living.',
+      start_url: '.',
+      display: 'standalone',
+      background_color: '#0a0a0a',
+      theme_color: '#0a0a0a',
+      icons: [
+        {
+          src: 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#0a0a0a"/><text y="68" x="50" text-anchor="middle" font-size="50" fill="url(#g)">✦</text><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff6b9d"/><stop offset="1" stop-color="#c44dff"/></linearGradient></defs></svg>'),
+          sizes: 'any',
+          type: 'image/svg+xml',
+          purpose: 'any'
+        }
+      ]
+    };
+    const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    document.getElementById('manifestLink').href = URL.createObjectURL(manifestBlob);
+
+    // ==================== TOAST ====================
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    // ==================== INTERACTIVE ROOM CHECKLISTS ====================
+    const ROOMS = [
+      {
+        id: 'car',
+        badge: 'Easiest',
+        badgeClass: '',
+        name: 'Car or Entryway',
+        intro: 'Perfect first space. A clear car or entry instantly signals progress.',
+        items: [
+          'Remove all trash and empty packaging',
+          'Clear glove box of unused items',
+          'Remove items that don’t belong in the car',
+          'Clear out old papers and receipts',
+          'Wipe surfaces and enjoy the win'
+        ]
+      },
+      {
+        id: 'bathroom',
+        badge: 'Easy',
+        badgeClass: '',
+        name: 'Bathroom',
+        intro: 'Clarify the purpose: a calm place to care for your body.',
+        items: [
+          'Throw away expired products',
+          'Remove empty bottles and packaging',
+          'Discard unused samples and freebies',
+          'Reduce duplicate toiletries (keep only what you use)',
+          'Relocate items that don’t belong in the bathroom',
+          'Clear counter surfaces'
+        ]
+      },
+      {
+        id: 'living',
+        badge: 'Easy',
+        badgeClass: '',
+        name: 'Living Room Surfaces',
+        intro: 'Ask: Does this item help this room fulfill its purpose of rest, connection, or hospitality?',
+        items: [
+          'Clear magazines and old papers',
+          'Remove unused décor that no longer feels meaningful',
+          'Gather cables and remotes into one place',
+          'Relocate items that belong in other rooms',
+          'Clear tabletops and floors of clutter',
+          'Keep only what supports the purpose of the space'
+        ]
+      },
+      {
+        id: 'bedroom',
+        badge: 'Medium',
+        badgeClass: '',
+        name: 'Bedroom (Surfaces & Floors First)',
+        intro: 'The bedroom’s purpose is rest and renewal. Clear floors and surfaces first.',
+        items: [
+          'Clear the floor completely',
+          'Clear nightstand surfaces',
+          'Remove items under the bed that can go',
+          'Relocate non-bedroom items',
+          'Reduce surface clutter on dressers',
+          'Save clothing and sentimental decisions for later'
+        ]
+      },
+      {
+        id: 'kitchen',
+        badge: 'Medium',
+        badgeClass: '',
+        name: 'Kitchen',
+        intro: 'First relocate anything that doesn’t belong. Then tackle duplicates.',
+        items: [
+          'Relocate anything that doesn’t belong in the kitchen',
+          'Reduce duplicate utensils and gadgets',
+          'Discard expired food and spices',
+          'Keep only containers that have matching lids',
+          'Evaluate rarely used appliances',
+          'Clear one drawer or cabinet completely',
+          'Notice the physical boundaries of your cupboards'
+        ]
+      },
+      {
+        id: 'closet',
+        badge: 'Medium',
+        badgeClass: '',
+        name: 'Clothes & Closet',
+        intro: 'Start with your own clothes only. Keep what you wear and that makes you feel good.',
+        items: [
+          'Remove clothes not worn in the last 12 months',
+          'Release items that no longer fit or feel good',
+          'Reduce obvious duplicates',
+          'Apply “Can I live with one less?” to each category',
+          'Keep only what you actually wear and love',
+          'Complete your own clothes before touching anyone else’s'
+        ]
+      },
+      {
+        id: 'hard',
+        badge: 'Harder',
+        badgeClass: 'hard',
+        name: 'Sentimental Items, Papers, Garage / Storage',
+        intro: 'Save these for last. By the time you reach them you will have practiced decision-making many times.',
+        items: [
+          'Start only after easier rooms are complete',
+          'Approach sentimental items with patience and time',
+          'Sort papers into Keep / Action / Discard',
+          'Work in small, timed sessions only',
+          'Remember: progress is still progress even if slow'
+        ]
+      }
+    ];
+
+    function renderRooms() {
+      const container = document.getElementById('roomList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      ROOMS.forEach(room => {
+        if (!state.roomProgress) state.roomProgress = {};
+        if (!state.roomProgress[room.id]) state.roomProgress[room.id] = {};
+
+        const doneCount = Object.values(state.roomProgress[room.id]).filter(Boolean).length;
+        const total = room.items.length;
+        const progressText = doneCount > 0 ? ` (${doneCount}/${total})` : '';
+
+        const details = document.createElement('details');
+        details.className = 'card room-item';
+        if (room.id === 'car') details.open = true;
+
+        details.innerHTML = `
+          <summary>
+            <span class="room-badge ${room.badgeClass}">${room.badge}</span>
+            <span>${room.name}${progressText}</span>
+          </summary>
+          <div class="room-content">
+            <p style="margin-bottom:12px;">${room.intro}</p>
+            <div class="checklist" data-room="${room.id}">
+              ${room.items.map((item, idx) => {
+                const checked = state.roomProgress[room.id][idx] ? 'checked' : '';
+                return `
+                  <label style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px;cursor:pointer;font-size:0.95rem;">
+                    <input type="checkbox" data-room="${room.id}" data-idx="${idx}" ${checked} style="margin-top:4px;accent-color:#43e97b;">
+                    <span>${item}</span>
+                  </label>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+        container.appendChild(details);
+      });
+
+      // Attach change listeners
+      container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const roomId = e.target.dataset.room;
+          const idx = e.target.dataset.idx;
+          if (!state.roomProgress[roomId]) state.roomProgress[roomId] = {};
+          state.roomProgress[roomId][idx] = e.target.checked;
+          saveState();
+          renderRooms(); // re-render to update progress count
+          if (e.target.checked) {
+            showToast('Item marked complete. Nice work.');
+          }
+        });
+      });
+    }
+
+    // ==================== PRINTABLE STARTER KIT ====================
+    function openPrintableKit() {
+      const whyText = state.why ? `I desire to own less so that I can ${state.why}.` : 'I desire to own less so that I can _______________.';
+      const win = window.open('', '_blank');
+      win.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Uncluttered Path – Starter Kit</title>
+          <style>
+            body { font-family: system-ui, sans-serif; max-width: 700px; margin: 40px auto; padding: 20px; color: #222; line-height: 1.5; }
+            h1 { font-size: 1.6rem; margin-bottom: 4px; }
+            h2 { font-size: 1.15rem; margin-top: 28px; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+            .why { background: #f7f7f7; padding: 16px; border-left: 4px solid #a18cd1; margin: 20px 0; font-size: 1.1rem; }
+            ul { padding-left: 20px; }
+            li { margin-bottom: 6px; }
+            .footer { margin-top: 40px; font-size: 0.85rem; color: #666; }
+            @media print { body { margin: 0; } }
+          </style>
+        </head>
+        <body>
+          <h1>Uncluttered Path – Starter Kit</h1>
+          <p>Inspired by the teachings of Joshua Becker</p>
+
+          <h2>Your Why</h2>
+          <div class="why">${whyText}</div>
+
+          <h2>Daily Practice</h2>
+          <p><strong>One Less:</strong> Every day ask “Can I live with one less of these?” and release one item.</p>
+
+          <h2>Quick Start Checklist</h2>
+          <ul>
+            <li>☐ Clear one small surface (5 minutes)</li>
+            <li>☐ Set up a Donation Station box</li>
+            <li>☐ Do a 2-minute “I’m stuck” session if needed</li>
+            <li>☐ Complete the Car or Entryway first</li>
+            <li>☐ Apply the One-In, One-Out rule going forward</li>
+          </ul>
+
+          <h2>Remember</h2>
+          <ul>
+            <li>Start with the easiest spaces</li>
+            <li>Touch every item – Keep / Relocate / Remove</li>
+            <li>Progress is permanent, even when tiny</li>
+            <li>You don’t have to finish the whole house today</li>
+          </ul>
+
+          <div class="footer">
+            Uncluttered Path · Independent educational companion inspired by Joshua Becker / Becoming Minimalist
+          </div>
+          <script>window.onload = function(){ window.print(); }<\/script>
+        </body>
+        </html>
+      `);
+      win.document.close();
+    }
+
+    // ==================== INIT ====================
+    loadState();
+    renderRooms();
+    // Initial welcome speak (subtle, only if voice available)
+    setTimeout(() => {
+      if (speechSynthesis.getVoices().length) {
+        // silent on first load to avoid surprise; user can start interaction
+      }
+    }, 500);
+  </script>
+</body>
+</html>

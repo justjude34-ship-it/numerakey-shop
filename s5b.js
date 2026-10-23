@@ -75,6 +75,7 @@ APPS.push({
 APPS.push({
   slug:"uncluttered-path", name:"Uncluttered Path", cat:"home", price:39, status:"live", ready:true,
   cover:"covers/uncluttered-path.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/uncluttered-path/",
   desc:"A gentle decluttering companion for when the mountain of stuff stops you starting — two minutes, one surface, one less thing.",
   tag:"You don't have to finish the whole house today.",
   body:[
