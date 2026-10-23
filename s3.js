@@ -110,13 +110,13 @@ const AP3 = [
   slug:"name-your-pet", name:"How to Name Your Pet", cat:"numerology", price:39, status:"live", ready:true,
   cover:"covers/name-your-pet.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/name-your-pet/",
-  desc:"Choose a name whose numbers suit the animal, from a catalogue of 2,207 or one of your own.",
+  desc:"Choose a name whose numbers suit the animal, from a big catalogue or one of your own.",
   tag:"Find the name whose numbers will live well with your companion.",
   body:[
-    "Browse 2,207 names across seven kinds of animal \u2014 dogs, cats, birds, horses, small animals, fish, reptiles \u2014 or type one you're considering and see what it carries. Expression, soul urge, personality, plus the cornerstone, first vowel and capstone that set the tone of a name.",
+    "Browse a big catalogue of names across seven kinds of animal \u2014 dogs, cats, birds, horses, small animals, fish, reptiles \u2014 or type one you're considering and see what it carries. Expression, soul urge, personality, plus the cornerstone, first vowel and capstone that set the tone of a name.",
     "The Pythagorean letter chart is included and the working is shown letter by letter, so you can follow how a name arrives at its numbers rather than take the answer on trust. Shortlist the ones you like and sleep on them."
   ],
-  inside:["2,207 names across seven species","Analyse any name you're considering","Expression, soul urge and personality","Cornerstone, first vowel and capstone","Letter meanings reference","Save a shortlist to decide later"]
+  inside:["A big catalogue of names across seven species","Analyse any name you're considering","Expression, soul urge and personality","Cornerstone, first vowel and capstone","Letter meanings reference","Save a shortlist to decide later"]
 },
 {
   slug:"testimony", name:"Testimony", cat:"narc", price:39, status:"soon",
