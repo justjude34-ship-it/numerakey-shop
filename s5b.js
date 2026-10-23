@@ -45,6 +45,34 @@ APPS.push({
 });
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
+
+APPS.push({
+  slug:"somni-plus", name:"Somni Plus", cat:"sound", price:39, status:"live", ready:true,
+  demo:"https://numerakey-shop.vercel.app/demos/somni-plus/",
+  desc:"Exclusive binaural sound, with ocean, rain or storm underneath. One voice, made on your device.",
+  tag:"Exclusive sound.",
+  body:[
+    "Somni Plus plays one binaural beat at a time, from deep sleep through to a soft focus. Under it you can leave the night quiet, or add ocean, rain or storm. A timer fades the session, or you can leave it open.",
+    "The sound is made on your device as it plays. Nothing is streamed, there is no account, and a hearing boost is there if you need the tones clearer. A calming sound, not medical care."
+  ],
+  inside:["Five binaural settings, from deep sleep to focus","Ocean, rain or storm, or none","15, 30 and 60 minute timers","Hearing boost","One file, works offline, nothing streamed"]
+});
+artFor(APPS[APPS.length - 1]).motif = "wave";
+
+APPS.push({
+  slug:"somni-three", name:"Somni Three", cat:"sound", price:39, status:"live", ready:true,
+  demo:"https://numerakey-shop.vercel.app/demos/somni-three/",
+  desc:"Binaural beats, isochronic tones, singing bowls, and a vagus soundscape. One mode at a time.",
+  tag:"Rest. Breathe. Sleep.",
+  body:[
+    "Somni Three is four ways to sit with a sound. Binaural beats for headphones, a single pulsing isochronic tone, a singing bowl struck on its own, or a warm vagus soundscape. Pick one. The others stay silent.",
+    "Every tone is made on your device. Set a length or leave it open, and turn the hearing boost on if you want the sound fuller. Vagus support is a calming soundscape, not medical treatment."
+  ],
+  inside:["Binaural beats from delta to alpha","Isochronic tones","Singing bowls","Vagus support soundscape","Timers, or open-ended","Hearing boost","One file, works offline"]
+});
+artFor(APPS[APPS.length - 1]).motif = "rings";
+
+
 APPS.push({
   slug:"nova", name:"Nova", cat:"neuro", price:39, status:"live", ready:true,
   cover:"covers/nova.jpg",
