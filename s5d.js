@@ -15,6 +15,7 @@ const FILES = {
   "here": "private/here.html",
   "uncluttered-path": "private/uncluttered-path.html",
   "lantern": "private/lantern.html",
+  "teint": "private/teint.html",
   "numera-chaldean": "private/numera-chaldean.html",
   "comet": "private/comet.html",
   "sanctuary": "private/sanctuary.html",

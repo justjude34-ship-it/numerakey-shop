@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teint</title>
+<meta name="description" content="Find the colours that love you back. Twelve-season analysis, a five-swatch studio, contrast checks, and CSS export. Private to this device.">
+<meta name="theme-color" content="#3d4a42">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%226%22%20fill%3D%22%23f3efe6%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%226%22%20width%3D%225%22%20height%3D%2220%22%20rx%3D%221%22%20fill%3D%22%23E07A5F%22%2F%3E%3Crect%20x%3D%2210%22%20y%3D%226%22%20width%3D%225%22%20height%3D%2220%22%20rx%3D%221%22%20fill%3D%22%233d4a42%22%2F%3E%3Crect%20x%3D%2216%22%20y%3D%226%22%20width%3D%225%22%20height%3D%2220%22%20rx%3D%221%22%20fill%3D%22%23C4A035%22%2F%3E%3Crect%20x%3D%2222%22%20y%3D%226%22%20width%3D%225%22%20height%3D%2220%22%20rx%3D%221%22%20fill%3D%22%231A3A7A%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap">
+<style>
+:root {
+  --bg: #f3efe6;
+  --elev: #faf7f1;
+  --subtle: #ebe4d6;
+  --fg: #1c1916;
+  --muted: #6b6560;
+  --faint: #8a847c;
+  --primary: #3d4a42;
+  --on-primary: #faf7f1;
+  --line: #ddd4c6;
+  --ink: #1c1916;
+  --paper: #faf7f1;
+  --serif: "Cormorant Garamond", Palatino, "Palatino Linotype", Georgia, serif;
+  --sans: Outfit, "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --shadow: 0 0 0 1px rgba(28, 25, 22, 0.06), 0 1px 2px rgba(28, 25, 22, 0.05),
+    0 2px 4px rgba(28, 25, 22, 0.04);
+  --shadow-h: 0 0 0 1px rgba(28, 25, 22, 0.1), 0 10px 24px -12px rgba(28, 25, 22, 0.18);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pad: 16px;
+  --max: 1120px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 400;
+}
+button, a { -webkit-tap-highlight-color: transparent; }
+button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
+button:disabled { cursor: not-allowed; }
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin: 0;
+}
+p { text-wrap: pretty; margin: 0; }
+img, svg { display: block; max-width: 100%; }
+
+.top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 80%, transparent);
+}
+.bar {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.logo {
+  font-family: var(--serif);
+  font-size: 28px;
+  line-height: 1;
+  color: var(--fg);
+  text-decoration: none;
+}
+.nav { display: flex; align-items: center; gap: 2px; }
+.nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  padding: 10px 10px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+}
+.nav a[aria-current="page"], .nav a:hover { color: var(--fg); background: var(--subtle); }
+
+.ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 12px;
+  padding: 8px var(--pad);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.ribbon p { color: var(--on-primary); }
+.ribbon .row { display: flex; flex-wrap: wrap; gap: 8px; }
+.ribbon button {
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--on-primary) 40%, transparent);
+  background: transparent;
+  color: var(--on-primary);
+  font: 500 13px/1 var(--sans);
+}
+.ribbon button:hover { background: color-mix(in srgb, var(--on-primary) 12%, transparent); }
+
+.wrap {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 28px var(--pad) 48px;
+}
+.hero {
+  display: grid;
+  gap: 28px;
+  align-items: center;
+}
+.kicker {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+h1.display {
+  margin-top: 10px;
+  font-size: 44px;
+  line-height: 0.95;
+}
+.lede {
+  margin-top: 14px;
+  max-width: 38rem;
+  color: var(--muted);
+}
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 0;
+  background: var(--primary);
+  color: var(--on-primary);
+  font: 500 15px/1 var(--sans);
+  text-decoration: none;
+}
+.btn.secondary { background: var(--subtle); color: var(--fg); }
+.btn.ghost { background: transparent; color: var(--fg); }
+.btn:hover { box-shadow: var(--shadow-h); }
+.btn:disabled { opacity: 0.45; box-shadow: none; }
+.fine { margin-top: 14px; font-size: 14px; color: var(--faint); }
+.fine a, .text-link {
+  color: var(--fg);
+  text-underline-offset: 3px;
+}
+
+.panel {
+  background: var(--elev);
+  box-shadow: var(--shadow);
+  border-radius: 18px;
+  overflow: hidden;
+}
+.panel figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px 14px;
+  font-size: 14px;
+}
+.panel figcaption span:last-child { color: var(--muted); }
+.chips { display: flex; gap: 6px; padding: 0 14px 14px; }
+.chips i {
+  flex: 1;
+  height: 10px;
+  border-radius: 999px;
+  display: block;
+}
+
+.band {
+  margin-top: 36px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  gap: 22px;
+  padding: 22px 0;
+}
+.band h2 { font-size: 28px; }
+.num {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--faint);
+}
+.band p, .muted { color: var(--muted); }
+.section { margin-top: 36px; }
+.section h2 { font-size: 34px; }
+.sub { margin-top: 6px; color: var(--muted); max-width: 36rem; }
+.headrow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.families, .season-grid, .notes, .split {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+.card {
+  background: var(--elev);
+  box-shadow: var(--shadow);
+  border-radius: 16px;
+  padding: 16px;
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+a.card:hover, button.card:hover { box-shadow: var(--shadow-h); }
+.strip { display: flex; gap: 4px; }
+.strip b {
+  flex: 1;
+  height: 28px;
+  border-radius: 4px;
+  display: block;
+}
+.strip b:first-child { border-radius: 8px 4px 4px 8px; }
+.strip b:last-child { border-radius: 4px 8px 8px 4px; }
+.card h3 { margin-top: 12px; font-size: 26px; }
+.card p { margin-top: 4px; color: var(--muted); font-size: 14px; }
+.meta {
+  margin-top: 8px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.keys { margin-top: 16px; display: grid; gap: 8px; }
+.keys li { display: flex; align-items: center; gap: 10px; font-size: 14px; list-style: none; }
+kbd {
+  font-family: var(--mono);
+  font-size: 12px;
+  background: var(--subtle);
+  border-radius: 6px;
+  padding: 4px 7px;
+  min-width: 28px;
+  text-align: center;
+}
+
+.progress {
+  height: 4px;
+  background: var(--subtle);
+  border-radius: 999px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--primary);
+  transition: width 220ms var(--ease);
+}
+.quiz-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.prompt { margin-top: 18px; font-size: 34px; line-height: 1.05; max-width: 40rem; }
+.note { margin-top: 10px; color: var(--muted); font-size: 14px; max-width: 40rem; }
+.options { margin-top: 22px; display: grid; gap: 10px; }
+.options.many { grid-template-columns: 1fr 1fr; }
+.opt {
+  text-align: left;
+  background: var(--elev);
+  box-shadow: var(--shadow);
+  border: 0;
+  border-radius: 14px;
+  padding: 14px;
+  min-height: 72px;
+  color: var(--fg);
+  font: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.opt.on { box-shadow: var(--shadow-h); outline: 2px solid color-mix(in srgb, var(--primary) 55%, transparent); }
+.opt:hover { box-shadow: var(--shadow-h); }
+.dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+.opt strong { font-weight: 500; font-size: 15px; }
+.opt em { font-style: normal; color: var(--muted); font-size: 13px; }
+.quiz-nav {
+  margin-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.studio-top, .studio-grid { display: grid; gap: 22px; }
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.studio-top h1 { font-size: 44px; line-height: 1; margin-top: 6px; }
+.summary { margin-top: 12px; color: var(--muted); max-width: 40rem; }
+.also { margin-top: 10px; font-size: 14px; color: var(--faint); }
+.also button {
+  border: 0;
+  background: none;
+  color: var(--fg);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 4px 0;
+  min-height: 44px;
+}
+.toolrow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.swatches { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.swatch {
+  background: var(--elev);
+  box-shadow: var(--shadow);
+  border-radius: 14px;
+  overflow: hidden;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.swatch.on { box-shadow: var(--shadow-h); outline: 2px solid color-mix(in srgb, var(--primary) 40%, transparent); }
+.swatch.wide { grid-column: span 2; }
+.chip {
+  position: relative;
+  height: 92px;
+  width: 100%;
+  border: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.chip .idx { position: absolute; left: 10px; top: 8px; opacity: 0.75; }
+.chip .flash {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+.body { padding: 10px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.sname {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.sname p { font-size: 14px; font-weight: 500; }
+.lock {
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 0;
+  border-radius: 10px;
+  background: var(--subtle);
+  color: var(--muted);
+  display: grid;
+  place-items: center;
+}
+.lock.on { background: var(--primary); color: var(--on-primary); }
+.codes { display: grid; gap: 4px; }
+.codes button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 11px;
+  text-align: left;
+  padding: 4px 0;
+  min-height: 36px;
+  overflow-wrap: anywhere;
+}
+.codes button span { color: var(--faint); font-size: 10px; letter-spacing: 0.08em; }
+.contrast { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.contrast div {
+  background: var(--subtle);
+  border-radius: 8px;
+  padding: 6px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  min-width: 0;
+}
+.contrast i {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  font-family: var(--serif);
+  font-size: 13px;
+  font-style: normal;
+  flex: none;
+}
+.contrast small { display: block; color: var(--faint); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+.contrast b { font-family: var(--mono); font-size: 11px; font-weight: 500; }
+
+.notes { margin-top: 22px; }
+.notes article, .split article {
+  background: var(--elev);
+  box-shadow: var(--shadow);
+  border-radius: 16px;
+  padding: 16px;
+}
+.notes h2, .split h2 { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--faint); font-family: var(--sans); font-weight: 500; }
+.notes p, .split li { margin-top: 8px; font-size: 14px; }
+.split { margin-top: 16px; }
+.split h2.serif { font-family: var(--serif); font-size: 28px; letter-spacing: -0.02em; text-transform: none; color: var(--fg); }
+.split ul { margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
+.split li { color: var(--muted); list-style: none; }
+.back { color: var(--muted); text-decoration: none; font-size: 14px; display: inline-flex; min-height: 44px; align-items: center; }
+.back:hover { color: var(--fg); }
+
+.family-block { margin-top: 28px; }
+.family-block h2 { font-size: 32px; }
+
+.empty { max-width: 32rem; margin: 24px auto; text-align: center; }
+.empty h1 { font-size: 40px; }
+.empty p { margin-top: 10px; color: var(--muted); }
+.empty .actions { justify-content: center; }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  align-items: end;
+  padding: 16px;
+  background: color-mix(in srgb, var(--fg) 35%, transparent);
+}
+.sheet {
+  background: var(--elev);
+  border-radius: 18px;
+  box-shadow: var(--shadow-h);
+  padding: 18px;
+  width: min(520px, 100%);
+  margin: 0 auto;
+  max-height: min(80vh, 640px);
+  overflow: auto;
+}
+.sheet h2 { font-size: 30px; }
+pre.css {
+  margin-top: 12px;
+  background: var(--subtle);
+  border-radius: 12px;
+  padding: 12px;
+  overflow: auto;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.55;
+  max-height: 280px;
+}
+.sheet dl { margin: 12px 0 0; }
+.sheet .shortcut {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+.sheet .shortcut:last-child { border-bottom: 0; }
+.sheet .shortcut dd { margin: 0; color: var(--muted); }
+
+.tour {
+  position: fixed;
+  z-index: 40;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  margin: 0 auto;
+  width: min(440px, calc(100% - 24px));
+  background: var(--elev);
+  box-shadow: var(--shadow-h);
+  border-radius: 16px;
+  padding: 14px 16px 12px;
+}
+.tour .kicker { color: var(--primary); }
+.tour h2 { font-size: 26px; margin-top: 4px; }
+.tour p { margin-top: 6px; color: var(--muted); font-size: 14px; }
+.tour .actions { margin-top: 12px; }
+
+.toast {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  background: var(--fg);
+  color: var(--elev);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-size: 14px;
+  box-shadow: var(--shadow-h);
+}
+.foot {
+  border-top: 1px solid var(--line);
+  padding: 22px var(--pad) 28px;
+  color: var(--faint);
+  font-size: 12px;
+}
+.foot div {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  justify-content: space-between;
+}
+.lip {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  margin-right: 6px;
+  vertical-align: -1px;
+  box-shadow: var(--shadow);
+}
+
+@media (min-width: 720px) {
+  :root { --pad: 24px; }
+  .bar { height: 64px; }
+  h1.display { font-size: 60px; }
+  .band { grid-template-columns: repeat(3, 1fr); gap: 28px; padding: 28px 0; }
+  .families { grid-template-columns: repeat(2, 1fr); }
+  .options.many { grid-template-columns: repeat(4, 1fr); }
+  .options.few { grid-template-columns: repeat(3, 1fr); }
+  .swatches { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .swatch.wide { grid-column: auto; }
+  .notes, .split { grid-template-columns: 1fr 1fr 1fr; }
+  .split { grid-template-columns: 1fr 1fr; }
+  .modal { align-items: center; }
+  .prompt { font-size: 40px; }
+}
+@media (min-width: 960px) {
+  .hero { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: 40px; }
+  .hero .panel { max-width: 460px; justify-self: end; width: 100%; }
+  .families { grid-template-columns: repeat(4, 1fr); }
+  .season-grid { grid-template-columns: repeat(3, 1fr); }
+  .studio-top { grid-template-columns: minmax(0, 1.1fr) auto; align-items: end; }
+  .studio-grid { grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr); align-items: start; }
+  .toolrow { justify-content: flex-end; }
+  .swatches { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .chip { height: 112px; }
+}
+@media (max-width: 719px) {
+  .nav a { padding: 10px 8px; font-size: 13px; }
+  .logo { font-size: 26px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="application/json" id="teint-data">{"seasons":[{"id":"light-spring","name":"Light Spring","family":"spring","tagline":"Sunlit peach and warm ivory","summary":"Your colouring is light, warm, and clear. Think apricot, coral, and aqua — never heavy or icy. Light Spring looks most alive in colours that feel like morning light through a curtain.","temperature":"Warm","value":"Light","chroma":"Clear","metals":"Light gold, rose gold, warm champagne","lipstick":"Peach coral, apricot, warm salmon","lipstickHex":"#E07A6A","blush":"Peach","eyeliner":"Soft bronze or warm taupe — skip black","wardrobe":["Ivory, camel, and warm beige as neutrals","Peach, coral, and light turquoise as leads","Warm mint, butter yellow, and apricot for extras"],"avoid":["Stark white, black, and navy","Icy pastels and dusty greys","Burgundy, mustard, and heavy olive"],"signature":["#F3E4C8","#F0B48A","#E07A5F","#7EC8C0","#D4A574"],"looks":[["#F3E4C8","#F0B48A","#E07A5F","#7EC8C0","#D4A574"],["#F7E6C8","#F2C94C","#5BB381","#F4A97A","#6EB5C8"],["#EEDCC0","#E8A0B0","#F28C5A","#A8D08D","#C9A36A"],["#F6EFE0","#FF8B6A","#3DB8B0","#F2D16B","#E8B4A0"],["#F0D9B5","#E07A5F","#8FCB8A","#F3C9A0","#5AA8C4"],["#F4E6D0","#D98A5A","#7EB8A8","#F0C070","#E8A090"]],"bank":[{"hex":"#F3E4C8","name":"Warm ivory"},{"hex":"#F6EFE0","name":"Cream silk"},{"hex":"#F0D9B5","name":"Sand dollar"},{"hex":"#D4A574","name":"Honey camel"},{"hex":"#C9A36A","name":"Light gold"},{"hex":"#F0B48A","name":"Apricot glaze"},{"hex":"#F4A97A","name":"Peach nectar"},{"hex":"#E07A5F","name":"Coral clay"},{"hex":"#FF8B6A","name":"Warm coral"},{"hex":"#F28C5A","name":"Tangerine silk"},{"hex":"#E8A0B0","name":"Peony"},{"hex":"#E8B4A0","name":"Blush sand"},{"hex":"#F2C94C","name":"Buttercup"},{"hex":"#F2D16B","name":"Lemon cream"},{"hex":"#F0C070","name":"Golden maize"},{"hex":"#7EC8C0","name":"Warm aqua"},{"hex":"#6EB5C8","name":"Light turquoise"},{"hex":"#5AA8C4","name":"Clear sky"},{"hex":"#3DB8B0","name":"Sea glass"},{"hex":"#5BB381","name":"Fresh mint"},{"hex":"#8FCB8A","name":"Apple leaf"},{"hex":"#A8D08D","name":"Pistachio"},{"hex":"#7EB8A8","name":"Soft jade"},{"hex":"#D98A5A","name":"Terracotta light"}],"defaultSkin":"#E8C4A8","defaultHair":"#C9A36A","defaultEyes":"#5B8C5A"},{"id":"true-spring","name":"True Spring","family":"spring","tagline":"Clear coral, tomato, and golden green","summary":"You are the warmest, clearest Spring — colours that look like they were mixed with sunshine. Tomato red, golden yellow, and grass green wake up your skin; greyed or icy shades flatten it.","temperature":"Warm","value":"Medium","chroma":"Clear","metals":"Yellow gold, brass, warm bronze","lipstick":"True coral, poppy, warm red-orange","lipstickHex":"#D64532","blush":"Coral","eyeliner":"Warm brown, bronze","wardrobe":["Ivory and camel, never stark white or black","Tomato, coral, and goldenrod as signature","Turquoise, grass, and warm navy as structure"],"avoid":["Black, charcoal, and cool grey","Fuchsia, burgundy, and icy pink","Dusty mauve and olive drab"],"signature":["#F3E4C8","#D64532","#E0A106","#5B8C3E","#2A9D8F"],"looks":[["#F3E4C8","#D64532","#E0A106","#5B8C3E","#2A9D8F"],["#EED9B0","#E76F51","#2A9D8F","#E9C46A","#7A4419"],["#F6E6C8","#E63946","#457B3B","#F4A261","#1D7A8C"],["#F0D8B0","#C2410C","#84A83A","#F2CC6E","#21808D"],["#E8CFA8","#D00000","#E9A825","#2D6A4F","#48A9A6"],["#F4E0C0","#FF6B35","#70A83A","#F6C445","#0A7A72"]],"bank":[{"hex":"#F3E4C8","name":"Warm ivory"},{"hex":"#EED9B0","name":"Oat cream"},{"hex":"#E8CFA8","name":"Camel milk"},{"hex":"#7A4419","name":"Cognac"},{"hex":"#D64532","name":"Tomato"},{"hex":"#E76F51","name":"Burnt coral"},{"hex":"#E63946","name":"Poppy"},{"hex":"#C2410C","name":"Rust orange"},{"hex":"#D00000","name":"Warm red"},{"hex":"#FF6B35","name":"Tangerine"},{"hex":"#F4A261","name":"Apricot"},{"hex":"#E0A106","name":"Goldenrod"},{"hex":"#E9C46A","name":"Maize"},{"hex":"#F2CC6E","name":"Honeycomb"},{"hex":"#E9A825","name":"Marigold"},{"hex":"#F6C445","name":"Sun gold"},{"hex":"#5B8C3E","name":"Grass"},{"hex":"#457B3B","name":"Leaf"},{"hex":"#84A83A","name":"Chartreuse warm"},{"hex":"#70A83A","name":"Apple green"},{"hex":"#2D6A4F","name":"Warm pine"},{"hex":"#2A9D8F","name":"Turquoise"},{"hex":"#1D7A8C","name":"Teal gold"},{"hex":"#21808D","name":"Lagoon"},{"hex":"#48A9A6","name":"Sea green"},{"hex":"#0A7A72","name":"Deep aqua"}],"defaultSkin":"#E0B394","defaultHair":"#8B5A2B","defaultEyes":"#4A7A3A"},{"id":"bright-spring","name":"Bright Spring","family":"spring","tagline":"High-voltage coral against ivory","summary":"You can take the clearest, brightest warm colours — watermelon, lime, and electric turquoise — without being worn by them. Muted earth tones and dusty pastels steal your light.","temperature":"Warm-neutral","value":"Medium","chroma":"Bright","metals":"Bright gold, polished brass","lipstick":"Watermelon, bright coral, clear red-orange","lipstickHex":"#E63946","blush":"Clear coral","eyeliner":"Warm espresso or skip liner for colour","wardrobe":["Ivory and a clear warm navy","Watermelon, lime, and turquoise as the show","Bright fuchsia-coral and marigold for lift"],"avoid":["Beige, taupe, and dusty rose","Olive, mustard, and rust","Greyed pastels and brown-black"],"signature":["#F6EFE0","#E63946","#00B4D8","#8AC926","#FF6B4A"],"looks":[["#F6EFE0","#E63946","#00B4D8","#8AC926","#FF6B4A"],["#FFF8EC","#FF4D6D","#00A8A8","#C9E265","#FF8C42"],["#F4ECD8","#F94144","#2EC4B6","#90BE6D","#F3722C"],["#FAF3E4","#D90429","#0077B6","#B5E48C","#FB8500"],["#F7EFE0","#FF006E","#00BBF9","#80B918","#FF5400"],["#F3E9D4","#E01E37","#3A86FF","#A7C957","#F48C06"]],"bank":[{"hex":"#F6EFE0","name":"Bright ivory"},{"hex":"#FFF8EC","name":"Paper cream"},{"hex":"#1D3557","name":"Clear navy"},{"hex":"#E63946","name":"Watermelon"},{"hex":"#FF4D6D","name":"Punch pink"},{"hex":"#F94144","name":"Signal red"},{"hex":"#D90429","name":"Flag red"},{"hex":"#FF006E","name":"Hot coral"},{"hex":"#E01E37","name":"True poppy"},{"hex":"#FF6B4A","name":"Tangerine punch"},{"hex":"#FF8C42","name":"Clementine"},{"hex":"#F3722C","name":"Flame"},{"hex":"#FB8500","name":"Amber flash"},{"hex":"#FF5400","name":"Orange zest"},{"hex":"#F48C06","name":"Goldfish"},{"hex":"#00B4D8","name":"Electric aqua"},{"hex":"#00A8A8","name":"Jade flash"},{"hex":"#2EC4B6","name":"Mint neon"},{"hex":"#0077B6","name":"Clear azure"},{"hex":"#00BBF9","name":"Sky bolt"},{"hex":"#3A86FF","name":"Warm cobalt"},{"hex":"#8AC926","name":"Lime"},{"hex":"#C9E265","name":"Spring chartreuse"},{"hex":"#90BE6D","name":"Fresh leaf"},{"hex":"#B5E48C","name":"Light lime"},{"hex":"#80B918","name":"Grass flash"},{"hex":"#A7C957","name":"Pear"}],"defaultSkin":"#E8B896","defaultHair":"#5A3A1E","defaultEyes":"#2A7A6A"},{"id":"light-summer","name":"Light Summer","family":"summer","tagline":"Powder, rose, and misted blue","summary":"Your colouring is light, cool, and gently muted. Powder pink, periwinkle, and sage sit on you like watercolour. Harsh black or hot orange will shout over you.","temperature":"Cool","value":"Light","chroma":"Soft-clear","metals":"Silver, white gold, pewter","lipstick":"Rose, petal pink, raspberry ice","lipstickHex":"#C97B8D","blush":"Cool rose","eyeliner":"Soft grey-brown, not black","wardrobe":["Rose-ivory and cocoa as neutrals","Powder pink, lavender, and sky as leads","Sage, periwinkle, and raspberry ice for depth"],"avoid":["Black, orange, and tomato red","Warm camel and mustard","Neon and heavy jewel tones"],"signature":["#F0E4E0","#E8B4C0","#9AA8C7","#A8B5A0","#C97B8D"],"looks":[["#F0E4E0","#E8B4C0","#9AA8C7","#A8B5A0","#C97B8D"],["#F4EEF0","#CDB4DB","#89C2D9","#B5C99A","#E09AAF"],["#EDE4DC","#BFA0B0","#7D9BB8","#9BB8A8","#D48A9A"],["#F7F1F2","#E6A6B8","#A8C5D4","#C5D5B8","#A07C8A"],["#EFE6E0","#D4A0B0","#8FA8C4","#B8C4A8","#8B6E78"],["#F2EAE6","#F2C6D0","#B8C4D8","#C8D4C0","#C08090"]],"bank":[{"hex":"#F0E4E0","name":"Rose ivory"},{"hex":"#F4EEF0","name":"Cool cream"},{"hex":"#EDE4DC","name":"Pebble"},{"hex":"#A07C8A","name":"Cocoa rose"},{"hex":"#8B6E78","name":"Mauve taupe"},{"hex":"#E8B4C0","name":"Powder pink"},{"hex":"#E09AAF","name":"Sweet pea"},{"hex":"#E6A6B8","name":"Ballet"},{"hex":"#D4A0B0","name":"Dusty peony"},{"hex":"#F2C6D0","name":"Blush mist"},{"hex":"#C97B8D","name":"Raspberry ice"},{"hex":"#D48A9A","name":"Rose tea"},{"hex":"#C08090","name":"Heather"},{"hex":"#CDB4DB","name":"Lilac"},{"hex":"#BFA0B0","name":"Orchid haze"},{"hex":"#9AA8C7","name":"Periwinkle"},{"hex":"#89C2D9","name":"Powder blue"},{"hex":"#7D9BB8","name":"Slate mist"},{"hex":"#A8C5D4","name":"Sky wash"},{"hex":"#8FA8C4","name":"Bluebell"},{"hex":"#B8C4D8","name":"Cloud blue"},{"hex":"#A8B5A0","name":"Sage"},{"hex":"#B5C99A","name":"Pale moss"},{"hex":"#9BB8A8","name":"Seafoam"},{"hex":"#C5D5B8","name":"Pistachio mist"},{"hex":"#B8C4A8","name":"Green tea"},{"hex":"#C8D4C0","name":"Celadon"}],"defaultSkin":"#E6C9C0","defaultHair":"#B8A090","defaultEyes":"#6A7A9A"},{"id":"true-summer","name":"True Summer","family":"summer","tagline":"Raspberry, slate, and rose-cocoa","summary":"Cool, medium, and softly saturated. Raspberry and slate blue are your true north. You look polished in blended colour — never neon, never autumnal rust.","temperature":"Cool","value":"Medium","chroma":"Muted","metals":"Silver, white gold, cool pewter","lipstick":"Raspberry, rose, cool berry","lipstickHex":"#B85C6E","blush":"Cool rose","eyeliner":"Grey, navy, or plum — not brown-black","wardrobe":["Rose-beige, taupe, and soft navy","Raspberry, slate, and teal as signature","Mauve, powder, and cocoa for quiet days"],"avoid":["Orange, tomato, and gold-yellow","Black with stark white (too sharp)","Warm camel and olive"],"signature":["#C4A090","#B85C6E","#6B7FA8","#5E8B8A","#9A7B8F"],"looks":[["#C4A090","#B85C6E","#6B7FA8","#5E8B8A","#9A7B8F"],["#D8C4BC","#A84B63","#4A6FA5","#6A9A96","#7A5E70"],["#E8D4CC","#C45C78","#7A90B8","#4F7A78","#B08A9A"],["#C8B0A4","#8B3A4A","#5A6F98","#88A8A4","#6B4E5C"],["#D4C0B8","#D46A82","#3D5A80","#7BA39A","#A07088"],["#E0D0C8","#9E4A5C","#8A9BB8","#2F6D6A","#C4A0B0"]],"bank":[{"hex":"#C4A090","name":"Rose cocoa"},{"hex":"#D8C4BC","name":"Cameo"},{"hex":"#E8D4CC","name":"Cool sand"},{"hex":"#C8B0A4","name":"Taupe rose"},{"hex":"#7A5E70","name":"Plum taupe"},{"hex":"#6B4E5C","name":"Raisin"},{"hex":"#B85C6E","name":"Raspberry"},{"hex":"#A84B63","name":"Cranberry mist"},{"hex":"#C45C78","name":"Roseberry"},{"hex":"#8B3A4A","name":"Mulberry"},{"hex":"#D46A82","name":"Watermelon mist"},{"hex":"#9E4A5C","name":"Brick rose"},{"hex":"#9A7B8F","name":"Mauve"},{"hex":"#B08A9A","name":"Orchid smoke"},{"hex":"#A07088","name":"Heather rose"},{"hex":"#C4A0B0","name":"Lilac smoke"},{"hex":"#6B7FA8","name":"Slate blue"},{"hex":"#4A6FA5","name":"Denim mist"},{"hex":"#7A90B8","name":"Periwinkle dusk"},{"hex":"#5A6F98","name":"Dusted navy"},{"hex":"#3D5A80","name":"Soft navy"},{"hex":"#8A9BB8","name":"Blue fog"},{"hex":"#5E8B8A","name":"Teal mist"},{"hex":"#6A9A96","name":"Sea sage"},{"hex":"#4F7A78","name":"Storm teal"},{"hex":"#88A8A4","name":"Aqua smoke"},{"hex":"#7BA39A","name":"Eucalyptus"},{"hex":"#2F6D6A","name":"Deep lagoon"}],"defaultSkin":"#D4B0A4","defaultHair":"#6B5348","defaultEyes":"#5A6F8A"},{"id":"soft-summer","name":"Soft Summer","family":"summer","tagline":"Taupe, dusty teal, and muted rose","summary":"The quietest cool season. Your beauty is in blend — mushroom, sage, and dusty rose. High-chroma colour and stark contrast will look costume-y on you.","temperature":"Cool-neutral","value":"Medium","chroma":"Soft","metals":"Pewter, brushed silver, antique white gold","lipstick":"Muted rose, cocoa-berry, soft plum","lipstickHex":"#A07078","blush":"Dusty rose","eyeliner":"Soft taupe-grey","wardrobe":["Taupe, mushroom, and pewter as the base","Dusty teal, sage, and muted rose as colour","Soft burgundy and cadet blue for evening"],"avoid":["Neon, true red, and orange","Stark black and optical white","Golden yellow and tomato"],"signature":["#A89888","#B08990","#7A9A98","#8A9A82","#8B5E63"],"looks":[["#A89888","#B08990","#7A9A98","#8A9A82","#8B5E63"],["#C4B8AC","#9A7A80","#6A8A88","#9AAA90","#6B4E52"],["#B8A898","#C4A0A4","#88A8A8","#7A8A6E","#A07078"],["#D0C4B8","#8A6A70","#5E7876","#A8B09A","#7A5058"],["#9A8C80","#C08088","#4A6868","#B8C0A8","#5C4044"],["#C8BCAE","#A88890","#90A8A4","#6E7A62","#946870"]],"bank":[{"hex":"#A89888","name":"Taupe"},{"hex":"#C4B8AC","name":"Mushroom"},{"hex":"#B8A898","name":"Greige"},{"hex":"#D0C4B8","name":"Oatmeal"},{"hex":"#9A8C80","name":"Pewter beige"},{"hex":"#C8BCAE","name":"Driftwood"},{"hex":"#B08990","name":"Dusty rose"},{"hex":"#9A7A80","name":"Mauve smoke"},{"hex":"#C4A0A4","name":"Ash rose"},{"hex":"#8A6A70","name":"Cocoa mauve"},{"hex":"#C08088","name":"Muted berry"},{"hex":"#A88890","name":"Heather grey"},{"hex":"#A07078","name":"Rosewood"},{"hex":"#8B5E63","name":"Soft burgundy"},{"hex":"#6B4E52","name":"Plum ash"},{"hex":"#7A5058","name":"Wine smoke"},{"hex":"#5C4044","name":"Raisin ash"},{"hex":"#946870","name":"Fig"},{"hex":"#7A9A98","name":"Dusty teal"},{"hex":"#6A8A88","name":"Cadet teal"},{"hex":"#88A8A8","name":"Sea pewter"},{"hex":"#5E7876","name":"Storm sage"},{"hex":"#4A6868","name":"Slate teal"},{"hex":"#90A8A4","name":"Mist teal"},{"hex":"#8A9A82","name":"Sage ash"},{"hex":"#9AAA90","name":"Lichen"},{"hex":"#7A8A6E","name":"Olive mist"},{"hex":"#A8B09A","name":"Pale sage"},{"hex":"#B8C0A8","name":"Tea green"},{"hex":"#6E7A62","name":"Khaki sage"}],"defaultSkin":"#C9B0A2","defaultHair":"#7A6A60","defaultEyes":"#6A7A72"},{"id":"soft-autumn","name":"Soft Autumn","family":"autumn","tagline":"Mushroom, terracotta, and olive","summary":"Warm, blended, and gentle. You share Summer’s softness with Autumn’s earth. Terracotta, olive, and dusty teal are your quiet luxury — not rust-bright, not icy.","temperature":"Warm-neutral","value":"Medium","chroma":"Soft","metals":"Brushed bronze, antique gold, copper matte","lipstick":"Terracotta, muted brick, warm rose-brown","lipstickHex":"#C06A4A","blush":"Apricot-terracotta","eyeliner":"Soft bronze, warm taupe","wardrobe":["Mushroom, camel, and olive as the spine","Terracotta, sage, and dusty teal as colour","Brick and forest-muted for depth"],"avoid":["Fuchsia, true red, and black","Icy pastels and optical white","Neon turquoise and hot pink"],"signature":["#C4B09A","#C06A4A","#7A8458","#6A8A82","#C4A070"],"looks":[["#C4B09A","#C06A4A","#7A8458","#6A8A82","#C4A070"],["#D4C4B0","#B5523A","#8A9468","#5A7870","#A88860"],["#B8A488","#D08A68","#6A7048","#88A098","#C4B080"],["#E0D0B8","#A05038","#9AAA78","#4A6058","#8A6A48"],["#C8B498","#C47A58","#5A6240","#A8C0B4","#D4B888"],["#D8C8B0","#8B4A32","#A8B080","#708A82","#B89868"]],"bank":[{"hex":"#C4B09A","name":"Mushroom"},{"hex":"#D4C4B0","name":"Oat"},{"hex":"#B8A488","name":"Khaki silk"},{"hex":"#E0D0B8","name":"Warm parchment"},{"hex":"#C8B498","name":"Sandstone"},{"hex":"#D8C8B0","name":"Wheat"},{"hex":"#C4A070","name":"Camel"},{"hex":"#A88860","name":"Bronze beige"},{"hex":"#C4B080","name":"Straw"},{"hex":"#8A6A48","name":"Tawny"},{"hex":"#D4B888","name":"Honey dust"},{"hex":"#B89868","name":"Harvest"},{"hex":"#C06A4A","name":"Terracotta"},{"hex":"#B5523A","name":"Clay"},{"hex":"#D08A68","name":"Apricot earth"},{"hex":"#A05038","name":"Brick dust"},{"hex":"#C47A58","name":"Copper rose"},{"hex":"#8B4A32","name":"Auburn earth"},{"hex":"#7A8458","name":"Olive"},{"hex":"#8A9468","name":"Lichen warm"},{"hex":"#6A7048","name":"Moss"},{"hex":"#9AAA78","name":"Sage gold"},{"hex":"#5A6240","name":"Olive drab soft"},{"hex":"#A8B080","name":"Fern dust"},{"hex":"#6A8A82","name":"Dusty teal"},{"hex":"#5A7870","name":"Eucalyptus warm"},{"hex":"#88A098","name":"Sage teal"},{"hex":"#4A6058","name":"Pine smoke"},{"hex":"#A8C0B4","name":"Celadon warm"},{"hex":"#708A82","name":"River stone"}],"defaultSkin":"#D4B48C","defaultHair":"#7A5A38","defaultEyes":"#6A7048"},{"id":"true-autumn","name":"True Autumn","family":"autumn","tagline":"Rust, forest, and golden camel","summary":"The warmest earth season. Rust, olive, mustard, and tomato look like they were mixed for you. Cool pinks and icy blues will fight your gold undertone.","temperature":"Warm","value":"Medium-deep","chroma":"Muted","metals":"Antique gold, copper, bronze","lipstick":"Rust, brick, warm tomato","lipstickHex":"#B5522A","blush":"Terracotta","eyeliner":"Bronze, warm brown","wardrobe":["Camel, bronze, and espresso as neutrals","Rust, forest, and mustard as signature","Teal-warm and pumpkin for lift"],"avoid":["Fuchsia, magenta, and icy pink","Black with optical white","Cool grey and powder blue"],"signature":["#C4A46A","#B5522A","#3E5C3A","#C4902A","#C46A3A"],"looks":[["#C4A46A","#B5522A","#3E5C3A","#C4902A","#C46A3A"],["#E8D4B0","#9A3412","#4A6B3A","#D4A017","#7A4419"],["#D4B896","#C2410C","#2D4A28","#E0A825","#A0522D"],["#C4A070","#8B2E0E","#5C7A3A","#B8860B","#D2691E"],["#F0DCC0","#A33B20","#1E3A28","#C6A338","#CD5C2A"],["#DCC4A0","#7B2D12","#6B8F3A","#DAA520","#B5651D"]],"bank":[{"hex":"#C4A46A","name":"Camel"},{"hex":"#E8D4B0","name":"Warm cream"},{"hex":"#D4B896","name":"Sandstone"},{"hex":"#C4A070","name":"Golden khaki"},{"hex":"#F0DCC0","name":"Ivory gold"},{"hex":"#DCC4A0","name":"Wheatfield"},{"hex":"#7A4419","name":"Cognac"},{"hex":"#B5522A","name":"Rust"},{"hex":"#9A3412","name":"Copper rust"},{"hex":"#C2410C","name":"Burnt orange"},{"hex":"#C46A3A","name":"Terracotta"},{"hex":"#A0522D","name":"Sienna"},{"hex":"#8B2E0E","name":"Mahogany rust"},{"hex":"#D2691E","name":"Chocolate orange"},{"hex":"#A33B20","name":"Brick"},{"hex":"#CD5C2A","name":"Pumpkin"},{"hex":"#7B2D12","name":"Auburn"},{"hex":"#B5651D","name":"Amber earth"},{"hex":"#C4902A","name":"Mustard"},{"hex":"#D4A017","name":"Goldenrod earth"},{"hex":"#E0A825","name":"Harvest gold"},{"hex":"#B8860B","name":"Dark gold"},{"hex":"#C6A338","name":"Old gold"},{"hex":"#DAA520","name":"Goldenrod"},{"hex":"#3E5C3A","name":"Forest"},{"hex":"#4A6B3A","name":"Olive grove"},{"hex":"#2D4A28","name":"Pine earth"},{"hex":"#5C7A3A","name":"Moss gold"},{"hex":"#1E3A28","name":"Deep forest"},{"hex":"#6B8F3A","name":"Fern"}],"defaultSkin":"#C9956C","defaultHair":"#6B3A1A","defaultEyes":"#4A5C2A"},{"id":"deep-autumn","name":"Deep Autumn","family":"autumn","tagline":"Espresso, burgundy, and forest","summary":"Deep, warm, and quietly rich. You can wear espresso, mahogany, and dark teal that would swallow a Light Spring. Keep colours warm and a little smoky — not icy, not neon.","temperature":"Warm","value":"Deep","chroma":"Muted-rich","metals":"Antique gold, dark bronze, copper","lipstick":"Mahogany, brick, warm burgundy","lipstickHex":"#6B2E22","blush":"Warm brick","eyeliner":"Espresso, bronze","wardrobe":["Espresso, bronze, and cream as the frame","Burgundy, forest, and dark teal as colour","Pumpkin and olive for warmth"],"avoid":["Pastels and icy pink","Cool grey and powder blue","Hot fuchsia and lemon"],"signature":["#E8D4B8","#6B2E22","#2C4030","#8B6914","#1E4A48"],"looks":[["#E8D4B8","#6B2E22","#2C4030","#8B6914","#1E4A48"],["#D4C0A0","#4A1C14","#1A3024","#A67C00","#0E3A38"],["#F0DCC4","#7A2E24","#3D5C3A","#C4A035","#245E5A"],["#C4A888","#5C2018","#14241C","#6B5A10","#C45C28"],["#E0C8A8","#8B3A2A","#0F2A20","#B8860B","#1A3A48"],["#D8C0A0","#3A1210","#4A5C28","#DAA520","#0A2E2C"]],"bank":[{"hex":"#E8D4B8","name":"Warm cream"},{"hex":"#D4C0A0","name":"Camel cream"},{"hex":"#F0DCC4","name":"Ivory tea"},{"hex":"#C4A888","name":"Bronze sand"},{"hex":"#E0C8A8","name":"Oat gold"},{"hex":"#D8C0A0","name":"Wheat deep"},{"hex":"#6B2E22","name":"Mahogany"},{"hex":"#4A1C14","name":"Espresso red"},{"hex":"#7A2E24","name":"Oxblood warm"},{"hex":"#5C2018","name":"Bitter chocolate"},{"hex":"#8B3A2A","name":"Chestnut"},{"hex":"#3A1210","name":"Black coffee"},{"hex":"#C45C28","name":"Burnt pumpkin"},{"hex":"#2C4030","name":"Forest"},{"hex":"#1A3024","name":"Pine black"},{"hex":"#3D5C3A","name":"Olive deep"},{"hex":"#14241C","name":"Hunter"},{"hex":"#0F2A20","name":"Ink forest"},{"hex":"#4A5C28","name":"Moss deep"},{"hex":"#8B6914","name":"Bronze"},{"hex":"#A67C00","name":"Dark gold"},{"hex":"#C4A035","name":"Antique gold"},{"hex":"#6B5A10","name":"Olive gold"},{"hex":"#B8860B","name":"Harvest bronze"},{"hex":"#DAA520","name":"Goldenrod deep"},{"hex":"#1E4A48","name":"Dark teal"},{"hex":"#0E3A38","name":"Abyss teal"},{"hex":"#245E5A","name":"Jade deep"},{"hex":"#1A3A48","name":"Petrol"},{"hex":"#0A2E2C","name":"Pine teal"}],"defaultSkin":"#A56B45","defaultHair":"#2A1810","defaultEyes":"#3A4A28"},{"id":"deep-winter","name":"Deep Winter","family":"winter","tagline":"Charcoal, burgundy, and emerald","summary":"Deep, cool, and jewelled. Black, true red, and emerald hold your contrast. Warm camel and dusty peach will wash the colour from your face.","temperature":"Cool","value":"Deep","chroma":"Clear","metals":"Silver, white gold, platinum, gun-metal","lipstick":"Burgundy, true red, berry","lipstickHex":"#6B1230","blush":"Cool rose or skip","eyeliner":"Black, charcoal, navy","wardrobe":["Black, charcoal, and true white as the frame","Burgundy, emerald, and royal as jewels","Icy pink and lemon-ice as surprise"],"avoid":["Camel, orange, and gold-beige","Dusty rose and olive","Warm pastels"],"signature":["#F5F5F5","#6B1230","#0B6B4F","#1A3A7A","#2A2A2E"],"looks":[["#F5F5F5","#6B1230","#0B6B4F","#1A3A7A","#2A2A2E"],["#FFFFFF","#8B1040","#046307","#0A2463","#111111"],["#F0F0F4","#C41E3A","#0D5C4C","#191970","#3A3A40"],["#E8E8F0","#4A0E24","#005F4B","#003366","#1A1A1E"],["#FAFAFA","#9B1B30","#00674F","#2A4B8D","#0A0A0C"],["#F4F4F8","#5C0A2A","#127A5A","#002FA7","#4A4A52"]],"bank":[{"hex":"#F5F5F5","name":"True white"},{"hex":"#FFFFFF","name":"Optical white"},{"hex":"#F0F0F4","name":"Ice"},{"hex":"#E8E8F0","name":"Icy grey"},{"hex":"#2A2A2E","name":"Charcoal"},{"hex":"#111111","name":"Soft black"},{"hex":"#0A0A0C","name":"Ink"},{"hex":"#3A3A40","name":"Graphite"},{"hex":"#1A1A1E","name":"Near black"},{"hex":"#4A4A52","name":"Cool slate"},{"hex":"#6B1230","name":"Burgundy"},{"hex":"#8B1040","name":"Wine"},{"hex":"#C41E3A","name":"True red"},{"hex":"#4A0E24","name":"Oxblood"},{"hex":"#9B1B30","name":"Cardinal"},{"hex":"#5C0A2A","name":"Bordeaux"},{"hex":"#0B6B4F","name":"Emerald"},{"hex":"#046307","name":"Pine jewel"},{"hex":"#0D5C4C","name":"Teal jewel"},{"hex":"#005F4B","name":"Deep jade"},{"hex":"#00674F","name":"Malachite"},{"hex":"#127A5A","name":"Kelly deep"},{"hex":"#1A3A7A","name":"Royal"},{"hex":"#0A2463","name":"Navy jewel"},{"hex":"#191970","name":"Midnight"},{"hex":"#003366","name":"Oxford"},{"hex":"#2A4B8D","name":"Sapphire"},{"hex":"#002FA7","name":"International Klein"},{"hex":"#F6C6D4","name":"Icy pink"},{"hex":"#F5E642","name":"Lemon ice"}],"defaultSkin":"#C99578","defaultHair":"#1A1210","defaultEyes":"#2A3A5A"},{"id":"true-winter","name":"True Winter","family":"winter","tagline":"Snow, true red, and royal","summary":"Cool, high-contrast, and saturated. Black and white are your neutrals; true red, fuchsia, and emerald are your colour. Warm earth will muddy you.","temperature":"Cool","value":"Medium-deep","chroma":"Clear","metals":"Platinum, silver, white gold","lipstick":"True red, fuchsia, cool berry","lipstickHex":"#C41E3A","blush":"Cool pink","eyeliner":"Black","wardrobe":["Black, white, and navy as architecture","True red, fuchsia, and royal as colour","Icy yellow and snow pink as spark"],"avoid":["Orange, rust, and camel","Dusty pastels and beige","Olive and mustard"],"signature":["#FFFFFF","#C41E3A","#0033A0","#007A5A","#111111"],"looks":[["#FFFFFF","#C41E3A","#0033A0","#007A5A","#111111"],["#F8F8FF","#E4007C","#0A1172","#00815A","#0A0A0A"],["#FAFAFA","#9B1B30","#002FA7","#00A86B","#1C1C1C"],["#FFFFFF","#6B0F2A","#1E3A8A","#046307","#000000"],["#F0F0F8","#FF0038","#191970","#009B77","#2B2B2B"],["#FFFFFF","#D70A53","#0038A8","#028A0F","#141414"]],"bank":[{"hex":"#FFFFFF","name":"Snow"},{"hex":"#F8F8FF","name":"Ghost white"},{"hex":"#FAFAFA","name":"Porcelain"},{"hex":"#F0F0F8","name":"Ice white"},{"hex":"#111111","name":"Black"},{"hex":"#0A0A0A","name":"Ink black"},{"hex":"#1C1C1C","name":"Char"},{"hex":"#000000","name":"True black"},{"hex":"#2B2B2B","name":"Graphite"},{"hex":"#141414","name":"Soft ink"},{"hex":"#C41E3A","name":"True red"},{"hex":"#E4007C","name":"Fuchsia"},{"hex":"#9B1B30","name":"Crimson"},{"hex":"#6B0F2A","name":"Wine jewel"},{"hex":"#FF0038","name":"Signal"},{"hex":"#D70A53","name":"Raspberry jewel"},{"hex":"#0033A0","name":"Royal"},{"hex":"#0A1172","name":"Navy true"},{"hex":"#002FA7","name":"Klein"},{"hex":"#1E3A8A","name":"Sapphire"},{"hex":"#191970","name":"Midnight"},{"hex":"#0038A8","name":"Flag blue"},{"hex":"#007A5A","name":"Emerald"},{"hex":"#00815A","name":"Jewel green"},{"hex":"#00A86B","name":"Jade"},{"hex":"#046307","name":"Pine"},{"hex":"#009B77","name":"Viridian"},{"hex":"#028A0F","name":"Kelly"},{"hex":"#F5E642","name":"Icy yellow"},{"hex":"#FFD6E0","name":"Snow pink"}],"defaultSkin":"#E0B8A8","defaultHair":"#0E0A08","defaultEyes":"#2A3A7A"},{"id":"bright-winter","name":"Bright Winter","family":"winter","tagline":"Hot pink, cobalt, and lemon","summary":"The clearest cool season. You can wear hot pink, cobalt, and lemon against black and white — colour that would overwhelm a Soft Summer. Dusty or earthy shades steal your sparkle.","temperature":"Cool-neutral","value":"Medium","chroma":"Bright","metals":"Bright silver, platinum, white gold","lipstick":"Hot pink, true red, fuchsia","lipstickHex":"#E4007C","blush":"Clear pink","eyeliner":"Black or skip for colour liner","wardrobe":["Black and white as the canvas","Hot pink, cobalt, and emerald as leads","Lemon and cyan for shock"],"avoid":["Beige, camel, and taupe","Dusty rose and olive","Muted pastels and brown"],"signature":["#FFFFFF","#E4007C","#0047AB","#F5E642","#0A0A0A"],"looks":[["#FFFFFF","#E4007C","#0047AB","#F5E642","#0A0A0A"],["#FAFAFA","#FF0038","#00A3E0","#7CFC00","#111111"],["#FFFFFF","#FF0090","#002FA7","#CCFF00","#1A1A1A"],["#F8F8F8","#D70A53","#3A86FF","#FFE600","#000000"],["#FFFFFF","#C4006A","#0066FF","#00E5C0","#0D0D0D"],["#FFFFFF","#FF1744","#651FFF","#EEFF41","#141414"]],"bank":[{"hex":"#FFFFFF","name":"White"},{"hex":"#FAFAFA","name":"Bright white"},{"hex":"#F8F8F8","name":"Paper"},{"hex":"#0A0A0A","name":"Black"},{"hex":"#111111","name":"Char black"},{"hex":"#1A1A1A","name":"Ink"},{"hex":"#000000","name":"True black"},{"hex":"#0D0D0D","name":"Pitch"},{"hex":"#141414","name":"Soft black"},{"hex":"#E4007C","name":"Hot pink"},{"hex":"#FF0038","name":"Laser red"},{"hex":"#FF0090","name":"Magenta flash"},{"hex":"#D70A53","name":"Cerise"},{"hex":"#C4006A","name":"Ruby flash"},{"hex":"#FF1744","name":"Shock red"},{"hex":"#0047AB","name":"Cobalt"},{"hex":"#00A3E0","name":"Cyan"},{"hex":"#002FA7","name":"Klein"},{"hex":"#3A86FF","name":"Electric blue"},{"hex":"#0066FF","name":"Azure flash"},{"hex":"#651FFF","name":"Violet flash"},{"hex":"#F5E642","name":"Lemon"},{"hex":"#7CFC00","name":"Lawn flash"},{"hex":"#CCFF00","name":"Lime ice"},{"hex":"#FFE600","name":"Canary"},{"hex":"#00E5C0","name":"Aqua flash"},{"hex":"#EEFF41","name":"Chartreuse ice"},{"hex":"#00C853","name":"Emerald flash"}],"defaultSkin":"#E8C4B0","defaultHair":"#1A1214","defaultEyes":"#1A4A8A"}],"families":{"spring":{"name":"Spring","line":"Warm, clear, and lit from within.","hue":"#E07A5F"},"summer":{"name":"Summer","line":"Cool, blended, and quietly rose-toned.","hue":"#8A7E9A"},"autumn":{"name":"Autumn","line":"Warm, earthy, and richly muted.","hue":"#B5522A"},"winter":{"name":"Winter","line":"Cool, vivid, and high-contrast.","hue":"#1A3A7A"}},"quiz":[{"id":"jewelry","title":"Metals","prompt":"Which jewellery makes your skin look clearer?","note":"Hold pieces to your face in daylight if you can. Go with the one that makes you look less tired.","options":[{"id":"gold","label":"Gold","hint":"Yellow gold, brass, copper","swatch":"#C4A035","temp":-1,"value":0,"chroma":0},{"id":"silver","label":"Silver","hint":"Silver, platinum, white gold","swatch":"#C5C9D0","temp":1,"value":0,"chroma":0},{"id":"both","label":"Both","hint":"Gold and silver look equally fine","swatch":"#B8A090","temp":0,"value":0,"chroma":0}]},{"id":"sun","title":"Sun","prompt":"What does the sun do to your skin?","options":[{"id":"tan","label":"Tans golden","hint":"Olive or golden brown, rarely burns","temp":-0.85,"value":0.15,"chroma":0},{"id":"burn","label":"Burns or pinks","hint":"Turns pink or red, tans little","temp":0.85,"value":-0.15,"chroma":0},{"id":"mix","label":"A bit of both","hint":"Burns first, then a moderate tan","temp":0,"value":0,"chroma":0}]},{"id":"veins","title":"Veins","prompt":"On the inside of your wrist, your veins look…","note":"Natural daylight, no lotion. If you cannot tell, choose mixed.","options":[{"id":"green","label":"Green or olive","temp":-0.9,"value":0,"chroma":0},{"id":"blue","label":"Blue or violet","temp":0.9,"value":0,"chroma":0},{"id":"mixed","label":"A mix of both","temp":0,"value":0,"chroma":0}]},{"id":"skin","title":"Skin","prompt":"Which depth is closest to your face in daylight?","options":[{"id":"porcelain","label":"Porcelain","swatch":"#F3D9C8","temp":0.15,"value":-1,"chroma":0.1},{"id":"fair-warm","label":"Fair warm","swatch":"#E8C4A8","temp":-0.45,"value":-0.85,"chroma":0},{"id":"fair-cool","label":"Fair cool","swatch":"#E6C9C0","temp":0.5,"value":-0.85,"chroma":0},{"id":"light-olive","label":"Light olive","swatch":"#D4B48C","temp":-0.55,"value":-0.35,"chroma":-0.1},{"id":"medium","label":"Medium","swatch":"#C9956C","temp":-0.2,"value":0.05,"chroma":0},{"id":"medium-deep","label":"Medium deep","swatch":"#A56B45","temp":-0.15,"value":0.45,"chroma":0},{"id":"deep-warm","label":"Deep warm","swatch":"#8B5330","temp":-0.45,"value":0.85,"chroma":0},{"id":"deep-cool","label":"Deep cool","swatch":"#5A3228","temp":0.4,"value":0.9,"chroma":0.1}]},{"id":"hair","title":"Hair","prompt":"Your natural hair, at the roots, is closest to…","note":"Ignore dye. Grey or silver? Choose the colour it was.","options":[{"id":"platinum","label":"Platinum / ash blonde","swatch":"#D9D0C4","temp":0.55,"value":-0.9,"chroma":-0.15},{"id":"golden-blonde","label":"Golden blonde","swatch":"#C9A36A","temp":-0.7,"value":-0.75,"chroma":0.2},{"id":"strawberry","label":"Strawberry / copper blonde","swatch":"#C4845A","temp":-0.85,"value":-0.45,"chroma":0.25},{"id":"ash-brown","label":"Ash brown","swatch":"#8A7368","temp":0.45,"value":-0.05,"chroma":-0.35},{"id":"golden-brown","label":"Golden brown","swatch":"#8B5A2B","temp":-0.7,"value":0.1,"chroma":0.05},{"id":"auburn","label":"Auburn / copper","swatch":"#8B3A1A","temp":-0.95,"value":0.2,"chroma":0.2},{"id":"dark-brown","label":"Dark brown","swatch":"#3A2418","temp":0,"value":0.7,"chroma":0.15},{"id":"black","label":"Black","swatch":"#14110F","temp":0.35,"value":1,"chroma":0.45}]},{"id":"eyes","title":"Eyes","prompt":"Your eyes, in daylight, are closest to…","options":[{"id":"warm-brown","label":"Warm brown / amber","swatch":"#6B3A1A","temp":-0.7,"value":0.2,"chroma":0.1},{"id":"hazel","label":"Hazel / gold-green","swatch":"#7A6B32","temp":-0.55,"value":0,"chroma":0.15},{"id":"green","label":"Clear green","swatch":"#3A6B3A","temp":-0.2,"value":0,"chroma":0.35},{"id":"olive","label":"Soft olive / grey-green","swatch":"#6A7048","temp":-0.15,"value":0,"chroma":-0.35},{"id":"blue","label":"Blue","swatch":"#4A6FA5","temp":0.7,"value":-0.1,"chroma":0.2},{"id":"grey","label":"Grey / steel","swatch":"#7A8490","temp":0.55,"value":0,"chroma":-0.4},{"id":"cool-brown","label":"Cool / dark brown","swatch":"#3A241C","temp":0.25,"value":0.45,"chroma":0.15},{"id":"violet","label":"Violet-blue","swatch":"#5A4A8A","temp":0.85,"value":0,"chroma":0.4}]},{"id":"contrast","title":"Contrast","prompt":"How much contrast is there between your hair, skin, and eyes?","note":"A pale woman with black hair is high contrast. Similar depths across hair, skin, and eyes is low.","options":[{"id":"high","label":"High","hint":"Hair and skin are very different, or eyes really pop","temp":0,"value":0.15,"chroma":0.85},{"id":"medium","label":"Medium","hint":"Some difference, nothing dramatic","temp":0,"value":0,"chroma":0.05},{"id":"low","label":"Low","hint":"Hair, skin, and eyes sit in a similar range","temp":0,"value":-0.1,"chroma":-0.85}]}],"vectors":{"light-spring":{"temp":-0.7,"value":-0.82,"chroma":0.38},"true-spring":{"temp":-0.88,"value":-0.08,"chroma":0.58},"bright-spring":{"temp":-0.38,"value":0.02,"chroma":0.92},"light-summer":{"temp":0.7,"value":-0.82,"chroma":-0.18},"true-summer":{"temp":0.88,"value":-0.08,"chroma":-0.48},"soft-summer":{"temp":0.38,"value":0.06,"chroma":-0.88},"soft-autumn":{"temp":-0.38,"value":0.06,"chroma":-0.88},"true-autumn":{"temp":-0.88,"value":0.28,"chroma":-0.42},"deep-autumn":{"temp":-0.68,"value":0.86,"chroma":-0.18},"deep-winter":{"temp":0.68,"value":0.86,"chroma":0.42},"true-winter":{"temp":0.88,"value":0.38,"chroma":0.72},"bright-winter":{"temp":0.38,"value":0.12,"chroma":0.95}},"weights":{"jewelry":1.1,"sun":0.9,"veins":0.8,"skin":1.2,"hair":1.15,"eyes":0.85,"contrast":1.35},"skin":{"porcelain":"#F3D9C8","fair-warm":"#E8C4A8","fair-cool":"#E6C9C0","light-olive":"#D4B48C","medium":"#C9956C","medium-deep":"#A56B45","deep-warm":"#8B5330","deep-cool":"#5A3228"},"hair":{"platinum":"#D9D0C4","golden-blonde":"#C9A36A","strawberry":"#C4845A","ash-brown":"#8A7368","golden-brown":"#8B5A2B","auburn":"#8B3A1A","dark-brown":"#3A2418","black":"#14110F"},"eyes":{"warm-brown":"#6B3A1A","hazel":"#7A6B32","green":"#3A6B3A","olive":"#6A7048","blue":"#4A6FA5","grey":"#7A8490","cool-brown":"#3A241C","violet":"#5A4A8A"},"sample":{"jewelry":"gold","sun":"tan","veins":"green","skin":"medium","hair":"golden-brown","eyes":"hazel","contrast":"medium"}}</script>
+<script>
+(function () {
+  const DATA = JSON.parse(document.getElementById("teint-data").textContent);
+  const SEASONS = DATA.seasons;
+  const FAMILIES = DATA.families;
+  const FAMILY_ORDER = ["spring", "summer", "autumn", "winter"];
+  const QUIZ = DATA.quiz;
+  const VECTORS = DATA.vectors;
+  const WEIGHTS = DATA.weights;
+  const SKIN = DATA.skin;
+  const HAIR = DATA.hair;
+  const EYES = DATA.eyes;
+  const SAMPLE = DATA.sample;
+  const KEY = "teint-atelier-v1";
+  const INK = "#1C1916";
+  const PAPER = "#FAF7F1";
+
+  const TOUR = [
+    {
+      k: "01 · Season",
+      t: "A finished sample",
+      p: "The shop demo opens on a warm, medium colouring so you can see a result straight away. Temperature, depth, and clarity decide the season.",
+    },
+    {
+      k: "02 · Drape",
+      t: "Colour against a face",
+      p: "Silks in the five swatches sit on the shoulders. Shuffle, and the drape changes with them. Lock a colour and it stays.",
+    },
+    {
+      k: "03 · Studio",
+      t: "Copy anything",
+      p: "Tap HEX, RGB, or HSL. Keys: Space shuffles, 1–5 locks, C copies the focused HEX. Contrast is checked against ink and paper.",
+    },
+    {
+      k: "04 · Yours",
+      t: "Nothing leaves this device",
+      p: "Metals, lipstick, wardrobe, and CSS variables stay in the file. Start your own analysis whenever you want — it replaces the sample.",
+    },
+  ];
+
+  const state = {
+    answers: {},
+    seasonId: null,
+    also: [],
+    coloring: { skin: "#E0B394", hair: "#5A3A1E", eyes: "#4A5C3A" },
+    swatches: [],
+    lookIndex: 0,
+    focused: 0,
+    analyzedAt: null,
+    step: 0,
+    demo: false,
+    tour: null,
+    modal: null,
+    toast: "",
+    flash: null,
+  };
+
+  let lastSeason = null;
+  let lastView = "";
+  let toastTimer = 0;
+  let flashTimer = 0;
+
+  function byId(id) {
+    return SEASONS.find((s) => s.id === id);
+  }
+  function esc(s) {
+    return String(s ?? "").replace(/[&<>"]/g, (c) => {
+      const map = { "&": "amp", "<": "lt", ">": "gt", '"': "quot" };
+      return "&" + map[c] + ";";
+    });
+  }
+  function norm(hex) {
+    let h = String(hex || "").trim().replace(/^#/, "").toUpperCase();
+    if (h.length === 3) h = h.split("").map((c) => c + c).join("");
+    if (!/^[0-9A-F]{6}$/.test(h)) return "#000000";
+    return "#" + h;
+  }
+  function rgb(hex) {
+    const h = norm(hex).slice(1);
+    return {
+      r: parseInt(h.slice(0, 2), 16),
+      g: parseInt(h.slice(2, 4), 16),
+      b: parseInt(h.slice(4, 6), 16),
+    };
+  }
+  function hsl(hex) {
+    const { r, g, b } = rgb(hex);
+    const R = r / 255, G = g / 255, B = b / 255;
+    const max = Math.max(R, G, B), min = Math.min(R, G, B);
+    const d = max - min;
+    let h = 0;
+    const l = (max + min) / 2;
+    const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+    if (d !== 0) {
+      if (max === R) h = ((G - B) / d) % 6;
+      else if (max === G) h = (B - R) / d + 2;
+      else h = (R - G) / d + 4;
+      h *= 60;
+      if (h < 0) h += 360;
+    }
+    return { h: Math.round(h), s: Math.round(s * 100), l: Math.round(l * 100) };
+  }
+  function fmtRgb(hex) {
+    const c = rgb(hex);
+    return "rgb(" + c.r + ", " + c.g + ", " + c.b + ")";
+  }
+  function fmtHsl(hex) {
+    const c = hsl(hex);
+    return "hsl(" + c.h + ", " + c.s + "%, " + c.l + "%)";
+  }
+  function lum(hex) {
+    const { r, g, b } = rgb(hex);
+    const lin = (c) => {
+      const s = c / 255;
+      return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+    };
+    return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+  }
+  function contrast(a, b) {
+    const l1 = lum(a), l2 = lum(b);
+    const hi = Math.max(l1, l2), lo = Math.min(l1, l2);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+  function wcag(ratio) {
+    if (ratio >= 7) return "AAA";
+    if (ratio >= 4.5) return "AA";
+    return "fail";
+  }
+  function inkOn(bg) {
+    return contrast(bg, "#111111") >= contrast(bg, "#FFFFFF") ? "#111111" : "#FFFFFF";
+  }
+  function cssVars(swatches) {
+    const lines = swatches.map((sw, i) => {
+      const n = i + 1;
+      const c = rgb(sw.hex);
+      const h = hsl(sw.hex);
+      return (
+        "  --teint-" + n + ": " + norm(sw.hex) + ";\n" +
+        "  --teint-" + n + "-rgb: " + c.r + " " + c.g + " " + c.b + ";\n" +
+        "  --teint-" + n + "-hsl: " + h.h + " " + h.s + "% " + h.l + "%;"
+      );
+    });
+    return ":root {\n" + lines.join("\n") + "\n}\n";
+  }
+  function nameFor(season, hex) {
+    const found = season.bank.find((c) => c.hex.toLowerCase() === hex.toLowerCase());
+    return found ? found.name : norm(hex);
+  }
+  function fromLook(season, index) {
+    const look = season.looks[index] || season.signature;
+    return look.map((hex) => ({ hex, locked: false, name: nameFor(season, hex) }));
+  }
+  function score(answers) {
+    let temp = 0, value = 0, chroma = 0, tw = 0, vw = 0, cw = 0;
+    QUIZ.forEach((step) => {
+      const id = answers[step.id];
+      if (!id) return;
+      const opt = step.options.find((o) => o.id === id);
+      if (!opt) return;
+      const w = WEIGHTS[step.id] || 1;
+      temp += opt.temp * w;
+      value += opt.value * w;
+      chroma += opt.chroma * w;
+      tw += w; vw += w; cw += w;
+    });
+    const clamp = (n) => Math.max(-1, Math.min(1, n));
+    return {
+      temp: clamp(tw ? temp / tw : 0),
+      value: clamp(vw ? value / vw : 0),
+      chroma: clamp(cw ? chroma / cw : 0),
+    };
+  }
+  function nearest(v) {
+    let best = "true-autumn", bestD = Infinity;
+    Object.keys(VECTORS).forEach((id) => {
+      const p = VECTORS[id];
+      const d = (v.temp - p.temp) ** 2 + (v.value - p.value) ** 2 + (v.chroma - p.chroma) ** 2;
+      if (d < bestD) { bestD = d; best = id; }
+    });
+    return best;
+  }
+  function runners(v) {
+    return Object.keys(VECTORS)
+      .map((id) => {
+        const p = VECTORS[id];
+        return {
+          id,
+          d: (v.temp - p.temp) ** 2 + (v.value - p.value) ** 2 + (v.chroma - p.chroma) ** 2,
+        };
+      })
+      .sort((a, b) => a.d - b.d)
+      .slice(1, 3)
+      .map((s) => s.id);
+  }
+  function coloringFrom(answers) {
+    return {
+      skin: SKIN[answers.skin] || "#E0B394",
+      hair: HAIR[answers.hair] || "#5A3A1E",
+      eyes: EYES[answers.eyes] || "#4A5C3A",
+    };
+  }
+  function shuffleArr(items) {
+    const next = items.slice();
+    for (let i = next.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const a = next[i];
+      next[i] = next[j];
+      next[j] = a;
+    }
+    return next;
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({
+        answers: state.answers,
+        seasonId: state.seasonId,
+        also: state.also,
+        coloring: state.coloring,
+        swatches: state.swatches,
+        lookIndex: state.lookIndex,
+        focused: state.focused,
+        analyzedAt: state.analyzedAt,
+        step: state.step,
+        demo: state.demo,
+      }));
+    } catch (e) { /* private mode */ }
+  }
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (!data || typeof data !== "object") return;
+      Object.assign(state, data);
+    } catch (e) { /* ignore */ }
+  }
+  function setQuery(on) {
+    const url = new URL(location.href);
+    if (on) url.searchParams.set("demo", "1");
+    else url.searchParams.delete("demo");
+    history.replaceState(null, "", url.pathname + url.search + url.hash);
+  }
+  function parseRoute() {
+    const h = (location.hash || "#/").replace(/^#/, "");
+    const path = h.charAt(0) === "/" ? h : "/" + h;
+    const parts = path.split("/").filter(Boolean);
+    if (parts[0] === "analyse") return { view: "analyse" };
+    if (parts[0] === "seasons") return { view: "seasons" };
+    if (parts[0] === "studio") return { view: "studio" };
+    if (parts[0] === "s" && parts[1]) return { view: "season", id: decodeURIComponent(parts[1]) };
+    return { view: "home" };
+  }
+  function go(hash) {
+    if (location.hash === hash) render();
+    else location.hash = hash;
+  }
+  function toast(msg) {
+    state.toast = msg;
+    render();
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      state.toast = "";
+      render();
+    }, 1200);
+  }
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+      return true;
+    } catch (e) {
+      try {
+        const el = document.createElement("textarea");
+        el.value = text;
+        el.setAttribute("readonly", "");
+        el.style.position = "fixed";
+        el.style.left = "-9999px";
+        document.body.appendChild(el);
+        el.select();
+        const ok = document.execCommand("copy");
+        document.body.removeChild(el);
+        return ok;
+      } catch (err) {
+        return false;
+      }
+    }
+  }
+  function flash(i, label) {
+    state.flash = { i, label };
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(() => {
+      state.flash = null;
+      render();
+    }, 900);
+  }
+  function applySample() {
+    const vector = score(SAMPLE);
+    const id = nearest(vector);
+    const season = byId(id);
+    state.answers = Object.assign({}, SAMPLE);
+    state.seasonId = id;
+    state.also = runners(vector);
+    state.coloring = coloringFrom(SAMPLE);
+    state.lookIndex = 0;
+    state.focused = 0;
+    state.swatches = fromLook(season, 0);
+    state.analyzedAt = Date.now();
+    state.step = 0;
+    state.demo = true;
+  }
+  function openSeason(id) {
+    const season = byId(id);
+    if (!season) return;
+    const keep = Boolean(state.analyzedAt);
+    state.seasonId = id;
+    state.lookIndex = 0;
+    state.focused = 0;
+    state.swatches = fromLook(season, 0);
+    if (!keep) {
+      state.coloring = {
+        skin: season.defaultSkin,
+        hair: season.defaultHair,
+        eyes: season.defaultEyes,
+      };
+    }
+    save();
+  }
+  function shuffle() {
+    const season = byId(state.seasonId);
+    if (!season || !state.swatches.length) return;
+    const anyLocked = state.swatches.some((s) => s.locked);
+    if (!anyLocked) {
+      const next = (state.lookIndex + 1) % season.looks.length;
+      state.lookIndex = next;
+      state.swatches = fromLook(season, next);
+    } else {
+      const locked = {};
+      state.swatches.forEach((s) => { if (s.locked) locked[s.hex.toLowerCase()] = true; });
+      const pool = shuffleArr(season.bank.filter((c) => !locked[c.hex.toLowerCase()]));
+      let i = 0;
+      state.swatches = state.swatches.map((s) => {
+        if (s.locked) return s;
+        const n = pool[i++];
+        if (!n) return s;
+        return { hex: n.hex, locked: false, name: n.name };
+      });
+    }
+    save();
+    render();
+  }
+  function finish() {
+    const vector = score(state.answers);
+    const id = nearest(vector);
+    const season = byId(id);
+    state.seasonId = id;
+    state.also = runners(vector);
+    state.coloring = coloringFrom(state.answers);
+    state.lookIndex = 0;
+    state.focused = 0;
+    state.swatches = fromLook(season, 0);
+    state.analyzedAt = Date.now();
+    state.demo = false;
+    state.tour = null;
+    setQuery(false);
+    save();
+    go("#/studio");
+  }
+  function beginOwn() {
+    state.demo = false;
+    state.tour = null;
+    state.answers = {};
+    state.step = 0;
+    state.analyzedAt = null;
+    state.seasonId = null;
+    state.also = [];
+    state.swatches = [];
+    setQuery(false);
+    save();
+    go("#/analyse");
+  }
+  function startDemo() {
+    applySample();
+    state.tour = null;
+    setQuery(true);
+    save();
+    if ((location.hash || "#/") !== "#/") go("#/");
+    else render();
+  }
+
+  function icon(name) {
+    if (name === "lock") {
+      return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+    }
+    if (name === "unlock") {
+      return '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/></svg>';
+    }
+    return "";
+  }
+  function drape(coloring, lipstick, swatches, name) {
+    const c0 = (swatches[0] && swatches[0].hex) || "#C4A070";
+    const c1 = (swatches[1] && swatches[1].hex) || "#C06A4A";
+    const c2 = (swatches[2] && swatches[2].hex) || "#7A8458";
+    const c3 = (swatches[3] && swatches[3].hex) || "#6A8A82";
+    const c4 = (swatches[4] && swatches[4].hex) || "#E8D4B8";
+    const hair = coloring.hair;
+    const skin = coloring.skin;
+    const eyes = coloring.eyes;
+    return (
+      '<figure class="panel">' +
+      '<svg viewBox="0 0 320 420" role="img" aria-label="Virtual drape for ' + esc(name) + '">' +
+      '<rect width="320" height="420" fill="#ebe4d6"/>' +
+      '<ellipse cx="160" cy="400" rx="150" ry="70" fill="' + esc(c4) + '" opacity="0.45"/>' +
+      '<path d="M78 168 C70 86 112 42 160 40 C214 42 252 90 244 168 C248 210 236 236 220 250 C200 200 180 188 160 188 C138 188 118 202 100 250 C86 232 80 200 78 168Z" fill="' + esc(hair) + '"/>' +
+      '<path d="M40 330 C70 270 110 258 160 258 C210 258 250 270 280 330 C286 360 270 400 160 400 C50 400 34 360 40 330Z" fill="' + esc(skin) + '"/>' +
+      '<path d="M28 300 C70 250 90 268 120 300 C90 360 50 380 28 350Z" fill="' + esc(c0) + '"/>' +
+      '<path d="M70 292 C110 250 140 268 160 310 C150 360 90 390 62 350Z" fill="' + esc(c1) + '"/>' +
+      '<path d="M250 292 C210 250 180 268 160 310 C170 360 230 390 258 350Z" fill="' + esc(c2) + '"/>' +
+      '<path d="M292 300 C250 250 230 268 200 300 C230 360 270 380 292 350Z" fill="' + esc(c3) + '"/>' +
+      '<path d="M96 268 C130 248 160 262 160 300 C160 262 190 248 224 268 C200 248 160 238 160 238 C160 238 120 248 96 268Z" fill="' + esc(c4) + '"/>' +
+      '<path d="M138 210 C142 248 148 268 160 272 C172 268 178 248 182 210 C176 222 144 222 138 210Z" fill="' + esc(skin) + '"/>' +
+      '<ellipse cx="160" cy="148" rx="54" ry="70" fill="' + esc(skin) + '"/>' +
+      '<path d="M108 92 C120 58 148 46 160 46 C172 46 200 58 212 92 C226 78 236 96 232 128 C214 84 190 78 160 86 C130 78 106 86 90 128 C86 98 96 78 108 92Z" fill="' + esc(hair) + '"/>' +
+      '<path d="M96 140 C90 180 98 210 112 228 C104 190 104 160 110 132Z" fill="' + esc(hair) + '"/>' +
+      '<path d="M224 140 C230 180 222 210 208 228 C216 190 216 160 210 132Z" fill="' + esc(hair) + '"/>' +
+      '<path d="M122 132 C132 126 146 126 152 132" fill="none" stroke="' + esc(hair) + '" stroke-width="3.2" stroke-linecap="round" opacity="0.85"/>' +
+      '<path d="M168 132 C174 126 188 126 198 132" fill="none" stroke="' + esc(hair) + '" stroke-width="3.2" stroke-linecap="round" opacity="0.85"/>' +
+      '<ellipse cx="136" cy="150" rx="11" ry="7" fill="#F7F1EC"/>' +
+      '<ellipse cx="184" cy="150" rx="11" ry="7" fill="#F7F1EC"/>' +
+      '<circle cx="136" cy="150" r="5.4" fill="' + esc(eyes) + '"/>' +
+      '<circle cx="184" cy="150" r="5.4" fill="' + esc(eyes) + '"/>' +
+      '<circle cx="138" cy="148.5" r="1.6" fill="#F7F1EC"/>' +
+      '<circle cx="186" cy="148.5" r="1.6" fill="#F7F1EC"/>' +
+      '<path d="M160 150 C158 168 156 176 160 180 C164 176 162 168 160 150" fill="none" stroke="' + esc(hair) + '" stroke-width="1.4" opacity="0.28"/>' +
+      '<path d="M146 196 C154 190 166 190 174 196 C166 204 154 204 146 196Z" fill="' + esc(lipstick) + '"/>' +
+      "</svg>" +
+      '<figcaption><span>' + esc(name) + '</span><span>Virtual drape</span></figcaption>' +
+      "</figure>"
+    );
+  }
+  function strip(hexes) {
+    return '<div class="strip">' + hexes.map((h) => '<b style="background:' + esc(h) + '"></b>').join("") + "</div>";
+  }
+
+  function homeHTML() {
+    const season = byId(state.seasonId);
+    const demo = state.demo && season;
+    const personal = !state.demo && state.analyzedAt && season;
+    let figure = "";
+    if (demo || personal) {
+      figure =
+        drape(state.coloring, season.lipstickHex, state.swatches, season.name) +
+        '<div class="chips" aria-hidden="true">' +
+        state.swatches.map((s) => '<i style="background:' + esc(s.hex) + '"></i>').join("") +
+        "</div>";
+    } else {
+      const spring = byId("true-spring");
+      figure =
+        '<div class="panel" style="padding:18px">' +
+        '<p class="kicker">Four families</p>' +
+        '<div class="keys" style="margin-top:14px">' +
+        FAMILY_ORDER.map((id) => {
+          const meta = FAMILIES[id];
+          const kid = SEASONS.find((s) => s.family === id);
+          return '<div>' + strip(kid.signature) + '<p style="margin-top:8px">' + esc(meta.name) + '</p><p class="muted" style="font-size:14px">' + esc(meta.line) + "</p></div>";
+        }).join("") +
+        "</div></div>";
+      void spring;
+    }
+    const kicker = demo ? "Colour atelier · shop demo" : "Colour atelier";
+    const lede = demo
+      ? "This is the real atelier, opened on a sample colouring — " + season.name + ". " + season.tagline + ". Walk the studio, or answer the seven questions for your own reading."
+      : "A twelve-season analysis, then a five-swatch studio you can lock, shuffle, and copy as HEX, RGB, HSL, or CSS variables.";
+    const primary = demo
+      ? '<a class="btn" href="#/studio">Open the sample studio</a><a class="btn secondary" href="#/analyse">Walk the questions</a>'
+      : '<a class="btn" href="#/analyse">Begin analysis</a><button class="btn secondary" type="button" data-act="demo">Try the demo</button>';
+    const fine = personal
+      ? '<p class="fine">Your palette is ' + esc(season.name) + '. <a href="#/studio">Open the studio</a></p>'
+      : demo
+        ? '<p class="fine">Sample only. Starting your own analysis replaces it. Private to this device.</p>'
+        : '<p class="fine"><a href="#/seasons">Browse the twelve seasons</a></p>';
+    const families = FAMILY_ORDER.map((id) => {
+      const meta = FAMILIES[id];
+      const kid = SEASONS.find((s) => s.family === id);
+      return '<a class="card" href="#/seasons"><div>' + strip(kid.signature) + '</div><h3>' + esc(meta.name) + '</h3><p>' + esc(meta.line) + "</p></a>";
+    }).join("");
+    return (
+      '<div class="wrap">' +
+      '<section class="hero">' +
+      "<div>" +
+      '<p class="kicker">' + kicker + "</p>" +
+      '<h1 class="display">Find the colours that love you back.</h1>' +
+      '<p class="lede">' + esc(lede) + "</p>" +
+      '<div class="actions">' + primary + "</div>" +
+      fine +
+      "</div>" +
+      "<div>" + figure + "</div>" +
+      "</section>" +
+      '<section class="band">' +
+      "<div><p class=\"num\">01</p><h2>Undertone</h2><p>Warm, cool, or mixed — jewellery, veins, and how you take the sun.</p></div>" +
+      "<div><p class=\"num\">02</p><h2>Value</h2><p>How light or deep your hair, skin, and eyes sit together.</p></div>" +
+      "<div><p class=\"num\">03</p><h2>Chroma</h2><p>Whether clear, bright colour or a softer blend is what lights you.</p></div>" +
+      "</section>" +
+      '<section class="section">' +
+      '<div class="headrow"><div><h2>The twelve seasons</h2><p class="sub">Spring, Summer, Autumn, Winter — each with three moods.</p></div><a class="btn ghost" href="#/seasons">All seasons</a></div>' +
+      '<div class="families">' + families + "</div>" +
+      "</section>" +
+      '<section class="section hero">' +
+      "<div><h2>A studio, not a mood board.</h2><p class=\"lede\">Five swatches. Lock the ones you love, shuffle the rest. Copy a value in one tap. Check contrast against ink and paper. Export the look as CSS variables.</p>" +
+      '<ul class="keys"><li><kbd>Space</kbd> Shuffle</li><li><kbd>1–5</kbd> Lock a colour</li><li><kbd>C</kbd> Copy HEX</li></ul></div>' +
+      "<div class=\"card\"><h3>What you keep</h3><p>The whole atelier is this one file. No account. The reading stays on your device. The shop demo is the same file, opened on a sample.</p></div>" +
+      "</section></div>"
+    );
+  }
+
+  function analyseHTML() {
+    const step = Math.max(0, Math.min(state.step, QUIZ.length - 1));
+    const current = QUIZ[step];
+    const selected = state.answers[current.id];
+    const progress = ((step + 1) / QUIZ.length) * 100;
+    const many = current.options.length > 4;
+    const opts = current.options.map((opt) => {
+      const on = selected === opt.id ? " on" : "";
+      const sw = opt.swatch ? '<i class="dot" style="background:' + esc(opt.swatch) + '"></i>' : "";
+      const hint = opt.hint ? "<em>" + esc(opt.hint) + "</em>" : "";
+      return '<button type="button" class="opt' + on + '" data-act="answer" data-step="' + esc(current.id) + '" data-opt="' + esc(opt.id) + '">' + sw + "<strong>" + esc(opt.label) + "</strong>" + hint + "</button>";
+    }).join("");
+    const note = current.note ? '<p class="note">' + esc(current.note) + "</p>" : "";
+    const demoNote = state.demo
+      ? '<p class="note">Shop demo. The sample used gold, a golden tan, green veins, medium skin, golden-brown hair, hazel eyes, and medium contrast. <button class="text-link" type="button" data-act="studio-sample" style="border:0;background:none;padding:0;font:inherit;text-decoration:underline;min-height:44px">Skip to that result</button></p>'
+      : "";
+    return (
+      '<div class="wrap" style="max-width:760px">' +
+      '<div class="quiz-head"><span>Step ' + (step + 1) + " of " + QUIZ.length + "</span><span>" + esc(current.title) + "</span></div>" +
+      '<div class="progress"><span style="width:' + progress + '%"></span></div>' +
+      '<h1 class="prompt">' + esc(current.prompt) + "</h1>" +
+      note + demoNote +
+      '<div class="options ' + (many ? "many" : "few") + '">' + opts + "</div>" +
+      '<div class="quiz-nav"><button class="btn ghost" type="button" data-act="back">Back</button>' +
+      '<button class="btn" type="button" data-act="next"' + (selected ? "" : " disabled") + ">" +
+      (step === QUIZ.length - 1 ? "See my colours" : "Continue") + "</button></div></div>"
+    );
+  }
+
+  function seasonsHTML() {
+    const blocks = FAMILY_ORDER.map((family) => {
+      const meta = FAMILIES[family];
+      const kids = SEASONS.filter((s) => s.family === family).map((s) => {
+        return '<a class="card" href="#/s/' + esc(s.id) + '">' + strip(s.signature) + "<h3>" + esc(s.name) + "</h3><p>" + esc(s.tagline) + '</p><p class="meta">' + esc(s.temperature) + " · " + esc(s.value) + " · " + esc(s.chroma) + "</p></a>";
+      }).join("");
+      return '<section class="family-block"><h2>' + esc(meta.name) + '</h2><p class="sub">' + esc(meta.line) + '</p><div class="season-grid">' + kids + "</div></section>";
+    }).join("");
+    return (
+      '<div class="wrap"><p class="kicker">Guide</p><h1 class="display" style="font-size:44px">The twelve seasons</h1>' +
+      '<p class="lede">Each season is a temperature, a depth, and a clarity. Open one to drape it and shuffle looks in the studio.</p>' +
+      blocks + "</div>"
+    );
+  }
+
+  function swatchCard(sw, i) {
+    const text = inkOn(sw.hex);
+    const vsInk = contrast(sw.hex, INK);
+    const vsPaper = contrast(sw.hex, PAPER);
+    const flashLabel = state.flash && state.flash.i === i ? state.flash.label : "";
+    const wide = i === 4 ? " wide" : "";
+    const on = state.focused === i ? " on" : "";
+    function chip(label, sample, ratio) {
+      const level = wcag(ratio);
+      return '<div><i style="background:' + esc(sw.hex) + ";color:" + esc(sample) + '">A</i><div><small>' + label + "</small><b>" + ratio.toFixed(1) + " " + (level === "fail" ? "fail" : level) + "</b></div></div>";
+    }
+    return (
+      '<article class="swatch' + wide + on + '" data-act="focus" data-i="' + i + '">' +
+      '<button type="button" class="chip" style="background:' + esc(sw.hex) + ";color:" + text + '" data-act="copy" data-i="' + i + '" data-value="' + esc(norm(sw.hex)) + '" data-label="HEX" aria-label="Copy HEX ' + esc(sw.hex) + '">' +
+      '<span class="idx">' + (i + 1) + '</span><span class="flash">' + (flashLabel ? "Copied " + esc(flashLabel) : "") + "</span></button>" +
+      '<div class="body"><div class="sname"><p>' + esc(sw.name) + '</p>' +
+      '<button type="button" class="lock' + (sw.locked ? " on" : "") + '" data-act="lock" data-i="' + i + '" aria-pressed="' + (sw.locked ? "true" : "false") + '" aria-label="' + (sw.locked ? "Unlock colour" : "Lock colour") + '">' +
+      icon(sw.locked ? "lock" : "unlock") + "</button></div>" +
+      '<div class="codes">' +
+      '<button type="button" data-act="copy" data-i="' + i + '" data-value="' + esc(norm(sw.hex)) + '" data-label="HEX"><span>HEX</span>' + esc(norm(sw.hex)) + "</button>" +
+      '<button type="button" data-act="copy" data-i="' + i + '" data-value="' + esc(fmtRgb(sw.hex)) + '" data-label="RGB"><span>RGB</span>' + esc(fmtRgb(sw.hex)) + "</button>" +
+      '<button type="button" data-act="copy" data-i="' + i + '" data-value="' + esc(fmtHsl(sw.hex)) + '" data-label="HSL"><span>HSL</span>' + esc(fmtHsl(sw.hex)) + "</button>" +
+      "</div><div class=\"contrast\">" + chip("Ink", INK, vsInk) + chip("Paper", PAPER, vsPaper) + "</div></div></article>"
+    );
+  }
+
+  function studioHTML(fromSeason) {
+    const season = byId(state.seasonId);
+    if (!season || !state.swatches.length) {
+      return '<div class="wrap empty"><h1>Open the studio</h1><p>Run a colour analysis first, or pick a season to drape.</p><div class="actions"><a class="btn" href="#/analyse">Begin analysis</a><a class="btn secondary" href="#/seasons">Browse seasons</a><button class="btn ghost" type="button" data-act="demo">Try the demo</button></div></div>';
+    }
+    const also = (state.also || []).map((id, i) => {
+      const s = byId(id);
+      if (!s) return "";
+      return (i ? ", " : "") + '<button type="button" data-act="also" data-id="' + esc(id) + '">' + esc(s.name) + "</button>";
+    }).join("");
+    const back = fromSeason ? '<a class="back" href="#/seasons">All seasons</a>' : "";
+    return (
+      '<div class="wrap">' + back +
+      '<header class="studio-top"><div>' +
+      '<p class="eyebrow">' + esc(season.family) + " · " + esc(season.temperature) + " · " + esc(season.value) + " · " + esc(season.chroma) + (state.demo ? " · sample" : "") + "</p>" +
+      "<h1>" + esc(season.name) + "</h1>" +
+      '<p class="summary">' + esc(season.summary) + "</p>" +
+      (also ? '<p class="also">Also close: ' + also + "</p>" : "") +
+      "</div><div class=\"toolrow\">" +
+      '<button class="btn" type="button" data-act="shuffle">Shuffle <kbd style="background:transparent;color:inherit;padding:0">Space</kbd></button>' +
+      '<button class="btn secondary" type="button" data-act="modal" data-which="css">CSS</button>' +
+      '<button class="btn ghost" type="button" data-act="modal" data-which="keys" aria-label="Keyboard shortcuts">Keys</button>' +
+      "</div></header>" +
+      '<div class="studio-grid">' +
+      drape(state.coloring, season.lipstickHex, state.swatches, season.name) +
+      '<div class="swatches">' + state.swatches.map(swatchCard).join("") + "</div></div>" +
+      '<section class="notes">' +
+      "<article><h2>Metals</h2><p>" + esc(season.metals) + "</p></article>" +
+      "<article><h2>Makeup</h2><p><i class=\"lip\" style=\"background:" + esc(season.lipstickHex) + "\"></i>" + esc(season.lipstick) + ". Blush: " + esc(season.blush) + ". Liner: " + esc(season.eyeliner) + ".</p></article>" +
+      "<article><h2>Wear</h2><p>" + esc(season.wardrobe.join(" ")) + "</p></article>" +
+      "</section>" +
+      '<section class="split">' +
+      '<article><h2 class="serif">Reach for</h2><ul>' + season.wardrobe.map((w) => "<li>" + esc(w) + "</li>").join("") + "</ul></article>" +
+      '<article><h2 class="serif">Set aside</h2><ul>' + season.avoid.map((w) => "<li>" + esc(w) + "</li>").join("") + "</ul></article>" +
+      "</section></div>"
+    );
+  }
+
+  function shortcuts() {
+    const rows = [
+      ["Space", "Shuffle unlocked colours"],
+      ["1–5", "Lock or unlock a swatch"],
+      ["← →", "Move focus"],
+      ["C", "Copy focused HEX"],
+      ["Shift+C", "Copy CSS variables"],
+      ["E", "Open CSS export"],
+      ["L", "Lock the focused swatch"],
+      ["?", "This panel"],
+    ];
+    return rows.map((r) => '<div class="shortcut"><dt><kbd>' + r[0] + "</kbd></dt><dd>" + r[1] + "</dd></div>").join("");
+  }
+
+  function shell(main) {
+    const route = parseRoute();
+    const cur = route.view === "season" ? "studio" : route.view;
+    function link(hash, id, label) {
+      const on = cur === id ? ' aria-current="page"' : "";
+      return '<a href="' + hash + '"' + on + ">" + label + "</a>";
+    }
+    const ribbon = state.demo
+      ? '<div class="ribbon"><p>Shop demo · a sample reading, so you can click through the atelier.</p><div class="row"><button type="button" data-act="tour">Tour</button><button type="button" data-act="own">Start my analysis</button></div></div>'
+      : "";
+    let tour = "";
+    if (state.tour !== null && TOUR[state.tour]) {
+      const t = TOUR[state.tour];
+      const last = state.tour === TOUR.length - 1;
+      tour =
+        '<aside class="tour" role="dialog" aria-label="Demo tour">' +
+        '<p class="kicker">' + esc(t.k) + "</p><h2>" + esc(t.t) + "</h2><p>" + esc(t.p) + "</p>" +
+        '<div class="actions"><button class="btn ghost" type="button" data-act="tour-close">Close</button>' +
+        (state.tour > 0 ? '<button class="btn secondary" type="button" data-act="tour-prev">Back</button>' : "") +
+        '<button class="btn" type="button" data-act="' + (last ? "tour-close" : "tour-next") + '">' + (last ? "Done" : "Next") + "</button></div></aside>";
+    }
+    let modal = "";
+    if (state.modal === "css") {
+      modal =
+        '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">' +
+        '<div class="sheet"><h2 id="modal-title">Export CSS variables</h2><pre class="css">' + esc(cssVars(state.swatches)) + "</pre>" +
+        '<div class="actions"><button class="btn secondary" type="button" data-act="close">Close</button><button class="btn" type="button" data-act="copy-css">Copy CSS</button></div></div></div>';
+    } else if (state.modal === "keys") {
+      modal =
+        '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">' +
+        '<div class="sheet"><h2 id="modal-title">Keyboard</h2><dl>' + shortcuts() + "</dl>" +
+        '<div class="actions"><button class="btn" type="button" data-act="close">Close</button></div></div></div>';
+    }
+    const toast = state.toast ? '<div class="toast" role="status">' + esc(state.toast) + "</div>" : "";
+    return (
+      '<header class="top"><div class="bar"><a class="logo" href="#/">Teint</a><nav class="nav">' +
+      link("#/analyse", "analyse", "Analysis") +
+      link("#/seasons", "seasons", "Seasons") +
+      link("#/studio", "studio", "Studio") +
+      "</nav></div>" + ribbon + "</header>" +
+      "<main>" + main + "</main>" +
+      '<footer class="foot"><div><p>Teint — a colour atelier. Apps by Judith.</p><p>Twelve-season analysis. Private to this device. One file.</p></div></footer>' +
+      tour + modal + toast
+    );
+  }
+
+  function render() {
+    const route = parseRoute();
+    let main = "";
+    if (route.view === "analyse") main = analyseHTML();
+    else if (route.view === "seasons") main = seasonsHTML();
+    else if (route.view === "studio") main = studioHTML(false);
+    else if (route.view === "season") main = studioHTML(true);
+    else main = homeHTML();
+    document.getElementById("app").innerHTML = shell(main);
+    const viewKey = route.view + ":" + (route.id || "");
+    if (viewKey !== lastView) {
+      lastView = viewKey;
+      window.scrollTo(0, 0);
+    }
+    const season = byId(state.seasonId);
+    document.title = season && (route.view === "studio" || route.view === "season")
+      ? season.name + " · Teint"
+      : "Teint";
+  }
+
+  function onRoute() {
+    const route = parseRoute();
+    if (route.view === "season") {
+      if (route.id !== lastSeason) {
+        lastSeason = route.id;
+        openSeason(route.id);
+      }
+    } else {
+      lastSeason = null;
+    }
+    render();
+  }
+
+  document.getElementById("app").addEventListener("click", (e) => {
+    const t = e.target.closest("[data-act]");
+    if (!t) return;
+    const act = t.getAttribute("data-act");
+    if (act === "demo") {
+      e.preventDefault();
+      startDemo();
+      return;
+    }
+    if (act === "own") {
+      beginOwn();
+      return;
+    }
+    if (act === "tour") {
+      state.tour = 0;
+      if (parseRoute().view === "home") go("#/studio");
+      else render();
+      return;
+    }
+    if (act === "tour-next") { state.tour = Math.min(TOUR.length - 1, (state.tour || 0) + 1); render(); return; }
+    if (act === "tour-prev") { state.tour = Math.max(0, (state.tour || 0) - 1); render(); return; }
+    if (act === "tour-close") { state.tour = null; render(); return; }
+    if (act === "studio-sample") {
+      applySample();
+      save();
+      go("#/studio");
+      return;
+    }
+    if (act === "answer") {
+      state.answers = Object.assign({}, state.answers, { [t.getAttribute("data-step")]: t.getAttribute("data-opt") });
+      save();
+      render();
+      return;
+    }
+    if (act === "back") {
+      if (state.step === 0) go("#/");
+      else { state.step -= 1; save(); render(); }
+      return;
+    }
+    if (act === "next") {
+      const current = QUIZ[state.step];
+      if (!current || !state.answers[current.id]) return;
+      if (state.step >= QUIZ.length - 1) finish();
+      else { state.step += 1; save(); render(); }
+      return;
+    }
+    if (act === "shuffle") { shuffle(); return; }
+    if (act === "lock") {
+      const i = Number(t.getAttribute("data-i"));
+      state.swatches = state.swatches.map((sw, idx) => idx === i ? Object.assign({}, sw, { locked: !sw.locked }) : sw);
+      state.focused = i;
+      save();
+      render();
+      return;
+    }
+    if (act === "focus") {
+      state.focused = Number(t.getAttribute("data-i"));
+      render();
+      return;
+    }
+    if (act === "copy") {
+      e.stopPropagation();
+      const value = t.getAttribute("data-value");
+      const label = t.getAttribute("data-label") || "value";
+      const i = Number(t.getAttribute("data-i"));
+      copyText(value).then((ok) => {
+        if (!ok) { toast("Couldn’t copy"); return; }
+        flash(i, label);
+        toast("Copied " + label);
+      });
+      return;
+    }
+    if (act === "copy-css") {
+      copyText(cssVars(state.swatches)).then((ok) => toast(ok ? "Copied CSS variables" : "Couldn’t copy"));
+      return;
+    }
+    if (act === "modal") { state.modal = t.getAttribute("data-which"); render(); return; }
+    if (act === "close") { state.modal = null; render(); return; }
+    if (act === "also") {
+      const id = t.getAttribute("data-id");
+      const season = byId(id);
+      if (!season) return;
+      state.seasonId = id;
+      state.lookIndex = 0;
+      state.focused = 0;
+      state.swatches = fromLook(season, 0);
+      save();
+      const route = parseRoute();
+      if (route.view === "season") {
+        lastSeason = id;
+        go("#/s/" + id);
+      } else render();
+    }
+  });
+
+  document.getElementById("app").addEventListener("click", (e) => {
+    if (e.target.classList && e.target.classList.contains("modal")) {
+      state.modal = null;
+      render();
+    }
+  });
+
+  window.addEventListener("keydown", (e) => {
+    const route = parseRoute();
+    if (e.key === "Escape") {
+      state.modal = null;
+      state.tour = null;
+      render();
+      return;
+    }
+    if (route.view !== "studio" && route.view !== "season") return;
+    const tag = e.target && e.target.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA") return;
+    if (e.key === "?" || (e.key === "/" && e.shiftKey)) {
+      e.preventDefault();
+      state.modal = state.modal === "keys" ? null : "keys";
+      render();
+      return;
+    }
+    if (e.code === "Space" && !e.repeat) {
+      if (e.target.closest && e.target.closest("button, a")) return;
+      e.preventDefault();
+      shuffle();
+      return;
+    }
+    if (e.key >= "1" && e.key <= "5") {
+      const i = Number(e.key) - 1;
+      if (!state.swatches[i]) return;
+      e.preventDefault();
+      state.swatches = state.swatches.map((sw, idx) => idx === i ? Object.assign({}, sw, { locked: !sw.locked }) : sw);
+      state.focused = i;
+      save();
+      render();
+      return;
+    }
+    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+      const n = Math.max(state.swatches.length, 1);
+      e.preventDefault();
+      state.focused = e.key === "ArrowRight" ? (state.focused + 1) % n : (state.focused - 1 + n) % n;
+      render();
+      return;
+    }
+    if ((e.key === "l" || e.key === "L") && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      const i = state.focused;
+      state.swatches = state.swatches.map((sw, idx) => idx === i ? Object.assign({}, sw, { locked: !sw.locked }) : sw);
+      save();
+      render();
+      return;
+    }
+    if ((e.key === "c" || e.key === "C") && !e.metaKey && !e.ctrlKey) {
+      const sw = state.swatches[state.focused] || state.swatches[0];
+      if (!sw) return;
+      e.preventDefault();
+      if (e.shiftKey) {
+        copyText(cssVars(state.swatches)).then((ok) => toast(ok ? "Copied CSS variables" : "Couldn’t copy"));
+      } else {
+        copyText(norm(sw.hex)).then((ok) => {
+          if (!ok) { toast("Couldn’t copy"); return; }
+          flash(state.focused, "HEX");
+          toast("Copied HEX");
+        });
+      }
+      return;
+    }
+    if (e.key === "e" || e.key === "E") {
+      e.preventDefault();
+      state.modal = "css";
+      render();
+    }
+  });
+
+  window.addEventListener("hashchange", onRoute);
+
+  load();
+  const wantDemo = new URLSearchParams(location.search).get("demo") === "1";
+  if (wantDemo) applySample();
+  save();
+  onRoute();
+})();
+
+</script>
+</body>
+</html>

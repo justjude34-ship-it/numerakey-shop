@@ -139,6 +139,7 @@ const AP3 = [
 {
   slug:"teint", name:"Teint", cat:"style", price:39, status:"live", ready:true,
   cover:"covers/teint.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/teint/",
   desc:"Twelve-season colour analysis, then a studio for building the palette you actually wear.",
   tag:"Find the colours that love you back.",
   body:[
