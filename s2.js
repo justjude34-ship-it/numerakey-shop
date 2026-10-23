@@ -60,8 +60,9 @@ const AP2 = [
   inside:["Solfeggio tones filed by need","Brainwave state reference","Play pure tones in the app","Load your own entrainment tracks","Traditional associations, labelled as such","No medical claims"]
 },
 {
-  slug:"habit-swap", name:"Habit Swap", cat:"wellness", price:39, status:"live",
+  slug:"habit-swap", name:"Habit Swap", cat:"wellness", price:39, status:"live", ready:true,
   cover:"covers/habit-swap.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/habit-swap/",
   desc:"You can't delete a habit, only replace it \u2014 so find the cue and put something kinder in its place.",
   tag:"Swap it, don't fight it.",
   body:[
