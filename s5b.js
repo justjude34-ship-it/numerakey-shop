@@ -419,3 +419,17 @@ APPS.push({
   inside:["A one-tap timer that keeps running if you close the app","An hourly rate for every client, plus a default","Hours by month and earnings by client","Billed and unbilled kept separate","Invoice-ready PDF summary for each client","CSV export for Excel and Google Sheets","Any currency symbol, backup and restore","One file, your data stays on your device"]
 });
 artFor(APPS[APPS.length - 1]).motif = "wave";
+
+APPS.push({
+  slug:"sky-almanac", name:"Sky Almanac", cat:"divine", price:39, status:"live", ready:true,
+  cover:"covers/sky-almanac.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/sky-almanac/",
+  desc:"The real sky, worked out on your phone: today\u2019s Moon, retrogrades, eclipses and your own chart. Never goes out of date.",
+  tag:"Today\u2019s sky, worked out on your device.",
+  body:[
+    "Most astrology apps read you a script that someone wrote in advance. Sky Almanac calculates where the Sun, Moon and planets actually are, right now, on your device. It shows the Moon phase and sign, which planets are retrograde, and the strongest links between planets today, each explained in plain language.",
+    "Add your birth date, and your birth time and place if you have them, for your Sun, Moon and Rising signs and how you think, love and act. A 90-day sky calendar lists New and Full Moons, possible eclipses, planets changing sign and retrogrades starting or ending. A Together page compares two signs, and a short Learn section explains every term. Reflective and for fun, not predictions, and not medical, legal or financial advice."
+  ],
+  inside:["Today: Moon phase and sign, retrogrades, strongest planet links","Your chart: Sun, Moon and Rising, with Mercury, Venus and Mars","90-day sky calendar: Moon phases, eclipses, ingresses, retrogrades","Together: how two signs fit","Learn: every term in plain language","Calculated on your device, so it never goes out of date","No account, works offline, nothing sent away"]
+});
+artFor(APPS[APPS.length - 1]).motif = "orbits";
