@@ -5,7 +5,8 @@
    When true, the download is only released for a paid purchase (see api/download.js). */
 const USE_CHECKOUT = false;
 const PAYMENTS = {
-  "steady-day": "https://buy.stripe.com/eVq00c1dP4whbr69li0RG01"
+  "steady-day": "https://buy.stripe.com/eVq00c1dP4whbr69li0RG01",
+  "currency-converter": "https://buy.stripe.com/14A14g09L1k552IdBy0RG02"
 };
 const FILES = {
   "steady-day": "private/steady-day.html",
