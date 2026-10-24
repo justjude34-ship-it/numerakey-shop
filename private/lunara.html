@@ -659,6 +659,50 @@
     @media (prefers-reduced-motion: reduce) {
       .moon-glow.playing, .live-dot { animation: none !important; }
     }
+  
+    /* ===== Calm refresh: quieter palette, no neon glow ===== */
+    body{background:radial-gradient(ellipse 90% 50% at 50% -8%,rgba(120,90,190,.22),transparent 60%),radial-gradient(ellipse 70% 45% at 95% 90%,rgba(30,90,110,.16),transparent 55%),#080610 !important}
+    .ambience span{opacity:.12 !important}
+    .brand,.brand svg{color:#86aab6 !important;stroke:#86aab6 !important;text-shadow:none !important;filter:none !important;font-weight:600}
+    h1.hero{font-weight:500 !important;font-size:clamp(1.9rem,6vw,2.6rem) !important;letter-spacing:.01em;color:#e7e2f4 !important;-webkit-text-fill-color:#e7e2f4 !important;background:none !important;text-shadow:none !important;filter:none !important}
+    .lede{color:#a9a3bd !important;font-size:.95rem !important}
+    .moon-glow{filter:blur(30px) !important;background:radial-gradient(circle,rgba(150,120,210,.30),rgba(60,110,140,.18) 50%,transparent 72%) !important}
+    .moon-glow:not(.playing){opacity:.5 !important}
+    .section-label{color:#8d86a6 !important;text-shadow:none !important;font-weight:600}
+    .mode{border-width:1px !important;box-shadow:none !important;transform:none !important}
+    .mode[data-mode="binaural"]{border-color:#24485a !important;background:#0d1b24 !important;background-image:none !important}
+    .mode[data-mode="bowls"]{border-color:#3d3560 !important;background:#14102a !important;background-image:none !important}
+    .mode[data-mode="binaural"].selected{border-color:#5ea3b8 !important;background:#10262f !important;box-shadow:0 8px 24px -14px rgba(60,140,170,.5) !important}
+    .mode[data-mode="bowls"].selected{border-color:#a392d6 !important;background:#1b1538 !important;box-shadow:0 8px 24px -14px rgba(130,110,200,.5) !important}
+    .mode[data-mode="binaural"] .mode-name{color:#a8d4df !important;text-shadow:none !important}
+    .mode[data-mode="bowls"] .mode-name{color:#d8d0f0 !important;text-shadow:none !important}
+    .mode-name{text-shadow:none !important}
+    .mode[data-mode="binaural"] .mode-tag{color:#8fb7c2 !important}
+    .mode[data-mode="bowls"] .mode-tag{color:#aaa2c8 !important}
+    .mode .mode-icon{box-shadow:none !important}
+    .mode-illust{opacity:.8}
+    .live-pill{box-shadow:none !important}
+    .panel{box-shadow:none !important}
+    .preset,.mode-binaural-active .preset{background:rgba(255,255,255,.03) !important;box-shadow:none !important}
+    .preset.active,.mode-binaural-active .preset.active{background:rgba(150,130,210,.16) !important;border-color:#8f80c4 !important;box-shadow:none !important}
+    .mode-binaural-active .preset.active{background:rgba(70,140,165,.18) !important;border-color:#5ea3b8 !important}
+    .preset-blurb,.mode-binaural-active .preset-blurb,.range-val,.mode-binaural-active .range-val{color:#a8d4df !important;text-shadow:none !important}
+    .play-btn{background:#5b4d92 !important;background-image:none !important;box-shadow:0 8px 22px -10px rgba(110,90,190,.6) !important}
+    .mode-binaural-active .play-btn,.player.binaural .play-btn{background:#2f6f84 !important}
+    .timer{color:#d8d0f0 !important;text-shadow:none !important}
+    .session-btn.active{background:rgba(110,140,200,.18) !important;box-shadow:none !important;color:#d4e6ee !important}
+    input[type=range]{accent-color:#8f80c4 !important}
+    .mode-binaural-active input[type=range],.vol-row input{accent-color:#5ea3b8 !important}
+    .vol-row svg{color:#7fa9b6 !important}
+
+    .panel{border:1px solid #2c2748 !important;background:#0f0c1d !important;background-image:none !important}
+    .player,.player.playing{border:1px solid #2a3a4a !important;background:#0d141e !important;background-image:none !important;box-shadow:none !important}
+    .mode[data-mode="binaural"] .mode-name{color:#9cc6d2 !important}
+    .session-btn{border-color:#3a3558 !important;background:rgba(255,255,255,.03) !important;color:#b9b3d0 !important}
+    .session-btn.active{border-color:#7f93c4 !important}
+    .footer,.footer *{color:#7d7894 !important}
+    .hero-art{opacity:.85}
+    .live-pill{opacity:.9}
   </style>
 </head>
 <body style="background:#07040f;color:#f5f3ff;margin:0;font-family:system-ui,sans-serif;">
@@ -671,10 +715,10 @@
         </svg>
         Lunara
       </div>
-      <h1 class="hero" style="margin-top:0.55rem;color:#c084fc;font-size:2rem;font-weight:600;text-shadow:0 0 18px rgba(192,132,252,0.8);">Find still water</h1>
-      <p class="lede" style="margin-top:0.5rem;color:#ddd6fe;">
+      <h1 class="hero" style="margin-top:0.55rem;">Find still water</h1>
+      <p class="lede" style="margin-top:0.5rem;">
         One sound at a time — binaural beats or singing bowls.
-        Deep purple and deep teal. Never layered.
+        Never layered.
       </p>
     </header>
 
