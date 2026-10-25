@@ -96,6 +96,7 @@ const FILES = {
   "soulsync": "private/soulsync.html",
   "your-wishes": "private/your-wishes.html",
   "premium-budget": "private/premium-budget.html",
+  "clearscan": "private/clearscan.html",
   "heres-what-i-want-for-them": "private/heres-what-i-want-for-them.html",
   "what-now": "private/what-now.html",
   "money-jar": "private/money-jar.html",
