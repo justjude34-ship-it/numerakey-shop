@@ -36,7 +36,7 @@ const AP3 = [
   inside:["Soul Urge, Personality and Destiny for any domain","Master numbers 11, 22 and 33 held intact","The TLD ignored \u2014 .com is shared, the name is not","Karmic numbers such as 14 named, not hidden","Print the reading","Runs offline from one file"]
 },
 {
-  slug:"comet", name:"Comet", cat:"money", price:59, status:"live",
+  slug:"comet", name:"Comet", cat:"money", price:39, status:"live",
   cover:"covers/comet.jpg",
   demo:"https://numerakey-comet-demo.vercel.app",
   desc:"The month-to-month one: bills, categories, savings goals, and where it actually went.",
@@ -59,7 +59,7 @@ const AP3 = [
   inside:["Seven questions, one screen at a time","Estimates welcome \u2014 refine them later","Money for fun counted in, not left out","A finished monthly budget at the end","Warm tone, no lectures about coffee","One file, your numbers stay on your device"]
 },
 {
-  slug:"ledger-noir", name:"Ledger Noir", cat:"money", price:59, status:"live", ready:true,
+  slug:"ledger-noir", name:"Ledger Noir", cat:"money", price:39, status:"live", ready:true,
   cover:"covers/ledger-noir.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/ledger-noir/",
   desc:"A budget spreadsheet for people who actually want a spreadsheet \u2014 dark, fast, and it saves itself.",
