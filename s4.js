@@ -155,7 +155,7 @@ const AP4 = [
   inside:["Both charts in full, Goodwin and Phillips","Every aspect marked harmonious, neutral or challenging","Numbers only you carry, only they carry, and shared","The shared blind spot \u2014 what neither of you has","Both personal years, turning on the birthday","A typeset PDF of the whole reading","No account, nothing sent anywhere"]
 },
 {
-  slug:"nomen", name:"Nomen", cat:"numerology", price:59, status:"live", ready:true,
+  slug:"nomen", name:"Nomen", cat:"numerology", price:89, status:"live", ready:true,
   cover:"covers/nomen.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/nomen/",
   desc:"Read the name you were given, then find one that carries you better.",
