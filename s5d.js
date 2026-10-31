@@ -106,6 +106,8 @@ const FILES = {
   "lumen-tarot": "private/lumen-tarot.html",
   "indomita": "private/indomita.html",
   "numerakey-learn": "private/numerakey-learn.html",
+  "under-one-roof": "private/under-one-roof.html",
+  "are-you-my-person": "private/are-you-my-person.html",
   "mysomni": "private/mysomni.html"
 };
 APPS.forEach(a => {
