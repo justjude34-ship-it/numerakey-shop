@@ -15,6 +15,7 @@ const SITE = {
       buy:    optional full Lemon Squeezy URL; otherwise store + /buy/<slug>
    ========================================================================== */
 const CATEGORIES = [
+  { id:"family",   name:"Family",       colour:"#F5A3B8", note:"Everyone under one roof." },
   { id:"numerology", name:"Numerology", colour:"#C78BF5", note:"Your numbers, your name, your year." },
   { id:"wellness", name:"Wellness",     colour:"#5CC8F5", note:"Quiet tools for hard seasons." },
   { id:"neuro",    name:"Neurodivergent", colour:"#8FD694", note:"Built for ADHD and AuDHD brains, not around them." },
@@ -24,7 +25,6 @@ const CATEGORIES = [
   { id:"divine",   name:"Divination",   colour:"#B478F0", note:"Tarot, astrology, and the older systems." },
   { id:"money",    name:"Money",        colour:"#F4B740", note:"Know where it goes." },
   { id:"home",     name:"Home & Pets",  colour:"#EC8FC4", note:"The household, and everyone in it." },
-  { id:"family",   name:"Family",       colour:"#F5A3B8", note:"Everyone under one roof." },
   { id:"personal", name:"Personal",    colour:"#D9A7E8", note:"Wishes, plans and the things only you can put in order." },
   { id:"style",    name:"Style",        colour:"#E8A0A8", note:"What suits you, worked out properly." },
   { id:"general",  name:"General",      colour:"#9FB4C7", note:"Handy tools that don't belong on any other shelf." }
