@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="theme-color" content="#0b0e0c">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Held is a quiet place for daughters of narcissistic mothers. One file. No account. Your words stay on this device.">
 <title>Held</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23f3eee4' width='32' height='32' rx='8'/%3E%3Ccircle cx='16' cy='16' r='5' fill='none' stroke='%237e8f72' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%230b0e0c' width='32' height='32' rx='8'/%3E%3Ccircle cx='16' cy='16' r='5' fill='none' stroke='%237e8f72' stroke-width='1.6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,500&display=swap">
@@ -300,6 +301,44 @@ label.lbl { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0
   .enter, .bloom, .breathe { animation: none !important; filter: none !important; opacity: 1 !important; }
 }
 
+/* ===== Dark, modern theme ===== */
+:root {
+  --bg: #0b0e0c;
+  --paper: #111613;
+  --linen: #1a211d;
+  --cream: #efe9db;
+  --ink: #ece7db;
+  --muted: #aaa699;
+  --faint: #7f7b70;
+  --sage: #9fb592;
+  --moss: #426148;
+  --moss-lt: #a8c49b;
+  --gold: #d6b86b;
+  --goldsoft: #efe0b0;
+  --blush: #3a322d;
+  --shadow: 0 0 0 1px rgb(255 255 255 / 0.05), 0 14px 34px -12px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+html { background: var(--bg); }
+body {
+  background:
+    radial-gradient(900px 520px at 50% -8%, rgb(214 184 107 / 0.10), transparent 62%),
+    radial-gradient(700px 480px at 85% 100%, rgb(110 150 120 / 0.10), transparent 58%),
+    var(--bg);
+}
+::selection { background: rgb(214 184 107 / 0.35); }
+img { outline-color: rgb(255 255 255 / 0.06); }
+::placeholder { color: var(--faint); opacity: 1; }
+.nav { border-top-color: rgb(255 255 255 / 0.07); }
+.nav button.on, .clock, .linkish, .btn.icon { color: var(--moss-lt); }
+.btn.gold, .chip.gold.on, .btn.icon.on { color: #1a1608; }
+.btn:active, .chip:active, .card:active { filter: brightness(1.12); }
+.hero, .banner, .garden img { filter: brightness(0.88) saturate(0.95) contrast(1.06); }
+.hero { -webkit-mask-image: linear-gradient(to bottom, #000 68%, transparent 100%); mask-image: linear-gradient(to bottom, #000 68%, transparent 100%); }
+.card { border: 1px solid rgb(255 255 255 / 0.04); }
+.garden .veil { background: linear-gradient(to top, rgb(5 8 6 / 0.72), rgb(5 8 6 / 0.12) 62%, transparent); }
+.garden .cap { text-shadow: 0 1px 10px rgb(0 0 0 / 0.6); }
+.field:focus, .area:focus { box-shadow: 0 0 0 2px rgb(214 184 107 / 0.5); }
 </style>
 </head>
 <body>
