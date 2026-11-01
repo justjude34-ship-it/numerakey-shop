@@ -32,6 +32,7 @@ const FILES = {
   "narc-escape-guide": "private/narc-escape-guide.html",
   "right-action": "private/right-action.html",
   "astra-nova": "private/astra-nova.html",
+  "harmonia": "private/harmonia.html",
   "gentle-clear": "private/gentle-clear.html",
   "hearthaven": "private/hearthaven.html",
   "numera-plus": "private/numera-plus.html",
