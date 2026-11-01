@@ -189,15 +189,14 @@ if (C.timer) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SizeShift by Judith — Women's Size Converter</title>
 <meta name="description" content="Convert women's dress and shoe sizes between Australia, the US, the UK and Europe. One file you keep. Works offline. No account.">
-<meta name="theme-color" content="#fff6f3" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1c1412" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#1c1412">
 <meta name="apple-mobile-web-app-title" content="SizeShift">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23E85D4C'/%3E%3Cpath d='M10 22V12.5c0-1.1.9-2 2-2h1.2c.6 0 1.1.3 1.4.8L16 14l1.4-2.7c.3-.5.8-.8 1.4-.8H20c1.1 0 2 .9 2 2V22' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='16' cy='8' r='2' fill='%23C8F0EB'/%3E%3C/svg%3E">
 <script>
 try {
   var savedTheme = localStorage.getItem("sizeshift-theme");
-  if (!savedTheme && matchMedia("(prefers-color-scheme: dark)").matches) savedTheme = "dark";
+  if (!savedTheme) savedTheme = "dark";
   if (savedTheme === "dark") document.documentElement.setAttribute("data-theme", "dark");
 } catch (e) {}
 </script>
