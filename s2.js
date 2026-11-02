@@ -84,6 +84,18 @@ const AP2 = [
   inside:["Kickstart tools for initiation paralysis","Daily pulse check-in","Dopamine habits, reframes and anchors","Perfectionism and task-friction work","Five modules on how ADHD actually works","ASRS trait check \u2014 a self-screen, not a diagnosis"]
 },
 {
+  slug:"adhd-mate", name:"ADHD Mate", cat:"neuro", price:39, status:"live", ready:true,
+  cover:"covers/adhd-mate.jpg",
+  demo:"https://numerakey-shop.vercel.app/demos/adhd-mate/",
+  desc:"A quiet companion for ADHD days \u2014 a short chat, a focus sprint, tiny steps and a no-score check-in.",
+  tag:"One soft next step.",
+  body:[
+    "ADHD Mate is a small, calm companion that keeps the day from feeling like a verdict. Talk to Mate in the messy version of your thoughts, in the voice you pick \u2014 friend, coach or support \u2014 and get a short, kind reply with no lecture.",
+    "Start a focus sprint with a body double beside you, break a big job into steps that are almost too small, check in with your headspace and energy without a score, and use the calm tools when things get loud. Everything stays on your device. It's a support tool, not medical care."
+  ],
+  inside:["Chat with Mate in friend, coach or support voice","Focus sprints of 5, 15 or 25 minutes with a body double","Tiny steps \u2014 break the mountain down","Headspace check-in with no score","Breathing circle with soft sound, and grounding prompts","Notes stay on your device, and you can download them"]
+},
+{
   slug:"quietshore", name:"Quietshore", cat:"wellness", price:39, status:"live", ready:true,
   cover:"covers/quietshore.jpg",
   demo:"https://numerakey-quietshore-demo.vercel.app",

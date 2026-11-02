@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#07060f" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="application-name" content="ADHD Mate" />
+<title>ADHD Mate (Demo)</title>
+<style>
+  :root {
+    --bg: #07060f;
+    --ink: #f4efe8;
+    --muted: rgba(244,239,232,.62);
+    --line: rgba(255,255,255,.12);
+    --card: rgba(16,14,28,.78);
+    --violet: #8b6cff;
+    --coral: #ff6b6b;
+    --teal: #3ddec8;
+    --gold: #f0b429;
+    --blue: #5b8def;
+    --safe-b: env(safe-area-inset-bottom, 0px);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    min-height: 100dvh;
+  }
+  .sky {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none;
+    background:
+      radial-gradient(900px 420px at 18% 78%, rgba(255,90,70,.28), transparent 60%),
+      radial-gradient(700px 380px at 78% 18%, rgba(255,170,60,.22), transparent 62%),
+      radial-gradient(640px 360px at 62% 62%, rgba(70,220,190,.18), transparent 60%),
+      radial-gradient(500px 300px at 40% 28%, rgba(140,80,255,.28), transparent 64%),
+      #07060f;
+  }
+  .ribbon {
+    position: absolute; width: 140%; height: 46%; left: -20%;
+    filter: blur(8px); opacity: .72;
+    background: linear-gradient(90deg, transparent, rgba(255,110,80,.35), rgba(160,80,255,.45), rgba(60,220,200,.4), rgba(240,180,40,.35), transparent);
+    border-radius: 50%; animation: drift 22s ease-in-out infinite alternate;
+  }
+  .ribbon.a { top: 8%; transform: rotate(-12deg); }
+  .ribbon.b { top: 38%; transform: rotate(8deg); animation-delay: -8s; opacity: .5; }
+  .orb {
+    position: absolute; border-radius: 50%;
+    box-shadow: 0 0 40px currentColor;
+    animation: float 9s ease-in-out infinite;
+  }
+  .orb.p { width: 54px; height: 54px; background: #7a4dff; color: #7a4dff; top: 18%; left: 28%; }
+  .orb.c { width: 42px; height: 42px; background: #ff5d55; color: #ff5d55; top: 36%; left: 52%; animation-delay: -2s; }
+  .orb.t { width: 36px; height: 36px; background: #2fceba; color: #2fceba; top: 48%; left: 70%; animation-delay: -4s; }
+  .orb.g { width: 34px; height: 34px; background: #e8b23a; color: #e8b23a; top: 58%; left: 58%; animation-delay: -1s; }
+  .orb.b { width: 40px; height: 40px; background: #3d7ef0; color: #3d7ef0; top: 66%; left: 74%; animation-delay: -6s; }
+  @keyframes drift { to { transform: translateX(6%) rotate(-6deg); } }
+  @keyframes float { 50% { transform: translateY(-12px); } }
+  .app { position: relative; z-index: 1; max-width: 920px; margin: 0 auto; min-height: 100dvh; padding: 18px 16px calc(96px + var(--safe-b)); }
+  header.top { text-align: center; padding: 10px 8px 6px; }
+  .mark { letter-spacing: .28em; text-transform: uppercase; font-size: 11px; color: var(--gold); font-weight: 650; }
+  h1 {
+    font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif; font-weight: 640; letter-spacing: -.03em;
+    font-size: clamp(40px, 8vw, 72px); margin: 6px 0 4px; line-height: .95;
+  }
+  .sub { color: var(--muted); margin: 0 auto; max-width: 34rem; font-size: 15px; }
+  .panel {
+    background: var(--card); border: 1px solid var(--line); border-radius: 24px;
+    backdrop-filter: blur(16px); padding: 16px; margin-top: 14px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.28);
+  }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  @media (min-width: 760px) { .grid.four { grid-template-columns: repeat(4, 1fr); } }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  button {
+    border: 1px solid var(--line); background: rgba(255,255,255,.06);
+    border-radius: 16px; padding: 12px 14px; cursor: pointer; text-align: left;
+    touch-action: manipulation;
+  }
+  button.primary { background: linear-gradient(180deg, #8d74ff, #6a4dff); border-color: transparent; font-weight: 650; }
+  button.active { outline: 1px solid rgba(139,108,255,.7); background: rgba(139,108,255,.16); }
+  .tile { width: 100%; }
+  .tile h3, .panel h2, .panel h3 { margin: 0 0 4px; font-size: 16px; }
+  .tile p, .hint { color: var(--muted); font-size: 13px; margin: 0; }
+  .stat { flex: 1; min-width: 120px; }
+  .big { font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif; font-size: 28px; }
+  nav.dock {
+    position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(8px + var(--safe-b));
+    z-index: 5; width: min(920px, calc(100% - 16px));
+    display: flex; gap: 4px; overflow: auto; padding: 6px;
+    background: rgba(10,9,18,.86); border: 1px solid var(--line); border-radius: 22px;
+    backdrop-filter: blur(18px);
+  }
+  nav.dock button {
+    flex: 1; min-width: 68px; text-align: center; padding: 8px 4px;
+    border: 0; background: transparent; font-size: 11px; font-weight: 650; color: var(--muted);
+  }
+  nav.dock button.on { color: white; }
+  .view { display: none; } .view.on { display: block; }
+  .chat { display: flex; flex-direction: column; gap: 8px; min-height: 280px; max-height: 48dvh; overflow: auto; }
+  .bubble { max-width: 86%; padding: 10px 12px; border-radius: 16px; background: rgba(255,255,255,.06); }
+  .bubble.me { margin-left: auto; background: rgba(91,141,239,.28); }
+  .composer { display: flex; gap: 8px; margin-top: 10px; }
+  input, textarea, select {
+    width: 100%; background: rgba(255,255,255,.05); border: 1px solid var(--line);
+    border-radius: 14px; padding: 12px;
+  }
+  textarea { min-height: 72px; resize: vertical; }
+  .step { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+  .step input[type="checkbox"] { width: 18px; height: 18px; }
+  .bar { height: 8px; border-radius: 99px; background: rgba(255,255,255,.08); overflow: hidden; }
+  .bar > span { display: block; height: 100%; background: linear-gradient(90deg, var(--teal), var(--gold)); }
+  .timer { font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif; font-size: 64px; text-align: center; letter-spacing: -.04em; margin: 8px 0; }
+  .breath {
+    width: 140px; height: 140px; margin: 12px auto; border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #fff3, transparent 40%), linear-gradient(160deg, var(--violet), var(--teal));
+    transform: scale(.72);
+    box-shadow: 0 0 40px rgba(90,200,190,.35);
+  }
+  .fine { font-size: 11px; color: var(--muted); text-align: center; margin-top: 16px; }
+  .modes { display: flex; gap: 6px; flex-wrap: wrap; }
+  .modes button { padding: 8px 10px; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true">
+  <div class="ribbon a"></div>
+  <div class="ribbon b"></div>
+  <div class="orb p"></div><div class="orb c"></div><div class="orb t"></div><div class="orb g"></div><div class="orb b"></div>
+</div>
+<div class="app">
+  <header class="top">
+    <div class="mark">Free demo · on this device</div>
+    <h1>ADHD Mate</h1>
+    <p class="sub">A quiet companion of its own. One soft next step.</p>
+  </header>
+
+  <section id="home" class="view on">
+    <div class="panel">
+      <div class="row">
+        <div class="stat"><div class="hint" id="hello">Good day</div><div class="big" id="nameLine">friend</div></div>
+        <div class="stat"><div class="hint">Streak</div><div class="big" id="streak">0d</div></div>
+        <div class="stat"><div class="hint">Open tasks</div><div class="big" id="openCount">0</div></div>
+      </div>
+      <p class="hint" style="margin-top:10px">What should Mate call you?</p>
+      <input id="name" placeholder="Your name" />
+    </div>
+    <div class="grid four" style="margin-top:12px">
+      <button type="button" class="tile panel" data-go="chat"><h3>Talk to Mate</h3><p>Warm, short, no lecture</p></button>
+      <button type="button" class="tile panel" data-go="focus"><h3>Focus sprint</h3><p>Timer and a body double</p></button>
+      <button type="button" class="tile panel" data-go="tasks"><h3>Tiny steps</h3><p>Break the mountain</p></button>
+      <button type="button" class="tile panel" data-go="calm"><h3>Calm tools</h3><p>Breathe and ground</p></button>
+    </div>
+    <div class="panel">
+      <h2>Today</h2>
+      <p class="hint" id="moodLine">No check-in yet. Twenty seconds is enough.</p>
+      <div class="bar" style="margin:10px 0"><span id="prog" style="width:0%"></span></div>
+      <p class="hint" id="progLine">0 tiny steps done</p>
+      <button type="button" class="primary" style="margin-top:12px" data-go="mood">Check in</button>
+    </div>
+  </section>
+
+  <section id="chat" class="view">
+    <div class="panel">
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <h2>Mate</h2>
+        <div class="modes" id="modes"></div>
+      </div>
+      <p class="hint">ADHD Mate’s own chat. Stays on this phone. Not medical care.</p>
+      <div class="chat" id="chatBox"></div>
+      <div class="composer">
+        <input id="msg" placeholder="Say the messy version…" />
+        <button type="button" class="primary" id="sendBtn">Send</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="focus" class="view">
+    <div class="panel" style="text-align:center">
+      <h2>Focus sprint</h2>
+      <div class="timer" id="clock">05:00</div>
+      <div class="modes" id="minuteModes" style="justify-content:center">
+        <button type="button" data-mins="5" class="active">5</button>
+        <button type="button" data-mins="15" class="locked-min">15 🔒</button>
+        <button type="button" data-mins="25" class="locked-min">25 🔒</button>
+      </div>
+      <div class="row" style="justify-content:center;margin-top:12px">
+        <button type="button" class="primary" id="timerBtn">Start</button>
+        <button type="button" id="resetBtn">Reset</button>
+      </div>
+      <p class="hint" id="double" style="margin-top:12px">I’m sitting with you. One block. You can stop.</p>
+    </div>
+  </section>
+
+  <section id="tasks" class="view">
+    <div class="panel">
+      <h2>Tiny steps</h2>
+      <input id="taskTitle" placeholder="The whole thing, in a few words" />
+      <textarea id="taskSteps" placeholder="One step per line. Make them almost too small."></textarea>
+      <button type="button" class="primary" style="margin-top:8px" id="addTaskBtn">Add</button>
+      <div id="taskList"></div>
+    </div>
+  </section>
+
+  <section id="mood" class="view">
+    <div class="panel">
+      <h2>Headspace</h2>
+      <p class="hint">No score. Just a note for future you.</p>
+      <div class="grid" id="moods"></div>
+      <p class="hint" style="margin-top:10px">Energy 1–10</p>
+      <input id="energy" type="range" min="1" max="10" value="5" />
+      <button type="button" class="primary" style="margin-top:8px" id="saveMoodBtn">Save check-in</button>
+      <div id="moodLog"></div>
+    </div>
+  </section>
+
+  <section id="calm" class="view">
+    <div class="panel" style="text-align:center">
+      <h2>Breathe</h2>
+      <div class="breath"></div>
+      <p id="breathCue" class="big" style="margin:8px 0 4px">In</p>
+      <p>In for four. Out for six. The circle is the only job.</p>
+      <button type="button" id="breathSoundBtn" style="margin-top:12px">Sound on</button>
+      <div class="grid" style="text-align:left;margin-top:12px">
+        <div class="panel"><h3>5 senses</h3><p>5 see, 4 feel, 3 hear, 2 smell, 1 taste.</p></div>
+        <div class="panel"><h3>Name the room</h3><p>Three things that are not asking you to perform.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="notes" class="view">
+    <div class="panel">
+      <h2>Soft record</h2>
+      <p class="hint" id="insight"></p>
+      
+    </div>
+  </section>
+  <section id="locked" class="view">
+    <div class="panel" style="text-align:center">
+      <h2>In the full app</h2>
+      <p class="hint" id="lockedMsg" style="margin:8px 0 14px">This part is in the full ADHD Mate.</p>
+      <button type="button" class="primary" data-go="home">Back to the demo</button>
+    </div>
+  </section>
+  <p class="fine">Free demo: Home, a short chat with Mate and a 5-minute focus sprint. The full app adds tiny steps, mood check-ins, calm tools, longer sprints and your notes. Support tool, not medical care.</p>
+</div>
+<nav class="dock">
+  <button type="button" class="on" data-go="home">Home</button>
+  <button type="button" data-go="chat">Mate</button>
+  <button type="button" data-go="focus">Focus</button>
+  <button type="button" data-go="tasks">Tasks</button>
+  <button type="button" data-go="mood">Mood</button>
+  <button type="button" data-go="calm">Calm</button>
+  <button type="button" data-go="notes">Notes</button>
+</nav>
+<script>
+(function () {
+  var KEY = "adhd-mate-demo-v1";
+  var LOCKED = { tasks:"Tiny steps", mood:"Mood check-ins", calm:"Calm tools", notes:"Your notes" };
+  var DEMO_MSGS = 3;
+  var moodWords = ["steady", "bright", "foggy", "spiky", "tender", "flat"];
+  var defaults = {
+    name: "",
+    mode: "friend",
+    streak: 0,
+    last: "",
+    moods: [],
+    tasks: [],
+    focusMin: 0,
+    chat: [{ from: "mate", text: "I’m Mate. We can start with the smallest true thing." }]
+  };
+  var state = load();
+  var pickedMood = "steady";
+  var mins = 5;
+  var left = 5 * 60;
+  var ticking = null;
+
+  function load() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(KEY) || "{}");
+      return Object.assign({}, defaults, saved);
+    } catch (e) {
+      return Object.assign({}, defaults);
+    }
+  }
+  function today() { return new Date().toISOString().slice(0, 10); }
+  function greet() {
+    var h = new Date().getHours();
+    return h < 12 ? "Good morning" : h < 17 ? "Good afternoon" : "Good evening";
+  }
+  function escapeHtml(s) {
+    return String(s)
+      .split(String.fromCharCode(38)).join(String.fromCharCode(38) + "amp;")
+      .split("<").join(String.fromCharCode(38) + "lt;")
+      .split(">").join(String.fromCharCode(38) + "gt;")
+      .split('"').join(String.fromCharCode(38) + "quot;");
+  }
+  function touch() {
+    if (state.last !== today()) {
+      if (state.last) {
+        var d = (new Date(today()) - new Date(state.last)) / 86400000;
+        state.streak = d <= 1.5 ? state.streak + 1 : 1;
+      } else {
+        state.streak = 1;
+      }
+      state.last = today();
+    }
+  }
+  function save() {
+    localStorage.setItem(KEY, JSON.stringify(state));
+    paint();
+  }
+  function go(id) {
+    if (LOCKED[id]) { document.getElementById("lockedMsg").textContent = LOCKED[id] + " is in the full ADHD Mate. This demo keeps Home, a short chat with Mate and a 5-minute focus sprint."; id = "locked"; }
+    var views = document.querySelectorAll(".view");
+    for (var i = 0; i < views.length; i++) views[i].classList.toggle("on", views[i].id === id);
+    var tabs = document.querySelectorAll("nav.dock button");
+    for (var j = 0; j < tabs.length; j++) tabs[j].classList.toggle("on", tabs[j].getAttribute("data-go") === id);
+    if (id === "calm") startBreath();
+    else stopBreath();
+  }
+  function paint() {
+    document.getElementById("hello").textContent = greet();
+    document.getElementById("nameLine").textContent = state.name || "friend";
+    document.getElementById("name").value = state.name || "";
+    document.getElementById("streak").textContent = state.streak + "d";
+    var open = state.tasks.filter(function (t) { return t.steps.some(function (s) { return !s.done; }); });
+    document.getElementById("openCount").textContent = String(open.length);
+    var steps = [];
+    state.tasks.forEach(function (t) { steps = steps.concat(t.steps); });
+    var done = steps.filter(function (s) { return s.done; }).length;
+    var pct = steps.length ? Math.round(done / steps.length * 100) : 0;
+    document.getElementById("prog").style.width = pct + "%";
+    document.getElementById("progLine").textContent = done + " / " + steps.length + " tiny steps · " + state.focusMin + " min focused";
+    var tm = null;
+    for (var i = 0; i < state.moods.length; i++) if (state.moods[i].date === today()) tm = state.moods[i];
+    document.getElementById("moodLine").textContent = tm
+      ? "Today: " + tm.mood + " · energy " + tm.energy + "/10"
+      : "No check-in yet. Twenty seconds is enough.";
+    var box = document.getElementById("chatBox");
+    box.innerHTML = state.chat.map(function (m) {
+      return '<div class="bubble ' + (m.from === "me" ? "me" : "") + '">' + escapeHtml(m.text) + "</div>";
+    }).join("");
+    box.scrollTop = box.scrollHeight;
+    document.getElementById("modes").innerHTML = ["friend", "coach", "support"].map(function (m) {
+      return '<button type="button" data-mode="' + m + '" class="' + (state.mode === m ? "active" : "") + '">' + m + "</button>";
+    }).join("");
+    document.getElementById("taskList").innerHTML = state.tasks.length
+      ? state.tasks.map(function (t, i) {
+          return '<div class="panel" style="margin-top:10px"><strong>' + escapeHtml(t.title) + "</strong>" +
+            t.steps.map(function (s, j) {
+              return '<label class="step"><input type="checkbox" data-task="' + i + '" data-step="' + j + '"' + (s.done ? " checked" : "") + "><span>" + escapeHtml(s.text) + "</span></label>";
+            }).join("") + "</div>";
+        }).join("")
+      : '<p class="hint" style="margin-top:10px">Nothing parked yet.</p>';
+    document.getElementById("moods").innerHTML = moodWords.map(function (m) {
+      return '<button type="button" data-mood="' + m + '" class="' + (pickedMood === m ? "active" : "") + '">' + m + "</button>";
+    }).join("");
+    document.getElementById("moodLog").innerHTML = state.moods.slice(-6).reverse().map(function (m) {
+      return '<p class="hint" style="margin-top:8px">' + escapeHtml(m.date) + " · " + escapeHtml(m.mood) + " · energy " + m.energy + "</p>";
+    }).join("");
+    document.getElementById("insight").textContent = state.moods.length + " check-ins, " + state.tasks.length + " tasks, " + state.focusMin + " focused minutes. Rest counts.";
+  }
+  function send() {
+    var input = document.getElementById("msg");
+    var text = input.value.trim();
+    if (!text) return;
+    var used = state.chat.filter(function (m) { return m.from === "me"; }).length;
+    if (used >= DEMO_MSGS) { document.getElementById("msg").value = ""; state.chat.push({ from: "mate", text: "That is the end of the free chat. The full ADHD Mate keeps going as long as you need." }); save(); return; }
+    state.chat.push({ from: "me", text: text });
+    input.value = "";
+    var replies = {
+      friend: ["That makes sense. We don’t have to fix the whole day.", "I’m with you. Want the tiny version of the next step?", "No gold stars required. What would feel 10% kinder?"],
+      coach: ["Next visible step only. What can finish in five minutes?", "Park the rest. One sprint, then a stop.", "Name the task, then split it until it feels almost silly."],
+      support: ["Your pace is allowed. We can slow this down.", "Nothing here is a verdict. What do you need in the next minute?", "You don’t have to earn rest."]
+    };
+    var bank = replies[state.mode] || replies.friend;
+    state.chat.push({ from: "mate", text: bank[state.chat.length % bank.length] });
+    save();
+  }
+  function showClock() {
+    var m = String(Math.floor(left / 60)).padStart(2, "0");
+    var s = String(left % 60).padStart(2, "0");
+    document.getElementById("clock").textContent = m + ":" + s;
+  }
+  function setMins(n) {
+    mins = n;
+    document.querySelectorAll("#minuteModes button").forEach(function (b) {
+      b.classList.toggle("active", Number(b.getAttribute("data-mins")) === n);
+    });
+    if (!ticking) { left = n * 60; showClock(); }
+  }
+  function toggleTimer() {
+    if (ticking) {
+      clearInterval(ticking);
+      ticking = null;
+      document.getElementById("timerBtn").textContent = "Start";
+      return;
+    }
+    document.getElementById("timerBtn").textContent = "Pause";
+    ticking = setInterval(function () {
+      left -= 1;
+      showClock();
+      if (left <= 0) {
+        clearInterval(ticking);
+        ticking = null;
+        state.focusMin += mins;
+        touch();
+        save();
+        document.getElementById("timerBtn").textContent = "Start";
+        document.getElementById("double").textContent = "Block done. Stopping is a complete action.";
+        left = mins * 60;
+        showClock();
+      }
+    }, 1000);
+  }
+  function resetTimer() {
+    if (ticking) { clearInterval(ticking); ticking = null; }
+    left = mins * 60;
+    document.getElementById("timerBtn").textContent = "Start";
+    showClock();
+  }
+  function addTask() {
+    var title = document.getElementById("taskTitle").value.trim();
+    if (!title) return;
+    var lines = document.getElementById("taskSteps").value.split("\n").map(function (s) { return s.trim(); }).filter(Boolean);
+    state.tasks.unshift({
+      title: title,
+      steps: (lines.length ? lines : ["Open it", "Do one minute"]).map(function (text) { return { text: text, done: false }; })
+    });
+    document.getElementById("taskTitle").value = "";
+    document.getElementById("taskSteps").value = "";
+    touch();
+    save();
+  }
+  function exportData() {
+    var blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "adhd-mate-notes.json";
+    a.click();
+  }
+
+  document.addEventListener("click", function (e) {
+    var goBtn = e.target.closest("[data-go]");
+    if (goBtn) { go(goBtn.getAttribute("data-go")); return; }
+    var modeBtn = e.target.closest("[data-mode]");
+    if (modeBtn) { state.mode = modeBtn.getAttribute("data-mode"); save(); return; }
+    var moodBtn = e.target.closest("[data-mood]");
+    if (moodBtn) { pickedMood = moodBtn.getAttribute("data-mood"); paint(); return; }
+    var minBtn = e.target.closest("[data-mins]");
+    if (minBtn && minBtn.classList.contains("locked-min")) { go("tasks"); document.getElementById("lockedMsg").textContent = "Longer focus sprints are in the full ADHD Mate. The demo has the 5-minute sprint."; return; }
+    if (minBtn) { setMins(Number(minBtn.getAttribute("data-mins"))); return; }
+  });
+  document.getElementById("taskList").addEventListener("change", function (e) {
+    var box = e.target;
+    if (!box.matches || !box.matches('input[type="checkbox"]')) return;
+    var i = Number(box.getAttribute("data-task"));
+    var j = Number(box.getAttribute("data-step"));
+    if (state.tasks[i] && state.tasks[i].steps[j]) {
+      state.tasks[i].steps[j].done = box.checked;
+      touch();
+      save();
+    }
+  });
+  document.getElementById("name").addEventListener("change", function (e) {
+    state.name = e.target.value.trim();
+    touch();
+    save();
+  });
+  document.getElementById("sendBtn").addEventListener("click", send);
+  document.getElementById("msg").addEventListener("keydown", function (e) { if (e.key === "Enter") send(); });
+  document.getElementById("timerBtn").addEventListener("click", toggleTimer);
+  document.getElementById("resetBtn").addEventListener("click", resetTimer);
+  document.getElementById("addTaskBtn").addEventListener("click", addTask);
+  document.getElementById("saveMoodBtn").addEventListener("click", function () {
+    state.moods.push({ date: today(), mood: pickedMood, energy: Number(document.getElementById("energy").value) });
+    touch();
+    save();
+  });
+  document.getElementById("exportBtn").addEventListener("click", exportData);
+
+  var breathOn = true;
+  var breathRaf = null;
+  var audioCtx = null;
+  var noiseBuffer = null;
+  var noiseSrc = null;
+  var breathGain = null;
+  var breathFilter = null;
+  var breathStart = 0;
+  var IN_SEC = 4;
+  var OUT_SEC = 6;
+  var CYCLE = IN_SEC + OUT_SEC;
+
+  function smooth(t) { return t * t * (3 - 2 * t); }
+  function breathAmount(elapsed) {
+    var t = elapsed % CYCLE;
+    if (t < IN_SEC) return smooth(t / IN_SEC);
+    return 1 - smooth((t - IN_SEC) / OUT_SEC);
+  }
+
+  function ensureAudio() {
+    var Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return;
+    if (!audioCtx) audioCtx = new Ctx();
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    if (!noiseBuffer) {
+      var rate = audioCtx.sampleRate;
+      var buffer = audioCtx.createBuffer(1, rate * 2, rate);
+      var data = buffer.getChannelData(0);
+      var last = 0;
+      for (var i = 0; i < data.length; i++) {
+        var white = Math.random() * 2 - 1;
+        last = (last + 0.02 * white) / 1.02;
+        data[i] = last * 3.5;
+      }
+      noiseBuffer = buffer;
+    }
+    if (!noiseSrc) {
+      noiseSrc = audioCtx.createBufferSource();
+      noiseSrc.buffer = noiseBuffer;
+      noiseSrc.loop = true;
+      breathFilter = audioCtx.createBiquadFilter();
+      breathFilter.type = "bandpass";
+      breathFilter.frequency.value = 300;
+      breathFilter.Q.value = 0.45;
+      breathGain = audioCtx.createGain();
+      breathGain.gain.value = 0.0001;
+      noiseSrc.connect(breathFilter);
+      breathFilter.connect(breathGain);
+      breathGain.connect(audioCtx.destination);
+      noiseSrc.start();
+    }
+  }
+
+  function breathFrame() {
+    var elapsed = (performance.now() - breathStart) / 1000;
+    var amount = breathAmount(elapsed);
+    var orb = document.querySelector(".breath");
+    if (orb) orb.style.transform = "scale(" + (0.72 + amount * 0.28).toFixed(4) + ")";
+    var cue = document.getElementById("breathCue");
+    if (cue) cue.textContent = (elapsed % CYCLE) < IN_SEC ? "In" : "Out";
+    if (breathGain && audioCtx) {
+      var vol = breathOn ? 0.01 + amount * 0.17 : 0.0001;
+      breathGain.gain.setTargetAtTime(Math.max(vol, 0.0001), audioCtx.currentTime, 0.04);
+      if (breathFilter) breathFilter.frequency.setTargetAtTime(220 + amount * 240, audioCtx.currentTime, 0.06);
+    }
+    breathRaf = requestAnimationFrame(breathFrame);
+  }
+
+  function startBreath() {
+    ensureAudio();
+    stopBreath();
+    var orb = document.querySelector(".breath");
+    if (orb) orb.style.animation = "none";
+    breathStart = performance.now();
+    breathRaf = requestAnimationFrame(breathFrame);
+  }
+
+  function stopBreath() {
+    if (breathRaf) { cancelAnimationFrame(breathRaf); breathRaf = null; }
+    if (breathGain && audioCtx) breathGain.gain.setTargetAtTime(0.0001, audioCtx.currentTime, 0.05);
+  }
+
+  document.getElementById("breathSoundBtn").addEventListener("click", function () {
+    breathOn = !breathOn;
+    this.textContent = breathOn ? "Sound on" : "Sound off";
+    if (!breathOn && breathGain && audioCtx) breathGain.gain.setTargetAtTime(0.0001, audioCtx.currentTime, 0.05);
+    if (breathOn && document.getElementById("calm").classList.contains("on") && !breathRaf) startBreath();
+  });
+
+  paint();
+  showClock();
+})();
+</script>
+</body>
+</html>
