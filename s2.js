@@ -76,7 +76,7 @@ const AP2 = [
   cover:"covers/adhd-companion.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/adhd-companion/",
   desc:"Built around the hard part \u2014 starting \u2014 with a toolkit, a daily pulse, and five modules on how ADHD actually works.",
-  tag:"Starting is the expensive part. The rest is momentum.",
+  tag:"Gentle tools for the days starting feels hard.",
   body:[
     "Kickstart tools for the moment you cannot begin, and a daily pulse check-in that shows you the shape of a week. The toolkit covers dopamine habits that don't backfire, CBT reframes you write and keep, perfectionism and task friction, a state log, and anchors that hold.",
     "Five short modules explain what ADHD actually is \u2014 not a deficit of attention, what's happening underneath, and the part that usually gets missed \u2014 followed by an ASRS-based trait check. It's a self-screen to take to a clinician, not a diagnosis."
