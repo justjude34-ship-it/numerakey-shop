@@ -20,7 +20,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 APPS.push({
   slug:"what-now", name:"What Now?", cat:"narc", price:29, status:"live", ready:true,
   cover:"covers/what-now.jpg",
-  demo:"https://what-now-7.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/what-now/",
   desc:"Support and information for anyone in, leaving, or recovering from a relationship with a narcissist.",
   tag:"Go at your own pace.",
   body:[
@@ -78,7 +78,7 @@ artFor(APPS[APPS.length - 1]).motif = "rings";
 APPS.push({
   slug:"nova", name:"Nova", cat:"neuro", price:39, status:"live", ready:true,
   cover:"covers/nova.jpg",
-  demo:"https://nova-27.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/nova/",
   desc:"Soft structure for a brain that runs on interest — tiny steps, short sprints, a mood check-in and a companion in three tones.",
   tag:"Productivity is optional. Regulation counts.",
   body:[
@@ -92,7 +92,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 APPS.push({
   slug:"rise-beyond", name:"Rise Beyond", cat:"narc", price:39, status:"live", ready:true,
   cover:"covers/rise-beyond.jpg",
-  demo:"https://rise-beyondone.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/rise-beyond/",
   desc:"Four short regulation practices to watch and breathe along with — water, the Om, sound and a singing bowl.",
   tag:"Settle. Ground. Rise.",
   body:[
@@ -297,7 +297,7 @@ APPS.push({
 APPS.push({
   slug:"omni", name:"Omni", cat:"wellness", price:39, status:"live", ready:true,
   cover:"covers/omni.jpg",
-  demo:"https://omni-app1.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/omni/",
   desc:"A still-lake breathing studio \u2014 one orb, one breath at a time, in a day or night look.",
   tag:"Still water. Soft light.",
   body:[
@@ -325,7 +325,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 APPS.push({
   slug:"still", name:"Still", cat:"wellness", price:89, status:"live", ready:true,
   cover:"covers/still.jpg",
-  demo:"https://stillappone.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/still/",
   desc:"Binaural beds, bronze chimes and an ocean breath — for racing thoughts and nights that will not quiet.",
   tag:"For the nights that will not quiet.",
   body:[
@@ -409,7 +409,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 APPS.push({
   slug:"tally", name:"Tally", cat:"money", price:59, status:"soon", ready:true,
   cover:"covers/tally.jpg",
-  demo:"https://total-tally-4.netlify.app/",
+  demo:"https://numerakey-shop.vercel.app/demos/tally/",
   desc:"A time and fee tracker for anyone who bills by the hour \u2014 a timer, a rate for every client, and a summary ready to invoice.",
   tag:"Track time. Bill it right.",
   body:[

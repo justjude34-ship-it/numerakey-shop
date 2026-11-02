@@ -14,7 +14,7 @@ const AP4 = [
 {
   slug:"night-garden", name:"Night Garden", cat:"ptsd", price:39, status:"live", ready:true,
   cover:"covers/night-garden.jpg",
-  demo:"https://night-garden-app.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/night-garden/",
   desc:"Understanding complex PTSD \u2014 twelve lessons, plain language, and the words for what keeps happening.",
   tag:"Understanding complex PTSD.",
   body:[
@@ -133,7 +133,7 @@ const AP4 = [
 {
   slug:"your-wishes", name:"Your Wishes", cat:"personal", price:59, status:"live", ready:true,
   cover:"covers/your-wishes.jpg",
-  demo:"https://your-final-wishes.netlify.app",
+  demo:"https://numerakey-shop.vercel.app/demos/your-wishes/",
   desc:"A gentle, guided way to put your wishes into words \u2014 for your family, your future and the people you love.",
   tag:"Your wishes, in your words.",
   body:[

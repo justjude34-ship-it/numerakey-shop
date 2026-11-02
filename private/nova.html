@@ -316,7 +316,7 @@ const today = () => new Date().toISOString().slice(0, 10);
 const dayDiff = (a, b) => Math.round((new Date(b) - new Date(a)) / 86400000);
 const load = () => {
   const base = {
-    name: "Judith", mode: "friend", streak: 1, shields: 1, last: today(),
+    name: "Friend", mode: "friend", streak: 1, shields: 1, last: today(),
     focusMins: 0, moods: [], tasks: [], stepsDone: 0, tasksDone: 0,
     chats: { friend: [], coach: [], therapist: [] }
   };

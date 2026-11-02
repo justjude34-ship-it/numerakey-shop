@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex"><script>window.NK_DEMO={"name": "Under One Roof", "lock": ["nav button[data-t=\"map\"]", "nav button[data-t=\"bond\"]", ".btn:not(.ghost)"], "lockMsg": "The demo shows the example family. Harmony, Bond and adding your own family are in the full app.", "slug": "under-one-roof", "url": "https://numerakey-shop.vercel.app/#/app/under-one-roof"};</script><script>(function(){
+"use strict";
+var C = window.NK_DEMO || {}; var SHOP = C.url || "https://numerakey-shop.vercel.app";
+var KEY = "nkdemo:" + (C.slug || location.hostname);
+var realLS = null; try { realLS = window.localStorage; } catch(e) {}
+function rget(k,d){ try{ var v=realLS&&realLS.getItem(KEY+":"+k); return v==null?d:JSON.parse(v);}catch(e){return d;} }
+function rset(k,v){ try{ realLS&&realLS.setItem(KEY+":"+k, JSON.stringify(v)); }catch(e){} }
+
+/* 1. Nothing the user enters is kept: localStorage lives in memory for this visit only. */
+function MemStorage(){ var m = new Map(); var o = {
+  getItem:function(k){ k=String(k); return m.has(k)?m.get(k):null; },
+  setItem:function(k,v){ m.set(String(k), String(v)); },
+  removeItem:function(k){ m.delete(String(k)); },
+  clear:function(){ m.clear(); },
+  key:function(i){ return Array.from(m.keys())[i] ?? null; }
+}; Object.defineProperty(o,"length",{get:function(){return m.size;}});
+  return new Proxy(o,{ get:function(t,p){ if(p in t) return t[p]; return typeof p==="string"&&m.has(p)?m.get(p):undefined; },
+    set:function(t,p,v){ if(p in t) return false; m.set(String(p),String(v)); return true; },
+    deleteProperty:function(t,p){ m.delete(String(p)); return true; },
+    ownKeys:function(){ return Array.from(m.keys()); },
+    getOwnPropertyDescriptor:function(t,p){ return m.has(p)?{value:m.get(p),enumerable:true,configurable:true,writable:true}:undefined; } });
+}
+try { Object.defineProperty(window, "localStorage", { value: MemStorage(), configurable: true }); } catch(e) {}
+/* IndexedDB: a fresh, throwaway database per visit; older demo databases are removed. */
+try {
+  var idb = window.indexedDB, run = Math.random().toString(36).slice(2,8), origOpen = idb.open.bind(idb), origDel = idb.deleteDatabase.bind(idb);
+  idb.open = function(name, v){ return v===undefined ? origOpen("nkdemo-"+run+"-"+name) : origOpen("nkdemo-"+run+"-"+name, v); };
+  idb.deleteDatabase = function(name){ return origDel("nkdemo-"+run+"-"+name); };
+  if (idb.databases) idb.databases().then(function(l){ l.forEach(function(d){ if(d.name && d.name.indexOf("nkdemo-"+run)!==0) origDel(d.name); }); }).catch(function(){});
+} catch(e) {}
+/* No offline install of the demo. */
+try { if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function(r){ r.forEach(function(x){ x.unregister(); }); }).catch(function(){});
+  navigator.serviceWorker.register = function(){ return new Promise(function(){}); };
+} } catch(e) {}
+try { window.showSaveFilePicker = undefined; window.showDirectoryPicker = undefined; } catch(e) {}
+
+/* 2. Overlay */
+var css = ""
++ "#nkd-bar{position:fixed;top:0;left:0;right:0;height:44px;z-index:2147483646;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 12px;"
++ "background:rgba(12,12,16,.96);border-bottom:1px solid rgba(214,196,140,.38);font:500 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ece8df;letter-spacing:.01em;box-sizing:border-box}"
++ "#nkd-bar .nkd-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#nkd-bar b{color:#e3cf8f;font-weight:600}"
++ ".nkd-btn{display:inline-block;padding:7px 14px;border-radius:999px;border:1px solid rgba(214,196,140,.7);color:#f3e7bf!important;background:linear-gradient(180deg,rgba(214,196,140,.16),rgba(214,196,140,.05));text-decoration:none!important;font:600 14px/1.1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;white-space:nowrap;cursor:pointer}"
++ "#nkd-ov{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:rgba(6,6,9,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:20px;box-sizing:border-box}"
++ "#nkd-ov.on{display:flex}#nkd-card{max-width:380px;width:100%;background:#15151b;border:1px solid rgba(214,196,140,.35);border-radius:18px;padding:28px 24px 22px;text-align:center;color:#e9e6de;box-shadow:0 20px 60px rgba(0,0,0,.6);font:400 17px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}"
++ "#nkd-card h2{margin:0 0 10px;font:600 23px/1.25 Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#f6e7b0,#cdb36b 55%,#efe0a6);-webkit-background-clip:text;background-clip:text;color:transparent}"
++ "#nkd-card p{margin:0 0 20px;color:#cfcac0}#nkd-card .nkd-btn{font-size:16px;padding:11px 22px}"
++ "#nkd-close{display:block;margin:14px auto 0;background:none;border:0;color:#a9a49a;font:500 15px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}"
++ ".nkd-locked{position:relative;opacity:.55!important}"
++ ".nkd-locked::after{content:'\\1F512';position:absolute;top:2px;right:2px;font-size:11px;line-height:1;opacity:.9;pointer-events:none;filter:grayscale(1)}"
++ ".nkd-hide{display:none!important}"
++ "#nkd-bar.nkd-light{background:rgba(251,249,244,.97);border-bottom-color:rgba(150,128,60,.35);color:#2b2a28}#nkd-bar.nkd-light b{color:#1d1d1f}"
++ "#nkd-bar.nkd-light .nkd-btn{color:#2b2a28!important;border-color:rgba(160,135,60,.75);background:linear-gradient(180deg,rgba(214,190,110,.22),rgba(214,190,110,.08))}"
++ "html{scroll-padding-top:44px}body{padding-top:44px!important}"
++ (C.css||"");
+function inject(){
+  if (document.getElementById("nkd-bar")) return;
+  var st = document.createElement("style"); st.id="nkd-style"; st.textContent = css; (document.head||document.documentElement).appendChild(st);
+  var bar = document.createElement("div"); bar.id="nkd-bar"; bar.setAttribute("role","note");
+  bar.innerHTML = '<span class="nkd-t"><b>Demo version</b><span id="nkd-info"></span></span><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a>';
+  document.body.appendChild(bar);
+  var ov = document.createElement("div"); ov.id="nkd-ov"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+  ov.innerHTML = '<div id="nkd-card"><h2 id="nkd-h">Available in the full app</h2><p id="nkd-p"></p><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a><button id="nkd-close" type="button">Keep exploring the demo</button></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener("click", function(e){ if(e.target===ov && !ov.dataset.hard) hide(); });
+  document.getElementById("nkd-close").addEventListener("click", function(){ if(!ov.dataset.hard) hide(); });
+  try { var bg = "", els=[]; var pe = document.elementFromPoint(innerWidth/2, innerHeight*0.6); while (pe && pe!==document.documentElement) { if (!(pe.id||"").startsWith("nkd-")) els.push(pe); pe = pe.parentElement; } els.push(document.body, document.documentElement);
+    for (var i=0;i<els.length;i++){ var c = getComputedStyle(els[i]).backgroundColor; if (c && !/rgba\(\s*0,\s*0,\s*0,\s*0\)|transparent/.test(c) && !/rgba\([^)]*,\s*0?\.[0-4]\d*\)/.test(c)) { bg = c; break; } var gi = getComputedStyle(els[i]).backgroundImage; var gm = gi && gi.match(/rgba?\([^)]*\)/); if (gm) { bg = gm[0]; break; } }
+    var mm = bg.match(/\d+(\.\d+)?/g); if (C.theme==="light" || (C.theme!=="dark" && mm && (0.299*mm[0]+0.587*mm[1]+0.114*mm[2]) > 160)) bar.classList.add("nkd-light"); } catch(e){}
+  info(); mark(); shift();
+}
+function hide(){ var ov=document.getElementById("nkd-ov"); if(ov) ov.classList.remove("on"); }
+function show(msg, head, hard){
+  inject(); var ov=document.getElementById("nkd-ov");
+  document.getElementById("nkd-h").textContent = head || "Available in the full app";
+  document.getElementById("nkd-p").textContent = msg || (C.lockMsg || ("This part of " + (C.name||"the app") + " is available in the full app."));
+  var cl = document.getElementById("nkd-close"); if (hard) { ov.dataset.hard="1"; cl.style.display="none"; } else { delete ov.dataset.hard; cl.style.display=""; }
+  ov.classList.add("on");
+}
+window.NKDemo = { show: show };
+function info(){ var el=document.getElementById("nkd-info"); if(!el) return; var t="";
+  if (C.cap) { var left = Math.max(0, C.cap.n - rget("cap",0)); t = " \u00b7 " + left + " of " + C.cap.n + " free " + (C.cap.label||"uses") + " left"; }
+  if (C.timer) t = " \u00b7 " + C.timer + "-minute listening session";
+  if (C.info) t = " \u00b7 " + C.info;
+  el.textContent = t; }
+
+/* 3. Locks and caps (capture phase, before the app sees the click) */
+function matches(el, list){ if(!list||!el||!el.closest) return null; for (var i=0;i<list.length;i++){ var m = el.closest(list[i]); if (m) return m; } return null; }
+function textMatch(el){ if(!C.lockText||!el||!el.closest) return null; var b = el.closest("button,a,[role=button],[role=tab],li,[onclick],[data-tab],[data-view],[data-go],[data-nav],[data-page],label,.card,.tile");
+  if(!b) return null; var t=(b.innerText||b.getAttribute("aria-label")||"").trim().toLowerCase();
+  for (var i=0;i<C.lockText.length;i++){ var k=C.lockText[i]; if (k instanceof RegExp ? k.test(t) : t===k.toLowerCase()) return b; } return null; }
+function isLocked(el){ if (matches(el, C.allow)) return null; var m = matches(el, C.lock) || textMatch(el); if (m) return m;
+  if (C.lockIf) { try { var r = C.lockIf(el); if (r) return r; } catch(e){} } return null; }
+function guard(e){
+  var t = e.target; if (!t || !t.closest) return;
+  if (t.closest("#nkd-bar,#nkd-ov")) return;
+  if (window.__nkdHard) { e.preventDefault(); e.stopImmediatePropagation(); show(window.__nkdHard, "Thank you for trying the demo", true); return; }
+  var a = t.closest("a[download]");
+  if (a || isLocked(t)) {
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type==="click"||e.type==="submit") show(a ? "Saving and exporting are available in the full app." : null);
+    return;
+  }
+  if (C.cap && e.type==="keydown" && C.cap.keySel && t.matches && t.matches(C.cap.keySel) && e.key==="Enter") { var u0 = rget("cap",0);
+    if (u0 >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+    if ((t.value||"").trim()) { rset("cap", u0+1); setTimeout(info,0); } return; }
+  if (C.cap && e.type==="click") { var c = matches(t, C.cap.sel); if (!c && C.cap.textSel) { var bb = t.closest("button,a,[role=button],input[type=submit]"); if (bb && C.cap.textSel.test((bb.innerText||bb.value||"").trim().toLowerCase())) c = bb; }
+    if (c) { var used = rget("cap",0);
+      if (used >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+      if (!C.cap.valid || C.cap.valid(c)) { rset("cap", used+1); setTimeout(info,0); }
+    } }
+}
+["click","pointerdown","mousedown","touchstart","keydown","submit","change","input"].forEach(function(ev){
+  window.addEventListener(ev, function(e){
+    if (ev==="keydown" && !(e.key==="Enter"||e.key===" ")) return;
+    if (ev==="change"||ev==="input") { if (isLocked(e.target)) { e.stopImmediatePropagation(); } return; }
+    if (ev!=="click"&&ev!=="submit"&&ev!=="keydown") { var t=e.target; if(t&&t.closest&&!t.closest("#nkd-bar,#nkd-ov")&&(isLocked(t)||window.__nkdHard)) { e.stopImmediatePropagation(); } return; }
+    guard(e);
+  }, true);
+});
+/* anchors clicked from code with a download attribute */
+var aclick = HTMLAnchorElement.prototype.click;
+HTMLAnchorElement.prototype.click = function(){ if (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||"")) { show("Saving and exporting are available in the full app."); return; } return aclick.apply(this, arguments); };
+var adisp = HTMLAnchorElement.prototype.dispatchEvent;
+HTMLAnchorElement.prototype.dispatchEvent = function(ev){ if (ev && ev.type==="click" && (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||""))) { show("Saving and exporting are available in the full app."); return false; } return adisp.apply(this, arguments); };
+window.print = function(){ show("Printing is available in the full app."); };
+try { var ws = window.open; window.open = function(u){ if (u===undefined || u==="" || /^blob:|^data:|about:blank/.test(String(u))) { show("Saving and exporting are available in the full app."); return null; } return ws.apply(window, arguments); }; } catch(e) {}
+try { if (navigator.share) navigator.share = function(){ show("Sharing and exporting are available in the full app."); return Promise.reject(new Error("demo")); }; } catch(e) {}
+window.addEventListener("beforeprint", function(){ document.documentElement.style.display="none"; });
+window.addEventListener("afterprint", function(){ document.documentElement.style.display=""; });
+
+function mark(){
+  var list = (C.lock||[]).concat(C.markOnly||[]);
+  list.forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ if(!matches(el,C.allow)) el.classList.add("nkd-locked"); }); } catch(e){} });
+  if (C.lockText) document.querySelectorAll("button,a,[role=tab],[data-tab],[data-view],[data-go],[data-nav],.card,.tile").forEach(function(el){ if (!el.classList.contains("nkd-locked") && textMatch(el)===el && !matches(el,C.allow)) el.classList.add("nkd-locked"); });
+  (C.hide||[]).forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ el.classList.add("nkd-hide"); }); } catch(e){} });
+  document.querySelectorAll('link[rel="manifest"]').forEach(function(l){ l.remove(); });
+}
+function shift(){
+  if (C.noShift) return;
+  var all = document.body ? document.body.querySelectorAll("*") : [];
+  for (var i=0;i<all.length;i++){ var el = all[i]; if (el.id && el.id.indexOf("nkd-")===0) continue;
+    if (el.dataset.nkdShift) continue;
+    var cs = getComputedStyle(el); if (cs.position!=="fixed" && cs.position!=="sticky") continue;
+    var top = parseFloat(cs.top); if (isNaN(top) || top > 4) continue;
+    el.style.setProperty("top", (top+44)+"px", "important"); el.dataset.nkdShift = "1"; }
+}
+var pend=false; function soon(){ if(pend) return; pend=true; setTimeout(function(){ pend=false; mark(); shift(); }, 120); }
+function start(){ inject(); new MutationObserver(soon).observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:["class","style","hidden"]}); if (C.onReady) try{ C.onReady(); }catch(e){} }
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+
+/* hash routes that belong to the full app */
+if (C.lockHash) { var okHash = location.hash && !C.lockHash.test(location.hash) ? location.hash : (C.homeHash||"#/");
+  if (location.hash && C.lockHash.test(location.hash)) { try { history.replaceState(null, "", location.pathname + location.search + okHash); } catch(e){} }
+  window.addEventListener("hashchange", function(e){ if (C.lockHash.test(location.hash)) { e.stopImmediatePropagation(); history.replaceState(null, "", location.pathname + location.search + okHash); show(); } else okHash = location.hash; }, true); }
+
+/* 4. Listening session limit for audio apps */
+if (C.timer) {
+  var ctxs = [], LIMIT = C.timer*60*1000, HOLD = 12*3600*1000;
+  var startAt = rget("t0", 0); if (startAt && Date.now()-startAt > LIMIT + HOLD) { startAt = 0; rset("t0", 0); }
+  var endMsg = "Your " + C.timer + "-minute demo session has ended. The full app has no time limit.";
+  function expired(){ return startAt && Date.now()-startAt >= LIMIT; }
+  function begin(){ if (!startAt) { startAt = Date.now(); rset("t0", startAt); } }
+  function stopAll(){
+    window.__nkdHard = endMsg;
+    ctxs.forEach(function(c){ try{ c.suspend(); }catch(e){} });
+    document.querySelectorAll("audio,video").forEach(function(m){ try{ m.pause(); m.muted=true; }catch(e){} });
+    show(endMsg, "Thank you for trying the demo", true);
+  }
+  ["AudioContext","webkitAudioContext"].forEach(function(n){ var O = window[n]; if (!O) return;
+    var W = function(){ var c = new (Function.prototype.bind.apply(O, [null].concat([].slice.call(arguments))))(); ctxs.push(c); return c; };
+    W.prototype = O.prototype; try{ Object.setPrototypeOf(W, O); }catch(e){} window[n] = W; });
+  var oResume = window.AudioContext && AudioContext.prototype.resume;
+  if (oResume) AudioContext.prototype.resume = function(){ if (expired()) { stopAll(); return Promise.resolve(); } begin(); return oResume.apply(this, arguments); };
+  var oStart = window.AudioScheduledSourceNode && AudioScheduledSourceNode.prototype.start;
+  if (oStart) AudioScheduledSourceNode.prototype.start = function(){ if (expired()) { stopAll(); return; } begin(); return oStart.apply(this, arguments); };
+  var oPlay = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function(){ if (expired()) { stopAll(); return Promise.reject(new Error("demo")); } begin(); return oPlay.apply(this, arguments); };
+  setInterval(function(){ if (startAt) { var left = Math.max(0, LIMIT-(Date.now()-startAt)); var el=document.getElementById("nkd-info");
+      if (el) el.textContent = left>0 ? " \u00b7 " + Math.ceil(left/60000) + " min of listening left" : " \u00b7 session ended";
+      if (left<=0 && !window.__nkdHard) stopAll(); } }, 1000);
+}
+})();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Under One Roof</title>
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Family numerology compatibility: Life Path, Expression and Soul Urge for up to eight people.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Cpath d='M10 32 32 12l22 20' fill='none' stroke='%23a855f7' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M16 30v22h32V30' fill='none' stroke='%232dd4bf' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='40' r='5' fill='%23ec4899'/%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#000;--card:#0e0e14;--card2:#15151f;--line:#262636;--text:#ecebf5;--mute:#9a98b3;
+  --g:linear-gradient(90deg,#2dd4bf,#a855f7,#ec4899);
+  --teal:#2dd4bf;--purple:#a855f7;--mag:#ec4899;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+body{min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px}
+h1,h2,h3{margin:0;line-height:1.15}
+.grad{background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.brand h1{font-size:1.5rem;font-weight:800;letter-spacing:.2px}
+.brand small{color:var(--mute);font-size:.78rem}
+.hero{border-radius:22px;background:radial-gradient(120% 90% at 50% 0%,#1b1033 0%,#07070c 70%);border:1px solid var(--line);overflow:hidden;margin:10px 0 18px}
+.hero svg{display:block;width:100%;height:auto}
+.hero .txt{padding:0 20px 22px;text-align:center}
+.hero h2{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.hero p{color:var(--mute);margin:0 auto 16px;max-width:460px}
+.btn{appearance:none;border:0;border-radius:14px;padding:13px 20px;font-size:1rem;font-weight:700;color:#fff;background:var(--g);cursor:pointer;font-family:inherit}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text);font-weight:600}
+.btn.small{padding:9px 14px;font-size:.9rem;border-radius:12px}
+.btn.danger{background:transparent;border:1px solid #5a2236;color:#ff8aa8;font-weight:600}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.center{justify-content:center}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+.member{display:block;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer}
+.mhead{display:flex;align-items:center;gap:12px}
+.orb{--c:#a855f7;flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.15rem;color:#000;
+  background:radial-gradient(circle at 30% 25%,#fff8 0,transparent 45%),var(--c);box-shadow:0 0 18px -2px var(--c)}
+.orb.m{outline:2px solid #fff6;outline-offset:2px}
+.orb.s{width:28px;height:28px;font-size:.8rem;box-shadow:0 0 10px -2px var(--c)}
+.mname{font-weight:700;font-size:1.05rem}
+.msub{color:var(--mute);font-size:.82rem}
+.chips{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:6px;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 4px;font-size:.78rem;color:var(--mute)}
+.detail{margin-top:12px;border-top:1px solid var(--line);padding-top:12px}
+.num-row{display:flex;gap:12px;margin-bottom:12px}
+.num-row b{display:block}
+.num-row span{color:var(--mute);font-size:.88rem}
+.tip{background:var(--card2);border-left:3px solid var(--teal);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.tip.p{border-color:var(--purple)}.tip.m{border-color:var(--mag)}
+.sec{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:18px 2px 8px}
+nav{position:fixed;left:0;right:0;bottom:0;background:#050509ee;backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 10px calc(8px + env(safe-area-inset-bottom));z-index:20}
+nav .in{display:flex;width:100%;max-width:720px;gap:6px}
+nav button{flex:1;background:none;border:0;color:var(--mute);font:inherit;font-size:.78rem;padding:6px 0;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:#fff;background:#ffffff0f}
+nav button.on svg{stroke:var(--teal)}
+/* sheet */
+.veil{position:fixed;inset:0;background:#000c;z-index:40;display:none;align-items:flex-end;justify-content:center}
+.veil.on{display:flex}
+.sheet{width:100%;max-width:720px;background:#0b0b12;border:1px solid var(--line);border-radius:22px 22px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto}
+label{display:block;font-size:.82rem;color:var(--mute);margin:12px 0 5px}
+input,select{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:12px;font:inherit;font-size:1rem}
+input:focus,select:focus{outline:2px solid var(--purple);outline-offset:1px}
+.seg{display:flex;gap:8px}
+.seg button{flex:1;background:var(--card2);border:1px solid var(--line);color:var(--mute);border-radius:12px;padding:11px;font:inherit;cursor:pointer}
+.seg button.on{color:#fff;border-color:var(--purple);background:#a855f722}
+.err{color:#ff8aa8;font-size:.86rem;margin-top:8px;min-height:1.2em}
+/* map */
+.mapwrap{overflow-x:auto;padding-bottom:6px}
+table.map{border-collapse:separate;border-spacing:4px;margin:0 auto}
+table.map th{font-weight:600;font-size:.72rem;color:var(--mute);padding:2px;max-width:58px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table.map td{width:44px;height:44px;border-radius:10px;text-align:center;font-weight:700;font-size:.82rem;cursor:pointer;color:#fff;border:0}
+table.map td.self{background:#101018;cursor:default;color:#333}
+.legend{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;color:var(--mute);font-size:.76rem;margin-top:10px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.stat{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.big{font-size:2.2rem;font-weight:800}
+.bar{height:8px;background:#1b1b28;border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--g);border-radius:6px}
+.pair{display:flex;align-items:center;gap:10px;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer}
+.pair .nm{flex:1;min-width:0}
+.pair .nm b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pair .sc{font-weight:800}
+.dim{margin:12px 0}
+.dim .top{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-weight:700}
+.dim .top .sp{flex:1}
+.dim p{margin:6px 0 0;color:var(--mute);font-size:.9rem}
+.bondhead{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0 14px;text-align:center}
+.bondhead .c{flex:1;min-width:0}
+.bondhead .c b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bondhead .orb{margin:0 auto 6px;width:56px;height:56px;font-size:1.4rem}
+.verdict{text-align:center;margin-bottom:6px}
+.verdict .big{display:block}
+.band{display:inline-block;padding:3px 12px;border-radius:999px;background:#ffffff10;font-size:.85rem;font-weight:600;margin-top:4px}
+.empty{color:var(--mute);text-align:center;padding:24px 10px}
+footer{color:#5d5b75;font-size:.74rem;text-align:center;margin:26px 0 6px}
+.g3{display:grid;grid-template-columns:repeat(3,42px);gap:5px;flex:none}
+.gc{height:42px;border-radius:10px;display:grid;place-items:center;font-weight:800;font-size:.9rem;background:#101018;color:#3a3a4c;border:1px solid var(--line);letter-spacing:.5px}
+.gc.on{color:#000;background:var(--c);border-color:transparent}
+.gc.ar{box-shadow:0 0 14px -1px var(--c);outline:2px solid #ffffff55;outline-offset:1px}
+.gpair{display:flex;justify-content:space-around;gap:10px;margin:6px 0 14px}
+.gpair>div{text-align:center}
+.gpair .msub{margin-top:6px}
+.arow{display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap}
+.arow b{font-size:.9rem;min-width:150px}
+.hold{font-size:.74rem;padding:2px 9px;border-radius:999px;background:#2dd4bf22;color:#7ff0de}
+.hold.none{background:#ffffff0d;color:var(--mute)}
+@media(min-width:560px){.wrap{padding:26px 20px}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<nav><div class="in">
+  <button data-t="family"><svg viewBox="0 0 24 24"><path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/><path d="M10 20v-5h4v5"/></svg>Family</button>
+  <button data-t="map"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Harmony</button>
+  <button data-t="bond"><svg viewBox="0 0 24 24"><circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/></svg>Bond</button>
+</div></nav>
+<div class="veil" id="veil"><div class="sheet" id="sheet"></div></div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- data ---------- */
+var COLORS={1:"#ff6b6b",2:"#7ad7f0",3:"#ffd166",4:"#8bd17c",5:"#ff9f5a",6:"#f78fb3",7:"#a78bfa",8:"#4fd1c5",9:"#e879f9"};
+var INFO={
+1:{k:"The Pioneer",gift:"courage and initiative",need:"independence and respect for their ideas",connect:"Ask for their view and let them lead something.",stress:"gets bossy or pulls away"},
+2:{k:"The Peacemaker",gift:"tenderness and tuning in to others",need:"harmony and reassurance",connect:"Offer slow, quiet time and gentle check-ins.",stress:"turns sensitive or goes quiet"},
+3:{k:"The Communicator",gift:"joy, humour and self-expression",need:"to be heard and appreciated",connect:"Make room for play, stories and laughter.",stress:"scatters or gets dramatic"},
+4:{k:"The Builder",gift:"reliability and steady structure",need:"routine and promises that are kept",connect:"Help in practical ways and keep plans predictable.",stress:"becomes rigid or stubborn"},
+5:{k:"The Explorer",gift:"adaptability and curiosity",need:"freedom and variety",connect:"Offer new experiences, choices and spontaneity.",stress:"turns restless or impulsive"},
+6:{k:"The Nurturer",gift:"care and responsibility",need:"to feel needed and appreciated at home",connect:"Share meals and say thank you out loud.",stress:"over-gives or worries aloud"},
+7:{k:"The Seeker",gift:"insight and depth",need:"solitude and meaningful questions",connect:"Give them space, then ask a real question.",stress:"retreats and goes distant"},
+8:{k:"The Achiever",gift:"drive and organised strength",need:"respect and visible results",connect:"Acknowledge effort and hand over real responsibility.",stress:"pushes hard or takes control"},
+9:{k:"The Humanitarian",gift:"compassion and a big heart",need:"purpose and to feel understood",connect:"Share a cause and listen generously.",stress:"absorbs everyone's pain"},
+11:{k:"The Intuitive",base:2,note:"Master number: the Peacemaker with extra intuition and sensitivity."},
+22:{k:"The Master Builder",base:4,note:"Master number: the Builder with big-vision ambition."},
+33:{k:"The Master Teacher",base:6,note:"Master number: the Nurturer with a calling to guide others."}
+};
+function info(n){var i=INFO[n];if(i.base){var b=INFO[i.base];return {k:i.k,gift:b.gift,need:b.need,connect:b.connect,stress:b.stress,note:i.note};}return i;}
+function base(n){return n>9?INFO[n].base:n;}
+var M={ // pair affinity, a<=b
+"1-1":70,"1-2":75,"1-3":85,"1-4":55,"1-5":90,"1-6":70,"1-7":80,"1-8":65,"1-9":80,
+"2-2":80,"2-3":70,"2-4":90,"2-5":50,"2-6":90,"2-7":65,"2-8":85,"2-9":75,
+"3-3":85,"3-4":50,"3-5":85,"3-6":90,"3-7":55,"3-8":55,"3-9":90,
+"4-4":75,"4-5":45,"4-6":80,"4-7":75,"4-8":90,"4-9":55,
+"5-5":80,"5-6":55,"5-7":85,"5-8":65,"5-9":75,
+"6-6":85,"6-7":55,"6-8":70,"6-9":90,
+"7-7":85,"7-8":55,"7-9":70,
+"8-8":75,"8-9":60,"9-9":90};
+var DIM=[
+ {key:"lp",title:"Life Path",sub:"how you each move through life",w:.4,
+  hi:"You move through life at a similar rhythm and want similar things from the journey.",
+  mid:"Your paths differ but meet easily. You can borrow each other's strengths.",
+  lo:"You travel at different speeds. Curiosity about the other's route works better than trying to match it."},
+ {key:"su",title:"Soul Urge",sub:"what you each long for inside",w:.35,
+  hi:"What you each want deep down fits together, so feeling understood comes easily.",
+  mid:"Your inner needs differ a little. Saying them out loud helps.",
+  lo:"You need different things to feel safe and happy, so name them rather than guess."},
+ {key:"ex",title:"Expression",sub:"how you each show up in the world",w:.25,
+  hi:"You read each other's style easily, and communication tends to flow.",
+  mid:"Your styles differ but complement each other when each gets a turn.",
+  lo:"Your styles can rub. The same words said two ways may land differently."}
+];
+var MAX=8;
+
+/* ---------- birth-date arrows (Pythagorean square, Phillips-style) ---------- */
+var ARROWS=[
+ {id:"plan",n:[1,2,3],p:"Arrow of Planning",m:"Arrow of Confusion",pt:"Thinks ahead, likes a plan and sees how things fit together.",mt:"Plans can feel foggy; may start things without a clear path.",lend:"can help map out the steps"},
+ {id:"will",n:[4,5,6],p:"Arrow of Will",m:"Arrow of Frustration",pt:"Strong will and follow-through; hard to talk out of a decision.",mt:"Can feel stuck or frustrated when things don't move, and may find it hard to see a goal through.",lend:"can model steady follow-through"},
+ {id:"act",n:[7,8,9],p:"Arrow of Activity",m:"Arrow of Passivity",pt:"Needs to be doing; full of energy and action.",mt:"May hold back or wait to be asked before getting going.",lend:"can bring energy and get things moving"},
+ {id:"prac",n:[1,4,7],p:"Arrow of Practicality",m:"Arrow of Disorder",pt:"Hands-on and practical; good with the physical world and everyday order.",mt:"Everyday practicalities and tidiness may need extra support.",lend:"can show the practical, hands-on way"},
+ {id:"sens",n:[2,5,8],p:"Arrow of Sensitivity",m:"Arrow of Over-Sensitivity",pt:"Deeply feeling and intuitive; picks up on moods quickly.",mt:"May feel things very strongly, or hold feelings in until they spill over.",lend:"can offer emotional steadiness and gentle check-ins"},
+ {id:"int",n:[3,6,9],p:"Arrow of Intellect",m:"Arrow of Poor Memory",pt:"Sharp mind and good memory; enjoys ideas and learning.",mt:"May forget details and do better with lists and reminders.",lend:"can help them remember and explain things"},
+ {id:"det",n:[1,5,9],p:"Arrow of Determination",m:"Arrow of Indecision",pt:"Pushes through obstacles; decisive and persistent.",mt:"May hesitate over decisions and need encouragement to commit.",lend:"can help them decide and stay the course"},
+ {id:"spi",n:[3,5,7],p:"Arrow of Spirituality",m:"Arrow of Scepticism",pt:"Feels there is more to life; a thoughtful inner faith or sense of meaning.",mt:"Tends to want proof before trusting, and asks hard questions.",lend:"can share a sense of meaning and trust"}
+];
+var GRID=[3,6,9,2,5,8,1,4,7];
+function counts(dob){var c={},i;for(i=1;i<=9;i++)c[i]=0;dob.replace(/[^1-9]/g,"").split("").forEach(function(d){c[d]++;});return c;}
+function arrowState(c,a){var k=a.n.filter(function(x){return c[x]>0;}).length;return k===3?"p":k===0?"m":"";}
+function arrowsOf(dob){var c=counts(dob),o={};ARROWS.forEach(function(a){o[a.id]=arrowState(c,a);});return o;}
+function gridHTML(dob){
+  var c=counts(dob),ar={};
+  ARROWS.forEach(function(a){if(arrowState(c,a)==="p")a.n.forEach(function(n){ar[n]=1;});});
+  return '<div class="g3" role="img" aria-label="Birth grid">'+GRID.map(function(n){
+    return '<span class="gc'+(c[n]?" on":"")+(ar[n]?" ar":"")+'" style="--c:'+COLORS[n]+'">'+(c[n]?new Array(c[n]+1).join(n):"·")+'</span>';}).join("")+'</div>';
+}
+function memberArrows(m){
+  var s=arrowsOf(m.dob),pres=ARROWS.filter(function(a){return s[a.id]==="p";}),mis=ARROWS.filter(function(a){return s[a.id]==="m";});
+  var t='';
+  pres.forEach(function(a){t+='<div style="margin-bottom:8px"><b>'+a.p+'</b><br><span class="msub">'+a.pt+'</span></div>';});
+  mis.forEach(function(a){t+='<div style="margin-bottom:8px"><b style="color:#ffb3c9">'+a.m+'</b><br><span class="msub">'+a.mt+'</span></div>';});
+  if(!t)t='<span class="msub">No complete or fully empty arrows: a gently mixed chart.</span>';
+  return '<div class="row" style="flex-wrap:nowrap;align-items:flex-start;gap:14px">'+gridHTML(m.dob)+'<div style="flex:1;min-width:0;font-size:.88rem">'+t+'</div></div>'+
+    '<div class="msub" style="margin-top:6px">Arrows describe tendencies, not limits.</div>';
+}
+function bondArrows(A,B){
+  var sa=arrowsOf(A.dob),sb=arrowsOf(B.dob),fa=esc(first(A.name)),fb=esc(first(B.name));
+  var others=S.members.filter(function(m){return m.id!==A.id&&m.id!==B.id;});
+  var shared=[],gives=[],blind=[];
+  ARROWS.forEach(function(a){
+    if(sa[a.id]==="p"&&sb[a.id]==="p")shared.push(a);
+    else if(sa[a.id]==="p"&&sb[a.id]==="m")gives.push('<b>'+fa+'</b> holds the '+a.p+' and '+fb+' has the '+a.m+', so '+fa+' '+a.lend+'.');
+    else if(sb[a.id]==="p"&&sa[a.id]==="m")gives.push('<b>'+fb+'</b> holds the '+a.p+' and '+fa+' has the '+a.m+', so '+fb+' '+a.lend+'.');
+    else if(sa[a.id]==="m"&&sb[a.id]==="m"){
+      var h=others.filter(function(m){return arrowsOf(m.dob)[a.id]==="p";}).map(function(m){return esc(first(m.name));});
+      blind.push('Neither of you has the '+a.p+'. '+a.mt+(h.length?' '+h.join(", ")+' holds it in the family and can lend a hand.':''));
+    }
+  });
+  var h2='<div class="sec">Birth-date arrows</div><div class="card"><div class="gpair"><div>'+gridHTML(A.dob)+'<div class="msub">'+fa+'</div></div><div>'+gridHTML(B.dob)+'<div class="msub">'+fb+'</div></div></div>';
+  if(shared.length)h2+='<div class="tip"><b>Common ground</b><br>You both hold the '+shared.map(function(a){return a.p;}).join(", ")+'. '+shared[0].pt+'</div>';
+  gives.forEach(function(g){h2+='<div class="tip p"><b>One can lend to the other</b><br>'+g+'</div>';});
+  blind.forEach(function(g){h2+='<div class="tip m"><b>Shared blind spot</b><br>'+g+'</div>';});
+  if(!shared.length&&!gives.length&&!blind.length)h2+='<div class="msub" style="text-align:center">No arrows line up or contrast directly here. Your grids meet in the gaps between.</div>';
+  return h2+'<div class="msub" style="text-align:center;margin-top:6px">Arrows describe tendencies, not limits.</div></div>';
+}
+function familyArrows(){
+  var st=S.members.map(function(m){return {n:esc(first(m.name)),s:arrowsOf(m.dob)};});
+  var h='<div class="sec">Family arrows</div><div class="card">';
+  var empty=[];
+  ARROWS.forEach(function(a){
+    var holders=st.filter(function(x){return x.s[a.id]==="p";});
+    if(!holders.length)empty.push(a);
+    h+='<div class="arow"><b>'+a.p+'</b>'+(holders.length?holders.map(function(x){return '<span class="hold">'+x.n+'</span>';}).join(""):'<span class="hold none">no one</span>')+'</div>';
+  });
+  if(empty.length)h+='<div class="tip m"><b>Not held by anyone</b><br>'+empty.map(function(a){return a.p;}).join(", ")+'. Worth building in together as a family: '+empty[0].mt.toLowerCase().replace(/^./,function(c){return c;})+'</div>';
+  else h+='<div class="tip"><b>Well covered</b><br>Between you, every arrow is held by someone.</div>';
+  return h+'</div>';
+}
+
+/* ---------- numerology ---------- */
+function red(n){while(n>9&&n!==11&&n!==22&&n!==33){n=String(n).split("").reduce(function(a,d){return a+ +d;},0);}return n;}
+function clean(s){return s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase().replace(/[^A-Z ]/g,"");}
+function val(ch){return ((ch.charCodeAt(0)-65)%9)+1;}
+function isV(ch){return "AEIOU".indexOf(ch)>-1;}
+function calcName(name){
+  var ex=0,su=0;
+  clean(name).split(/\s+/).forEach(function(w){
+    for(var i=0;i<w.length;i++){
+      var c=w[i];ex+=val(c);
+      var vowel=isV(c);
+      if(c==="Y"){var p=w[i-1],n=w[i+1];vowel=!(p&&isV(p))&&!(n&&isV(n));}
+      if(vowel)su+=val(c);
+    }
+  });
+  return {ex:ex?red(ex):null,su:su?red(su):null};
+}
+function lifePath(dob){
+  var p=dob.split("-");if(p.length!==3)return null;
+  var y=+p[0],m=+p[1],d=+p[2];if(!y||!m||!d)return null;
+  return red(red(m)+red(d)+red(y));
+}
+function profile(m){
+  var n=calcName(m.name);
+  return {lp:lifePath(m.dob),ex:n.ex,su:n.su};
+}
+function pairScore(a,b){
+  var pa=profile(a),pb=profile(b),dims={},tot=0;
+  DIM.forEach(function(d){
+    var x=base(pa[d.key]),y=base(pb[d.key]);
+    var lo=Math.min(x,y),hi=Math.max(x,y);
+    var s=M[lo+"-"+hi];
+    dims[d.key]={a:pa[d.key],b:pb[d.key],s:s};
+    tot+=s*d.w;
+  });
+  return {total:Math.round(tot),dims:dims,pa:pa,pb:pb};
+}
+function bandOf(s){return s>=85?"Natural harmony":s>=72?"Easy flow":s>=60?"Growth pairing":"Stretch pairing";}
+function dimText(d,s){return s>=80?d.hi:s>=65?d.mid:d.lo;}
+function heat(s){ // 45 -> deep violet, 90 -> teal
+  var t=Math.max(0,Math.min(1,(s-45)/45));
+  var h=Math.round(300-t*120); // magenta-ish to teal
+  return "hsl("+h+" 62% "+(30+t*10)+"%)";
+}
+
+/* ---------- state ---------- */
+var KEY="underoneroof.v1";
+var S={members:[],home:"",tab:"family",open:null,a:null,b:null,edit:null,role:"parent"};
+function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&Array.isArray(o.members))S.members=o.members;if(o&&typeof o.home==="string")S.home=o.home;}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({members:S.members,home:S.home}));}catch(e){}}
+function uid(){return "m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function get(id){for(var i=0;i<S.members.length;i++)if(S.members[i].id===id)return S.members[i];return null;}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function first(n){return n.trim().split(/\s+/)[0]||n;}
+function age(dob){var d=new Date(dob+"T00:00:00");if(isNaN(d))return "";var t=new Date(),a=t.getFullYear()-d.getFullYear();var m=t.getMonth()-d.getMonth();if(m<0||(m===0&&t.getDate()<d.getDate()))a--;return a;}
+function orb(n,cls){var m=n>9?" m":"";return '<span class="orb '+(cls||"")+m+'" style="--c:'+COLORS[base(n)]+'">'+n+'</span>';}
+function relation(a,b){if(a.role==="parent"&&b.role==="parent")return "Parents";if(a.role==="child"&&b.role==="child")return "Siblings";return "Parent & child";}
+function allPairs(){var out=[];for(var i=0;i<S.members.length;i++)for(var j=i+1;j<S.members.length;j++){var r=pairScore(S.members[i],S.members[j]);out.push({a:S.members[i],b:S.members[j],r:r});}return out;}
+
+/* ---------- home number ---------- */
+var HOMES={
+1:{k:"The Independent Home",t:"A home of fresh starts and self-reliance. Everyone gets room to be themselves, though it can turn competitive. Share decisions on purpose."},
+2:{k:"The Peaceful Home",t:"A home of partnership, calm and cooperation. Gentle and close; keep voices kind and say what's bothering you early."},
+3:{k:"The Lively Home",t:"A home of talk, laughter and creativity, with plenty of visitors. Keep a quiet corner so it doesn't tip into noise."},
+4:{k:"The Steady Home",t:"A home of order, routine and security. Solid and dependable; leave room for play and spontaneity."},
+5:{k:"The Moving Home",t:"A home of change, travel and open doors. Always something happening; build a few anchors, like a weekly dinner."},
+6:{k:"The Family Home",t:"The classic number of love, care and responsibility. Warm and welcoming; watch that one person doesn't carry it all."},
+7:{k:"The Retreat Home",t:"A home for thinking, rest and privacy. Calm and reflective; make deliberate time to connect so no one drifts apart."},
+8:{k:"The Ambitious Home",t:"A home of drive, organisation and big goals. Works hard and manages well; make time for softness and rest."},
+9:{k:"The Open-Hearted Home",t:"A home of generosity, many people and big feelings. Everyone is welcome; protect your own energy."},
+11:{k:"The Inspired Home",t:"Master number: a home with extra intuition and idealism, carrying the Peaceful Home qualities. Sensitive, so keep it restful."},
+22:{k:"The Master Builder Home",t:"Master number: a home with big vision and the Steady Home's practicality. Good for building something lasting together."},
+33:{k:"The Teacher Home",t:"Master number: a home of devoted care and guidance, carrying the Family Home qualities. Remember to be looked after too."}
+};
+function homeNum(s){var t=0;String(s).toUpperCase().split("").forEach(function(c){if(c>="0"&&c<="9")t+=+c;else if(c>="A"&&c<="Z")t+=val(c);});return t?red(t):null;}
+function homeFit(m,n){var a=base(profile(m).su),b=base(n);return M[Math.min(a,b)+"-"+Math.max(a,b)];}
+function homeCard(){
+  var n=homeNum(S.home);
+  var h='<div class="sec">Home number</div><div class="card"><label for="homeIn" style="margin-top:0">Number on the front door (letters allowed, e.g. 12B)</label><input id="homeIn" maxlength="12" autocomplete="off" placeholder="e.g. 27" value="'+esc(S.home)+'">';
+  if(n){
+    var H=HOMES[n],fits=S.members.map(function(m){return {m:m,s:homeFit(m,n)};}).sort(function(a,b){return b.s-a.s;});
+    var avg=fits.length?Math.round(fits.reduce(function(a,x){return a+x.s;},0)/fits.length):0;
+    h+='<div class="mhead" style="margin-top:14px">'+orb(n)+'<div style="flex:1"><div class="mname">'+H.k+'</div><div class="msub">Home number '+n+(fits.length?' · household fit '+avg+'%':'')+'</div></div></div><p style="color:var(--mute);font-size:.92rem;margin:10px 0">'+H.t+'</p>';
+    if(fits.length){
+      h+='<div class="chips">'+fits.map(function(x){return '<span class="chip">'+orb(profile(x.m).su,"s")+esc(first(x.m.name))+' '+x.s+'%</span>';}).join("")+'</div>';
+      if(fits.length>1){var lo=fits[fits.length-1];h+='<div class="tip" style="margin-top:12px"><b>Feels most at home:</b> '+esc(first(fits[0].m.name))+'. <b>May need to make it their own:</b> '+esc(first(lo.m.name))+', so give them a space to arrange and decorate their way.</div>';}
+      h+='<div class="msub">Fit compares each person\'s Soul Urge, what their heart wants, with the home\'s energy.</div>';
+    }
+  }
+  return h+'</div>';
+}
+
+/* ---------- views ---------- */
+var HERO='<svg viewBox="0 0 600 310" role="img" aria-label="A glowing house with a window for each family member">'+
+'<defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset=".5" stop-color="#a855f7"/><stop offset="1" stop-color="#ec4899"/></linearGradient>'+
+'<radialGradient id="glow" cx=".5" cy=".55" r=".6"><stop offset="0" stop-color="#a855f755"/><stop offset="1" stop-color="#a855f700"/></radialGradient></defs>'+
+'<rect width="600" height="310" fill="url(#glow)"/>'+
+'<g fill="#fff">'+[[40,40,1.6],[90,90,1.1],[150,30,1.4],[520,50,1.6],[560,110,1.1],[470,25,1.2],[30,170,1.2],[575,200,1.4],[110,230,1],[500,240,1.2],[330,20,1.1],[250,48,1]].map(function(s){return '<circle cx="'+s[0]+'" cy="'+s[1]+'" r="'+s[2]+'" opacity=".7"/>';}).join("")+'</g>'+
+'<path d="M110 150 300 40 490 150" fill="none" stroke="url(#gg)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>'+
+'<path d="M140 140v140h320V140" fill="#0a0a12" stroke="url(#gg)" stroke-width="5" stroke-linejoin="round"/>'+
+[[183,152,"#ffd166","3"],[265,152,"#f78fb3","6"],[347,152,"#e879f9","9"],[183,194,"#7ad7f0","2"],[265,194,"#ff9f5a","5"],[347,194,"#4fd1c5","8"],[183,236,"#ff6b6b","1"],[265,236,"#8bd17c","4"],[347,236,"#a78bfa","7"]].map(function(w){
+ return '<rect x="'+w[0]+'" y="'+w[1]+'" width="70" height="30" rx="7" fill="'+w[2]+'" opacity=".92"/><text x="'+(w[0]+35)+'" y="'+(w[1]+22)+'" text-anchor="middle" font-family="system-ui,sans-serif" font-weight="800" font-size="18" fill="#000">'+w[3]+'</text>';}).join("")+
+'<path d="M426 280v-36a13 13 0 0 1 26 0v36z" fill="#16162a" stroke="#a855f7" stroke-width="2"/>'+
+'<path d="M60 284h480" stroke="#262636" stroke-width="2" stroke-linecap="round"/>'+
+'</svg>';
+
+function viewFamily(){
+  var h='<div class="brand"><h1 class="grad">Under One Roof</h1><small>NumeraKey</small></div>';
+  if(!S.members.length){
+    h+='<div class="hero">'+HERO+'<div class="txt"><h2 class="grad">Every number, one home</h2><p>Add your family and see how each person\'s Life Path, Expression and Soul Urge fit with everyone else\'s.</p><div class="row center"><button class="btn" data-a="add">Add the first person</button><button class="btn ghost" data-a="example">Try an example family</button></div></div></div>';
+    return h;
+  }
+  h+='<p style="color:var(--mute);margin:2px 0 14px">Tap a person to see their numbers. Up to '+MAX+' people: parents and children.</p>';
+  S.members.forEach(function(m){
+    var p=profile(m),open=S.open===m.id,a=age(m.dob);
+    h+='<div class="card"><button class="member" style="background:none;border:0;padding:0" data-a="toggle" data-id="'+m.id+'">'+
+      '<div class="mhead">'+orb(p.lp)+'<div style="flex:1;min-width:0"><div class="mname">'+esc(m.name)+'</div><div class="msub">'+(m.role==="parent"?"Parent":"Child")+(a!==""?" · "+a:"")+'</div></div><span style="color:var(--mute)">'+(open?"▴":"▾")+'</span></div>'+
+      '<div class="chips"><span class="chip">'+orb(p.lp,"s")+'Life Path</span><span class="chip">'+orb(p.ex,"s")+'Expression</span><span class="chip">'+orb(p.su,"s")+'Soul Urge</span></div></button>';
+    if(open){
+      var rows=[["Life Path",p.lp,"Your main road. "],["Expression",p.ex,"Your natural talents and style. "],["Soul Urge",p.su,"What your heart wants. "]];
+      h+='<div class="detail">';
+      rows.forEach(function(r){var i=info(r[1]);h+='<div class="num-row">'+orb(r[1])+'<div><b>'+r[0]+' · '+i.k+'</b><span>'+r[2]+'Brings '+i.gift+'.'+(i.note?" "+i.note:"")+'</span></div></div>';});
+      h+='<div class="sec" style="margin-top:4px">Birth grid &amp; arrows</div>'+memberArrows(m);
+      var si=info(p.su);
+      h+='<div class="tip"><b>How to connect with '+esc(first(m.name))+'</b><br>'+si.connect+' They need '+si.need+'.</div>';
+      var li=info(p.ex);
+      h+='<div class="tip p"><b>Under pressure</b><br>'+esc(first(m.name))+' may '+li.stress+'. Patience and a little room go a long way.</div>';
+      var prs=allPairs().filter(function(x){return x.a.id===m.id||x.b.id===m.id;}).sort(function(x,y){return y.r.total-x.r.total;});
+      if(prs.length){
+        var best=prs[0],low=prs[prs.length-1];
+        var other=function(x){return x.a.id===m.id?x.b:x.a;};
+        h+='<div class="tip m"><b>In this family</b><br>Closest fit: '+esc(first(other(best).name))+' ('+best.r.total+'%).'+(prs.length>1?' Most to grow with: '+esc(first(other(low).name))+' ('+low.r.total+'%).':'')+'</div>';
+      }
+      h+='<div class="row" style="margin-top:12px"><button class="btn ghost small" data-a="edit" data-id="'+m.id+'">Edit</button><button class="btn danger small" data-a="del" data-id="'+m.id+'">Remove</button></div></div>';
+    }
+    h+='</div>';
+  });
+  h+=homeCard();
+  if(S.members.length<MAX)h+='<button class="btn" style="width:100%;margin-top:4px" data-a="add">Add a person</button>';
+  else h+='<div class="empty">Your household is full (8 people).</div>';
+  h+='<footer>Names are read as written, so use the full birth name for the truest Expression and Soul Urge.</footer>';
+  return h;
+}
+
+function needTwo(){return '<div class="brand"><h1 class="grad">Under One Roof</h1><small>NumeraKey</small></div><div class="card empty">Add at least two people on the Family tab to see how they fit together.<div style="margin-top:14px"><button class="btn small" data-t="family">Go to Family</button></div></div>';}
+
+function viewMap(){
+  if(S.members.length<2)return needTwo();
+  var ms=S.members,ps=allPairs();
+  var avg=Math.round(ps.reduce(function(a,x){return a+x.r.total;},0)/ps.length);
+  var sorted=ps.slice().sort(function(x,y){return y.r.total-x.r.total;});
+  var h='<div class="brand"><h1 class="grad">Family Harmony</h1><small>'+ms.length+' people</small></div>';
+  h+='<div class="card"><div class="stat"><div class="big grad">'+avg+'%</div><div style="flex:1"><b>Household flow</b><div class="bar" style="margin-top:6px"><i style="width:'+avg+'%"></i></div><div class="msub" style="margin-top:4px">'+bandOf(avg)+' across '+ps.length+' bonds</div></div></div></div>';
+  h+='<div class="sec">Harmony map · tap a square</div><div class="card"><div class="mapwrap"><table class="map"><tr><th></th>'+ms.map(function(m){return '<th>'+esc(first(m.name))+'</th>';}).join("")+'</tr>';
+  ms.forEach(function(a){
+    h+='<tr><th style="text-align:right">'+esc(first(a.name))+'</th>';
+    ms.forEach(function(b){
+      if(a.id===b.id){h+='<td class="self">·</td>';}
+      else{var s=pairScore(a,b).total;h+='<td data-a="pair" data-x="'+a.id+'" data-y="'+b.id+'" style="background:'+heat(s)+'">'+s+'</td>';}
+    });
+    h+='</tr>';
+  });
+  h+='</table></div><div class="legend"><span><i style="background:'+heat(50)+'"></i>Stretch</span><span><i style="background:'+heat(68)+'"></i>Growth</span><span><i style="background:'+heat(90)+'"></i>Natural</span></div></div>';
+  var top=sorted[0],low=sorted[sorted.length-1];
+  h+='<div class="sec">Highlights</div>';
+  h+=pairBtn(top,"Strongest bond");
+  if(low!==top)h+=pairBtn(low,"Most room to grow");
+  var cnt={};ms.forEach(function(m){var n=profile(m).lp;cnt[n]=(cnt[n]||0)+1;});
+  h+='<div class="sec">Life Paths in the house</div><div class="card"><div class="row">'+Object.keys(cnt).sort(function(a,b){return a-b;}).map(function(n){return '<span class="chip">'+orb(+n,"s")+(cnt[n]>1?"×"+cnt[n]:"")+" "+info(+n).k.replace("The ","")+'</span>';}).join("")+'</div></div>';
+  h+=familyArrows();
+  h+='<div class="sec">All bonds</div>';
+  sorted.forEach(function(x){h+=pairBtn(x,relation(x.a,x.b));});
+  return h;
+}
+function pairBtn(x,label){
+  return '<div class="card"><button class="pair" style="background:none;border:0;padding:0" data-a="pair" data-x="'+x.a.id+'" data-y="'+x.b.id+'">'+orb(x.r.pa.lp,"s")+orb(x.r.pb.lp,"s")+'<div class="nm"><b>'+esc(first(x.a.name))+' &amp; '+esc(first(x.b.name))+'</b><span class="msub">'+label+'</span></div><span class="sc grad">'+x.r.total+'%</span></button></div>';
+}
+
+function viewBond(){
+  if(S.members.length<2)return needTwo();
+  if(!get(S.a))S.a=S.members[0].id;
+  if(!get(S.b)||S.b===S.a)S.b=(S.members.filter(function(m){return m.id!==S.a;})[0]).id;
+  var A=get(S.a),B=get(S.b);
+  var opts=function(sel,ex){return S.members.map(function(m){return '<option value="'+m.id+'"'+(m.id===sel?" selected":"")+(m.id===ex?" disabled":"")+'>'+esc(m.name)+'</option>';}).join("");};
+  var r=pairScore(A,B);
+  var h='<div class="brand"><h1 class="grad">Bond</h1><small>'+relation(A,B)+'</small></div>';
+  h+='<div class="row" style="flex-wrap:nowrap"><select id="selA">'+opts(S.a,S.b)+'</select><select id="selB">'+opts(S.b,S.a)+'</select></div>';
+  h+='<div class="card" style="margin-top:14px"><div class="bondhead"><div class="c">'+orb(r.pa.lp)+'<b>'+esc(first(A.name))+'</b></div><svg width="54" height="30" viewBox="0 0 54 30" aria-hidden="true"><circle cx="19" cy="15" r="12" fill="none" stroke="#2dd4bf" stroke-width="2.5"/><circle cx="35" cy="15" r="12" fill="none" stroke="#ec4899" stroke-width="2.5"/></svg><div class="c">'+orb(r.pb.lp)+'<b>'+esc(first(B.name))+'</b></div></div>';
+  h+='<div class="verdict"><span class="big grad">'+r.total+'%</span><span class="band">'+bandOf(r.total)+'</span></div></div>';
+  DIM.forEach(function(d){
+    var x=r.dims[d.key];
+    h+='<div class="card dim"><div class="top">'+orb(x.a,"s")+'<span class="sp"></span>'+d.title+'<span class="sp"></span>'+orb(x.b,"s")+'</div><div class="msub" style="text-align:center;margin-bottom:8px">'+d.sub+'</div><div class="bar"><i style="width:'+x.s+'%"></i></div><p>'+dimText(d,x.s)+'</p></div>';
+  });
+  var ga=info(r.pa.lp),gb=info(r.pb.lp),sa=info(r.pa.su),sb=info(r.pb.su);
+  h+='<div class="tip"><b>What you each bring</b><br>'+esc(first(A.name))+': '+ga.gift+'.<br>'+esc(first(B.name))+': '+gb.gift+'.</div>';
+  h+='<div class="tip p"><b>How to reach '+esc(first(B.name))+'</b><br>'+sb.connect+' (needs '+sb.need+')</div>';
+  h+='<div class="tip m"><b>How to reach '+esc(first(A.name))+'</b><br>'+sa.connect+' (needs '+sa.need+')</div>';
+  h+=bondArrows(A,B);
+  return h;
+}
+
+function render(){
+  var app=document.getElementById("app");
+  app.innerHTML=S.tab==="family"?viewFamily():S.tab==="map"?viewMap():viewBond();
+  document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-t")===S.tab);});
+  var hi=document.getElementById("homeIn");
+  if(hi)hi.onchange=function(){S.home=hi.value.trim();save();render();};
+  var sa=document.getElementById("selA"),sb=document.getElementById("selB");
+  if(sa)sa.onchange=function(){S.a=sa.value;render();};
+  if(sb)sb.onchange=function(){S.b=sb.value;render();};
+}
+
+/* ---------- sheet ---------- */
+function openSheet(id){
+  S.edit=id||null;
+  var m=id?get(id):{name:"",dob:"",role:"parent"};
+  S.role=m.role;
+  var today=new Date().toISOString().slice(0,10);
+  document.getElementById("sheet").innerHTML=
+   '<h2 class="grad" style="margin-bottom:4px">'+(id?"Edit person":"Add a person")+'</h2>'+
+   '<label for="fn">Full name (as on the birth certificate)</label><input id="fn" autocomplete="off" value="'+esc(m.name)+'" placeholder="e.g. Amelia Rose Carter">'+
+   '<label for="fd">Date of birth</label><input id="fd" type="date" max="'+today+'" value="'+esc(m.dob)+'">'+
+   '<label>Role in the family</label><div class="seg" id="seg"><button type="button" data-r="parent">Parent</button><button type="button" data-r="child">Child</button></div>'+
+   '<div class="err" id="err"></div>'+
+   '<div class="row" style="margin-top:8px"><button class="btn" id="sv" style="flex:1">Save</button><button class="btn ghost" id="cx">Cancel</button></div>';
+  document.getElementById("veil").classList.add("on");
+  var seg=document.getElementById("seg");
+  function paint(){seg.querySelectorAll("button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-r")===S.role);});}
+  paint();
+  seg.onclick=function(e){var r=e.target.getAttribute&&e.target.getAttribute("data-r");if(r){S.role=r;paint();}};
+  document.getElementById("cx").onclick=closeSheet;
+  document.getElementById("sv").onclick=function(){
+    var name=document.getElementById("fn").value.trim(),dob=document.getElementById("fd").value,err=document.getElementById("err");
+    if(clean(name).replace(/ /g,"").length<2){err.textContent="Please enter a name.";return;}
+    if(!dob||lifePath(dob)===null){err.textContent="Please choose a date of birth.";return;}
+    if(S.edit){var t=get(S.edit);t.name=name;t.dob=dob;t.role=S.role;}
+    else{if(S.members.length>=MAX){err.textContent="The household is full.";return;}var nm={id:uid(),name:name,dob:dob,role:S.role};S.members.push(nm);S.open=nm.id;}
+    save();closeSheet();render();
+  };
+  setTimeout(function(){var f=document.getElementById("fn");if(f&&!id)f.focus();},50);
+}
+function closeSheet(){document.getElementById("veil").classList.remove("on");}
+function askConfirm(msg,cb){
+  document.getElementById("sheet").innerHTML='<h2 class="grad" style="margin-bottom:8px">Remove?</h2><p style="color:var(--mute);margin:0">'+esc(msg)+'</p><div class="row" style="margin-top:16px"><button class="btn danger" id="yes" style="flex:1">Yes, remove</button><button class="btn ghost" id="no">Keep</button></div>';
+  document.getElementById("veil").classList.add("on");
+  document.getElementById("no").onclick=closeSheet;
+  document.getElementById("yes").onclick=function(){closeSheet();cb();};
+}
+
+
+function example(){
+  S.members=[
+   {id:uid(),name:"Sarah Jane Mitchell",dob:"1984-03-14",role:"parent"},
+   {id:uid(),name:"David Paul Mitchell",dob:"1981-09-02",role:"parent"},
+   {id:uid(),name:"Emma Rose Mitchell",dob:"2011-06-21",role:"child"},
+   {id:uid(),name:"Jack Oliver Mitchell",dob:"2014-11-08",role:"child"}];
+  S.home="12";
+  save();
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-t],[data-a]");if(!t)return;
+  if(t.hasAttribute("data-t")&&!t.hasAttribute("data-a")){S.tab=t.getAttribute("data-t");render();window.scrollTo(0,0);return;}
+  var a=t.getAttribute("data-a"),id=t.getAttribute("data-id");
+  if(a==="add")openSheet();
+  else if(a==="example"){example();render();}
+  else if(a==="toggle"){S.open=S.open===id?null:id;render();}
+  else if(a==="edit")openSheet(id);
+  else if(a==="del"){var m=get(id);if(m)askConfirm("Remove "+m.name+" from your family?",function(){S.members=S.members.filter(function(x){return x.id!==id;});S.open=null;save();render();});}
+  else if(a==="pair"){S.a=t.getAttribute("data-x");S.b=t.getAttribute("data-y");S.tab="bond";render();window.scrollTo(0,0);}
+});
+document.getElementById("veil").addEventListener("click",function(e){if(e.target===this)closeSheet();});
+
+/* manifest so it can be added to a home screen */
+try{
+  var icon="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="#000"/><path d="M80 260 256 96l176 164" fill="none" stroke="#a855f7" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/><path d="M128 240v176h256V240" fill="none" stroke="#2dd4bf" stroke-width="30" stroke-linejoin="round"/><circle cx="256" cy="330" r="38" fill="#ec4899"/></svg>');
+  var mf={name:"Under One Roof",short_name:"Under One Roof",display:"standalone",background_color:"#000000",theme_color:"#000000",start_url:".",icons:[{src:icon,sizes:"512x512",type:"image/svg+xml",purpose:"any"}]};
+  var l=document.createElement("link");l.rel="manifest";l.href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:"application/manifest+json"}));document.head.appendChild(l);
+}catch(e){}
+
+load();render();
+})();
+</script>
+</body>
+</html>

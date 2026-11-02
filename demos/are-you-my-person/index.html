@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="robots" content="noindex"><script>window.NK_DEMO={"name": "Are You My Person?", "lock": ["nav button[data-t=\"people\"]", "nav button[data-t=\"match\"]", "nav button[data-t=\"timing\"]", ".btn:not(.ghost)"], "lockMsg": "The demo shows the example. People, Match, Timing and your own details are in the full app.", "slug": "are-you-my-person", "url": "https://numerakey-shop.vercel.app/#/app/are-you-my-person"};</script><script>(function(){
+"use strict";
+var C = window.NK_DEMO || {}; var SHOP = C.url || "https://numerakey-shop.vercel.app";
+var KEY = "nkdemo:" + (C.slug || location.hostname);
+var realLS = null; try { realLS = window.localStorage; } catch(e) {}
+function rget(k,d){ try{ var v=realLS&&realLS.getItem(KEY+":"+k); return v==null?d:JSON.parse(v);}catch(e){return d;} }
+function rset(k,v){ try{ realLS&&realLS.setItem(KEY+":"+k, JSON.stringify(v)); }catch(e){} }
+
+/* 1. Nothing the user enters is kept: localStorage lives in memory for this visit only. */
+function MemStorage(){ var m = new Map(); var o = {
+  getItem:function(k){ k=String(k); return m.has(k)?m.get(k):null; },
+  setItem:function(k,v){ m.set(String(k), String(v)); },
+  removeItem:function(k){ m.delete(String(k)); },
+  clear:function(){ m.clear(); },
+  key:function(i){ return Array.from(m.keys())[i] ?? null; }
+}; Object.defineProperty(o,"length",{get:function(){return m.size;}});
+  return new Proxy(o,{ get:function(t,p){ if(p in t) return t[p]; return typeof p==="string"&&m.has(p)?m.get(p):undefined; },
+    set:function(t,p,v){ if(p in t) return false; m.set(String(p),String(v)); return true; },
+    deleteProperty:function(t,p){ m.delete(String(p)); return true; },
+    ownKeys:function(){ return Array.from(m.keys()); },
+    getOwnPropertyDescriptor:function(t,p){ return m.has(p)?{value:m.get(p),enumerable:true,configurable:true,writable:true}:undefined; } });
+}
+try { Object.defineProperty(window, "localStorage", { value: MemStorage(), configurable: true }); } catch(e) {}
+/* IndexedDB: a fresh, throwaway database per visit; older demo databases are removed. */
+try {
+  var idb = window.indexedDB, run = Math.random().toString(36).slice(2,8), origOpen = idb.open.bind(idb), origDel = idb.deleteDatabase.bind(idb);
+  idb.open = function(name, v){ return v===undefined ? origOpen("nkdemo-"+run+"-"+name) : origOpen("nkdemo-"+run+"-"+name, v); };
+  idb.deleteDatabase = function(name){ return origDel("nkdemo-"+run+"-"+name); };
+  if (idb.databases) idb.databases().then(function(l){ l.forEach(function(d){ if(d.name && d.name.indexOf("nkdemo-"+run)!==0) origDel(d.name); }); }).catch(function(){});
+} catch(e) {}
+/* No offline install of the demo. */
+try { if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function(r){ r.forEach(function(x){ x.unregister(); }); }).catch(function(){});
+  navigator.serviceWorker.register = function(){ return new Promise(function(){}); };
+} } catch(e) {}
+try { window.showSaveFilePicker = undefined; window.showDirectoryPicker = undefined; } catch(e) {}
+
+/* 2. Overlay */
+var css = ""
++ "#nkd-bar{position:fixed;top:0;left:0;right:0;height:44px;z-index:2147483646;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 12px;"
++ "background:rgba(12,12,16,.96);border-bottom:1px solid rgba(214,196,140,.38);font:500 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ece8df;letter-spacing:.01em;box-sizing:border-box}"
++ "#nkd-bar .nkd-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#nkd-bar b{color:#e3cf8f;font-weight:600}"
++ ".nkd-btn{display:inline-block;padding:7px 14px;border-radius:999px;border:1px solid rgba(214,196,140,.7);color:#f3e7bf!important;background:linear-gradient(180deg,rgba(214,196,140,.16),rgba(214,196,140,.05));text-decoration:none!important;font:600 14px/1.1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;white-space:nowrap;cursor:pointer}"
++ "#nkd-ov{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:rgba(6,6,9,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:20px;box-sizing:border-box}"
++ "#nkd-ov.on{display:flex}#nkd-card{max-width:380px;width:100%;background:#15151b;border:1px solid rgba(214,196,140,.35);border-radius:18px;padding:28px 24px 22px;text-align:center;color:#e9e6de;box-shadow:0 20px 60px rgba(0,0,0,.6);font:400 17px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}"
++ "#nkd-card h2{margin:0 0 10px;font:600 23px/1.25 Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#f6e7b0,#cdb36b 55%,#efe0a6);-webkit-background-clip:text;background-clip:text;color:transparent}"
++ "#nkd-card p{margin:0 0 20px;color:#cfcac0}#nkd-card .nkd-btn{font-size:16px;padding:11px 22px}"
++ "#nkd-close{display:block;margin:14px auto 0;background:none;border:0;color:#a9a49a;font:500 15px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}"
++ ".nkd-locked{position:relative;opacity:.55!important}"
++ ".nkd-locked::after{content:'\\1F512';position:absolute;top:2px;right:2px;font-size:11px;line-height:1;opacity:.9;pointer-events:none;filter:grayscale(1)}"
++ ".nkd-hide{display:none!important}"
++ "#nkd-bar.nkd-light{background:rgba(251,249,244,.97);border-bottom-color:rgba(150,128,60,.35);color:#2b2a28}#nkd-bar.nkd-light b{color:#1d1d1f}"
++ "#nkd-bar.nkd-light .nkd-btn{color:#2b2a28!important;border-color:rgba(160,135,60,.75);background:linear-gradient(180deg,rgba(214,190,110,.22),rgba(214,190,110,.08))}"
++ "html{scroll-padding-top:44px}body{padding-top:44px!important}"
++ (C.css||"");
+function inject(){
+  if (document.getElementById("nkd-bar")) return;
+  var st = document.createElement("style"); st.id="nkd-style"; st.textContent = css; (document.head||document.documentElement).appendChild(st);
+  var bar = document.createElement("div"); bar.id="nkd-bar"; bar.setAttribute("role","note");
+  bar.innerHTML = '<span class="nkd-t"><b>Demo version</b><span id="nkd-info"></span></span><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a>';
+  document.body.appendChild(bar);
+  var ov = document.createElement("div"); ov.id="nkd-ov"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+  ov.innerHTML = '<div id="nkd-card"><h2 id="nkd-h">Available in the full app</h2><p id="nkd-p"></p><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a><button id="nkd-close" type="button">Keep exploring the demo</button></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener("click", function(e){ if(e.target===ov && !ov.dataset.hard) hide(); });
+  document.getElementById("nkd-close").addEventListener("click", function(){ if(!ov.dataset.hard) hide(); });
+  try { var bg = "", els=[]; var pe = document.elementFromPoint(innerWidth/2, innerHeight*0.6); while (pe && pe!==document.documentElement) { if (!(pe.id||"").startsWith("nkd-")) els.push(pe); pe = pe.parentElement; } els.push(document.body, document.documentElement);
+    for (var i=0;i<els.length;i++){ var c = getComputedStyle(els[i]).backgroundColor; if (c && !/rgba\(\s*0,\s*0,\s*0,\s*0\)|transparent/.test(c) && !/rgba\([^)]*,\s*0?\.[0-4]\d*\)/.test(c)) { bg = c; break; } var gi = getComputedStyle(els[i]).backgroundImage; var gm = gi && gi.match(/rgba?\([^)]*\)/); if (gm) { bg = gm[0]; break; } }
+    var mm = bg.match(/\d+(\.\d+)?/g); if (C.theme==="light" || (C.theme!=="dark" && mm && (0.299*mm[0]+0.587*mm[1]+0.114*mm[2]) > 160)) bar.classList.add("nkd-light"); } catch(e){}
+  info(); mark(); shift();
+}
+function hide(){ var ov=document.getElementById("nkd-ov"); if(ov) ov.classList.remove("on"); }
+function show(msg, head, hard){
+  inject(); var ov=document.getElementById("nkd-ov");
+  document.getElementById("nkd-h").textContent = head || "Available in the full app";
+  document.getElementById("nkd-p").textContent = msg || (C.lockMsg || ("This part of " + (C.name||"the app") + " is available in the full app."));
+  var cl = document.getElementById("nkd-close"); if (hard) { ov.dataset.hard="1"; cl.style.display="none"; } else { delete ov.dataset.hard; cl.style.display=""; }
+  ov.classList.add("on");
+}
+window.NKDemo = { show: show };
+function info(){ var el=document.getElementById("nkd-info"); if(!el) return; var t="";
+  if (C.cap) { var left = Math.max(0, C.cap.n - rget("cap",0)); t = " \u00b7 " + left + " of " + C.cap.n + " free " + (C.cap.label||"uses") + " left"; }
+  if (C.timer) t = " \u00b7 " + C.timer + "-minute listening session";
+  if (C.info) t = " \u00b7 " + C.info;
+  el.textContent = t; }
+
+/* 3. Locks and caps (capture phase, before the app sees the click) */
+function matches(el, list){ if(!list||!el||!el.closest) return null; for (var i=0;i<list.length;i++){ var m = el.closest(list[i]); if (m) return m; } return null; }
+function textMatch(el){ if(!C.lockText||!el||!el.closest) return null; var b = el.closest("button,a,[role=button],[role=tab],li,[onclick],[data-tab],[data-view],[data-go],[data-nav],[data-page],label,.card,.tile");
+  if(!b) return null; var t=(b.innerText||b.getAttribute("aria-label")||"").trim().toLowerCase();
+  for (var i=0;i<C.lockText.length;i++){ var k=C.lockText[i]; if (k instanceof RegExp ? k.test(t) : t===k.toLowerCase()) return b; } return null; }
+function isLocked(el){ if (matches(el, C.allow)) return null; var m = matches(el, C.lock) || textMatch(el); if (m) return m;
+  if (C.lockIf) { try { var r = C.lockIf(el); if (r) return r; } catch(e){} } return null; }
+function guard(e){
+  var t = e.target; if (!t || !t.closest) return;
+  if (t.closest("#nkd-bar,#nkd-ov")) return;
+  if (window.__nkdHard) { e.preventDefault(); e.stopImmediatePropagation(); show(window.__nkdHard, "Thank you for trying the demo", true); return; }
+  var a = t.closest("a[download]");
+  if (a || isLocked(t)) {
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type==="click"||e.type==="submit") show(a ? "Saving and exporting are available in the full app." : null);
+    return;
+  }
+  if (C.cap && e.type==="keydown" && C.cap.keySel && t.matches && t.matches(C.cap.keySel) && e.key==="Enter") { var u0 = rget("cap",0);
+    if (u0 >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+    if ((t.value||"").trim()) { rset("cap", u0+1); setTimeout(info,0); } return; }
+  if (C.cap && e.type==="click") { var c = matches(t, C.cap.sel); if (!c && C.cap.textSel) { var bb = t.closest("button,a,[role=button],input[type=submit]"); if (bb && C.cap.textSel.test((bb.innerText||bb.value||"").trim().toLowerCase())) c = bb; }
+    if (c) { var used = rget("cap",0);
+      if (used >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+      if (!C.cap.valid || C.cap.valid(c)) { rset("cap", used+1); setTimeout(info,0); }
+    } }
+}
+["click","pointerdown","mousedown","touchstart","keydown","submit","change","input"].forEach(function(ev){
+  window.addEventListener(ev, function(e){
+    if (ev==="keydown" && !(e.key==="Enter"||e.key===" ")) return;
+    if (ev==="change"||ev==="input") { if (isLocked(e.target)) { e.stopImmediatePropagation(); } return; }
+    if (ev!=="click"&&ev!=="submit"&&ev!=="keydown") { var t=e.target; if(t&&t.closest&&!t.closest("#nkd-bar,#nkd-ov")&&(isLocked(t)||window.__nkdHard)) { e.stopImmediatePropagation(); } return; }
+    guard(e);
+  }, true);
+});
+/* anchors clicked from code with a download attribute */
+var aclick = HTMLAnchorElement.prototype.click;
+HTMLAnchorElement.prototype.click = function(){ if (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||"")) { show("Saving and exporting are available in the full app."); return; } return aclick.apply(this, arguments); };
+var adisp = HTMLAnchorElement.prototype.dispatchEvent;
+HTMLAnchorElement.prototype.dispatchEvent = function(ev){ if (ev && ev.type==="click" && (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||""))) { show("Saving and exporting are available in the full app."); return false; } return adisp.apply(this, arguments); };
+window.print = function(){ show("Printing is available in the full app."); };
+try { var ws = window.open; window.open = function(u){ if (u===undefined || u==="" || /^blob:|^data:|about:blank/.test(String(u))) { show("Saving and exporting are available in the full app."); return null; } return ws.apply(window, arguments); }; } catch(e) {}
+try { if (navigator.share) navigator.share = function(){ show("Sharing and exporting are available in the full app."); return Promise.reject(new Error("demo")); }; } catch(e) {}
+window.addEventListener("beforeprint", function(){ document.documentElement.style.display="none"; });
+window.addEventListener("afterprint", function(){ document.documentElement.style.display=""; });
+
+function mark(){
+  var list = (C.lock||[]).concat(C.markOnly||[]);
+  list.forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ if(!matches(el,C.allow)) el.classList.add("nkd-locked"); }); } catch(e){} });
+  if (C.lockText) document.querySelectorAll("button,a,[role=tab],[data-tab],[data-view],[data-go],[data-nav],.card,.tile").forEach(function(el){ if (!el.classList.contains("nkd-locked") && textMatch(el)===el && !matches(el,C.allow)) el.classList.add("nkd-locked"); });
+  (C.hide||[]).forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ el.classList.add("nkd-hide"); }); } catch(e){} });
+  document.querySelectorAll('link[rel="manifest"]').forEach(function(l){ l.remove(); });
+}
+function shift(){
+  if (C.noShift) return;
+  var all = document.body ? document.body.querySelectorAll("*") : [];
+  for (var i=0;i<all.length;i++){ var el = all[i]; if (el.id && el.id.indexOf("nkd-")===0) continue;
+    if (el.dataset.nkdShift) continue;
+    var cs = getComputedStyle(el); if (cs.position!=="fixed" && cs.position!=="sticky") continue;
+    var top = parseFloat(cs.top); if (isNaN(top) || top > 4) continue;
+    el.style.setProperty("top", (top+44)+"px", "important"); el.dataset.nkdShift = "1"; }
+}
+var pend=false; function soon(){ if(pend) return; pend=true; setTimeout(function(){ pend=false; mark(); shift(); }, 120); }
+function start(){ inject(); new MutationObserver(soon).observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:["class","style","hidden"]}); if (C.onReady) try{ C.onReady(); }catch(e){} }
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+
+/* hash routes that belong to the full app */
+if (C.lockHash) { var okHash = location.hash && !C.lockHash.test(location.hash) ? location.hash : (C.homeHash||"#/");
+  if (location.hash && C.lockHash.test(location.hash)) { try { history.replaceState(null, "", location.pathname + location.search + okHash); } catch(e){} }
+  window.addEventListener("hashchange", function(e){ if (C.lockHash.test(location.hash)) { e.stopImmediatePropagation(); history.replaceState(null, "", location.pathname + location.search + okHash); show(); } else okHash = location.hash; }, true); }
+
+/* 4. Listening session limit for audio apps */
+if (C.timer) {
+  var ctxs = [], LIMIT = C.timer*60*1000, HOLD = 12*3600*1000;
+  var startAt = rget("t0", 0); if (startAt && Date.now()-startAt > LIMIT + HOLD) { startAt = 0; rset("t0", 0); }
+  var endMsg = "Your " + C.timer + "-minute demo session has ended. The full app has no time limit.";
+  function expired(){ return startAt && Date.now()-startAt >= LIMIT; }
+  function begin(){ if (!startAt) { startAt = Date.now(); rset("t0", startAt); } }
+  function stopAll(){
+    window.__nkdHard = endMsg;
+    ctxs.forEach(function(c){ try{ c.suspend(); }catch(e){} });
+    document.querySelectorAll("audio,video").forEach(function(m){ try{ m.pause(); m.muted=true; }catch(e){} });
+    show(endMsg, "Thank you for trying the demo", true);
+  }
+  ["AudioContext","webkitAudioContext"].forEach(function(n){ var O = window[n]; if (!O) return;
+    var W = function(){ var c = new (Function.prototype.bind.apply(O, [null].concat([].slice.call(arguments))))(); ctxs.push(c); return c; };
+    W.prototype = O.prototype; try{ Object.setPrototypeOf(W, O); }catch(e){} window[n] = W; });
+  var oResume = window.AudioContext && AudioContext.prototype.resume;
+  if (oResume) AudioContext.prototype.resume = function(){ if (expired()) { stopAll(); return Promise.resolve(); } begin(); return oResume.apply(this, arguments); };
+  var oStart = window.AudioScheduledSourceNode && AudioScheduledSourceNode.prototype.start;
+  if (oStart) AudioScheduledSourceNode.prototype.start = function(){ if (expired()) { stopAll(); return; } begin(); return oStart.apply(this, arguments); };
+  var oPlay = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function(){ if (expired()) { stopAll(); return Promise.reject(new Error("demo")); } begin(); return oPlay.apply(this, arguments); };
+  setInterval(function(){ if (startAt) { var left = Math.max(0, LIMIT-(Date.now()-startAt)); var el=document.getElementById("nkd-info");
+      if (el) el.textContent = left>0 ? " \u00b7 " + Math.ceil(left/60000) + " min of listening left" : " \u00b7 session ended";
+      if (left<=0 && !window.__nkdHard) stopAll(); } }, 1000);
+}
+})();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Are You My Person?</title>
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Romantic numerology compatibility: Life Path, Soul Urge, Expression, Personality, arrows, Essences and personal years.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23000'/%3E%3Ccircle cx='24' cy='32' r='15' fill='none' stroke='%232dd4bf' stroke-width='4'/%3E%3Ccircle cx='40' cy='32' r='15' fill='none' stroke='%23ec4899' stroke-width='4'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#000;--card:#0e0e14;--card2:#15151f;--line:#262636;--text:#ecebf5;--mute:#9a98b3;
+  --g:linear-gradient(90deg,#2dd4bf,#a855f7,#ec4899);--teal:#2dd4bf;--purple:#a855f7;--mag:#ec4899}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.5}
+body{min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
+.wrap{max-width:720px;margin:0 auto;padding:18px 16px}
+h1,h2,h3{margin:0;line-height:1.15}
+.grad{background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.brand{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.brand h1{font-size:1.5rem;font-weight:800}
+.brand small{color:var(--mute);font-size:.78rem}
+.hero{border-radius:22px;background:radial-gradient(120% 90% at 50% 0%,#1b1033 0%,#07070c 70%);border:1px solid var(--line);overflow:hidden;margin:10px 0 18px}
+.hero svg{display:block;width:100%;height:auto}
+.hero .txt{padding:0 20px 22px;text-align:center}
+.hero h2{font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.hero p{color:var(--mute);margin:0 auto 16px;max-width:470px}
+.btn{appearance:none;border:0;border-radius:14px;padding:13px 20px;font-size:1rem;font-weight:700;color:#fff;background:var(--g);cursor:pointer;font-family:inherit}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text);font-weight:600}
+.btn.small{padding:9px 14px;font-size:.9rem;border-radius:12px}
+.btn.danger{background:transparent;border:1px solid #5a2236;color:#ff8aa8;font-weight:600}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.center{justify-content:center}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;margin-bottom:12px}
+.plain{background:none;border:0;padding:0;color:inherit;font:inherit;cursor:pointer;display:block;width:100%;text-align:left}
+.mhead{display:flex;align-items:center;gap:12px}
+.orb{--c:#a855f7;flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.15rem;color:#000;background:radial-gradient(circle at 30% 25%,#fff8 0,transparent 45%),var(--c);box-shadow:0 0 18px -2px var(--c)}
+.orb.m{outline:2px solid #fff6;outline-offset:2px}
+.orb.s{width:28px;height:28px;font-size:.8rem;box-shadow:0 0 10px -2px var(--c)}
+.mname{font-weight:700;font-size:1.05rem}
+.msub{color:var(--mute);font-size:.82rem}
+.chips{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.chip{display:flex;align-items:center;gap:6px;background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:3px 10px 3px 4px;font-size:.78rem;color:var(--mute)}
+.num-row{display:flex;gap:12px;margin-bottom:12px}
+.num-row b{display:block}
+.num-row div span{color:var(--mute);font-size:.88rem}
+.tag{display:inline-block;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:1px 7px;border-radius:999px;background:#ffffff12;color:var(--mute);margin-left:6px;vertical-align:2px;font-weight:600}
+.tip{background:var(--card2);border-left:3px solid var(--teal);border-radius:10px;padding:10px 12px;margin:10px 0;font-size:.92rem}
+.tip.p{border-color:var(--purple)}.tip.m{border-color:var(--mag)}
+.sec{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin:18px 2px 8px}
+nav{position:fixed;left:0;right:0;bottom:0;background:#050509ee;backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:8px 10px calc(8px + env(safe-area-inset-bottom));z-index:20}
+nav .in{display:flex;width:100%;max-width:720px;gap:6px}
+nav button{flex:1;background:none;border:0;color:var(--mute);font:inherit;font-size:.76rem;padding:6px 0;border-radius:12px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px}
+nav button svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav button.on{color:#fff;background:#ffffff0f}
+nav button.on svg{stroke:var(--teal)}
+.veil{position:fixed;inset:0;background:#000c;z-index:40;display:none;align-items:flex-end;justify-content:center}
+.veil.on{display:flex}
+.sheet{width:100%;max-width:720px;background:#0b0b12;border:1px solid var(--line);border-radius:22px 22px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto}
+label{display:block;font-size:.82rem;color:var(--mute);margin:12px 0 5px}
+input,select{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:12px;font:inherit;font-size:1rem}
+input:focus,select:focus{outline:2px solid var(--purple);outline-offset:1px}
+.seg{display:flex;gap:8px}
+.seg button{flex:1;background:var(--card2);border:1px solid var(--line);color:var(--mute);border-radius:12px;padding:11px;font:inherit;cursor:pointer}
+.seg button.on{color:#fff;border-color:var(--purple);background:#a855f722}
+.err{color:#ff8aa8;font-size:.86rem;margin-top:8px;min-height:1.2em}
+.big{font-size:2.2rem;font-weight:800}
+.bar{height:8px;background:#1b1b28;border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--g);border-radius:6px}
+.pair{display:flex;align-items:center;gap:10px}
+.pair .nm{flex:1;min-width:0}
+.pair .nm b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pair .sc{font-weight:800;font-size:1.1rem}
+.dim{margin:12px 0}
+.dim .top{display:flex;align-items:center;gap:8px;margin-bottom:5px;font-weight:700}
+.dim .top .sp{flex:1}
+.dim p{margin:6px 0 0;color:var(--mute);font-size:.9rem}
+.bondhead{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0 14px;text-align:center}
+.bondhead .c{flex:1;min-width:0}
+.bondhead .c b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bondhead .orb{margin:0 auto 6px;width:56px;height:56px;font-size:1.4rem}
+.verdict{text-align:center;margin-bottom:6px}
+.verdict .big{display:block}
+.band{display:inline-block;padding:3px 12px;border-radius:999px;background:#ffffff10;font-size:.85rem;font-weight:600;margin-top:4px}
+.empty{color:var(--mute);text-align:center;padding:24px 10px}
+.g3{display:grid;grid-template-columns:repeat(3,42px);gap:5px;flex:none}
+.gc{height:42px;border-radius:10px;display:grid;place-items:center;font-weight:800;font-size:.9rem;background:#101018;color:#3a3a4c;border:1px solid var(--line);letter-spacing:.5px}
+.gc.on{color:#000;background:var(--c);border-color:transparent}
+.gc.ar{box-shadow:0 0 14px -1px var(--c);outline:2px solid #ffffff55;outline-offset:1px}
+.gpair{display:flex;justify-content:space-around;gap:10px;margin:6px 0 14px}
+.gpair>div{text-align:center}
+.gpair .msub{margin-top:6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.two .card{margin:0;text-align:center}
+.two .yr{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:6px}
+.two .orb{margin:4px auto}
+.two .k{font-size:.82rem;color:var(--mute)}
+table.tl{width:100%;border-collapse:separate;border-spacing:0 6px}
+table.tl th{font-size:.7rem;font-weight:600;color:var(--mute);text-transform:uppercase;letter-spacing:.08em;text-align:left;padding:0 6px}
+table.tl td{background:var(--card2);padding:9px 6px;font-size:.88rem;vertical-align:middle}
+table.tl td:first-child{border-radius:12px 0 0 12px;font-weight:700;padding-left:12px}
+table.tl td:last-child{border-radius:0 12px 12px 0}
+table.tl tr.now td{background:#a855f722}
+.flow{font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:999px;white-space:nowrap}
+.flow.a{background:#2dd4bf22;color:#7ff0de}.flow.b{background:#a855f722;color:#cfa5ff}.flow.c{background:#ec489922;color:#ff9bc9}
+footer{color:#5d5b75;font-size:.74rem;text-align:center;margin:26px 0 6px}
+@media(min-width:560px){.wrap{padding:26px 20px}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<nav><div class="in">
+  <button data-t="you"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>You</button>
+  <button data-t="people"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.8"/><path d="M2.5 20c0-3.7 2.9-6 6.5-6s6.5 2.3 6.5 6"/><path d="M16 14.2c3 0 5.5 1.7 5.5 5"/></svg>People</button>
+  <button data-t="match"><svg viewBox="0 0 24 24"><path d="M12 20s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.4-7.5 10-7.5 10z"/></svg>Match</button>
+  <button data-t="timing"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>Timing</button>
+</div></nav>
+<div class="veil" id="veil"><div class="sheet" id="sheet"></div></div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- data ---------- */
+var COLORS={1:"#ff6b6b",2:"#7ad7f0",3:"#ffd166",4:"#8bd17c",5:"#ff9f5a",6:"#f78fb3",7:"#a78bfa",8:"#4fd1c5",9:"#e879f9"};
+var TITLES={1:"The Pioneer",2:"The Peacemaker",3:"The Communicator",4:"The Builder",5:"The Explorer",6:"The Nurturer",7:"The Seeker",8:"The Achiever",9:"The Humanitarian",11:"The Intuitive",22:"The Master Builder",33:"The Master Teacher"};
+var MASTER={11:2,22:4,33:6};
+var LOVE={
+1:{need:"independence and to be admired",show:"by protecting, acting and making bold gestures",stress:"get bossy or pull away",tip:"Let them lead sometimes, and cheer their wins."},
+2:{need:"closeness and reassurance",show:"with gentle attention and loyalty",stress:"get hurt quietly and go silent",tip:"Say the sweet things out loud and check in softly."},
+3:{need:"fun, conversation and appreciation",show:"with humour, affection and words",stress:"scatter or get dramatic",tip:"Keep laughing together and keep talking."},
+4:{need:"reliability and real commitment",show:"through practical help and a steady presence",stress:"turn stubborn and rigid",tip:"Keep your promises and plan things together."},
+5:{need:"freedom, variety and adventure",show:"with excitement, attention and spontaneity",stress:"get restless and avoid heavy talks",tip:"Keep things fresh without making them feel caged."},
+6:{need:"devotion and a warm home",show:"by caring, cooking and looking after you",stress:"worry and over-give",tip:"Say thank you, and don't let them carry everything."},
+7:{need:"space, depth and trust",show:"with rare, deep thoughts and quiet loyalty",stress:"retreat into silence",tip:"Give them space, then ask a real question."},
+8:{need:"respect and shared goals",show:"by providing, protecting and making big gestures",stress:"take control or work too much",tip:"Acknowledge their effort, and book in some softness."},
+9:{need:"shared meaning and to feel understood",show:"with generosity and a big heart",stress:"get idealistic, then disappointed",tip:"Share a cause and listen generously."}
+};
+var YEARS={
+1:{k:"new beginnings",t:"plant seeds, start fresh and act on what you want"},
+2:{k:"patience and partnership",t:"slow down, cooperate and listen"},
+3:{k:"joy and self-expression",t:"socialise, create and speak up"},
+4:{k:"foundations and work",t:"build steadily, organise and commit"},
+5:{k:"change and freedom",t:"expect movement, travel and new options"},
+6:{k:"love, home and responsibility",t:"family, commitment and caring for each other"},
+7:{k:"reflection and inner life",t:"quiet, rest, study and seeking meaning"},
+8:{k:"achievement and power",t:"career, money and big decisions"},
+9:{k:"completion and release",t:"finish things, let go and forgive"}
+};
+var M={"1-1":70,"1-2":75,"1-3":85,"1-4":55,"1-5":90,"1-6":70,"1-7":80,"1-8":65,"1-9":80,
+"2-2":80,"2-3":70,"2-4":90,"2-5":50,"2-6":90,"2-7":65,"2-8":85,"2-9":75,
+"3-3":85,"3-4":50,"3-5":85,"3-6":90,"3-7":55,"3-8":55,"3-9":90,
+"4-4":75,"4-5":45,"4-6":80,"4-7":75,"4-8":90,"4-9":55,
+"5-5":80,"5-6":55,"5-7":85,"5-8":65,"5-9":75,
+"6-6":85,"6-7":55,"6-8":70,"6-9":90,
+"7-7":85,"7-8":55,"7-9":70,
+"8-8":75,"8-9":60,"9-9":90};
+var DIM=[
+ {key:"lp",title:"Life Path",tr:"Phillips",sub:"where each of you is heading",w:.3,
+  hi:"You're heading the same way and want a similar kind of life together.",
+  mid:"Different routes, easy meeting points. Each of you can widen the other's view.",
+  lo:"You move at different speeds. Curiosity about their road works better than trying to change it."},
+ {key:"su",title:"Soul Urge",tr:"Goodwin",sub:"what each of you needs in love",w:.3,
+  hi:"What you each need in love fits together, so feeling cared for comes easily.",
+  mid:"Your needs differ a little. Say them out loud and they'll be met.",
+  lo:"You need different things to feel loved. Ask plainly instead of hoping they'll guess."},
+ {key:"ex",title:"Expression",tr:"Goodwin",sub:"how you each show up as a couple",w:.2,
+  hi:"You read each other's style easily, and talking things through tends to flow.",
+  mid:"Your styles differ but complement each other when each gets a turn.",
+  lo:"You can mistake each other's style for a message. Check what was meant before reacting."},
+ {key:"pe",title:"Personality",tr:"Goodwin",sub:"first impressions and attraction",w:.2,
+  hi:"The way you each come across suits the other, and the spark tends to show early.",
+  mid:"Your first impressions differ, and things often warm up once you know each other.",
+  lo:"You may misread each other at first. Give it time before you decide."}
+];
+var MAXP=8;
+
+/* ---------- arrows (Phillips) ---------- */
+var ARROWS=[
+ {id:"plan",n:[1,2,3],p:"Arrow of Planning",m:"Arrow of Confusion",pt:"Thinks ahead, likes a plan and sees how things fit together.",mt:"Plans can feel foggy; may start things without a clear path.",lend:"can help map out the steps"},
+ {id:"will",n:[4,5,6],p:"Arrow of Will",m:"Arrow of Frustration",pt:"Strong will and follow-through; hard to talk out of a decision.",mt:"Can feel stuck or frustrated when things don't move.",lend:"can model steady follow-through"},
+ {id:"act",n:[7,8,9],p:"Arrow of Activity",m:"Arrow of Passivity",pt:"Needs to be doing; full of energy and action.",mt:"May hold back or wait to be asked before getting going.",lend:"can bring energy and get things moving"},
+ {id:"prac",n:[1,4,7],p:"Arrow of Practicality",m:"Arrow of Disorder",pt:"Hands-on and practical; good with everyday order.",mt:"Everyday practicalities and tidiness may need extra support.",lend:"can show the practical, hands-on way"},
+ {id:"sens",n:[2,5,8],p:"Arrow of Sensitivity",m:"Arrow of Over-Sensitivity",pt:"Deeply feeling and intuitive; picks up on moods quickly.",mt:"May feel things very strongly, or hold feelings in until they spill over.",lend:"can offer emotional steadiness and gentle check-ins"},
+ {id:"int",n:[3,6,9],p:"Arrow of Intellect",m:"Arrow of Poor Memory",pt:"Sharp mind and good memory; enjoys ideas and learning.",mt:"May forget details and do better with lists and reminders.",lend:"can help remember and explain things"},
+ {id:"det",n:[1,5,9],p:"Arrow of Determination",m:"Arrow of Indecision",pt:"Pushes through obstacles; decisive and persistent.",mt:"May hesitate over decisions and need encouragement to commit.",lend:"can help with deciding and staying the course"},
+ {id:"spi",n:[3,5,7],p:"Arrow of Spirituality",m:"Arrow of Scepticism",pt:"Feels there is more to life; a thoughtful sense of meaning.",mt:"Wants proof before trusting, and asks hard questions.",lend:"can share a sense of meaning and trust"}
+];
+var GRID=[3,6,9,2,5,8,1,4,7];
+
+/* ---------- numerology engine ---------- */
+function red(n){while(n>9&&n!==11&&n!==22&&n!==33){n=String(n).split("").reduce(function(a,d){return a+ +d;},0);}return n;}
+function red9(n){while(n>9){n=String(n).split("").reduce(function(a,d){return a+ +d;},0);}return n;}
+function base(n){return MASTER[n]||n;}
+function clean(s){return s.normalize("NFD").replace(/[̀-ͯ]/g,"").toUpperCase().replace(/[^A-Z ]/g,"");}
+function val(c){return ((c.charCodeAt(0)-65)%9)+1;}
+function isV(c){return "AEIOU".indexOf(c)>-1;}
+function calcName(name){
+  var ex=0,su=0,pe=0;
+  clean(name).split(/\s+/).forEach(function(w){
+    for(var i=0;i<w.length;i++){
+      var c=w[i],v=val(c),vowel=isV(c);
+      if(c==="Y"){var p=w[i-1],n=w[i+1];vowel=!(p&&isV(p))&&!(n&&isV(n));}
+      ex+=v;if(vowel)su+=v;else pe+=v;
+    }
+  });
+  return {ex:ex?red(ex):null,su:su?red(su):null,pe:pe?red(pe):null};
+}
+function lifePath(dob){
+  var p=dob.split("-");if(p.length!==3)return null;
+  var y=+p[0],m=+p[1],d=+p[2];if(!y||!m||!d)return null;
+  return red(red(m)+red(d)+red(y));
+}
+function profile(m){var n=calcName(m.name);return {lp:lifePath(m.dob),ex:n.ex,su:n.su,pe:n.pe};}
+/* Goodwin transits: each letter is active for as many years as its value, cycling through the name */
+function nameParts(name){
+  var t=clean(name).split(/\s+/).filter(Boolean);
+  if(!t.length)return {f:"",m:"",l:""};
+  if(t.length===1)return {f:t[0],m:"",l:""};
+  return {f:t[0],m:t.slice(1,-1).join(""),l:t[t.length-1]};
+}
+function transitAt(word,age){
+  if(!word)return null;
+  var vals=word.split("").map(val),total=vals.reduce(function(a,b){return a+b;},0),p=age%total;
+  for(var i=0;i<vals.length;i++){if(p<vals[i])return vals[i];p-=vals[i];}
+  return vals[0];
+}
+function essenceAt(name,age){
+  var P=nameParts(name),parts=[transitAt(P.f,age),transitAt(P.m,age),transitAt(P.l,age)].filter(function(x){return x!==null;});
+  if(!parts.length)return null;
+  return red9(parts.reduce(function(a,b){return a+b;},0));
+}
+function ageOn(dob,d){var b=new Date(dob+"T00:00:00");var a=d.getFullYear()-b.getFullYear();var m=d.getMonth()-b.getMonth();if(m<0||(m===0&&d.getDate()<b.getDate()))a--;return a;}
+function personalYear(dob,y){var p=dob.split("-");return red9(red9(+p[1])+red9(+p[2])+red9(y));}
+function pairScore(a,b){
+  var pa=profile(a),pb=profile(b),dims={},tot=0;
+  DIM.forEach(function(d){
+    var x=base(pa[d.key]),y=base(pb[d.key]),s=M[Math.min(x,y)+"-"+Math.max(x,y)];
+    dims[d.key]={a:pa[d.key],b:pb[d.key],s:s};tot+=s*d.w;
+  });
+  return {total:Math.round(tot),dims:dims,pa:pa,pb:pb};
+}
+function pair9(x,y){return M[Math.min(x,y)+"-"+Math.max(x,y)];}
+function bandOf(s){return s>=85?"Magnetic match":s>=72?"Easy love":s>=60?"Growth love":"Stretch love";}
+function dimText(d,s){return s>=80?d.hi:s>=65?d.mid:d.lo;}
+
+/* ---------- arrows helpers ---------- */
+function counts(dob){var c={},i;for(i=1;i<=9;i++)c[i]=0;dob.replace(/[^1-9]/g,"").split("").forEach(function(d){c[d]++;});return c;}
+function arrowState(c,a){var k=a.n.filter(function(x){return c[x]>0;}).length;return k===3?"p":k===0?"m":"";}
+function arrowsOf(dob){var c=counts(dob),o={};ARROWS.forEach(function(a){o[a.id]=arrowState(c,a);});return o;}
+function gridHTML(dob){
+  var c=counts(dob),ar={};
+  ARROWS.forEach(function(a){if(arrowState(c,a)==="p")a.n.forEach(function(n){ar[n]=1;});});
+  return '<div class="g3" role="img" aria-label="Birth grid">'+GRID.map(function(n){
+    return '<span class="gc'+(c[n]?" on":"")+(ar[n]?" ar":"")+'" style="--c:'+COLORS[n]+'">'+(c[n]?new Array(c[n]+1).join(n):"·")+'</span>';}).join("")+'</div>';
+}
+function arrowsBlock(dob){
+  var s=arrowsOf(dob),t="";
+  ARROWS.forEach(function(a){if(s[a.id]==="p")t+='<div style="margin-bottom:8px"><b>'+a.p+'</b><br><span class="msub">'+a.pt+'</span></div>';});
+  ARROWS.forEach(function(a){if(s[a.id]==="m")t+='<div style="margin-bottom:8px"><b style="color:#ffb3c9">'+a.m+'</b><br><span class="msub">'+a.mt+'</span></div>';});
+  if(!t)t='<span class="msub">No complete or fully empty arrows: a gently mixed chart.</span>';
+  return '<div class="row" style="flex-wrap:nowrap;align-items:flex-start;gap:14px">'+gridHTML(dob)+'<div style="flex:1;min-width:0;font-size:.88rem">'+t+'</div></div><div class="msub" style="margin-top:6px">Arrows describe tendencies, not limits.</div>';
+}
+function matchArrows(me,P){
+  var sa=arrowsOf(me.dob),sb=arrowsOf(P.dob),fb=esc(first(P.name));
+  var shared=[],gives=[],blind=[];
+  ARROWS.forEach(function(a){
+    var x=sa[a.id],y=sb[a.id];
+    if(x==="p"&&y==="p")shared.push(a);
+    else if(x==="p"&&y==="m")gives.push('You hold the '+a.p+' and '+fb+' has the '+a.m+', so you '+a.lend+'.');
+    else if(y==="p"&&x==="m")gives.push('<b>'+fb+'</b> holds the '+a.p+' and you have the '+a.m+', so '+fb+' '+a.lend+'.');
+    else if(x==="m"&&y==="m")blind.push('Neither of you has the '+a.p+'. '+a.mt+' Worth building together.');
+  });
+  var h='<div class="sec">Birth-date arrows<span class="tag">Phillips</span></div><div class="card"><div class="gpair"><div>'+gridHTML(me.dob)+'<div class="msub">You</div></div><div>'+gridHTML(P.dob)+'<div class="msub">'+fb+'</div></div></div>';
+  if(shared.length)h+='<div class="tip"><b>Common ground</b><br>You both hold the '+shared.map(function(a){return a.p;}).join(", ")+'. '+shared[0].pt+'</div>';
+  gives.forEach(function(g){h+='<div class="tip p"><b>One can lend to the other</b><br>'+g+'</div>';});
+  blind.forEach(function(g){h+='<div class="tip m"><b>Shared blind spot</b><br>'+g+'</div>';});
+  if(!shared.length&&!gives.length&&!blind.length)h+='<div class="msub" style="text-align:center">No arrows line up or contrast directly. Your grids meet in the gaps between.</div>';
+  return h+'</div>';
+}
+
+/* ---------- state ---------- */
+var KEY="areyoumyperson.v1";
+var S={me:null,people:[],tab:"you",pid:null,edit:null,kind:"person",tag:"Partner"};
+function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o){if(o.me&&o.me.name&&o.me.dob)S.me=o.me;if(Array.isArray(o.people))S.people=o.people;}}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({me:S.me,people:S.people}));}catch(e){}}
+function uid(){return "p"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);}
+function get(id){for(var i=0;i<S.people.length;i++)if(S.people[i].id===id)return S.people[i];return null;}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function first(n){return n.trim().split(/\s+/)[0]||n;}
+function orb(n,cls){var m=n>9?" m":"";return '<span class="orb '+(cls||"")+m+'" style="--c:'+COLORS[base(n)]+'">'+(n===null||n===undefined?"?":n)+'</span>';}
+function love(n){return LOVE[base(n)];}
+function curP(){if(!get(S.pid))S.pid=S.people.length?S.people[0].id:null;return get(S.pid);}
+function brand(t){return '<div class="brand"><h1 class="grad">'+t+'</h1><small>NumeraKey</small></div>';}
+
+/* ---------- views ---------- */
+function an(attr,v){return '<animate attributeName="'+attr+'" values="'+v+'" dur="7s" repeatCount="indefinite" calcMode="spline" keyTimes="0;.5;1" keySplines=".45 0 .55 1;.45 0 .55 1"/>';}
+function twinkle(x,y,r,d,b){return '<circle cx="'+x+'" cy="'+y+'" r="'+r+'" opacity=".5"><animate attributeName="opacity" values=".15;.95;.15" dur="'+d+'s" begin="'+b+'s" repeatCount="indefinite"/></circle>';}
+function floater(x,b){return '<path d="M0 6C-9 -1 -6 -9 0 -4 6 -9 9 -1 0 6z" fill="#ec4899" opacity="0"><animateTransform attributeName="transform" type="translate" values="'+x+' 165;'+x+' 60" dur="5s" begin="'+b+'s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.85;0" dur="5s" begin="'+b+'s" repeatCount="indefinite"/></path>';}
+var HERO='<svg viewBox="0 0 600 260" role="img" aria-label="Two overlapping circles drifting together with a heart where they meet">'+
+'<defs><linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#2dd4bf"/><stop offset=".5" stop-color="#a855f7"/><stop offset="1" stop-color="#ec4899"/></linearGradient>'+
+'<clipPath id="ca"><circle cx="235" cy="130" r="92">'+an("cx","235;258;235")+'</circle></clipPath>'+
+'<radialGradient id="gl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#a855f755"/><stop offset="1" stop-color="#a855f700"/></radialGradient></defs>'+
+'<rect width="600" height="260" fill="url(#gl)"><animate attributeName="opacity" values=".55;1;.55" dur="4s" repeatCount="indefinite"/></rect>'+
+'<g fill="#fff">'+twinkle(40,40,1.6,3,0)+twinkle(100,200,1.2,2.4,.6)+twinkle(160,30,1.4,3.6,1.2)+twinkle(520,50,1.6,2.8,.3)+twinkle(560,190,1.2,3.2,1.8)+twinkle(470,225,1.3,2.6,.9)+twinkle(30,130,1.2,4,1.4)+twinkle(340,22,1.1,3.4,2.1)+twinkle(580,110,1.1,2.2,.2)+'</g>'+
+'<circle cx="235" cy="130" r="92" fill="#2dd4bf14" stroke="#2dd4bf" stroke-width="5">'+an("cx","235;258;235")+'</circle>'+
+'<circle cx="365" cy="130" r="92" fill="#ec489914" stroke="#ec4899" stroke-width="5">'+an("cx","365;342;365")+'</circle>'+
+'<circle cx="365" cy="130" r="92" fill="url(#hg)" opacity=".45" clip-path="url(#ca)">'+an("cx","365;342;365")+'</circle>'+
+floater(284,0)+floater(300,1.7)+floater(318,3.4)+
+'<g transform="translate(300 130)"><g><animateTransform attributeName="transform" type="scale" values="1;1.15;1;1.1;1" keyTimes="0;.12;.28;.4;1" dur="1.6s" repeatCount="indefinite"/><path d="M0 28C-32 4 -22 -24 0 -8 22 -24 32 4 0 28z" fill="url(#hg)" stroke="#fff" stroke-opacity=".5" stroke-width="2"/></g></g>'+
+'<g font-family="system-ui,sans-serif" font-weight="800" font-size="26" text-anchor="middle" fill="#000">'+
+'<circle cx="190" cy="130" r="26" fill="#7ad7f0">'+an("cx","190;213;190")+'</circle><text x="190" y="139">?'+an("x","190;213;190")+'</text>'+
+'<circle cx="410" cy="130" r="26" fill="#f78fb3">'+an("cx","410;387;410")+'</circle><text x="410" y="139">?'+an("x","410;387;410")+'</text></g>'+
+'</svg>';
+
+function viewYou(){
+  var h=brand("Are You My Person?");
+  if(!S.me){
+    return h+'<div class="hero">'+HERO+'<div class="txt"><h2 class="grad">Find out how you fit</h2><p>Add your own details, then the people in your love life, and see how your numbers, arrows and timing line up.</p><div class="row center"><button class="btn" data-a="addme">Add your details</button><button class="btn ghost" data-a="example">Try an example</button></div></div></div>';
+  }
+  var m=S.me,p=profile(m),y=new Date().getFullYear(),age=ageOn(m.dob,new Date()),py=personalYear(m.dob,y),es=essenceAt(m.name,age);
+  h+='<div class="card"><div class="mhead">'+orb(p.lp)+'<div style="flex:1;min-width:0"><div class="mname">'+esc(m.name)+'</div><div class="msub">You · age '+age+'</div></div><button class="btn ghost small" data-a="editme">Edit</button></div></div>';
+  h+='<div class="sec">Your numbers</div><div class="card">';
+  [["Life Path",p.lp,"Phillips","Your main road. "],["Soul Urge",p.su,"Goodwin","What your heart wants. "],["Expression",p.ex,"Goodwin","Your natural talents and style. "],["Personality",p.pe,"Goodwin","The way others first meet you. "]].forEach(function(r){
+    if(r[1]===null)return;
+    h+='<div class="num-row">'+orb(r[1])+'<div><b>'+r[0]+' · '+TITLES[r[1]]+'<span class="tag">'+r[2]+'</span></b><span>'+r[3]+(r[1]>9?"Master number: carries the "+TITLES[base(r[1])].replace("The ","")+" qualities with extra intensity.":"")+'</span></div></div>';
+  });
+  h+='</div>';
+  var L=love(p.su);
+  h+='<div class="tip"><b>In love, you need</b><br>'+L.need+'. You show love '+L.show+'.</div>';
+  h+='<div class="tip p"><b>Under pressure</b><br>You may '+L.stress+'. Knowing it ahead of time helps you catch it early.</div>';
+  h+='<div class="sec">This year · '+y+'</div><div class="two"><div class="card"><div class="yr">Personal Year</div>'+orb(py)+'<div class="k">'+YEARS[py].k+'</div></div><div class="card"><div class="yr">Essence<span class="tag">Goodwin</span></div>'+(es?orb(es)+'<div class="k">'+YEARS[es].k+'</div>':'<div class="k">Add a full name</div>')+'</div></div>';
+  h+='<div class="sec">Birth grid &amp; arrows<span class="tag">Phillips</span></div><div class="card">'+arrowsBlock(m.dob)+'</div>';
+  h+='<footer>Use the full name exactly as on the birth certificate, middle names included if there are any, for the truest Goodwin numbers and Essences.</footer>';
+  return h;
+}
+
+function viewPeople(){
+  var h=brand("People");
+  if(!S.me)return h+'<div class="card empty">Add your own details first on the You tab.<div style="margin-top:14px"><button class="btn small" data-t="you">Go to You</button></div></div>';
+  if(!S.people.length)h+='<div class="card empty">Add the people in your love life: a partner, someone you\'re dating, or someone you\'re curious about.</div>';
+  else{
+    h+='<p style="color:var(--mute);margin:2px 0 14px">Ranked by how well your numbers fit. Tap one to open the match.</p>';
+    S.people.map(function(P){return {P:P,r:pairScore(S.me,P)};}).sort(function(a,b){return b.r.total-a.r.total;}).forEach(function(x){
+      h+='<div class="card"><button class="plain" data-a="open" data-id="'+x.P.id+'"><div class="pair">'+orb(x.r.pa.lp,"s")+orb(x.r.pb.lp,"s")+'<div class="nm"><b>'+esc(x.P.name)+'</b><span class="msub">'+esc(x.P.tag||"")+' · '+bandOf(x.r.total)+'</span></div><span class="sc grad">'+x.r.total+'%</span></div></button></div>';
+    });
+  }
+  if(S.people.length<MAXP)h+='<button class="btn" style="width:100%" data-a="addp">Add a person</button>';
+  return h;
+}
+
+function viewMatch(){
+  var h=brand("Match");
+  var P=curP();
+  if(!S.me||!P)return h+'<div class="card empty">Add yourself and at least one person to see a match.<div style="margin-top:14px"><button class="btn small" data-t="'+(S.me?"people":"you")+'">'+(S.me?"Go to People":"Go to You")+'</button></div></div>';
+  var r=pairScore(S.me,P),fb=esc(first(P.name));
+  h+='<select id="selP">'+S.people.map(function(x){return '<option value="'+x.id+'"'+(x.id===P.id?" selected":"")+'>'+esc(x.name)+'</option>';}).join("")+'</select>';
+  h+='<div class="card" style="margin-top:14px"><div class="bondhead"><div class="c">'+orb(r.pa.lp)+'<b>You</b></div><svg width="54" height="30" viewBox="0 0 54 30" aria-hidden="true"><circle cx="19" cy="15" r="12" fill="none" stroke="#2dd4bf" stroke-width="2.5"/><circle cx="35" cy="15" r="12" fill="none" stroke="#ec4899" stroke-width="2.5"/></svg><div class="c">'+orb(r.pb.lp)+'<b>'+fb+'</b></div></div>';
+  h+='<div class="verdict"><span class="big grad">'+r.total+'%</span><span class="band">'+bandOf(r.total)+'</span></div></div>';
+  DIM.forEach(function(d){
+    var x=r.dims[d.key];
+    h+='<div class="card dim"><div class="top">'+orb(x.a,"s")+'<span class="sp"></span>'+d.title+'<span class="tag">'+d.tr+'</span><span class="sp"></span>'+orb(x.b,"s")+'</div><div class="msub" style="text-align:center;margin-bottom:8px">'+d.sub+'</div><div class="bar"><i style="width:'+x.s+'%"></i></div><p>'+dimText(d,x.s)+'</p></div>';
+  });
+  var A=love(r.pa.su),B=love(r.pb.su);
+  h+='<div class="tip"><b>What each of you needs in love</b><br>You: '+A.need+'.<br>'+fb+': '+B.need+'.</div>';
+  h+='<div class="tip p"><b>How you each show love</b><br>You: '+A.show+'.<br>'+fb+': '+B.show+'.</div>';
+  h+='<div class="tip m"><b>When it gets tense</b><br>You may '+A.stress+'; '+fb+' may '+B.stress+'. Pause before reading it as a verdict on the relationship.<br><b>To reach '+fb+':</b> '+B.tip+'</div>';
+  h+=matchArrows(S.me,P);
+  h+='<button class="btn ghost" style="width:100%;margin-top:6px" data-t="timing">See your timing together</button>';
+  h+='<div class="row" style="margin-top:12px"><button class="btn ghost small" data-a="editp" data-id="'+P.id+'">Edit '+fb+'</button><button class="btn danger small" data-a="delp" data-id="'+P.id+'">Remove</button></div>';
+  return h;
+}
+
+function flowOf(s){return s>=80?["In step","a"]:s>=65?["Easy to bridge","b"]:["Go gently","c"];}
+function viewTiming(){
+  var h=brand("Timing");
+  var P=curP();
+  if(!S.me||!P)return h+'<div class="card empty">Add yourself and at least one person to see your timing together.<div style="margin-top:14px"><button class="btn small" data-t="'+(S.me?"people":"you")+'">'+(S.me?"Go to People":"Go to You")+'</button></div></div>';
+  var now=new Date(),y0=now.getFullYear(),aMe=ageOn(S.me.dob,now),aP=ageOn(P.dob,now),fb=esc(first(P.name));
+  h+='<select id="selP">'+S.people.map(function(x){return '<option value="'+x.id+'"'+(x.id===P.id?" selected":"")+'>'+esc(x.name)+'</option>';}).join("")+'</select>';
+  var pa=personalYear(S.me.dob,y0),pb=personalYear(P.dob,y0),ea=essenceAt(S.me.name,aMe),eb=essenceAt(P.name,aP),sc=pair9(pa,pb),fl=flowOf(sc);
+  h+='<div class="sec">Right now · '+y0+'</div><div class="two"><div class="card"><div class="yr">You</div>'+orb(pa)+'<div class="k">Personal Year '+pa+'</div>'+(ea?'<div style="margin-top:10px">'+orb(ea,"s")+'</div><div class="k">Essence · '+YEARS[ea].k+'</div>':'')+'</div>'+
+    '<div class="card"><div class="yr">'+fb+'</div>'+orb(pb)+'<div class="k">Personal Year '+pb+'</div>'+(eb?'<div style="margin-top:10px">'+orb(eb,"s")+'</div><div class="k">Essence · '+YEARS[eb].k+'</div>':'')+'</div></div>';
+  h+='<div class="card" style="margin-top:12px"><span class="flow '+fl[1]+'">'+fl[0]+'</span><p style="margin:10px 0 0;font-size:.92rem">You are in a Year '+pa+' ('+YEARS[pa].k+': '+YEARS[pa].t+'), and '+fb+' is in a Year '+pb+' ('+YEARS[pb].k+': '+YEARS[pb].t+'). '+
+    (sc>=80?"Your seasons line up, so you're likely to want similar things right now.":sc>=65?"Different seasons, but easy to bridge. Talk about what each of you needs this year.":"Your seasons pull in different directions this year, so go gently and don't take their mood personally.")+'</p></div>';
+  if(ea&&eb){var es=pair9(ea,eb);h+='<div class="tip"><b>Essence<span class="tag">Goodwin</span></b><br>Your Essences colour how the year feels: yours is about '+YEARS[ea].k+', '+fb+'\'s about '+YEARS[eb].k+'. '+(es>=80?"They sit well together.":es>=65?"They differ, but complement each other.":"They may feel like different moods at home, so name them out loud.")+'</div>';}
+  h+='<div class="sec">The next five years</div><table class="tl"><tr><th>Year</th><th>You</th><th>'+fb+'</th><th>Flow</th></tr>';
+  var best=null;
+  for(var i=0;i<5;i++){
+    var y=y0+i,a=personalYear(S.me.dob,y),b=personalYear(P.dob,y),s=pair9(a,b),f=flowOf(s);
+    if(!best||s>best.s)best={y:y,a:a,b:b,s:s};
+    h+='<tr'+(i===0?' class="now"':'')+'><td>'+y+'</td><td>'+orb(a,"s")+'</td><td>'+orb(b,"s")+'</td><td><span class="flow '+f[1]+'">'+f[0]+'</span></td></tr>';
+  }
+  h+='</table>';
+  h+='<div class="tip p"><b>Smoothest year ahead</b><br>'+best.y+', when you are in a Year '+best.a+' and '+fb+' is in a Year '+best.b+'.</div>';
+  h+='<footer>Personal years run on the calendar year. Essences follow the letters of the full birth name, one letter at a time.</footer>';
+  return h;
+}
+
+function render(){
+  var app=document.getElementById("app");
+  app.innerHTML=S.tab==="you"?viewYou():S.tab==="people"?viewPeople():S.tab==="match"?viewMatch():viewTiming();
+  document.querySelectorAll("nav button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-t")===S.tab);});
+  var hs=app.querySelector('.hero svg');
+  if(hs&&window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches&&hs.pauseAnimations)hs.pauseAnimations();
+  var sp=document.getElementById("selP");
+  if(sp)sp.onchange=function(){S.pid=sp.value;render();};
+}
+
+/* ---------- sheet ---------- */
+function openSheet(kind,id){
+  S.kind=kind;S.edit=id||null;
+  var m=kind==="me"?(S.me||{name:"",dob:""}):(id?get(id):{name:"",dob:"",tag:"Partner"});
+  S.tag=m.tag||"Partner";
+  var today=new Date().toISOString().slice(0,10);
+  document.getElementById("sheet").innerHTML=
+   '<h2 class="grad" style="margin-bottom:4px">'+(kind==="me"?"Your details":(id?"Edit person":"Add a person"))+'</h2>'+
+   '<label for="fn">Full name as on the birth certificate</label><input id="fn" autocomplete="off" value="'+esc(m.name)+'" placeholder="e.g. Jordan Lee Carter">'+
+   '<label for="fd">Date of birth</label><input id="fd" type="date" max="'+today+'" value="'+esc(m.dob)+'">'+
+   (kind==="me"?'':'<label>How do you know them?</label><div class="seg" id="seg"><button type="button" data-r="Partner">Partner</button><button type="button" data-r="Dating">Dating</button><button type="button" data-r="Interested">Interested</button></div>')+
+   '<div class="err" id="err"></div><div class="row" style="margin-top:8px"><button class="btn" id="sv" style="flex:1">Save</button><button class="btn ghost" id="cx">Cancel</button></div>';
+  document.getElementById("veil").classList.add("on");
+  var seg=document.getElementById("seg");
+  function paint(){if(seg)seg.querySelectorAll("button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-r")===S.tag);});}
+  paint();
+  if(seg)seg.onclick=function(e){var r=e.target.getAttribute&&e.target.getAttribute("data-r");if(r){S.tag=r;paint();}};
+  document.getElementById("cx").onclick=closeSheet;
+  document.getElementById("sv").onclick=function(){
+    var name=document.getElementById("fn").value.trim(),dob=document.getElementById("fd").value,err=document.getElementById("err");
+    if(clean(name).replace(/ /g,"").length<2){err.textContent="Please enter a name.";return;}
+    if(!dob||lifePath(dob)===null){err.textContent="Please choose a date of birth.";return;}
+    if(S.kind==="me"){S.me={name:name,dob:dob};}
+    else if(S.edit){var t=get(S.edit);t.name=name;t.dob=dob;t.tag=S.tag;}
+    else{if(S.people.length>=MAXP){err.textContent="The list is full.";return;}var np={id:uid(),name:name,dob:dob,tag:S.tag};S.people.push(np);S.pid=np.id;}
+    save();closeSheet();render();
+  };
+  setTimeout(function(){var f=document.getElementById("fn");if(f&&!m.name)f.focus();},50);
+}
+function closeSheet(){document.getElementById("veil").classList.remove("on");}
+function askConfirm(msg,cb){
+  document.getElementById("sheet").innerHTML='<h2 class="grad" style="margin-bottom:8px">Remove?</h2><p style="color:var(--mute);margin:0">'+esc(msg)+'</p><div class="row" style="margin-top:16px"><button class="btn danger" id="yes" style="flex:1">Yes, remove</button><button class="btn ghost" id="no">Keep</button></div>';
+  document.getElementById("veil").classList.add("on");
+  document.getElementById("no").onclick=closeSheet;
+  document.getElementById("yes").onclick=function(){closeSheet();cb();};
+}
+
+function example(){
+  S.me={name:"Jordan Lee Carter",dob:"1990-05-17"};
+  S.people=[{id:uid(),name:"Sam Taylor Brooks",dob:"1988-11-23",tag:"Partner"},{id:uid(),name:"Riley Quinn Adams",dob:"1992-02-09",tag:"Dating"},{id:uid(),name:"Casey Jo Bennett",dob:"1989-08-30",tag:"Interested"}];
+  S.pid=S.people[0].id;save();
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click",function(e){
+  var t=e.target.closest("[data-t],[data-a]");if(!t)return;
+  if(t.hasAttribute("data-t")&&!t.hasAttribute("data-a")){S.tab=t.getAttribute("data-t");render();window.scrollTo(0,0);return;}
+  var a=t.getAttribute("data-a"),id=t.getAttribute("data-id");
+  if(a==="addme"||a==="editme")openSheet("me");
+  else if(a==="addp")openSheet("person");
+  else if(a==="editp")openSheet("person",id);
+  else if(a==="example"){example();render();}
+  else if(a==="open"){S.pid=id;S.tab="match";render();window.scrollTo(0,0);}
+  else if(a==="delp"){var m=get(id);if(m)askConfirm("Remove "+m.name+" from your list?",function(){S.people=S.people.filter(function(x){return x.id!==id;});S.pid=null;save();render();});}
+});
+document.getElementById("veil").addEventListener("click",function(e){if(e.target===this)closeSheet();});
+
+try{
+  var icon="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" fill="#000"/><circle cx="200" cy="256" r="120" fill="none" stroke="#2dd4bf" stroke-width="30"/><circle cx="312" cy="256" r="120" fill="none" stroke="#ec4899" stroke-width="30"/></svg>');
+  var mf={name:"Are You My Person?",short_name:"My Person",display:"standalone",background_color:"#000000",theme_color:"#000000",start_url:".",icons:[{src:icon,sizes:"512x512",type:"image/svg+xml",purpose:"any"}]};
+  var l=document.createElement("link");l.rel="manifest";l.href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:"application/manifest+json"}));document.head.appendChild(l);
+}catch(e){}
+
+load();render();
+})();
+</script>
+</body>
+</html>
