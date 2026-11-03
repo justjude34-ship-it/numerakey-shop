@@ -15,7 +15,7 @@ const SITE = {
       buy:    optional full Lemon Squeezy URL; otherwise store + /buy/<slug>
    ========================================================================== */
 const CATEGORIES = [
-  { id:"learn",    name:"Learn",        colour:"#5EEAD4", note:"Gentle lessons for getting started with AI." },
+  { id:"learn",    name:"Learn",        colour:"#5EEAD4", note:"Courses to work through at your own pace." },
   { id:"family",   name:"Family",       colour:"#F5A3B8", note:"Everyone under one roof." },
   { id:"dating",   name:"Dating",       colour:"#F58FB0", note:"Starting again, safely and slowly." },
   { id:"numerology", name:"Numerology", colour:"#C78BF5", note:"Your numbers, your name, your year." },

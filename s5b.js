@@ -365,7 +365,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"teach-me-the-i-ching", name:"Teach Me the I Ching", cat:"divine", price:39, status:"live", ready:true,
+  slug:"teach-me-the-i-ching", name:"Teach Me the I Ching", cat:"learn", price:39, status:"live", ready:true,
   cover:"covers/teach-me-the-i-ching.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/teach-me-the-i-ching/",
   desc:"A short path into the Book of Changes — yin and yang, the trigrams, how to cast with three coins, and how to read what you get.",
@@ -379,7 +379,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"teach-me-runes", name:"Teach Me Runes", cat:"divine", price:39, status:"live", ready:true,
+  slug:"teach-me-runes", name:"Teach Me Runes", cat:"learn", price:39, status:"live", ready:true,
   cover:"covers/teach-me-runes.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/teach-me-runes/",
   desc:"A study of the Elder Futhark — the name, the sound, and what the old poems actually say, rune by rune. Not a prediction.",
@@ -393,7 +393,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"teach-me-palmistry", name:"Teach Me Palmistry", cat:"divine", price:39, status:"live", ready:true,
+  slug:"teach-me-palmistry", name:"Teach Me Palmistry", cat:"learn", price:39, status:"live", ready:true,
   cover:"covers/teach-me-palmistry.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/teach-me-palmistry/",
   desc:"Palmistry for beginners \u2014 six lines and six mounts, each marked on a real palm, with a quiz to test your eye.",
