@@ -7,7 +7,7 @@ const vm = require("vm");
    are for sale are defined in exactly one place. */
 function loadCatalogue() {
   const root = path.join(__dirname, "..");
-  const names = ["s1.js","s2.js","s3.js","s4.js","s5.js","s5b.js","s5c.js","s5d.js"];
+  const names = ["s1.js","s2.js","s3.js","s4.js","s5.js","s5b.js","s5c.js","s5d.js","s5e.js"];
   const src = names.map(n => fs.readFileSync(path.join(root, n), "utf8")).join("\n;\n")
     + "\n;({ APPS, FILES })";
   return vm.runInNewContext(src, {}, { timeout: 2000 });

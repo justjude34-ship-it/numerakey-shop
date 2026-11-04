@@ -15,3 +15,14 @@ APPS.push({ slug:"write-my-resume", name:"Write My Resume", cat:"general", price
 artFor(APPS[APPS.length - 1]).motif = "stack";
 /* New apps first on their shelf: Write My Resume leads General. */
 (function(){const i=APPS.findIndex(a=>a.slug==="write-my-resume");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.cat==="general");APPS.splice(f<0?APPS.length:f,0,x);})();
+
+/* Aether: quick guided nervous-system resets, $49 Wellness tier, leads the Wellness shelf. */
+APPS.push({ slug:"aether", name:"Aether", cat:"wellness", price:49, status:"live", ready:true, cover:"covers/aether.jpg", demo:"https://numerakey-shop.vercel.app/demos/aether/", desc:"Four short guided resets for when your body is wound up, flat or worn out, with a breathing orb to follow.", tag:"A few quiet minutes for your nervous system.", body:["Aether gives you short, guided resets for the moments your body feels like too much or not enough. Tell it how you are and it suggests a reset, or tap Drop Anchor for a fast, one-tap reset when everything is too much.", "There are four resets, each with timed steps and a breathing orb you can follow with soft sound: Drop Anchor (about 80 seconds), a 3-minute somatic release, a slower deep rebuild, and a two-minute morning calibration. Rate how settled you feel before and after to see your own shift over time, with no scores or streaks. Everything stays on your device. It is a self-regulation tool, not medical care."], inside:["Drop Anchor: a one-tap reset in about 80 seconds", "Four guided resets with timed steps and a breathing orb", "Soft breathing sound and chimes, with a light buzz on Android", "Check in and rate how settled you feel before and after", "Journey view of your last two weeks, with no scores or streaks", "Buy once, no subscription", "One HTML file, private to your device"] });
+artFor(APPS[APPS.length - 1]).motif = "rings";
+(function(){const i=APPS.findIndex(a=>a.slug==="aether");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.cat==="wellness");APPS.splice(f<0?APPS.length:f,0,x);})();
+
+/* Apps added in this file load after the buy links are set in s5d.js, so set them again here. */
+APPS.forEach(a => {
+  if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
+  else if (PAYMENTS[a.slug]) a.buy = PAYMENTS[a.slug];
+});
