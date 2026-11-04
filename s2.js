@@ -86,7 +86,7 @@ const AP2 = [
 {
   slug:"adhd-mate", name:"ADHD Mate", cat:"neuro", price:39, status:"live", ready:true,
   cover:"covers/adhd-mate.jpg",
-  demo:"https://numerakey-shop.vercel.app/demos/adhd-mate/",
+  demo:"https://numerakey-shop-git.vercel.app/demos/adhd-mate/",
   desc:"A quiet companion for ADHD days \u2014 a short chat, a focus sprint, tiny steps and a no-score check-in.",
   tag:"One soft next step.",
   body:[
