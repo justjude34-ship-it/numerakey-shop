@@ -21,6 +21,14 @@ APPS.push({ slug:"aether", name:"Aether", cat:"wellness", price:49, status:"live
 artFor(APPS[APPS.length - 1]).motif = "rings";
 (function(){const i=APPS.findIndex(a=>a.slug==="aether");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.cat==="wellness");APPS.splice(f<0?APPS.length:f,0,x);})();
 
+/* After the Silence: companion for parents living with adult-child estrangement, $39 Narcissistic-abuse tier, leads that shelf. */
+APPS.push({ slug:"after-the-silence", name:"After the Silence", cat:"narc", price:39, status:"live", ready:true, cover:"covers/after-the-silence.jpg", demo:"https://numerakey-shop.vercel.app/demos/after-the-silence/", desc:"A private companion for parents living with adult-child estrangement, for the days the silence is loudest.", tag:"A place to put it down.", body:[
+  "When an adult child stops speaking to you, there is no ritual for it and very little understanding. After the Silence is a quiet place to land on the days it hits: the birthday, the holiday, the night you nearly send the message.",
+  "It doesn't tell you to reach out, give up, or fix it. It offers steadiness, somewhere to write what you can't send, and one small next step so your life doesn't freeze while you wait. It is a companion, not therapy."
+], inside:["Breathe, for the moments that knock the wind out of you","First days: shock, sleep, and not sending that text","Short journal prompts that come and go","Unsent letters, with no send button","A calendar for birthdays, holidays and last-contact dates","One next step, so life keeps moving","A calm drawer for if they reach out","Optional PIN, and everything stays on your phone"] });
+artFor(APPS[APPS.length - 1]).motif = "field";
+(function(){const i=APPS.findIndex(a=>a.slug==="after-the-silence");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.cat==="narc");APPS.splice(f<0?APPS.length:f,0,x);})();
+
 /* Apps added in this file load after the buy links are set in s5d.js, so set them again here. */
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
