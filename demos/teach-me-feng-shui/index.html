@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head><meta name="robots" content="noindex"><meta name="robots" content="noindex"><script>window.NK_DEMO={"lock": [".lcard[data-l=\"2\"]", ".lcard[data-l=\"3\"]", ".lcard[data-l=\"4\"]", ".lcard[data-l=\"5\"]", ".lcard[data-l=\"6\"]"], "lockMsg": "Lessons 3 to 7 are part of the full app.", "slug": "teach-me-feng-shui", "name": "Teach Me Feng Shui", "url": "https://numerakey-shop.vercel.app/#/app/teach-me-feng-shui", "info": "2 of 7 lessons"};</script><script>/* NumeraKey demo layer: banner, locks, caps, no persistence, no export/print. */
+(function(){
+"use strict";
+var C = window.NK_DEMO || {}; var SHOP = C.url || "https://numerakey-shop.vercel.app";
+var KEY = "nkdemo:" + (C.slug || location.hostname);
+var realLS = null; try { realLS = window.localStorage; } catch(e) {}
+function rget(k,d){ try{ var v=realLS&&realLS.getItem(KEY+":"+k); return v==null?d:JSON.parse(v);}catch(e){return d;} }
+function rset(k,v){ try{ realLS&&realLS.setItem(KEY+":"+k, JSON.stringify(v)); }catch(e){} }
+
+/* 1. Nothing the user enters is kept: localStorage lives in memory for this visit only. */
+function MemStorage(){ var m = new Map(); var o = {
+  getItem:function(k){ k=String(k); return m.has(k)?m.get(k):null; },
+  setItem:function(k,v){ m.set(String(k), String(v)); },
+  removeItem:function(k){ m.delete(String(k)); },
+  clear:function(){ m.clear(); },
+  key:function(i){ return Array.from(m.keys())[i] ?? null; }
+}; Object.defineProperty(o,"length",{get:function(){return m.size;}});
+  return new Proxy(o,{ get:function(t,p){ if(p in t) return t[p]; return typeof p==="string"&&m.has(p)?m.get(p):undefined; },
+    set:function(t,p,v){ if(p in t) return false; m.set(String(p),String(v)); return true; },
+    deleteProperty:function(t,p){ m.delete(String(p)); return true; },
+    ownKeys:function(){ return Array.from(m.keys()); },
+    getOwnPropertyDescriptor:function(t,p){ return m.has(p)?{value:m.get(p),enumerable:true,configurable:true,writable:true}:undefined; } });
+}
+try { Object.defineProperty(window, "localStorage", { value: MemStorage(), configurable: true }); } catch(e) {}
+/* IndexedDB: a fresh, throwaway database per visit; older demo databases are removed. */
+try {
+  var idb = window.indexedDB, run = Math.random().toString(36).slice(2,8), origOpen = idb.open.bind(idb), origDel = idb.deleteDatabase.bind(idb);
+  idb.open = function(name, v){ return v===undefined ? origOpen("nkdemo-"+run+"-"+name) : origOpen("nkdemo-"+run+"-"+name, v); };
+  idb.deleteDatabase = function(name){ return origDel("nkdemo-"+run+"-"+name); };
+  if (idb.databases) idb.databases().then(function(l){ l.forEach(function(d){ if(d.name && d.name.indexOf("nkdemo-"+run)!==0) origDel(d.name); }); }).catch(function(){});
+} catch(e) {}
+/* No offline install of the demo. */
+try { if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(function(r){ r.forEach(function(x){ x.unregister(); }); }).catch(function(){});
+  navigator.serviceWorker.register = function(){ return new Promise(function(){}); };
+} } catch(e) {}
+try { window.showSaveFilePicker = undefined; window.showDirectoryPicker = undefined; } catch(e) {}
+
+/* 2. Overlay */
+var css = ""
++ "#nkd-bar{position:fixed;top:0;left:0;right:0;height:44px;z-index:2147483646;display:flex;align-items:center;justify-content:center;gap:14px;padding:0 12px;"
++ "background:rgba(12,12,16,.96);border-bottom:1px solid rgba(214,196,140,.38);font:500 15px/1.2 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:#ece8df;letter-spacing:.01em;box-sizing:border-box}"
++ "#nkd-bar .nkd-t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#nkd-bar b{color:#e3cf8f;font-weight:600}"
++ ".nkd-btn{display:inline-block;padding:7px 14px;border-radius:999px;border:1px solid rgba(214,196,140,.7);color:#f3e7bf!important;background:linear-gradient(180deg,rgba(214,196,140,.16),rgba(214,196,140,.05));text-decoration:none!important;font:600 14px/1.1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;white-space:nowrap;cursor:pointer}"
++ "#nkd-ov{position:fixed;inset:0;z-index:2147483647;display:none;align-items:center;justify-content:center;background:rgba(6,6,9,.78);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);padding:20px;box-sizing:border-box}"
++ "#nkd-ov.on{display:flex}#nkd-card{max-width:380px;width:100%;background:#15151b;border:1px solid rgba(214,196,140,.35);border-radius:18px;padding:28px 24px 22px;text-align:center;color:#e9e6de;box-shadow:0 20px 60px rgba(0,0,0,.6);font:400 17px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif}"
++ "#nkd-card h2{margin:0 0 10px;font:600 23px/1.25 Georgia,'Times New Roman',serif;background:linear-gradient(180deg,#f6e7b0,#cdb36b 55%,#efe0a6);-webkit-background-clip:text;background-clip:text;color:transparent}"
++ "#nkd-card p{margin:0 0 20px;color:#cfcac0}#nkd-card .nkd-btn{font-size:16px;padding:11px 22px}"
++ "#nkd-close{display:block;margin:14px auto 0;background:none;border:0;color:#a9a49a;font:500 15px/1.3 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:3px}"
++ ".nkd-locked{position:relative;opacity:.55!important}"
++ ".nkd-locked::after{content:'\\1F512';position:absolute;top:2px;right:2px;font-size:11px;line-height:1;opacity:.9;pointer-events:none;filter:grayscale(1)}"
++ ".nkd-hide{display:none!important}"
++ "#nkd-bar.nkd-light{background:rgba(251,249,244,.97);border-bottom-color:rgba(150,128,60,.35);color:#2b2a28}#nkd-bar.nkd-light b{color:#1d1d1f}"
++ "#nkd-bar.nkd-light .nkd-btn{color:#2b2a28!important;border-color:rgba(160,135,60,.75);background:linear-gradient(180deg,rgba(214,190,110,.22),rgba(214,190,110,.08))}"
++ "html{scroll-padding-top:44px}body{padding-top:44px!important}"
++ (C.css||"");
+function inject(){
+  if (document.getElementById("nkd-bar")) return;
+  var st = document.createElement("style"); st.id="nkd-style"; st.textContent = css; (document.head||document.documentElement).appendChild(st);
+  var bar = document.createElement("div"); bar.id="nkd-bar"; bar.setAttribute("role","note");
+  bar.innerHTML = '<span class="nkd-t"><b>Demo version</b><span id="nkd-info"></span></span><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a>';
+  document.body.appendChild(bar);
+  var ov = document.createElement("div"); ov.id="nkd-ov"; ov.setAttribute("role","dialog"); ov.setAttribute("aria-modal","true");
+  ov.innerHTML = '<div id="nkd-card"><h2 id="nkd-h">Available in the full app</h2><p id="nkd-p"></p><a class="nkd-btn" target="_top" href="'+SHOP+'">Get the full app</a><button id="nkd-close" type="button">Keep exploring the demo</button></div>';
+  document.body.appendChild(ov);
+  ov.addEventListener("click", function(e){ if(e.target===ov && !ov.dataset.hard) hide(); });
+  document.getElementById("nkd-close").addEventListener("click", function(){ if(!ov.dataset.hard) hide(); });
+  try { var bg = "", els=[]; var pe = document.elementFromPoint(innerWidth/2, innerHeight*0.6); while (pe && pe!==document.documentElement) { if (!(pe.id||"").startsWith("nkd-")) els.push(pe); pe = pe.parentElement; } els.push(document.body, document.documentElement);
+    for (var i=0;i<els.length;i++){ var c = getComputedStyle(els[i]).backgroundColor; if (c && !/rgba\(\s*0,\s*0,\s*0,\s*0\)|transparent/.test(c) && !/rgba\([^)]*,\s*0?\.[0-4]\d*\)/.test(c)) { bg = c; break; } var gi = getComputedStyle(els[i]).backgroundImage; var gm = gi && gi.match(/rgba?\([^)]*\)/); if (gm) { bg = gm[0]; break; } }
+    var mm = bg.match(/\d+(\.\d+)?/g); if (C.theme==="light" || (C.theme!=="dark" && mm && (0.299*mm[0]+0.587*mm[1]+0.114*mm[2]) > 160)) bar.classList.add("nkd-light"); } catch(e){}
+  info(); mark(); shift();
+}
+function hide(){ var ov=document.getElementById("nkd-ov"); if(ov) ov.classList.remove("on"); }
+function show(msg, head, hard){
+  inject(); var ov=document.getElementById("nkd-ov");
+  document.getElementById("nkd-h").textContent = head || "Available in the full app";
+  document.getElementById("nkd-p").textContent = msg || (C.lockMsg || ("This part of " + (C.name||"the app") + " is available in the full app."));
+  var cl = document.getElementById("nkd-close"); if (hard) { ov.dataset.hard="1"; cl.style.display="none"; } else { delete ov.dataset.hard; cl.style.display=""; }
+  ov.classList.add("on");
+}
+window.NKDemo = { show: show };
+function info(){ var el=document.getElementById("nkd-info"); if(!el) return; var t="";
+  if (C.cap) { var left = Math.max(0, C.cap.n - rget("cap",0)); t = " \u00b7 " + left + " of " + C.cap.n + " free " + (C.cap.label||"uses") + " left"; }
+  if (C.timer) t = " \u00b7 " + C.timer + "-minute listening session";
+  if (C.info) t = " \u00b7 " + C.info;
+  el.textContent = t; }
+
+/* 3. Locks and caps (capture phase, before the app sees the click) */
+function matches(el, list){ if(!list||!el||!el.closest) return null; for (var i=0;i<list.length;i++){ var m = el.closest(list[i]); if (m) return m; } return null; }
+function textMatch(el){ if(!C.lockText||!el||!el.closest) return null; var b = el.closest("button,a,[role=button],[role=tab],li,[onclick],[data-tab],[data-view],[data-go],[data-nav],[data-page],label,.card,.tile");
+  if(!b) return null; var t=(b.innerText||b.getAttribute("aria-label")||"").trim().toLowerCase();
+  for (var i=0;i<C.lockText.length;i++){ var k=C.lockText[i]; if (k instanceof RegExp ? k.test(t) : t===k.toLowerCase()) return b; } return null; }
+function isLocked(el){ if (matches(el, C.allow)) return null; var m = matches(el, C.lock) || textMatch(el); if (m) return m;
+  if (C.lockIf) { try { var r = C.lockIf(el); if (r) return r; } catch(e){} } return null; }
+function guard(e){
+  var t = e.target; if (!t || !t.closest) return;
+  if (t.closest("#nkd-bar,#nkd-ov")) return;
+  if (window.__nkdHard) { e.preventDefault(); e.stopImmediatePropagation(); show(window.__nkdHard, "Thank you for trying the demo", true); return; }
+  var a = t.closest("a[download]");
+  if (a || isLocked(t)) {
+    e.preventDefault(); e.stopImmediatePropagation();
+    if (e.type==="click"||e.type==="submit") show(a ? "Saving and exporting are available in the full app." : null);
+    return;
+  }
+  if (C.cap && e.type==="keydown" && C.cap.keySel && t.matches && t.matches(C.cap.keySel) && e.key==="Enter") { var u0 = rget("cap",0);
+    if (u0 >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+    if ((t.value||"").trim()) { rset("cap", u0+1); setTimeout(info,0); } return; }
+  if (C.cap && e.type==="click") { var c = matches(t, C.cap.sel); if (!c && C.cap.textSel) { var bb = t.closest("button,a,[role=button],input[type=submit]"); if (bb && C.cap.textSel.test((bb.innerText||bb.value||"").trim().toLowerCase())) c = bb; }
+    if (c) { var used = rget("cap",0);
+      if (used >= C.cap.n) { e.preventDefault(); e.stopImmediatePropagation(); show(C.cap.msg || ("You've used your " + C.cap.n + " free " + (C.cap.label||"uses") + ". The full app has no limit."), "Your free " + (C.cap.label||"uses") + " are used"); return; }
+      if (!C.cap.valid || C.cap.valid(c)) { rset("cap", used+1); setTimeout(info,0); }
+    } }
+}
+["click","pointerdown","mousedown","touchstart","keydown","submit","change","input"].forEach(function(ev){
+  window.addEventListener(ev, function(e){
+    if (ev==="keydown" && !(e.key==="Enter"||e.key===" ")) return;
+    if (ev==="change"||ev==="input") { if (isLocked(e.target)) { e.stopImmediatePropagation(); } return; }
+    if (ev!=="click"&&ev!=="submit"&&ev!=="keydown") { var t=e.target; if(t&&t.closest&&!t.closest("#nkd-bar,#nkd-ov")&&(isLocked(t)||window.__nkdHard)) { e.stopImmediatePropagation(); } return; }
+    guard(e);
+  }, true);
+});
+/* anchors clicked from code with a download attribute */
+var aclick = HTMLAnchorElement.prototype.click;
+HTMLAnchorElement.prototype.click = function(){ if (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||"")) { show("Saving and exporting are available in the full app."); return; } return aclick.apply(this, arguments); };
+var adisp = HTMLAnchorElement.prototype.dispatchEvent;
+HTMLAnchorElement.prototype.dispatchEvent = function(ev){ if (ev && ev.type==="click" && (this.hasAttribute("download") || /^blob:|^data:/.test(this.getAttribute("href")||""))) { show("Saving and exporting are available in the full app."); return false; } return adisp.apply(this, arguments); };
+window.print = function(){ show("Printing is available in the full app."); };
+try { var ws = window.open; window.open = function(u){ if (u===undefined || u==="" || /^blob:|^data:|about:blank/.test(String(u))) { show("Saving and exporting are available in the full app."); return null; } return ws.apply(window, arguments); }; } catch(e) {}
+try { if (navigator.share) navigator.share = function(){ show("Sharing and exporting are available in the full app."); return Promise.reject(new Error("demo")); }; } catch(e) {}
+window.addEventListener("beforeprint", function(){ document.documentElement.style.display="none"; });
+window.addEventListener("afterprint", function(){ document.documentElement.style.display=""; });
+
+function mark(){
+  var list = (C.lock||[]).concat(C.markOnly||[]);
+  list.forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ if(!matches(el,C.allow)) el.classList.add("nkd-locked"); }); } catch(e){} });
+  if (C.lockText) document.querySelectorAll("button,a,[role=tab],[data-tab],[data-view],[data-go],[data-nav],.card,.tile").forEach(function(el){ if (!el.classList.contains("nkd-locked") && textMatch(el)===el && !matches(el,C.allow)) el.classList.add("nkd-locked"); });
+  (C.hide||[]).forEach(function(s){ try { document.querySelectorAll(s).forEach(function(el){ el.classList.add("nkd-hide"); }); } catch(e){} });
+  document.querySelectorAll('link[rel="manifest"]').forEach(function(l){ l.remove(); });
+}
+function shift(){
+  if (C.noShift) return;
+  var all = document.body ? document.body.querySelectorAll("*") : [];
+  for (var i=0;i<all.length;i++){ var el = all[i]; if (el.id && el.id.indexOf("nkd-")===0) continue;
+    if (el.dataset.nkdShift) continue;
+    var cs = getComputedStyle(el); if (cs.position!=="fixed" && cs.position!=="sticky") continue;
+    var top = parseFloat(cs.top); if (isNaN(top) || top > 4) continue;
+    el.style.setProperty("top", (top+44)+"px", "important"); el.dataset.nkdShift = "1"; }
+}
+var pend=false; function soon(){ if(pend) return; pend=true; setTimeout(function(){ pend=false; mark(); shift(); }, 120); }
+function start(){ inject(); new MutationObserver(soon).observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:["class","style","hidden"]}); if (C.onReady) try{ C.onReady(); }catch(e){} }
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start); else start();
+
+/* hash routes that belong to the full app */
+if (C.lockHash) { var okHash = location.hash && !C.lockHash.test(location.hash) ? location.hash : (C.homeHash||"#/");
+  if (location.hash && C.lockHash.test(location.hash)) { try { history.replaceState(null, "", location.pathname + location.search + okHash); } catch(e){} }
+  window.addEventListener("hashchange", function(e){ if (C.lockHash.test(location.hash)) { e.stopImmediatePropagation(); history.replaceState(null, "", location.pathname + location.search + okHash); show(); } else okHash = location.hash; }, true); }
+
+/* 4. Listening session limit for audio apps */
+if (C.timer) {
+  var ctxs = [], LIMIT = C.timer*60*1000, HOLD = 12*3600*1000;
+  var startAt = rget("t0", 0); if (startAt && Date.now()-startAt > LIMIT + HOLD) { startAt = 0; rset("t0", 0); }
+  var endMsg = "Your " + C.timer + "-minute demo session has ended. The full app has no time limit.";
+  function expired(){ return startAt && Date.now()-startAt >= LIMIT; }
+  function begin(){ if (!startAt) { startAt = Date.now(); rset("t0", startAt); } }
+  function stopAll(){
+    window.__nkdHard = endMsg;
+    ctxs.forEach(function(c){ try{ c.suspend(); }catch(e){} });
+    document.querySelectorAll("audio,video").forEach(function(m){ try{ m.pause(); m.muted=true; }catch(e){} });
+    show(endMsg, "Thank you for trying the demo", true);
+  }
+  ["AudioContext","webkitAudioContext"].forEach(function(n){ var O = window[n]; if (!O) return;
+    var W = function(){ var c = new (Function.prototype.bind.apply(O, [null].concat([].slice.call(arguments))))(); ctxs.push(c); return c; };
+    W.prototype = O.prototype; try{ Object.setPrototypeOf(W, O); }catch(e){} window[n] = W; });
+  var oResume = window.AudioContext && AudioContext.prototype.resume;
+  if (oResume) AudioContext.prototype.resume = function(){ if (expired()) { stopAll(); return Promise.resolve(); } begin(); return oResume.apply(this, arguments); };
+  var oStart = window.AudioScheduledSourceNode && AudioScheduledSourceNode.prototype.start;
+  if (oStart) AudioScheduledSourceNode.prototype.start = function(){ if (expired()) { stopAll(); return; } begin(); return oStart.apply(this, arguments); };
+  var oPlay = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = function(){ if (expired()) { stopAll(); return Promise.reject(new Error("demo")); } begin(); return oPlay.apply(this, arguments); };
+  setInterval(function(){ if (startAt) { var left = Math.max(0, LIMIT-(Date.now()-startAt)); var el=document.getElementById("nkd-info");
+      if (el) el.textContent = left>0 ? " \u00b7 " + Math.ceil(left/60000) + " min of listening left" : " \u00b7 session ended";
+      if (left<=0 && !window.__nkdHard) stopAll(); } }, 1000);
+}
+})();
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Teach Me Feng Shui">
+<title>Teach Me Feng Shui</title>
+<style>
+:root{
+  --bg:#000;--card:#0b0a10;--card2:#120f1a;--line:#221d30;--text:#ece8f5;--muted:#9d96b2;
+  --p:#b86bff;--k:#ff5fa8;--t:#2ee6c8;
+  --wood:#3ddc84;--fire:#ff4d6d;--earth:#ffc83d;--metal:#d9dde6;--water:#4aa3ff;
+  --grad:linear-gradient(110deg,#b86bff 0%,#ff5fa8 55%,#2ee6c8 120%);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;font-size:17px}
+body{min-height:100vh;padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px}
+h1,h2,h3{line-height:1.2;margin:0}
+.gt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+header.top{padding:calc(14px + env(safe-area-inset-top)) 0 6px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:700;letter-spacing:.04em;font-size:.82rem;text-transform:uppercase;color:var(--muted)}
+.ring{width:46px;height:46px;position:relative}
+.ring span{position:absolute;inset:0;display:grid;place-items:center;font-size:.72rem;font-weight:700}
+.hero{position:relative;margin:6px 0 22px;border:1px solid var(--line);border-radius:22px;overflow:hidden;background:radial-gradient(120% 100% at 50% 0%,#1a1030 0%,#07050c 60%,#000 100%)}
+.hero svg{display:block;width:100%;height:auto}
+.hero .txt{padding:0 22px 24px;margin-top:-6px}
+.hero h1{font-size:2.15rem;font-weight:800;letter-spacing:-.01em}
+.hero p{color:var(--muted);margin:10px 0 0}
+.btn{appearance:none;border:0;border-radius:14px;padding:14px 20px;font:inherit;font-weight:700;color:#0a0710;background:var(--grad);cursor:pointer;min-height:48px}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn:active{transform:scale(.98)}
+.btn.sm{padding:9px 14px;min-height:40px;font-size:.92rem}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.cta{margin-top:18px}
+.list{display:grid;gap:12px;margin:0 0 26px}
+.lcard{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:14px;color:inherit;font:inherit;cursor:pointer}
+.lcard:active{background:var(--card2)}
+.num{flex:0 0 46px;height:46px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:1.1rem;background:#15111f;border:1px solid var(--line)}
+.lcard.done .num{background:var(--grad);color:#0a0710;border:0}
+.lcard h3{font-size:1.04rem;font-weight:700}
+.lcard small{color:var(--muted);display:block;margin-top:2px;line-height:1.4}
+.lcard .chev{margin-left:auto;color:var(--muted);font-size:1.3rem}
+.sec{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:26px 0 10px;font-weight:700}
+.lhero{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:radial-gradient(120% 100% at 50% 0%,#190f2c 0%,#07050c 65%,#000 100%);margin:6px 0 16px}
+.lhero svg{display:block;width:100%;height:auto;max-height:260px}
+.eyebrow{color:var(--muted);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
+.lt{font-size:1.9rem;font-weight:800;margin:6px 0 4px}
+.lead{color:var(--muted);font-size:1.05rem;margin:0 0 6px}
+.blk{margin:24px 0}
+.blk h2{font-size:1.2rem;margin-bottom:8px}
+.blk p{margin:0 0 12px}
+.callout{border:1px solid var(--line);border-left:3px solid var(--p);background:var(--card);border-radius:14px;padding:14px 16px;margin:20px 0}
+.callout b{display:block;margin-bottom:4px}
+.callout.t{border-left-color:var(--t)}
+.callout.k{border-left-color:var(--k)}
+.act{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:16px;margin:22px 0}
+.act h3{font-size:1.02rem;margin-bottom:10px}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:9px 0;cursor:pointer;border-top:1px solid var(--line)}
+.chk:first-of-type{border-top:0}
+.chk input{appearance:none;flex:0 0 24px;width:24px;height:24px;border-radius:8px;border:2px solid #3a3350;margin-top:1px;background:transparent;display:grid;place-items:center;cursor:pointer}
+.chk input:checked{background:var(--grad);border-color:transparent}
+.chk input:checked::after{content:"";width:6px;height:11px;border:solid #0a0710;border-width:0 3px 3px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.q{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:16px;margin:12px 0}
+.q p{margin:0 0 10px;font-weight:600}
+.opt{display:block;width:100%;text-align:left;background:#0f0c17;border:1px solid var(--line);color:var(--text);font:inherit;border-radius:12px;padding:12px 14px;margin:8px 0;cursor:pointer;min-height:46px}
+.opt.right{border-color:var(--wood);background:#0b1a11}
+.opt.wrong{border-color:var(--fire);background:#1c0b10}
+.why{display:none;color:var(--muted);font-size:.94rem;margin-top:8px}
+.q.answered .why{display:block}
+.score{color:var(--muted);font-size:.9rem;margin:6px 0 0}
+textarea{width:100%;min-height:110px;background:#0b0911;color:var(--text);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font:inherit;resize:vertical}
+textarea:focus{outline:2px solid var(--p);outline-offset:1px}
+.nav{display:flex;gap:10px;margin:26px 0 10px}
+.nav .btn{flex:1}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:8px 12px calc(8px + env(safe-area-inset-bottom));z-index:5}
+.tabs div{max-width:720px;margin:0 auto;display:flex;gap:8px}
+.tab{flex:1;background:transparent;border:0;color:var(--muted);font:inherit;font-size:.82rem;font-weight:700;padding:8px 4px;border-radius:12px;cursor:pointer;min-height:48px}
+.tab svg{display:block;margin:0 auto 2px}
+.tab.on{color:var(--text);background:#14101e}
+.gl{border-top:1px solid var(--line);padding:14px 0}
+.gl b{display:block;font-size:1.05rem}
+.gl span{color:var(--muted)}
+.bagua{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 6px}
+.gua{border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:14px;padding:10px 4px;font:inherit;cursor:pointer;min-height:84px;text-align:center}
+.gua b{display:block;font-size:.9rem;line-height:1.2}
+.gua i{display:block;font-style:normal;font-size:.72rem;color:var(--muted);margin-top:4px}
+.gua.on{box-shadow:0 0 0 2px var(--c,#b86bff) inset;background:#14101e}
+.gua .dot{width:10px;height:10px;border-radius:50%;display:block;margin:0 auto 6px;background:var(--c)}
+.door{text-align:center;color:var(--muted);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;border-top:3px solid var(--p);padding-top:6px;margin:0 20px 12px;border-radius:2px}
+.panel{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:16px;margin:10px 0}
+.panel h3{font-size:1.1rem;margin-bottom:6px}
+.panel p{margin:0 0 8px}
+.panel .tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:.78rem;color:var(--muted);margin:0 6px 6px 0}
+.seg{display:flex;gap:6px;background:#0b0911;border:1px solid var(--line);border-radius:12px;padding:4px;margin:8px 0}
+.seg button{flex:1;border:0;background:transparent;color:var(--muted);font:inherit;font-weight:700;border-radius:9px;padding:9px 6px;cursor:pointer;min-height:42px;font-size:.88rem}
+.seg button.on{background:#1b1528;color:var(--text)}
+.acc{border:1px solid var(--line);border-radius:16px;background:var(--card);margin:10px 0;overflow:hidden}
+.acc button{width:100%;text-align:left;background:transparent;border:0;color:var(--text);font:inherit;font-weight:700;padding:15px 16px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-height:52px}
+.acc .body{display:none;padding:0 16px 14px;color:var(--text)}
+.acc.open .body{display:block}
+.acc.open button .pl{transform:rotate(45deg)}
+.pl{transition:transform .2s;color:var(--muted);font-size:1.4rem;line-height:1}
+.acc ul{margin:6px 0 0;padding-left:20px}
+.acc li{margin:5px 0}
+.done-card{text-align:center;border:1px solid var(--line);border-radius:22px;padding:28px 18px;background:radial-gradient(120% 120% at 50% 0%,#1a1030,#07050c);margin:20px 0}
+.done-card h2{font-size:1.7rem}
+.fade{animation:f .28s ease}
+@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes drift{0%{stroke-dashoffset:0}100%{stroke-dashoffset:-60}}
+.flow{stroke-dasharray:6 8;animation:drift 4s linear infinite}
+@media (prefers-reduced-motion:reduce){.flow{animation:none}.fade{animation:none}}
+footer{color:var(--muted);font-size:.82rem;text-align:center;margin:30px 0 10px}
+footer button{background:none;border:0;color:var(--muted);text-decoration:underline;font:inherit;cursor:pointer;padding:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Teach Me &middot; Feng Shui</div>
+    <div class="ring" id="ring" aria-label="Course progress"></div>
+  </header>
+  <main id="app"></main>
+</div>
+<nav class="tabs" aria-label="Main"><div>
+  <button class="tab" data-v="home"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>Lessons</button>
+  <button class="tab" data-v="gloss"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5"/></svg>Glossary</button>
+  <button class="tab" data-v="plan"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 01-2 2H6a2 2 0 01-2-2V5a2 2 0 012-2h9"/></svg>My plan</button>
+</div></nav>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- storage ---------- */
+var KEY="tmfs.v1";
+var S={done:[],notes:{},plan:["","",""],checks:{},quiz:{},last:0};
+function load(){try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);for(var k in o)S[k]=o[k];}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+load();
+
+/* ---------- helpers ---------- */
+function $(s,r){return (r||document).querySelector(s);}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+var app=$("#app");
+var EL={
+  Wood:{c:"#3ddc84",gist:"Growth, vision, new beginnings",colours:"Green and blue-green",shapes:"Tall columns, stripes, upright forms",things:"Plants, timber furniture, botanical prints",feel:"Upward, expanding, hopeful.",low:"Feels stuck or directionless. Add plants, green, and vertical lines.",high:"Feels restless and crowded. Calm it with metal (clean lines, white) or thin out the greenery.",feeds:"Fire",controls:"Earth",fedBy:"Water",controlledBy:"Metal"},
+  Fire:{c:"#ff4d6d",gist:"Passion, visibility, energy",colours:"Red, hot pink, bright orange",shapes:"Triangles, points, diagonals",things:"Candles, lamps, bright lighting, sunlight",feel:"Warm, lively, exciting.",low:"Feels flat or invisible. Add light, warm tones, a candle or lamp.",high:"Feels harsh and overstimulating. Cool it with water (blues, glass) or soften with earth tones.",feeds:"Earth",controls:"Metal",fedBy:"Wood",controlledBy:"Water"},
+  Earth:{c:"#ffc83d",gist:"Stability, nourishment, grounding",colours:"Yellow, sand, terracotta",shapes:"Squares, flat and low forms",things:"Ceramics, stone, bowls, woven rugs",feel:"Steady, safe, held.",low:"Feels shaky or unsupported. Add ceramics, stone, yellows, square shapes.",high:"Feels heavy and stuck. Lighten it with wood (plants, green) or lift it with metal.",feeds:"Metal",controls:"Water",fedBy:"Fire",controlledBy:"Wood"},
+  Metal:{c:"#d9dde6",gist:"Clarity, precision, focus",colours:"White, grey, silver, gold",shapes:"Circles, domes, arches",things:"Metal frames, bowls, clocks, white surfaces",feel:"Clean, crisp, ordered.",low:"Feels vague and disorganised. Add white, round shapes, metal accents.",high:"Feels cold and rigid. Warm it with fire (soft light, warm tones) or soften with water.",feeds:"Water",controls:"Wood",fedBy:"Earth",controlledBy:"Fire"},
+  Water:{c:"#4aa3ff",gist:"Flow, wisdom, rest",colours:"Black, deep blue, charcoal",shapes:"Waves, curves, irregular flowing forms",things:"Mirrors, glass, a water feature, flowing fabric",feel:"Deep, calm, reflective.",low:"Feels dry and rigid. Add glass, mirrors, deep blue, soft flowing lines.",high:"Feels cold or drifting. Ground it with earth (ceramics, stone, yellow) or lift it with wood.",feeds:"Wood",controls:"Fire",fedBy:"Metal",controlledBy:"Earth"}
+};
+
+/* ---------- illustrations (inline SVG) ---------- */
+function defs(id){return '<defs><linearGradient id="g'+id+'" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b86bff"/><stop offset=".55" stop-color="#ff5fa8"/><stop offset="1" stop-color="#2ee6c8"/></linearGradient><radialGradient id="r'+id+'" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#b86bff" stop-opacity=".35"/><stop offset="1" stop-color="#b86bff" stop-opacity="0"/></radialGradient></defs>';}
+function stars(){var s="",i,x,y;var seed=7;function rnd(){seed=(seed*9301+49297)%233280;return seed/233280;}for(i=0;i<34;i++){x=rnd()*400;y=rnd()*220;s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(0.5+rnd()*1.1).toFixed(2)+'" fill="#fff" opacity="'+(0.15+rnd()*0.5).toFixed(2)+'"/>';}return s;}
+function wrap(id,inner){return '<svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">'+defs(id)+'<rect width="400" height="220" fill="none"/>'+stars()+inner+'</svg>';}
+
+var ART={
+ hero:function(){
+  var g="",i,a,x,y;
+  for(i=0;i<3;i++){for(var j=0;j<3;j++){g+='<rect x="'+(130+j*50)+'" y="'+(40+i*50)+'" width="46" height="46" rx="8" fill="none" stroke="url(#g0)" stroke-width="1.2" opacity="'+(i===1&&j===1?1:.55)+'"/>';}}
+  return '<svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+defs(0)+stars()+
+   '<circle cx="200" cy="115" r="120" fill="url(#r0)"/>'+g+
+   '<path class="flow" d="M40 200 C110 150 140 190 200 115 S300 80 360 40" fill="none" stroke="url(#g0)" stroke-width="2.4" stroke-linecap="round"/>'+
+   '<path class="flow" d="M30 150 C90 120 130 160 190 135 S290 150 370 110" fill="none" stroke="#2ee6c8" stroke-width="1.4" stroke-linecap="round" opacity=".6"/>'+
+   '<circle cx="200" cy="115" r="16" fill="#000" stroke="url(#g0)" stroke-width="2"/>'+
+   '<path d="M200 99a16 16 0 010 32a8 8 0 010-16a8 8 0 000-16z" fill="url(#g0)"/>'+
+   '</svg>';
+ },
+ 1:function(){
+  return wrap(1,'<circle cx="200" cy="110" r="95" fill="url(#r1)"/>'+
+   '<path class="flow" d="M30 150 q40 -40 80 0 t80 0 t80 0 t80 0" fill="none" stroke="#4aa3ff" stroke-width="2.2" stroke-linecap="round"/>'+
+   '<path class="flow" d="M30 125 q40 -40 80 0 t80 0 t80 0 t80 0" fill="none" stroke="#2ee6c8" stroke-width="1.5" stroke-linecap="round" opacity=".6"/>'+
+   '<path d="M100 90 q60 -70 120 -30 q50 30 90 -5" fill="none" stroke="url(#g1)" stroke-width="2.4" stroke-linecap="round"/>'+
+   '<path d="M90 170 q20 -30 40 0 q20 30 40 0" fill="none" stroke="#3ddc84" stroke-width="2" opacity=".0"/>'+
+   '<circle cx="200" cy="110" r="22" fill="#000" stroke="url(#g1)" stroke-width="2"/><path d="M200 88a22 22 0 010 44a11 11 0 010-22a11 11 0 000-22z" fill="url(#g1)"/>');
+ },
+ 2:function(){
+  return wrap(2,'<rect x="90" y="30" width="220" height="160" rx="10" fill="none" stroke="#3a3350" stroke-width="2"/>'+
+   '<rect x="170" y="186" width="60" height="8" fill="#000"/><text x="200" y="212" text-anchor="middle" font-size="10" fill="#9d96b2" font-family="sans-serif">FRONT DOOR</text>'+
+   '<path class="flow" d="M200 190 C200 150 150 150 140 110 S210 70 260 60" fill="none" stroke="url(#g2)" stroke-width="2.6" stroke-linecap="round"/>'+
+   '<rect x="236" y="42" width="56" height="30" rx="6" fill="#120f1a" stroke="#b86bff" stroke-width="1.6"/><text x="264" y="61" text-anchor="middle" font-size="9" fill="#ece8f5" font-family="sans-serif">DESK</text>'+
+   '<rect x="108" y="46" width="44" height="64" rx="6" fill="#120f1a" stroke="#ff5fa8" stroke-width="1.6"/><text x="130" y="82" text-anchor="middle" font-size="9" fill="#ece8f5" font-family="sans-serif">BED</text>'+
+   '<circle cx="264" cy="96" r="3" fill="#2ee6c8"/><path d="M264 96 L206 186" stroke="#2ee6c8" stroke-width="1" stroke-dasharray="3 4" opacity=".7"/>');
+ },
+ 3:function(){
+  return wrap(3,'<circle cx="200" cy="110" r="100" fill="url(#r3)"/>'+
+   '<circle cx="200" cy="110" r="78" fill="#000" stroke="url(#g3)" stroke-width="2.4"/>'+
+   '<path d="M200 32a78 78 0 010 156a39 39 0 010-78a39 39 0 000-78z" fill="url(#g3)"/>'+
+   '<circle cx="200" cy="71" r="10" fill="#000"/><circle cx="200" cy="149" r="10" fill="url(#g3)"/>'+
+   '<text x="120" y="116" font-size="11" fill="#9d96b2" font-family="sans-serif" text-anchor="middle">YIN</text><text x="280" y="116" font-size="11" fill="#000" font-family="sans-serif" text-anchor="middle" font-weight="700">YANG</text>');
+ },
+ 4:function(){
+  var cs=["#ff4d6d","#ffc83d","#d9dde6","#4aa3ff","#3ddc84"],nm=["Fire","Earth","Metal","Water","Wood"],s="",i,a,x,y,pts=[];
+  for(i=0;i<5;i++){a=(-90+i*72)*Math.PI/180;x=200+78*Math.cos(a);y=110+78*Math.sin(a);pts.push([x,y]);}
+  s+='<polygon points="'+pts.map(function(p){return p[0].toFixed(1)+","+p[1].toFixed(1);}).join(" ")+'" fill="none" stroke="#3a3350" stroke-width="1.5"/>';
+  s+='<circle cx="200" cy="110" r="95" fill="url(#r4)"/>';
+  for(i=0;i<5;i++){s+='<circle cx="'+pts[i][0].toFixed(1)+'" cy="'+pts[i][1].toFixed(1)+'" r="20" fill="#000" stroke="'+cs[i]+'" stroke-width="2.4"/><text x="'+pts[i][0].toFixed(1)+'" y="'+(pts[i][1]+3.5).toFixed(1)+'" font-size="9" text-anchor="middle" fill="'+cs[i]+'" font-family="sans-serif" font-weight="700">'+nm[i]+'</text>';}
+  s+='<path class="flow" d="M200 90 a20 20 0 1 1 -0.1 0" fill="none" stroke="url(#g4)" stroke-width="1.6" opacity=".0"/>';
+  return wrap(4,s);
+ },
+ 5:function(){
+  var n=["Wealth","Fame","Love","Family","Health","Creativity","Wisdom","Career","Helpers"],c=["#3ddc84","#ff4d6d","#ffc83d","#3ddc84","#ffc83d","#d9dde6","#ffc83d","#4aa3ff","#d9dde6"],s="",i,r,q;
+  for(i=0;i<9;i++){r=Math.floor(i/3);q=i%3;s+='<rect x="'+(115+q*62)+'" y="'+(18+r*58)+'" width="58" height="54" rx="9" fill="#0b0a10" stroke="'+c[i]+'" stroke-width="1.6"/><text x="'+(144+q*62)+'" y="'+(49+r*58)+'" font-size="9.5" text-anchor="middle" fill="#ece8f5" font-family="sans-serif" font-weight="600">'+n[i]+'</text>';}
+  s+='<rect x="195" y="190" width="50" height="6" rx="3" fill="url(#g5)"/><text x="220" y="212" font-size="9" text-anchor="middle" fill="#9d96b2" font-family="sans-serif">FRONT DOOR WALL</text>';
+  return wrap(5,'<circle cx="200" cy="100" r="110" fill="url(#r5)"/>'+s);
+ },
+ 6:function(){
+  var s='<path d="M70 100 L200 22 L330 100" fill="none" stroke="url(#g6)" stroke-width="2.4" stroke-linejoin="round"/><rect x="90" y="100" width="220" height="92" fill="none" stroke="#3a3350" stroke-width="2"/><line x1="200" y1="100" x2="200" y2="192" stroke="#3a3350"/><line x1="90" y1="146" x2="310" y2="146" stroke="#3a3350"/>';
+  var lab=[["ENTRY",120,126,"#ffc83d"],["LIVING",250,126,"#ff4d6d"],["BEDROOM",145,176,"#b86bff"],["KITCHEN",255,176,"#4aa3ff"]];
+  lab.forEach(function(l){s+='<circle cx="'+l[1]+'" cy="'+(l[2]-12)+'" r="4" fill="'+l[3]+'"/><text x="'+l[1]+'" y="'+(l[2]+4)+'" font-size="9.5" text-anchor="middle" fill="#ece8f5" font-family="sans-serif" font-weight="600">'+l[0]+'</text>';});
+  return wrap(6,'<circle cx="200" cy="120" r="110" fill="url(#r6)"/>'+s);
+ },
+ 7:function(){
+  return wrap(7,'<circle cx="200" cy="110" r="100" fill="url(#r7)"/>'+
+   '<circle cx="200" cy="110" r="70" fill="none" stroke="url(#g7)" stroke-width="2" stroke-dasharray="2 7" stroke-linecap="round"/>'+
+   '<circle cx="200" cy="110" r="44" fill="none" stroke="url(#g7)" stroke-width="2.4"/>'+
+   '<path class="flow" d="M150 160 C170 130 160 100 200 90 S250 80 260 50" fill="none" stroke="#2ee6c8" stroke-width="2" stroke-linecap="round"/>'+
+   '<path d="M200 82 l5 17 17 5 -17 5 -5 17 -5 -17 -17 -5 17 -5z" fill="url(#g7)"/>'+
+   '<circle cx="104" cy="70" r="3" fill="#ff5fa8"/><circle cx="300" cy="150" r="4" fill="#b86bff"/><circle cx="120" cy="160" r="2.5" fill="#2ee6c8"/>');
+ }
+};
+
+/* ---------- course content ---------- */
+var LESSONS=[
+{
+ t:"What feng shui really is",sub:"The idea, the history, and how this course works",
+ lead:"Feng shui is the old Chinese art of arranging a space so it supports the people living in it.",
+ blocks:[
+  {h:"Wind and water",p:["Feng shui (pronounced \"fung shway\") means wind and water. The name comes from an old idea: energy is carried by the wind and held by the water, so a good place for a home is one where both are gentle and well placed.","It began thousands of years ago as a way of choosing where to build villages and homes, looking at hills, rivers, sunlight and shelter. Over time it grew into a full system for arranging whatever is inside the walls too."]},
+  {h:"Chi: the feel of a space",p:["The central word is chi (also written qi), usually described as life energy. You don't need to believe in anything mystical to use it. Think of chi as the feel of a space: the way a tidy, bright, welcoming room lifts you, and the way a cramped, dim, cluttered one drags at you.","Feng shui asks one question again and again: how does this space make me feel, and how can I arrange it so it supports me better?"]},
+  {h:"Two main schools",p:["The Form school looks at shapes, layout, light and the flow of movement through a space. It's visual and practical.","The Compass school works with directions and calculations, often using a compass and a person's birth details. It's more technical.","This course teaches the Form approach plus the door-based bagua map that most modern, home-friendly feng shui uses. It's the best route for beginners because everything can be seen and tried straight away."]},
+  {h:"What to expect",p:["Seven short lessons, each with a few ideas, something to try at home, and a quick quiz. Do one a day, or all seven in a weekend. By the end you'll be able to walk into any room and read it, and you'll have a simple plan for your own home."]}
+ ],
+ call:{t:"Remember",b:"Feng shui isn't about buying objects. It's about noticing how your space feels and arranging it on purpose.",c:""},
+ act:{h:"Try it at home",items:["Go outside your front door, then walk in slowly as if you were a visitor.","Notice the very first feeling you get in the doorway. Welcomed, blocked, squeezed, calm?","Write that first feeling in your notes below. You'll come back to it in lesson 7."]},
+ quiz:[
+  {q:"What does \"feng shui\" literally mean?",a:["Wind and water","Home and garden","Light and shadow"],c:0,w:"Wind carries energy and water holds it. That's the root of the name."},
+  {q:"What is chi best understood as, for everyday use?",a:["A kind of money luck","The feel and vitality of a space","A type of furniture"],c:1,w:"Chi is the life energy of a place, which you can sense as how a room makes you feel."},
+  {q:"Which school looks at layout, shapes and flow you can see?",a:["Form school","Compass school","Colour school"],c:0,w:"The Form school is visual and practical, which makes it the best place to start."}
+ ]
+},
+{
+ t:"Chi and flow",sub:"The front door, the command position and sharp edges",
+ lead:"Chi should move through a home like a gentle stream: not rushing, not stuck.",
+ blocks:[
+  {h:"Too fast, too slow",p:["When chi travels in a straight line, such as a long hallway running from the front door to a back door, it rushes straight through without settling. Homes like this can feel like nothing stays. Slow it down with a rug, a plant, a curtain or a piece of furniture that makes the path curve a little.","When chi can't move, because of clutter, blocked corners, or doors that won't open fully, it stagnates. These are the dull, heavy spots in a home."]},
+  {h:"The mouth of chi",p:["The front door is where chi, and everything else, enters your life. It's called the mouth of chi. Keep it clear, well lit, easy to open all the way, and welcoming. A tidy entrance sets the tone for the whole home."]},
+  {h:"The command position",p:["This is one of the most useful ideas in feng shui. Where you spend long stretches, such as your bed, your desk and your stove, place yourself so you can see the door without being directly in line with it, with a solid wall behind you.","Why it works: it's how a person feels safest. Your back is supported, nothing can sneak up on you, and you can see what's coming. That quiet sense of security is what makes a bed restful and a desk focused."]},
+  {h:"Sharp edges and poison arrows",p:["Sharp corners, pointed beams or the edge of a wall pointing at where you sit or sleep are called poison arrows (sha chi). They create a low-level feeling of being pressed on. Soften them with a plant, a rounded piece of furniture, a drape or simply by moving your seat out of their line."]},
+  {h:"Light and windows",p:["Light is the easiest way to move chi. Clean windows, open curtains in the day, and lamps in dark corners wake a room up. A room that is always dim feels stuck, whatever its layout."]}
+ ],
+ call:{t:"Quick rule",b:"See the door, don't sit in line with it, and keep a solid wall at your back. Apply that to your bed and desk first.",c:"t"},
+ act:{h:"Try it at home",items:["Stand at your front door and trace the path chi would take through your home.","Check your bed and your desk. Can you see the door from each? Is there a wall behind you?","Find one sharp corner that points at where you sit, and soften it or move your seat."]},
+ quiz:[
+  {q:"What is the \"command position\"?",a:["Facing a window","Seeing the door from your bed or desk without being in line with it","Putting furniture in the centre of the room"],c:1,w:"It's the position of greatest security: door in view, solid wall behind you."},
+  {q:"A long straight hallway from the front door to the back door usually means chi…",a:["Rushes through too fast","Gets trapped","Turns into water"],c:0,w:"Straight lines speed chi up. Slow it with a rug, plant or a curve in the path."},
+  {q:"Which of these is the best fix for a sharp corner pointing at your chair?",a:["Put a mirror facing it","Soften it with a plant or move your seat","Paint it red"],c:1,w:"Softening or moving out of the line of the edge removes the pressure."}
+ ]
+},
+{
+ t:"Yin and yang",sub:"Balance as the goal of every room",
+ lead:"Every space needs both rest and activity. Yin and yang are the names for those two halves.",
+ blocks:[
+  {h:"Two halves of one whole",p:["Yin is the quiet side: soft, dark, still, cool, slow, restful. Yang is the active side: bright, loud, hard, warm, quick, stimulating.","Neither is better. A home needs both, in the right amounts in the right places. Night needs yin and day needs yang, and the same goes for rooms."]},
+  {h:"Right balance for each room",p:["A bedroom should lean yin: soft light, calm colours, gentle textures, little noise, minimal screens.","A kitchen, home office or gym should lean yang: bright light, movement, clear surfaces, stronger colour.","A living room usually sits near the middle and can shift with the time of day."]},
+  {h:"Reading the signs",p:["Too much yang feels restless, harsh, loud, overstimulating. You find it hard to relax or sleep. Calm it down with softer light, fabrics, rugs, quieter colour and fewer hard shiny surfaces.","Too much yin feels heavy, gloomy, sluggish, damp. You feel flat and low. Lift it with light, fresh air, brighter colours, movement, plants and some music."]},
+  {h:"The five dials",p:["You can adjust yin and yang with five dials: light (dim vs bright), colour (muted vs vivid), texture (soft vs hard), sound (quiet vs lively) and movement (still vs busy). When a room feels off, ask which dial is turned too far."]}
+ ],
+ call:{t:"Remember",b:"The goal is never all yin or all yang. It's the right mix for what each room is for.",c:"k"},
+ act:{h:"Try it at home",items:["Pick your bedroom and your kitchen. Score each from 1 (very yin) to 10 (very yang).","Does the score suit what the room is for? A bedroom at 8 is a clue it's too busy to rest in.","Turn one dial: change a bulb, add a throw, remove a screen, or open a window."]},
+ quiz:[
+  {q:"Which room should lean most yin?",a:["Home office","Bedroom","Kitchen"],c:1,w:"The bedroom is for rest, so soft, quiet and dim suits it best."},
+  {q:"A room that feels harsh and overstimulating has too much…",a:["Yin","Yang","Earth"],c:1,w:"Excess yang is bright, loud and hard. Soften it to bring it back into balance."},
+  {q:"Which is NOT one of the five dials?",a:["Light","Texture","Price"],c:2,w:"The dials are light, colour, texture, sound and movement."}
+ ]
+},
+{
+ t:"The five elements",sub:"Wood, fire, earth, metal and water",
+ lead:"Everything in a space carries one of five qualities. Learn them and you can read a room's character at a glance.",
+ blocks:[
+  {h:"Five kinds of energy",p:["The five elements are Wood, Fire, Earth, Metal and Water. They aren't literal materials, they're qualities: growth, warmth, steadiness, clarity and flow. A red lamp carries Fire. A ceramic bowl carries Earth. A round metal clock carries Metal.","Tap each element below to see its colours, shapes and the things that carry it."]},
+  {w:"elements"},
+  {h:"How they work together",p:["The elements are linked by two cycles. In the productive cycle each one feeds the next: Wood feeds Fire, Fire makes Earth (ash), Earth bears Metal, Metal carries Water, and Water nourishes Wood.","In the controlling cycle each one keeps another in check: Wood parts Earth, Earth dams Water, Water puts out Fire, Fire melts Metal, and Metal cuts Wood."]},
+  {w:"cycles"},
+  {h:"Using them in a room",p:["Most rooms need a little of all five. If one is missing, add a small touch of it. If one is overwhelming, add its controlling element, or take some away.","For example, a room that's all red and orange (too much Fire) can be calmed with blues and glass (Water), or settled with earth tones. A grey, white, silver room (too much Metal) can be warmed with a lamp or red cushion (Fire)."]}
+ ],
+ call:{t:"Quick rule",b:"Small touches are enough. One plant, one lamp, one bowl, one metal frame and one mirror covers all five.",c:"t"},
+ act:{h:"Try it at home",items:["Pick one room and find at least one object for each element.","Note which element is strongest and which is weakest.","Add one small touch of the weakest element and see how the room feels over a few days."]},
+ quiz:[
+  {q:"In the productive cycle, what does Wood feed?",a:["Fire","Water","Metal"],c:0,w:"Wood feeds Fire, then Fire makes Earth, Earth bears Metal, Metal carries Water, Water nourishes Wood."},
+  {q:"Which element controls Fire?",a:["Wood","Earth","Water"],c:2,w:"Water puts out Fire. That's why blues and glass can calm an overheated room."},
+  {q:"A round metal clock mostly carries which element?",a:["Earth","Metal","Water"],c:1,w:"Round shapes and metal both belong to Metal."}
+ ]
+},
+{
+ t:"The bagua map",sub:"Nine areas of life laid over your home",
+ lead:"The bagua is a simple nine-square map. Lay it over a floor plan and each part of your home links to a part of your life.",
+ blocks:[
+  {h:"How to lay it out",p:["Draw your home or a single room as a rough rectangle. Now imagine a three-by-three grid over it. Line up the bottom edge of the grid with the wall that holds the front door of the home (or the door of the room).","The bottom row, left to right, is Wisdom, Career, Helpers. The middle row is Family, Health, Creativity. The top row is Wealth, Fame, Love. The centre, Health, is the heart of the space.","Tap each square to see what it stands for."]},
+  {w:"bagua"},
+  {h:"Missing corners",p:["If your floor plan is L-shaped, or a corner is cut off, that area of the bagua has no room of its own. It's called a missing corner. You can complete it by adding something in the same spot: a light outside, a garden feature, or a mirror or plant in the nearest inside corner."]},
+  {h:"Working with it",p:["The bagua isn't a command to rearrange everything. Pick one area you want to strengthen, walk into that part of your home, and ask: is this tidy, lit, cared for, and does it carry its element? A little attention goes a long way.","Compass school feng shui lays the map by compass direction instead of by the door. You can try either; this course sticks with the door method because it works the same wherever you live."]}
+ ],
+ call:{t:"Remember",b:"Start with the entrance wall at the bottom. Everything else follows from there.",c:""},
+ act:{h:"Try it at home",items:["Sketch your floor plan on paper and draw the nine squares over it.","Write the area name in each square. Which rooms land where?","Pick one area to strengthen and add one thing there: light, a plant, an object that carries its element."]},
+ quiz:[
+  {q:"Which wall do you line up the bottom of the bagua with?",a:["The wall with the front door","The north wall","The longest wall"],c:0,w:"The door-based method places the bottom edge on the wall with the main entrance."},
+  {q:"Which area sits in the very centre of the bagua?",a:["Wealth","Health","Fame"],c:1,w:"Health is the centre, the heart of the home."},
+  {q:"A cut-off corner in an L-shaped home is called a…",a:["Missing corner","Poison arrow","Command position"],c:0,w:"A missing corner leaves part of the bagua without a room. You can complete it with a light, plant or mirror."}
+ ]
+},
+{
+ t:"Room by room",sub:"Putting it all to work through the home",
+ lead:"Now you can apply flow, balance, elements and the bagua to each room. Open any room below.",
+ blocks:[
+  {w:"rooms"},
+  {h:"Where to start",p:["Begin with the entrance, then the bedroom, then wherever you spend the most time. Each change is small, and the effect comes from lots of small things being right."]}
+ ],
+ call:{t:"Quick rule",b:"Entrance first, bedroom second. Those two rooms shape how you start and end every day.",c:"k"},
+ act:{h:"Try it at home",items:["Pick a room and read its card below.","Make the one change on the card that would help most.","Live with it for a few days before changing anything else."]},
+ quiz:[
+  {q:"Where should you begin when working on a whole home?",a:["The garage","The entrance","The bathroom"],c:1,w:"The entrance is the mouth of chi, so it shapes everything that follows."},
+  {q:"What matters most about bed position?",a:["Facing east","The bed in the command position","Being under a window"],c:1,w:"See the door without being in line with it, with a solid wall behind the head of the bed."},
+  {q:"In a bathroom, a common feng shui habit is to…",a:["Keep the door and drains closed","Hang heavy red curtains","Add more candles"],c:0,w:"Water draining away can pull energy with it, so close the door and plug and keep it fresh."}
+ ]
+},
+{
+ t:"Clutter, cures and your plan",sub:"Clearing, adjusting and making it your own",
+ lead:"Clearing is the most powerful thing you can do in feng shui. Everything else builds on it.",
+ blocks:[
+  {h:"Why clutter matters",p:["Every object in your home holds a little of your attention. Piles, unfinished jobs, broken things and things you no longer like all quietly pull on you. Clutter is stuck chi you can see.","You don't need to clear everything at once. Start with one drawer, one shelf or one surface. Keep what you use, love or need, and let the rest go. A good rule is one in, one out."]},
+  {h:"Cures: small adjustments that help",p:["A cure is any small adjustment that improves a space.","Light: lamps, clean windows, bulbs that work. Mirrors: bounce light into a dark corner or open up a narrow hall (but not directly facing the bed or the front door). Plants: add life and soften edges. Sound: a wind chime or gentle music moves still air. Colour: bring in a missing element. Movement: open windows, a fan, a flag or a mobile.","Use few and choose well. A home full of cures is just another kind of clutter."]},
+  {h:"Make it yours",p:["The final test of feng shui is how you feel. If a rule doesn't suit your home or your life, adapt it. Trust your own sense of comfort. You've learned how to read a space, and that's what matters."]},
+  {w:"plan"}
+ ],
+ call:{t:"Remember",b:"Clear first, then cure. Fewer, better things beat more things every time.",c:"t"},
+ act:{h:"Try it at home",items:["Clear one drawer or surface today. Just one.","Go back to your front door and walk in as a visitor again. Is the feeling different?","Write your three changes in the plan box above."]},
+ quiz:[
+  {q:"What's the most powerful first step in feng shui?",a:["Buy a crystal","Clear clutter","Paint everything white"],c:1,w:"Clearing releases stuck chi and makes room for everything else."},
+  {q:"Where should a mirror NOT face?",a:["A dark corner","Your bed or the front door","A narrow hallway wall"],c:1,w:"A mirror facing the bed can feel unsettling, and one facing the door can send chi straight back out."},
+  {q:"What is the final test of feng shui?",a:["How it follows the rules exactly","How you feel in the space","What guests say"],c:1,w:"Your own comfort and sense of ease is the true measure."}
+ ]
+}
+];
+
+var ROOMS=[
+ {n:"Entrance",b:["Keep the path to the door clear and the door easy to open fully.","Make sure the number and bell are visible and the entry is well lit.","Remove shoe piles and heavy coats from the walkway. Give things a home.","Add something welcoming: a plant, a lamp, a small bowl for keys."]},
+ {n:"Living room",b:["Arrange seating so people can face each other and see the door.","Keep the centre of the room open so chi can move.","Balance hard and soft: if the room is all leather and glass, add fabric and a rug.","Keep screens from dominating. A cloth or cabinet can tone down a TV."]},
+ {n:"Kitchen",b:["The kitchen is about nourishment, so keep it clean and bright.","Place the cook so they can see the door without having their back to it. If not, a small mirror or reflective splashback helps.","Clear the bench, check the fridge and pantry for old food, and keep the stove clean.","Balance Fire (stove) and Water (sink) by keeping something between them, like a plant or a chopping board."]},
+ {n:"Bedroom",b:["Place the bed in the command position with a solid headboard against a wall.","Keep it yin: soft light, calm colours, no work, and few screens.","Avoid clutter under the bed and mirrors facing it.","Matching bedside tables and lamps give a feeling of balance."]},
+ {n:"Bathroom",b:["Water drains away here, and so can energy. Keep the door closed and the plug in.","Keep it clean, fresh and well lit. Fix leaks quickly.","Add a plant or a touch of wood to balance all the water.","Avoid a bathroom directly in front of the door or in the heart of the home if you can. If you can't, use the cures above."]},
+ {n:"Home office",b:["Put the desk in the command position: see the door, solid wall behind you.","Keep it yang: good light, clear surface, a tidy system for paper.","A plant or an object that carries Wood supports growth and fresh ideas.","Face away from clutter and the pile of unfinished work when you finish for the day."]},
+ {n:"Outside",b:["Keep the path, steps and gate clear and in good repair.","Trim overgrown plants that block the door or light.","Give the entrance a clear, cared-for look: a mat, a pot, a light.","Dead plants, broken fences and junk by the door all send the wrong message."]}
+];
+
+var BAGUA=[
+ {n:"Wealth",el:"Wood",c:"#3ddc84",s:"Abundance and prosperity",d:"The area of abundance, resources and the flow of value into your life. Keep it tidy and alive.",act:"Healthy plants, a clean surface, things that show growth.",pos:"Top left (far left from the door)"},
+ {n:"Fame",el:"Fire",c:"#ff4d6d",s:"Reputation and recognition",d:"How the world sees you: your reputation, visibility and passion.",act:"Good light, warm colour, candles or a lamp, things you're proud of.",pos:"Top centre (far wall, opposite the door)"},
+ {n:"Love",el:"Earth",c:"#ffc83d",s:"Partnership and relationships",d:"Love, partnership and close relationships.",act:"Pairs of things, soft textures, earthy colours, items that mean something to you both.",pos:"Top right (far right from the door)"},
+ {n:"Family",el:"Wood",c:"#3ddc84",s:"Family, roots and health",d:"Your family, ancestors and community, and a sense of roots and long-term growth.",act:"Photos of family, plants, items with history, a tidy shared space.",pos:"Middle left"},
+ {n:"Health",el:"Earth",c:"#ffc83d",s:"The centre, your wellbeing",d:"The heart of the home and your overall wellbeing. Every other area connects to it.",act:"Keep the centre open and clear. Light, natural materials, earthy colours.",pos:"Centre"},
+ {n:"Creativity",el:"Metal",c:"#d9dde6",s:"Children and creative flow",d:"Children, creativity, play and what you bring into the world.",act:"Round shapes, white and metallic touches, your own creative work on display.",pos:"Middle right"},
+ {n:"Wisdom",el:"Earth",c:"#ffc83d",s:"Knowledge and stillness",d:"Learning, reflection, quiet time and self-knowledge.",act:"A reading chair, books, a quiet corner, calm light.",pos:"Bottom left (near the door, left)"},
+ {n:"Career",el:"Water",c:"#4aa3ff",s:"Life path and work",d:"Your path through life, your work and the direction you're heading. It sits right by the front door.",act:"A clear, welcoming entrance, deep blues, black, flowing shapes or a mirror.",pos:"Bottom centre (the door wall, middle)"},
+ {n:"Helpers",el:"Metal",c:"#d9dde6",s:"Helpful people and travel",d:"Support from others, friends, mentors, and travel.",act:"Metal touches, white, things from places you love, a phone and contacts kept in order.",pos:"Bottom right (near the door, right)"}
+];
+
+var GLOSS=[
+ ["Chi (qi)","The life energy of a space. In daily use, the feel of a room."],
+ ["Sha chi","Harmful or aggressive energy, such as that from sharp corners, clutter or a rushing straight path."],
+ ["Poison arrow","A sharp edge, beam or corner pointing at you. Soften it or move out of its line."],
+ ["Command position","Placing your bed, desk or stove where you can see the door without being in line with it, with a solid wall behind."],
+ ["Mouth of chi","The front door, where energy enters the home."],
+ ["Yin","The quiet, soft, still, dark side of balance."],
+ ["Yang","The active, bright, loud, hard side of balance."],
+ ["Five elements","Wood, Fire, Earth, Metal and Water. Qualities that describe the character of objects and rooms."],
+ ["Productive cycle","The feeding order: Wood, Fire, Earth, Metal, Water, then back to Wood."],
+ ["Controlling cycle","The checking order: Wood parts Earth, Earth dams Water, Water quenches Fire, Fire melts Metal, Metal cuts Wood."],
+ ["Bagua","The nine-square map laid over a home to link areas of the space with areas of life."],
+ ["Missing corner","A part of the bagua that has no room because of an irregular floor plan."],
+ ["Cure","Any small adjustment that improves a space: light, a plant, a mirror, a sound, a colour."],
+ ["Form school","The branch of feng shui that works with shapes, layout, light and flow."],
+ ["Compass school","The branch that works with compass directions and calculations."]
+];
+
+/* ---------- state & render ---------- */
+var V={view:"home",i:0};
+var ringEl=$("#ring");
+
+function pct(){var n=0;for(var i=0;i<LESSONS.length;i++)if(S.done[i])n++;return n;}
+function drawRing(){
+  var n=pct(),f=n/LESSONS.length,c=2*Math.PI*18,off=c*(1-f);
+  ringEl.innerHTML='<svg width="46" height="46" viewBox="0 0 46 46"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b86bff"/><stop offset=".6" stop-color="#ff5fa8"/><stop offset="1" stop-color="#2ee6c8"/></linearGradient></defs><circle cx="23" cy="23" r="18" fill="none" stroke="#221d30" stroke-width="4"/><circle cx="23" cy="23" r="18" fill="none" stroke="url(#rg)" stroke-width="4" stroke-linecap="round" stroke-dasharray="'+c.toFixed(1)+'" stroke-dashoffset="'+off.toFixed(1)+'" transform="rotate(-90 23 23)"/></svg><span>'+n+'/'+LESSONS.length+'</span>';
+}
+function tabs(){$$(".tab").forEach(function(b){var v=b.getAttribute("data-v");b.classList.toggle("on",(V.view==="lesson"?"home":V.view)===v);});}
+function go(view,i){if(view==="lesson"&&typeof i==="number"&&i>=2){if(window.NKDemo)NKDemo.show("Lessons 3 to 7 are part of the full app.");return;}V.view=view;if(typeof i==="number")V.i=i;render();window.scrollTo(0,0);}
+
+function render(){
+  drawRing();tabs();
+  if(V.view==="home")home();
+  else if(V.view==="lesson")lesson();
+  else if(V.view==="gloss")gloss();
+  else if(V.view==="plan")plan();
+}
+
+function home(){
+  var n=pct(),next=0,i;
+  for(i=0;i<LESSONS.length;i++){if(!S.done[i]){next=i;break;}if(i===LESSONS.length-1)next=i;}
+  var h='<div class="fade"><div class="hero">'+ART.hero()+'<div class="txt"><h1 class="gt">Teach Me Feng Shui</h1><p>Seven short lessons to read any room, balance a home, and make your space work for you. No experience needed.</p><div class="row cta"><button class="btn" id="go-next">'+(n===0?"Start lesson 1":n===LESSONS.length?"Review the course":"Continue with lesson "+(next+1))+'</button></div></div></div><div class="sec">The course</div><div class="list">';
+  LESSONS.forEach(function(L,k){h+='<button class="lcard'+(S.done[k]?" done":"")+'" data-l="'+k+'"><div class="num">'+(S.done[k]?"&#10003;":(k+1))+'</div><div><h3>'+L.t+'</h3><small>'+L.sub+'</small></div><div class="chev">&rsaquo;</div></button>';});
+  h+='</div>';
+  if(n===LESSONS.length)h+='<div class="done-card"><h2 class="gt">Course complete</h2><p class="lead">You can now read a space and know what to adjust. Revisit your plan any time.</p><button class="btn" id="to-plan">Open my plan</button></div>';
+  h+='<footer>Saved on this device &middot; <button id="reset">Reset progress</button></footer></div>';
+  app.innerHTML=h;
+  $("#go-next").onclick=function(){go("lesson",n===LESSONS.length?0:next);};
+  $$(".lcard").forEach(function(b){b.onclick=function(){go("lesson",+b.getAttribute("data-l"));};});
+  var tp=$("#to-plan");if(tp)tp.onclick=function(){go("plan");};
+  $("#reset").onclick=function(){if(confirm("Clear all progress, notes and your plan on this device?")){S={done:[],notes:{},plan:["","",""],checks:{},quiz:{},last:0};save();render();}};
+}
+
+function lesson(){
+  var k=V.i,L=LESSONS[k],h='<div class="fade"><div class="lhero">'+ART[k+1]()+'</div><div class="eyebrow">Lesson '+(k+1)+' of '+LESSONS.length+'</div><h1 class="lt gt">'+L.t+'</h1><p class="lead">'+L.lead+'</p>';
+  L.blocks.forEach(function(b){
+    if(b.w){h+='<div class="blk" data-w="'+b.w+'"></div>';return;}
+    h+='<div class="blk"><h2>'+b.h+'</h2>'+b.p.map(function(p){return '<p>'+p+'</p>';}).join("")+'</div>';
+  });
+  h+='<div class="callout '+(L.call.c||"")+'"><b>'+L.call.t+'</b>'+L.call.b+'</div>';
+  h+='<div class="act"><h3>'+L.act.h+'</h3>';
+  L.act.items.forEach(function(t,j){var id=k+"-"+j;h+='<label class="chk"><input type="checkbox" data-c="'+id+'"'+(S.checks[id]?" checked":"")+'><span>'+t+'</span></label>';});
+  h+='</div><div class="sec">Quick quiz</div>';
+  L.quiz.forEach(function(q,j){
+    h+='<div class="q" data-q="'+j+'"><p>'+q.q+'</p>';
+    q.a.forEach(function(a,m){h+='<button class="opt" data-m="'+m+'">'+a+'</button>';});
+    h+='<div class="why">'+q.w+'</div></div>';
+  });
+  h+='<div class="score" id="score"></div>';
+  h+='<div class="sec">My notes</div><textarea id="note" placeholder="Anything you noticed, or want to remember from this lesson&hellip;"></textarea>';
+  h+='<div class="nav">'+(k>0?'<button class="btn ghost" id="prev">Back</button>':'')+'<button class="btn" id="done">'+(S.done[k]?"Completed &#10003;":"Mark complete")+'</button>'+(k<LESSONS.length-1?'<button class="btn ghost" id="next">Next</button>':'')+'</div></div>';
+  app.innerHTML=h;
+  $("#note").value=S.notes[k]||"";
+  $("#note").oninput=function(){S.notes[k]=this.value;save();};
+  $$(".chk input").forEach(function(c){c.onchange=function(){S.checks[c.getAttribute("data-c")]=c.checked;save();};});
+  /* quiz */
+  var st=S.quiz[k]||{};
+  function scoreTxt(){var a=0,r=0,t=L.quiz.length;for(var j=0;j<t;j++){if(st[j]!==undefined){a++;if(st[j]===L.quiz[j].c)r++;}}$("#score").textContent=a?(r+" of "+t+" correct"+(a<t?" so far":"")):"";}
+  $$(".q").forEach(function(qb){
+    var j=+qb.getAttribute("data-q");
+    function mark(sel){
+      qb.classList.add("answered");
+      $$(".opt",qb).forEach(function(o,m){o.classList.remove("right","wrong");if(m===L.quiz[j].c)o.classList.add("right");else if(m===sel)o.classList.add("wrong");});
+    }
+    if(st[j]!==undefined)mark(st[j]);
+    $$(".opt",qb).forEach(function(o){o.onclick=function(){var m=+o.getAttribute("data-m");st[j]=m;S.quiz[k]=st;save();mark(m);scoreTxt();};});
+  });
+  scoreTxt();
+  var p=$("#prev"),n=$("#next");
+  if(p)p.onclick=function(){go("lesson",k-1);};
+  if(n)n.onclick=function(){go("lesson",k+1);};
+  $("#done").onclick=function(){
+    S.done[k]=!S.done[k];save();
+    if(S.done[k]){if(k<LESSONS.length-1)go("lesson",k+1);else go("home");}else render();
+  };
+  S.last=k;save();
+  $$("[data-w]").forEach(function(el){var w=el.getAttribute("data-w");({elements:wElements,cycles:wCycles,bagua:wBagua,rooms:wRooms,plan:wPlan})[w](el);});
+}
+
+/* ---------- widgets ---------- */
+function wElements(el){
+  var names=Object.keys(EL),cur="Wood";
+  function draw(){
+    var e=EL[cur];
+    el.innerHTML='<div class="seg" style="flex-wrap:wrap">'+names.map(function(n){return '<button data-e="'+n+'" class="'+(n===cur?"on":"")+'" style="'+(n===cur?"color:"+EL[n].c:"")+'">'+n+'</button>';}).join("")+'</div>'+
+    '<div class="panel" style="border-color:'+e.c+'55"><h3 style="color:'+e.c+'">'+cur+'</h3><p><b>'+e.gist+'.</b> '+e.feel+'</p>'+
+    '<span class="tag">Colours: '+e.colours+'</span><span class="tag">Shapes: '+e.shapes+'</span><span class="tag">Things: '+e.things+'</span>'+
+    '<p style="margin-top:8px"><b>Too little:</b> '+e.low+'</p><p><b>Too much:</b> '+e.high+'</p></div>';
+    $$("button",el).forEach(function(b){b.onclick=function(){cur=b.getAttribute("data-e");draw();};});
+  }
+  draw();
+}
+
+function wCycles(el){
+  var order=["Fire","Earth","Metal","Water","Wood"],pos={},mode="prod",cur="Wood";
+  order.forEach(function(n,i){var a=(-90+i*72)*Math.PI/180;pos[n]=[160+98*Math.cos(a),150+98*Math.sin(a)];});
+  function draw(){
+    var s='<svg viewBox="0 0 320 300" width="100%" role="img" aria-label="Five element cycles"><defs>';
+    order.forEach(function(n){s+='<marker id="ar'+n+'" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="'+EL[n].c+'"/></marker>';});
+    s+='</defs>';
+    var pairs=mode==="prod"?order.map(function(n){return [n,EL[n].feeds];}):order.map(function(n){return [n,EL[n].controls];});
+    pairs.forEach(function(p){
+      var a=pos[p[0]],b=pos[p[1]],dx=b[0]-a[0],dy=b[1]-a[1],d=Math.sqrt(dx*dx+dy*dy),ux=dx/d,uy=dy/d;
+      var hot=(p[0]===cur);
+      s+='<line x1="'+(a[0]+ux*28).toFixed(1)+'" y1="'+(a[1]+uy*28).toFixed(1)+'" x2="'+(b[0]-ux*32).toFixed(1)+'" y2="'+(b[1]-uy*32).toFixed(1)+'" stroke="'+EL[p[0]].c+'" stroke-width="'+(hot?3.4:1.6)+'" opacity="'+(hot?1:.45)+'" marker-end="url(#ar'+p[0]+')"/>';
+    });
+    order.forEach(function(n){s+='<g data-e="'+n+'" style="cursor:pointer"><circle cx="'+pos[n][0].toFixed(1)+'" cy="'+pos[n][1].toFixed(1)+'" r="26" fill="#000" stroke="'+EL[n].c+'" stroke-width="'+(n===cur?4:2)+'"/><text x="'+pos[n][0].toFixed(1)+'" y="'+(pos[n][1]+4).toFixed(1)+'" text-anchor="middle" font-size="11.5" font-weight="700" fill="'+EL[n].c+'" font-family="sans-serif">'+n+'</text></g>';});
+    s+='</svg>';
+    var e=EL[cur],t=mode==="prod"?'<b style="color:'+e.c+'">'+cur+'</b> feeds <b style="color:'+EL[e.feeds].c+'">'+e.feeds+'</b>, and is fed by <b style="color:'+EL[e.fedBy].c+'">'+e.fedBy+'</b>.':'<b style="color:'+e.c+'">'+cur+'</b> controls <b style="color:'+EL[e.controls].c+'">'+e.controls+'</b>, and is controlled by <b style="color:'+EL[e.controlledBy].c+'">'+e.controlledBy+'</b>.';
+    el.innerHTML='<div class="seg"><button data-m="prod" class="'+(mode==="prod"?"on":"")+'">Feeds (productive)</button><button data-m="ctrl" class="'+(mode==="ctrl"?"on":"")+'">Controls</button></div>'+s+'<div class="panel">'+t+'<p style="margin-top:6px;color:var(--muted);font-size:.92rem">Tap an element to see its connections.</p></div>';
+    $$("[data-m]",el).forEach(function(b){b.onclick=function(){mode=b.getAttribute("data-m");draw();};});
+    $$("g[data-e]",el).forEach(function(g){g.onclick=function(){cur=g.getAttribute("data-e");draw();};});
+  }
+  draw();
+}
+
+function wBagua(el){
+  var cur=4;
+  function draw(){
+    var g=BAGUA[cur],h='<div class="bagua">';
+    BAGUA.forEach(function(b,i){h+='<button class="gua'+(i===cur?" on":"")+'" data-g="'+i+'" style="--c:'+b.c+'"><span class="dot"></span><b>'+b.n+'</b><i>'+b.el+'</i></button>';});
+    h+='</div><div class="door">Front door wall</div>';
+    h+='<div class="panel" style="border-color:'+g.c+'55"><h3 style="color:'+g.c+'">'+g.n+' <span style="color:var(--muted);font-weight:500;font-size:.9rem">&middot; '+g.s+'</span></h3><p>'+g.d+'</p><p><b>Element:</b> '+g.el+'</p><p><b>Where:</b> '+g.pos+'</p><p><b>To strengthen it:</b> '+g.act+'</p></div>';
+    el.innerHTML=h;
+    $$(".gua",el).forEach(function(b){b.onclick=function(){cur=+b.getAttribute("data-g");draw();};});
+  }
+  draw();
+}
+
+function wRooms(el){
+  var h="";
+  ROOMS.forEach(function(r,i){h+='<div class="acc'+(i===0?" open":"")+'"><button><span>'+r.n+'</span><span class="pl">+</span></button><div class="body"><ul>'+r.b.map(function(x){return '<li>'+x+'</li>';}).join("")+'</ul></div></div>';});
+  el.innerHTML=h;
+  $$(".acc > button",el).forEach(function(b){b.onclick=function(){b.parentNode.classList.toggle("open");};});
+}
+
+function wPlan(el){
+  el.innerHTML='<h2>Your three changes</h2><p class="lead" style="margin-bottom:12px">Pick three small, doable changes for your home. Write them here and they\'ll appear on the My plan tab.</p>'+
+  [0,1,2].map(function(i){return '<textarea data-p="'+i+'" style="min-height:70px;margin-bottom:10px" placeholder="Change '+(i+1)+'&hellip;"></textarea>';}).join("");
+  $$("textarea",el).forEach(function(t){var i=+t.getAttribute("data-p");t.value=S.plan[i]||"";t.oninput=function(){S.plan[i]=t.value;save();};});
+}
+
+/* ---------- other views ---------- */
+function gloss(){
+  var h='<div class="fade"><h1 class="lt gt" style="margin-top:14px">Glossary</h1><p class="lead">The key terms from the course.</p>';
+  GLOSS.forEach(function(g){h+='<div class="gl"><b>'+g[0]+'</b><span>'+g[1]+'</span></div>';});
+  h+='</div>';app.innerHTML=h;
+}
+
+function plan(){
+  var h='<div class="fade"><h1 class="lt gt" style="margin-top:14px">My plan</h1><p class="lead">Your three changes and your notes from each lesson, all in one place.</p><div class="sec">Three changes</div>';
+  [0,1,2].forEach(function(i){h+='<textarea data-p="'+i+'" style="min-height:70px;margin-bottom:10px" placeholder="Change '+(i+1)+'&hellip;"></textarea>';});
+  h+='<div class="sec">Lesson notes</div>';
+  var any=false;
+  LESSONS.forEach(function(L,k){var t=(S.notes[k]||"").trim();if(t){any=true;h+='<div class="panel"><h3>'+(k+1)+'. '+L.t+'</h3><p class="note-'+k+'" style="white-space:pre-wrap;margin:0"></p></div>';}});
+  if(!any)h+='<p class="lead">Notes you write inside the lessons will show up here.</p>';
+  h+='</div>';app.innerHTML=h;
+  $$("textarea",app).forEach(function(t){var i=+t.getAttribute("data-p");t.value=S.plan[i]||"";t.oninput=function(){S.plan[i]=t.value;save();};});
+  LESSONS.forEach(function(L,k){var p=$(".note-"+k);if(p)p.textContent=S.notes[k];});
+}
+
+/* ---------- events ---------- */
+$$(".tab").forEach(function(b){b.onclick=function(){go(b.getAttribute("data-v"));};});
+
+/* ---------- PWA manifest (inline) ---------- */
+try{
+  var icon="data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b86bff"/><stop offset=".55" stop-color="#ff5fa8"/><stop offset="1" stop-color="#2ee6c8"/></linearGradient></defs><rect width="512" height="512" rx="112" fill="#000"/><g fill="none" stroke="url(#g)" stroke-width="14"><rect x="126" y="126" width="80" height="80" rx="14"/><rect x="216" y="126" width="80" height="80" rx="14"/><rect x="306" y="126" width="80" height="80" rx="14"/><rect x="126" y="216" width="80" height="80" rx="14"/><rect x="216" y="216" width="80" height="80" rx="14"/><rect x="306" y="216" width="80" height="80" rx="14"/><rect x="126" y="306" width="80" height="80" rx="14"/><rect x="216" y="306" width="80" height="80" rx="14"/><rect x="306" y="306" width="80" height="80" rx="14"/></g></svg>');
+  var m={name:"Teach Me Feng Shui",short_name:"Feng Shui",start_url:".",display:"standalone",background_color:"#000000",theme_color:"#000000",icons:[{src:icon,sizes:"512x512",type:"image/svg+xml",purpose:"any"}]};
+  var l=document.createElement("link");l.rel="manifest";l.href="data:application/manifest+json,"+encodeURIComponent(JSON.stringify(m));document.head.appendChild(l);
+  var a=document.createElement("link");a.rel="apple-touch-icon";a.href=icon;document.head.appendChild(a);
+}catch(e){}
+
+render();
+})();
+</script>
+</body>
+</html>
