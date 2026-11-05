@@ -29,6 +29,16 @@ APPS.push({ slug:"after-the-silence", name:"After the Silence", cat:"narc", pric
 artFor(APPS[APPS.length - 1]).motif = "field";
 (function(){const i=APPS.findIndex(a=>a.slug==="after-the-silence");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.cat==="narc");APPS.splice(f<0?APPS.length:f,0,x);})();
 
+/* Learn shelf order: Digital Creation For Scaredy Cats first, then You Can Build an App. */
+(function(){
+  ["you-can-build-this","digital-creation"].forEach(function(slug){
+    const i=APPS.findIndex(a=>a.slug===slug);if(i<0)return;
+    const x=APPS.splice(i,1)[0];
+    const f=APPS.findIndex(a=>a.cat==="learn");
+    APPS.splice(f<0?APPS.length:f,0,x);
+  });
+})();
+
 /* Apps added in this file load after the buy links are set in s5d.js, so set them again here. */
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;

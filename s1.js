@@ -15,9 +15,9 @@ const SITE = {
       buy:    optional full Lemon Squeezy URL; otherwise store + /buy/<slug>
    ========================================================================== */
 const CATEGORIES = [
+  { id:"dating",   name:"Dating",       colour:"#F58FB0", note:"Starting again, safely and slowly." },
   { id:"learn",    name:"Learn",        colour:"#5EEAD4", note:"Courses to work through at your own pace." },
   { id:"family",   name:"Family",       colour:"#F5A3B8", note:"Everyone under one roof." },
-  { id:"dating",   name:"Dating",       colour:"#F58FB0", note:"Starting again, safely and slowly." },
   { id:"numerology", name:"Numerology", colour:"#C78BF5", note:"Your numbers, your name, your year." },
   { id:"wellness", name:"Wellness",     colour:"#5CC8F5", note:"Quiet tools for hard seasons." },
   { id:"neuro",    name:"Neurodivergent", colour:"#8FD694", note:"Built for ADHD and AuDHD brains, not around them." },
