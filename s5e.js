@@ -60,3 +60,11 @@ APPS.push({ slug:"fox-trail", name:"Fox Trail", cat:"family", price:39, status:"
 ], inside:["Big illustrated picture-book pages","Pip the fox and Dot the firefly","Five gentle endings","Your child's name and photo in the story","Tap the scenes to wake Dot","Parent dashboard behind a PIN","Works offline, no account"] });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 (function(){const i=APPS.findIndex(a=>a.slug==="fox-trail");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.cat==="family");APPS.splice(f<0?APPS.length:f,0,x);})();
+
+/* Kindness First: daily kindness practice for ages 4-10 with a grown-up, $39, Family shelf after Fox Trail. Paid file: private/kindness-first.html. Cover: covers/kindness-first.jpg. */
+APPS.push({ slug:"kindness-first", name:"Kindness First", cat:"family", price:39, status:"live", ready:true, cover:"covers/kindness-first.jpg", demo:"https://numerakey-shop.vercel.app/demos/kindness-first/", desc:"A daily kindness practice for children aged 4 to 10 and a grown-up, with a glowing Kindness Heart, a lantern path and a firefly called Lumi.", tag:"Little kindnesses, every day.", body:[
+  "Kindness First turns kindness into something a child wants to do. Each day they pick one small kindness spark, try it, and light a lantern on the Kindness Path. As the lanterns glow, their Kindness Heart fills and new stories open.",
+  "Walk with Lumi the firefly through a story where your child chooses what to do, and finish with a kindness to try that day. Add your child's name and photo, and leave notes from home for a day with big feelings. It works offline, needs no account, and keeps everything on your device."
+], inside:["58 kindness sparks for me, family, friends, the world and tiny moments","A Kindness Heart that fills as they go","A 30-lantern path that opens five illustrated stories","Walk with Lumi, a story with choices and two endings","A big-feelings helper and notes from home","Your child's name and photo in the story","Read-aloud and gentle sound","Grown-ups tab behind a maths gate","Works offline, no account"] });
+artFor(APPS[APPS.length - 1]).motif = "orbits";
+(function(){const i=APPS.findIndex(a=>a.slug==="kindness-first");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.slug==="fox-trail");APPS.splice(f<0?APPS.length:f+1,0,x);})();
