@@ -103,6 +103,7 @@ const FILES = {
   "money-jar": "private/money-jar.html",
   "write-my-resume": "private/write-my-resume.html",
   "find-it-first": "private/find-it-first.html",
+  "fox-trail": "private/fox-trail.html",
   "the-gentle-no": "private/the-gentle-no.html",
   "digital-creation": "private/digital-creation.html",
   "you-can-build-this": "private/you-can-build-this.html",
