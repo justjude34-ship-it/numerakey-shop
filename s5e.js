@@ -54,7 +54,7 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
 (function(){const i=APPS.findIndex(a=>a.slug==="find-it-first");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.cat==="neuro");APPS.splice(f<0?APPS.length:f,0,x);})();
 
 /* Fox Trail: illustrated bedtime storybook with five gentle endings, $39, leads the Family shelf. */
-APPS.push({ slug:"fox-trail", name:"Fox Trail", cat:"family", price:39, status:"live", ready:true, cover:"covers/fox-trail.jpg", desc:"An illustrated bedtime storybook of quiet choices, with Pip the fox, a firefly called Dot, and five gentle endings.", tag:"A bedtime story of quiet choices.", body:[
+APPS.push({ slug:"fox-trail", name:"Fox Trail", cat:"family", price:39, status:"live", ready:true, cover:"covers/fox-trail.jpg", demo:"https://numerakey-shop.vercel.app/demos/fox-trail/", desc:"An illustrated bedtime storybook of quiet choices, with Pip the fox, a firefly called Dot, and five gentle endings.", tag:"A bedtime story of quiet choices.", body:[
   "Fox Trail is a bedtime storybook for children, told in big picture-book pages with short, warm lines. Pip the fox, in his blue scarf, and Dot the firefly walk a moonlit trail, and your child chooses which way to go. Every path ends gently, ready for sleep.",
   "Add your child's name and photo and they step into the story. Tap the scenes to wake Dot. A parent dashboard, behind a PIN, shows which paths are favourites. It works offline, needs no account, and keeps everything on your device."
 ], inside:["Big illustrated picture-book pages","Pip the fox and Dot the firefly","Five gentle endings","Your child's name and photo in the story","Tap the scenes to wake Dot","Parent dashboard behind a PIN","Works offline, no account"] });
