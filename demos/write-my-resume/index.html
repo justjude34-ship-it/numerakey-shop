@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#050507">
+<meta name="theme-color" content="#030708">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Write My Resume">
 <title>Write My Resume (Demo)</title>
 <style>
-:root{--bg:#050507;--card:#0e0e15;--card2:#14141d;--line:#23232f;--tx:#f2f1fa;--mu:#a3a1bb;--p:#a78bfa;--k:#f472b6;--ok:#6ee7b7;--bad:#fb7185;--grad:linear-gradient(90deg,#a78bfa,#f472b6)}
+:root{--bg:#030708;--card:#0a1316;--card2:#0f1b1f;--line:#1c2f34;--tx:#eef8fa;--mu:#9ab3b8;--p:#1fb6c9;--k:#0e8fa0;--ok:#86efac;--bad:#fb7185;--grad:linear-gradient(90deg,#0e8fa0,#1fb6c9)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
 body{min-height:100vh}
@@ -29,61 +29,61 @@ p{margin:.4em 0}
 .card.link:active{background:var(--card2)}
 .card .t{font-weight:700}
 .dot{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);color:var(--mu);font-weight:700;font-size:.9rem}
-.dot.on{background:var(--grad);border-color:transparent;color:#0a0a10}
+.dot.on{background:var(--grad);border-color:transparent;color:#061014}
 .grow{flex:1;min-width:0}
 .chev{color:var(--mu);font-size:1.3rem}
 label.f{display:block;margin:12px 0}
 label.f>span{display:block;font-size:.85rem;color:var(--mu);margin-bottom:5px}
-input[type=text],input[type=email],input[type=tel],input[type=url],textarea,select{width:100%;background:#0a0a10;color:var(--tx);border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;outline:none}
+input[type=text],input[type=email],input[type=tel],input[type=url],textarea,select{width:100%;background:#061014;color:var(--tx);border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;outline:none}
 input:focus,textarea:focus,select:focus{border-color:var(--p)}
 textarea{resize:vertical;min-height:110px}
 .row{display:flex;gap:10px}
 .row>*{flex:1;min-width:0}
-.btn{appearance:none;border:0;border-radius:14px;padding:13px 18px;font:inherit;font-weight:700;color:#0a0a10;background:var(--grad);cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
+.btn{appearance:none;border:0;border-radius:14px;padding:13px 18px;font:inherit;font-weight:700;color:#061014;background:var(--grad);cursor:pointer;text-decoration:none;display:inline-block;text-align:center}
 .btn.ghost{background:transparent;color:var(--tx);border:1px solid var(--line)}
 .btn.sm{padding:9px 13px;font-size:.9rem;border-radius:12px}
 .btn.danger{background:transparent;color:var(--bad);border:1px solid #4a1f2b}
 .btn.block{display:block;width:100%}
 .btns{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
-.chip{border:1px solid var(--line);background:#0a0a10;color:var(--tx);border-radius:999px;padding:8px 13px;font:inherit;font-size:.92rem;cursor:pointer}
-.chip.on{background:var(--grad);color:#0a0a10;border-color:transparent;font-weight:700}
+.chip{border:1px solid var(--line);background:#061014;color:var(--tx);border-radius:999px;padding:8px 13px;font:inherit;font-size:.92rem;cursor:pointer}
+.chip.on{background:var(--grad);color:#061014;border-color:transparent;font-weight:700}
 .chip.add{border-style:dashed;color:var(--mu)}
 .hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:22px 0 6px}
 .hero svg{width:min(260px,70vw);height:auto}
-.note{background:#120f1c;border:1px solid #2a2144;border-radius:14px;padding:12px 14px;color:#d6cdf5;font-size:.92rem;margin:12px 0}
+.note{background:#0a1719;border:1px solid #1d3c42;border-radius:14px;padding:12px 14px;color:#bfe4ea;font-size:.92rem;margin:12px 0}
 .warn{background:#1c1016;border:1px solid #44212f;color:#f6c6d3}
 .pill{display:inline-block;font-size:.75rem;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--mu);margin-right:6px}
 .bul{margin:8px 0 0;padding-left:20px}
 .bul li{margin:3px 0}
 .chk{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
-.chk input{margin-top:5px;width:18px;height:18px;accent-color:#a78bfa;flex:0 0 auto}
+.chk input{margin-top:5px;width:18px;height:18px;accent-color:#1fb6c9;flex:0 0 auto}
 .sw{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
 .sw button{width:38px;height:38px;border-radius:50%;border:3px solid transparent;cursor:pointer}
 .sw button.on{border-color:#fff}
 .tpls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.tpl{border:2px solid var(--line);background:#0a0a10;border-radius:14px;padding:8px;color:var(--tx);font:inherit;cursor:pointer;text-align:center}
+.tpl{border:2px solid var(--line);background:#061014;border-radius:14px;padding:8px;color:var(--tx);font:inherit;cursor:pointer;text-align:center}
 .tpl.on{border-color:var(--p)}
 .tpl svg{width:100%;height:auto;display:block;margin-bottom:4px}
 details.card>summary{cursor:pointer;font-weight:700;list-style:none}
 details.card>summary::-webkit-details-marker{display:none}
 details.card>summary::after{content:"＋";float:right;color:var(--mu)}
 details.card[open]>summary::after{content:"－"}
-#nav{position:fixed;left:0;right:0;bottom:0;background:rgba(5,5,7,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom));z-index:20}
+#nav{position:fixed;left:0;right:0;bottom:0;background:rgba(3,7,8,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom));z-index:20}
 #nav a{flex:1;max-width:160px;text-align:center;text-decoration:none;color:var(--mu);font-size:.72rem;padding:4px 0}
 #nav a svg{width:24px;height:24px;display:block;margin:0 auto 2px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 #nav a.on{color:var(--p)}
-#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#1d1b2b;border:1px solid #3a3556;color:#fff;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;max-width:88vw;text-align:center}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#122125;border:1px solid #2a4a52;color:#fff;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50;max-width:88vw;text-align:center}
 #toast.show{opacity:1}
 #modal:empty{display:none}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:grid;place-items:center;z-index:60;padding:20px}
-#modal .box{background:#0e0e15;border:1px solid var(--line);border-radius:18px;padding:20px;max-width:420px;width:100%}
-.gap{border:1px dashed #44385f;background:#0d0a16;border-radius:14px;padding:12px 14px;margin:10px 0}
+#modal .box{background:#0a1316;border:1px solid var(--line);border-radius:18px;padding:20px;max-width:420px;width:100%}
+.gap{border:1px dashed #2a4a52;background:#081316;border-radius:14px;padding:12px 14px;margin:10px 0}
 .ring{display:flex;align-items:center;gap:10px;margin:6px 0 0}
-.bar{height:8px;background:#17171f;border-radius:99px;overflow:hidden;flex:1}
+.bar{height:8px;background:#132125;border-radius:99px;overflow:hidden;flex:1}
 .bar i{display:block;height:100%;background:var(--grad)}
 #printzone{display:none}
-.pvbar{position:sticky;top:0;background:rgba(5,5,7,.95);padding:10px 0;z-index:10;border-bottom:1px solid var(--line)}
+.pvbar{position:sticky;top:0;background:rgba(3,7,8,.95);padding:10px 0;z-index:10;border-bottom:1px solid var(--line)}
 #pvwrap{margin:14px 0;overflow:hidden;border-radius:6px;background:#fff}
 
 /* ===== paper (CV and letter) ===== */
@@ -137,6 +137,7 @@ details.card[open]>summary::after{content:"－"}
   #printzone{display:block!important}
   #printzone .paper{transform:none!important;width:210mm}
 }
+#pvwrap .paper{position:relative}#pvwrap .paper::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27170%27%20height%3D%27120%27%3E%3Ctext%20x%3D%2785%27%20y%3D%2768%27%20text-anchor%3D%27middle%27%20transform%3D%27rotate%28-28%2085%2060%29%27%20font-family%3D%27Helvetica%2CArial%2Csans-serif%27%20font-size%3D%2730%27%20font-weight%3D%27800%27%20fill%3D%27rgba%2814%2C143%2C160%2C0.20%29%27%3EDEMO%3C/text%3E%3C/svg%3E") repeat;pointer-events:none;z-index:5}#pvwrap,#pvwrap *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}.demo{background:#0a1719;border:1px solid #1d3c42;border-radius:12px;padding:10px 14px;color:#bfe4ea;font-size:.9rem;margin:10px 0}.demo b{color:var(--p)}@media print{#printzone:empty::before{content:'Printing and saving are part of the full version of Write My Resume.';display:block;color:#000;font:14pt sans-serif;padding:20mm}}
 </style>
 </head>
 <body>
@@ -151,10 +152,10 @@ details.card[open]>summary::after{content:"－"}
 'use strict';
 
 /* ---------- constants ---------- */
-const KEY='hireme-demo.v1';
+const KEY='hireme.demo.v1';
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const MONL=['January','February','March','April','May','June','July','August','September','October','November','December'];
-const ACCENTS=[['#0f766e','Teal'],['#1e40af','Navy'],['#166534','Forest'],['#475569','Slate'],['#27272a','Charcoal']];
+const ACCENTS=[['#0e8fa0','Teal'],['#0891b2','Blue-teal'],['#047857','Green'],['#1e40af','Navy'],['#27272a','Charcoal']];
 const TYPES=[['job','Paid job'],['self','Self-employed'],['vol','Volunteer work'],['care','Caring or family'],['study','Study or project'],['break','Career break']];
 const SKILLSETS=[
  ['People',['Customer service','Teamwork','Communication','Conflict resolution','Phone manner','Sales','Training others','Leadership']],
@@ -172,7 +173,7 @@ const STOP=new Set('the and for with that this from have your will you our are w
 /* ---------- state ---------- */
 let S;
 function uid(){return Math.random().toString(36).slice(2,9)}
-function newVersion(name){return {id:uid(),name:name||'My CV',ad:'',tpl:'modern',accent:'#0f766e',showSummary:true,rolesOff:[],linesOff:{},skillsOff:[],letter:{company:'',person:'',role:'',found:'',why:'',text:''}}}
+function newVersion(name){return {id:uid(),name:name||'My CV',ad:'',tpl:'modern',accent:'#0e8fa0',showSummary:true,rolesOff:[],linesOff:{},skillsOff:[],letter:{company:'',person:'',role:'',found:'',why:'',text:''}}}
 function blank(){return {profile:{name:'',title:'',phone:'',email:'',place:'',link:'',summary:''},roles:[],skills:[],edu:[],refs:{onRequest:true,list:[]},versions:[],sum:{role:'',years:'1-3',str:[],ret:false,v:0},polish:true}}
 function load(){
   try{const r=localStorage.getItem(KEY);S=r?Object.assign(blank(),JSON.parse(r)):blank()}catch(e){S=blank()}
@@ -421,10 +422,10 @@ function ymPick(label,path,dis){
 function sel(path,opts,o){o=o||{};const v=get(path);return '<select data-bind="'+path+'"'+(o.render?' data-render="1"':'')+'>'+opts.map(x=>'<option value="'+x[0]+'"'+(x[0]===v?' selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select>'}
 function chk(path,label,o){return '<label class="chk"><input type="checkbox" data-bind="'+path+'"'+((o&&o.render)?' data-render="1"':'')+(get(path)?' checked':'')+'><span>'+label+'</span></label>'}
 
-const HERO='<svg viewBox="0 0 280 200" aria-hidden="true"><defs><linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#f472b6"/></linearGradient></defs><rect x="62" y="22" width="130" height="168" rx="10" fill="#17101f" stroke="#3a2d57" transform="rotate(-8 127 106)"/><rect x="82" y="14" width="136" height="172" rx="10" fill="#fff" transform="rotate(4 150 100)"/><g transform="rotate(4 150 100)"><rect x="82" y="14" width="136" height="42" rx="10" fill="url(#hg)"/><rect x="82" y="40" width="136" height="16" fill="url(#hg)"/><circle cx="108" cy="35" r="11" fill="#fff" opacity=".9"/><rect x="126" y="28" width="58" height="7" rx="3.5" fill="#fff"/><rect x="126" y="40" width="38" height="5" rx="2.5" fill="#fff" opacity=".75"/><rect x="98" y="68" width="40" height="6" rx="3" fill="#a78bfa"/><rect x="98" y="82" width="104" height="4" rx="2" fill="#d8d6e6"/><rect x="98" y="92" width="92" height="4" rx="2" fill="#d8d6e6"/><rect x="98" y="102" width="98" height="4" rx="2" fill="#d8d6e6"/><rect x="98" y="120" width="40" height="6" rx="3" fill="#f472b6"/><rect x="98" y="134" width="100" height="4" rx="2" fill="#d8d6e6"/><rect x="98" y="144" width="84" height="4" rx="2" fill="#d8d6e6"/><rect x="98" y="154" width="96" height="4" rx="2" fill="#d8d6e6"/></g><circle cx="214" cy="150" r="24" fill="url(#hg)"/><path d="M203 150l8 8 14-17" stroke="#0a0a10" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M40 52l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="#f472b6"/><path d="M246 40l3 6 6 3-6 3-3 6-3-6-6-3 6-3z" fill="#a78bfa"/><circle cx="30" cy="130" r="3" fill="#a78bfa"/><circle cx="252" cy="96" r="2.5" fill="#f472b6"/></svg>';
+const HERO='<svg viewBox="0 0 280 200" aria-hidden="true"><defs><linearGradient id="hg" x1="0" x2="1"><stop offset="0" stop-color="#1fb6c9"/><stop offset="1" stop-color="#0e8fa0"/></linearGradient></defs><rect x="62" y="22" width="130" height="168" rx="10" fill="#0d1a1e" stroke="#1f4a52" transform="rotate(-8 127 106)"/><rect x="82" y="14" width="136" height="172" rx="10" fill="#fff" transform="rotate(4 150 100)"/><g transform="rotate(4 150 100)"><rect x="82" y="14" width="136" height="42" rx="10" fill="url(#hg)"/><rect x="82" y="40" width="136" height="16" fill="url(#hg)"/><circle cx="108" cy="35" r="11" fill="#fff" opacity=".9"/><rect x="126" y="28" width="58" height="7" rx="3.5" fill="#fff"/><rect x="126" y="40" width="38" height="5" rx="2.5" fill="#fff" opacity=".75"/><rect x="98" y="68" width="40" height="6" rx="3" fill="#1fb6c9"/><rect x="98" y="82" width="104" height="4" rx="2" fill="#d3e2e6"/><rect x="98" y="92" width="92" height="4" rx="2" fill="#d3e2e6"/><rect x="98" y="102" width="98" height="4" rx="2" fill="#d3e2e6"/><rect x="98" y="120" width="40" height="6" rx="3" fill="#0e8fa0"/><rect x="98" y="134" width="100" height="4" rx="2" fill="#d3e2e6"/><rect x="98" y="144" width="84" height="4" rx="2" fill="#d3e2e6"/><rect x="98" y="154" width="96" height="4" rx="2" fill="#d3e2e6"/></g><circle cx="214" cy="150" r="24" fill="url(#hg)"/><path d="M203 150l8 8 14-17" stroke="#061014" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M40 52l4 9 9 4-9 4-4 9-4-9-9-4 9-4z" fill="#0e8fa0"/><path d="M246 40l3 6 6 3-6 3-3 6-3-6-6-3 6-3z" fill="#1fb6c9"/><circle cx="30" cy="130" r="3" fill="#1fb6c9"/><circle cx="252" cy="96" r="2.5" fill="#0e8fa0"/></svg>';
 const TPLSVG={
-  classic:'<svg viewBox="0 0 60 80"><rect width="60" height="80" rx="4" fill="#fff"/><rect x="14" y="8" width="32" height="5" rx="2" fill="#333"/><rect x="20" y="16" width="20" height="2" fill="#999"/><rect x="8" y="26" width="44" height="1.5" fill="#0f766e"/><rect x="8" y="31" width="36" height="2" fill="#ccc"/><rect x="8" y="36" width="40" height="2" fill="#ccc"/><rect x="8" y="46" width="44" height="1.5" fill="#0f766e"/><rect x="8" y="51" width="38" height="2" fill="#ccc"/><rect x="8" y="56" width="34" height="2" fill="#ccc"/></svg>',
-  modern:'<svg viewBox="0 0 60 80"><rect width="60" height="80" rx="4" fill="#fff"/><rect width="60" height="22" rx="4" fill="#0f766e"/><rect y="12" width="60" height="10" fill="#0f766e"/><rect x="8" y="7" width="26" height="5" rx="2" fill="#fff"/><rect x="8" y="30" width="16" height="2.5" fill="#0f766e"/><rect x="8" y="36" width="42" height="2" fill="#ccc"/><rect x="8" y="41" width="36" height="2" fill="#ccc"/><rect x="8" y="52" width="12" height="5" rx="2.5" fill="none" stroke="#0f766e"/><rect x="23" y="52" width="14" height="5" rx="2.5" fill="none" stroke="#0f766e"/></svg>',
+  classic:'<svg viewBox="0 0 60 80"><rect width="60" height="80" rx="4" fill="#fff"/><rect x="14" y="8" width="32" height="5" rx="2" fill="#333"/><rect x="20" y="16" width="20" height="2" fill="#999"/><rect x="8" y="26" width="44" height="1.5" fill="#0e8fa0"/><rect x="8" y="31" width="36" height="2" fill="#ccc"/><rect x="8" y="36" width="40" height="2" fill="#ccc"/><rect x="8" y="46" width="44" height="1.5" fill="#0e8fa0"/><rect x="8" y="51" width="38" height="2" fill="#ccc"/><rect x="8" y="56" width="34" height="2" fill="#ccc"/></svg>',
+  modern:'<svg viewBox="0 0 60 80"><rect width="60" height="80" rx="4" fill="#fff"/><rect width="60" height="22" rx="4" fill="#0e8fa0"/><rect y="12" width="60" height="10" fill="#0e8fa0"/><rect x="8" y="7" width="26" height="5" rx="2" fill="#fff"/><rect x="8" y="30" width="16" height="2.5" fill="#0e8fa0"/><rect x="8" y="36" width="42" height="2" fill="#ccc"/><rect x="8" y="41" width="36" height="2" fill="#ccc"/><rect x="8" y="52" width="12" height="5" rx="2.5" fill="none" stroke="#0e8fa0"/><rect x="23" y="52" width="14" height="5" rx="2.5" fill="none" stroke="#0e8fa0"/></svg>',
   minimal:'<svg viewBox="0 0 60 80"><rect width="60" height="80" rx="4" fill="#fff"/><rect x="8" y="8" width="30" height="5" rx="2" fill="#555"/><rect x="8" y="16" width="20" height="2" fill="#999"/><rect x="8" y="27" width="44" height=".8" fill="#bbb"/><rect x="8" y="31" width="14" height="2" fill="#555"/><rect x="8" y="37" width="38" height="2" fill="#ccc"/><rect x="8" y="42" width="40" height="2" fill="#ccc"/><rect x="8" y="53" width="44" height=".8" fill="#bbb"/><rect x="8" y="57" width="14" height="2" fill="#555"/><rect x="8" y="63" width="34" height="2" fill="#ccc"/></svg>'
 };
 
@@ -437,7 +438,7 @@ function vHome(){
     ['#/refs','Referees',S.refs.onRequest||S.refs.list.length,S.refs.onRequest?'Available on request':(S.refs.list.length+' listed')]
   ];
   const done=steps.filter(s=>s[2]).length;
-  let h='<div class="hero">'+HERO+'<h1 class="g" style="margin-top:8px">Write My Resume</h1><p class="mu">Write your work history once. Get a CV and cover letter for every job you apply for.</p></div>';
+  let h='<div class="hero">'+HERO+'<h1 class="g" style="margin-top:8px">Write My Resume</h1><p class="mu">Write your work history once. Get a CV and cover letter for every job you apply for.</p></div><div class="demo"><b>Free demo.</b> Build your whole CV and see it finished. Printing and saving are in the full app.</div>';
   h+='<div class="ring"><div class="bar"><i style="width:'+(done/steps.length*100)+'%"></i></div><span class="mu sm">'+done+' of '+steps.length+'</span></div>';
   steps.forEach((s,i)=>{h+='<a class="card link" href="'+s[0]+'"><div class="dot'+(s[2]?' on':'')+'">'+(s[2]?'✓':i+1)+'</div><div class="grow"><div class="t">'+s[1]+'</div><div class="mu sm">'+esc(s[3])+'</div></div><span class="chev">›</span></a>'});
   h+='<div class="btns"><a class="btn block" href="#/cvs">See my CV</a></div>';
@@ -513,7 +514,7 @@ function vRefs(){
 function vCvs(){
   let h=top('My CVs',null)+'<p class="mu">Make a different version for each job. Same record, different focus.</p>';
   S.versions.forEach(v=>{
-    h+='<div class="card"><div class="t">'+esc(v.name)+'</div><div class="mu sm">'+cap(v.tpl)+' · '+(ACCENTS.find(a=>a[0]===v.accent)||['','Custom'])[1]+'</div><div class="btns"><a class="btn sm" href="#/preview/'+v.id+'">Preview and print</a><a class="btn sm ghost" href="#/cv/'+v.id+'">Tailor</a><button class="btn sm ghost" data-act="dupcv" data-id="'+v.id+'">Copy</button>'+(S.versions.length>1?'<button class="btn sm danger" data-act="delcv" data-id="'+v.id+'">Delete</button>':'')+'</div></div>';
+    h+='<div class="card"><div class="t">'+esc(v.name)+'</div><div class="mu sm">'+cap(v.tpl)+' · '+ACCENTS.find(a=>a[0]===v.accent)?.[1]+'</div><div class="btns"><a class="btn sm" href="#/preview/'+v.id+'">Preview and print</a><a class="btn sm ghost" href="#/cv/'+v.id+'">Tailor</a><button class="btn sm ghost" data-act="dupcv" data-id="'+v.id+'">Copy</button>'+(S.versions.length>1?'<button class="btn sm danger" data-act="delcv" data-id="'+v.id+'">Delete</button>':'')+'</div></div>';
   });
   h+='<div class="btns"><button class="btn block" data-act="newcv">+ New CV for a job</button></div>';
   if(!S.roles.length)h+='<div class="note warn">Your CV is empty so far. <a href="#/work">Add your work history</a> first.</div>';
@@ -546,9 +547,8 @@ function showMissing(id){
 function vPreview(id,kind){
   const v=S.versions.find(x=>x.id===id);if(!v)return '<p>Not found.</p>';
   const isL=kind==='letter';
-  let h='<div class="pvbar"><div class="row" style="align-items:center"><a class="btn sm ghost" style="flex:0 0 auto" href="'+(isL?'#/letter':'#/cv/'+id)+'">‹ Back</a><button class="btn sm" data-act="print" data-id="'+id+'" data-k="'+(isL?'l':'c')+'">Print / Save PDF</button></div><div class="btns" style="margin:8px 0 0"><button class="btn sm ghost" data-act="copy" data-id="'+id+'" data-k="'+(isL?'l':'c')+'">Copy text</button><button class="btn sm ghost" data-act="txt" data-id="'+id+'" data-k="'+(isL?'l':'c')+'">Download .txt</button></div></div>';
-  h+='<p class="mu sm" id="pages"></p><div id="pvwrap">'+(isL?letterHTML(v):cvHTML(v))+'</div>';
-  h+='<div class="note">To save a PDF, choose Print, then pick “Save as PDF” as the printer. If you see headers and footers, turn them off.</div>';
+  let h='<div class="pvbar"><div class="row" style="align-items:center"><a class="btn sm ghost" style="flex:0 0 auto" href="'+(isL?'#/letter':'#/cv/'+id)+'">‹ Back</a><button class="btn sm" data-act="print" data-id="'+id+'" data-k="'+(isL?'l':'c')+'">🔒 Print / Save PDF</button></div><div class="btns" style="margin:8px 0 0"><button class="btn sm ghost" data-act="copy" data-id="'+id+'" data-k="'+(isL?'l':'c')+'">🔒 Copy text</button><button class="btn sm ghost" data-act="txt" data-id="'+id+'" data-k="'+(isL?'l':'c')+'">🔒 Download .txt</button></div></div>';
+  h+='<div class="demo"><b>Demo.</b> This is your finished '+(isL?'letter':'CV')+'. Printing, saving and copying come with the full app.</div><p class="mu sm" id="pages"></p><div id="pvwrap">'+(isL?letterHTML(v):cvHTML(v))+'</div>';
   return h;
 }
 function fitPaper(){
@@ -638,6 +638,7 @@ function onField(e){
 document.addEventListener('input',onField);
 document.addEventListener('change',onField);
 
+function demoLock(){toast('This is the demo. Printing, saving and copying are in the full version.')}
 function download(name,type,text){
   const b=new Blob([text],{type:type}),a=document.createElement('a');
   a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();
@@ -673,10 +674,9 @@ document.addEventListener('click',e=>{
     case 'accent':v.accent=a.dataset.v;save();render();break;
     case 'skoff':{const s=a.dataset.v,i=v.skillsOff.indexOf(s);if(i>-1)v.skillsOff.splice(i,1);else v.skillsOff.push(s);save();a.classList.toggle('on');break}
     case 'match':matchAd(v);render();showMissing(id);toast('Matched. Have a look and adjust.');break;
-    case 'print':{const w=$('#printzone');w.innerHTML=a.dataset.k==='l'?letterHTML(v):cvHTML(v);const old=document.title;document.title=fileName(v,a.dataset.k);setTimeout(()=>{window.print();document.title=old},60);break}
-    case 'copy':copyText(textFor(v,a.dataset.k));break;
-    case 'txt':download(fileName(v,a.dataset.k)+'.txt','text/plain',textFor(v,a.dataset.k));break;
-    case 'genletter':{const lv=S.versions.find(x=>x.id===S.lv);if(!lv)break;if(lv.letter.text&&lv.letter.text.trim()){ask('Replace the letter you have with a fresh one?','Replace',()=>{genLetter(lv);render()})}else{genLetter(lv);render()}break}
+    case 'print':case 'copy':case 'txt':{demoLock();break}
+    case 'print_off':{const w=$('#printzone');w.innerHTML=a.dataset.k==='l'?letterHTML(v):cvHTML(v);const old=document.title;document.title=fileName(v,a.dataset.k);setTimeout(()=>{window.print();document.title=old},60);break}
+            case 'genletter':{const lv=S.versions.find(x=>x.id===S.lv);if(!lv)break;if(lv.letter.text&&lv.letter.text.trim()){ask('Replace the letter you have with a fresh one?','Replace',()=>{genLetter(lv);render()})}else{genLetter(lv);render()}break}
     case 'export':download('write-my-resume-backup-'+new Date().toISOString().slice(0,10)+'.json','application/json',JSON.stringify(S));toast('Backup saved');break;
     case 'import':$('#impFile').click();break;
     case 'wipe':ask('Remove all your details from this device? This cannot be undone.','Clear everything',()=>{try{localStorage.removeItem(KEY)}catch(e){}S=blank();S.versions=[newVersion('My CV')];save();location.hash='#/home';render()});break;
@@ -693,42 +693,17 @@ window.addEventListener('afterprint',()=>{$('#printzone').innerHTML=''});
 
 /* ---------- PWA bits ---------- */
 try{
-  const icon='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#a78bfa"/><stop offset="1" stop-color="#f472b6"/></linearGradient></defs><rect width="512" height="512" rx="112" fill="#050507"/><rect x="146" y="90" width="220" height="300" rx="22" fill="url(#g)"/><rect x="180" y="140" width="110" height="18" rx="9" fill="#050507"/><rect x="180" y="184" width="150" height="12" rx="6" fill="#050507" opacity=".6"/><rect x="180" y="214" width="130" height="12" rx="6" fill="#050507" opacity=".6"/><circle cx="360" cy="372" r="64" fill="#050507"/><circle cx="360" cy="372" r="52" fill="url(#g)"/><path d="M336 372l18 18 32-38" stroke="#050507" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const icon='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#1fb6c9"/><stop offset="1" stop-color="#0e8fa0"/></linearGradient></defs><rect width="512" height="512" rx="112" fill="#030708"/><rect x="146" y="90" width="220" height="300" rx="22" fill="url(#g)"/><rect x="180" y="140" width="110" height="18" rx="9" fill="#030708"/><rect x="180" y="184" width="150" height="12" rx="6" fill="#030708" opacity=".6"/><rect x="180" y="214" width="130" height="12" rx="6" fill="#030708" opacity=".6"/><circle cx="360" cy="372" r="64" fill="#030708"/><circle cx="360" cy="372" r="52" fill="url(#g)"/><path d="M336 372l18 18 32-38" stroke="#030708" stroke-width="12" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const uri='data:image/svg+xml,'+encodeURIComponent(icon);
   const l=document.createElement('link');l.rel='icon';l.href=uri;document.head.appendChild(l);
   const a=document.createElement('link');a.rel='apple-touch-icon';a.href=uri;document.head.appendChild(a);
-  const m={name:'Write My Resume',short_name:'My Resume',display:'standalone',background_color:'#050507',theme_color:'#050507',icons:[{src:uri,sizes:'512x512',type:'image/svg+xml',purpose:'any'}]};
+  const m={name:'Write My Resume Demo',short_name:'Resume Demo',display:'standalone',background_color:'#030708',theme_color:'#030708',icons:[{src:uri,sizes:'512x512',type:'image/svg+xml',purpose:'any'}]};
   if(/^https?:/.test(location.protocol))m.start_url=location.href.split('#')[0];
   const k=document.createElement('link');k.rel='manifest';k.href='data:application/manifest+json,'+encodeURIComponent(JSON.stringify(m));document.head.appendChild(k);
 }catch(e){}
 
 load();
 render();
-})();
-</script>
-<style>
-#demoBar{position:fixed;left:12px;right:12px;bottom:78px;z-index:40;background:#111015;border:1px solid #2a2733;border-radius:12px;color:#b9b4c6;font:12.5px system-ui,sans-serif;padding:8px 12px;text-align:center}
-#demoBar b{color:#c7b3ff}
-#demoLock{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;padding:24px}
-#demoLock.on{display:flex}
-#demoLock div{background:#111015;border:1px solid #2a2733;border-radius:18px;padding:22px;max-width:340px;color:#f2eff6;font-family:system-ui,sans-serif;text-align:center}
-#demoLock h3{margin:0 0 8px;font-size:20px;color:#f2eff6}
-#demoLock p{color:#b9b4c6;margin:0 0 16px;font-size:15px}
-#demoLock button{border:0;border-radius:999px;padding:12px 22px;background:#a78bfa;color:#12081f;font-weight:700}
-</style>
-<div id="demoBar"><b>Demo.</b> Build your work record here. Your CVs, cover letter and backup are in the full app.</div>
-<div id="demoLock"><div><h3>In the full app</h3><p>This part is in the full version of Write My Resume, yours to keep with a single purchase.</p><button type="button" id="demoOk">Back</button></div></div>
-<script>
-(function(){
-var LOCK=/^#\/(cvs|cv|preview|letter|lpreview|backup)(\/|$)/;
-var lock=document.getElementById('demoLock');
-document.addEventListener('click',function(e){
- var a=e.target.closest&&e.target.closest('a[href^="#/"]');
- if(a&&LOCK.test(a.getAttribute('href'))){e.stopImmediatePropagation();e.preventDefault();lock.classList.add('on');}
-},true);
-window.addEventListener('hashchange',function(){ if(LOCK.test(location.hash)){ location.hash='#/home'; lock.classList.add('on'); } },true);
-if(LOCK.test(location.hash)) location.hash='#/home';
-document.getElementById('demoOk').onclick=function(){lock.classList.remove('on');};
 })();
 </script>
 </body>
