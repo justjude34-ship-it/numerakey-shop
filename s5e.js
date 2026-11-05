@@ -45,8 +45,8 @@ APPS.forEach(a => {
   else if (PAYMENTS[a.slug]) a.buy = PAYMENTS[a.slug];
 });
 
-/* Find It First: pattern-spotting game for quick ADHD brains, $39 Neurodivergent tier, leads that shelf. Status "soon" until the paid file (private/find-it-first.html) and the 1200x630 cover (covers/find-it-first.jpg) are added. */
-APPS.push({ slug:"find-it-first", name:"Find It First", cat:"neuro", price:39, status:"soon", ready:false, cover:"covers/find-it-first.jpg", demo:"https://find-it-first.vercel.app", desc:"A fast pattern-spotting game where a quick, noticing brain is the winning move.", tag:"Your quick brain wins.", body:[
+/* Find It First: pattern-spotting game for quick ADHD brains, $39 Neurodivergent tier, leads that shelf. Paid file: private/find-it-first.html. Cover: covers/find-it-first.jpg. */
+APPS.push({ slug:"find-it-first", name:"Find It First", cat:"neuro", price:39, status:"live", ready:true, cover:"covers/find-it-first.jpg", demo:"https://find-it-first.vercel.app", desc:"A fast pattern-spotting game where a quick, noticing brain is the winning move.", tag:"Your quick brain wins.", body:[
   "Find It First is a spot-the-match, spot-the-odd-one-out game played against a gentle timer. Racing thoughts and an eye for small details are the hero traits here, so the quick brain is the one that wins.",
   "It is made for kids with ADHD, and for quick brains of any age. There is no shame and no failing, just another round. It runs in your browser, works offline and needs no account."
 ], inside:["Spot the match, or the odd one out, against a gentle timer","Built so quick, noticing brains are the winners","No shame, no failing, just another round","Dark theme with gold and jewel-colour pops","Works offline, no account"] });

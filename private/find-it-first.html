@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="Find It First — a fast pattern-spotting game for kids. Your quick brain is the superpower. By Judith · Apps by Judith.">
+<title>Find It First — Pattern Spotting for Quick Brains</title>
+<style>
+:root {
+  --bg: #0a0a0c;
+  --bg2: #111116;
+  --bg3: #1a1a22;
+  --card: #16161e;
+  --card-hi: #1c1c26;
+  --aqua: #22d3ee;
+  --aqua-deep: #06b6d4;
+  --magenta: #e879f9;
+  --lime: #a3e635;
+  --gold: #e0b84a;
+  --gold2: #f3d67a;
+  --gold3: #f6e7a1;
+  --ink: #f4f4f7;
+  --ink-dim: #9b9ba8;
+  --success: #34d399;
+  --danger: #fb7185;
+  --white: #ffffff;
+  --radius: 14px;
+  --tap: 48px;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --shadow: 0 10px 36px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.06);
+  --glow-gold: 0 0 28px rgba(243,214,122,0.32);
+  --glow-cyan: 0 0 22px rgba(34,211,238,0.22);
+  --border: rgba(255,255,255,0.08);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  height: 100%;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(34,211,238,0.08), transparent 55%),
+    radial-gradient(ellipse 60% 40% at 90% 80%, rgba(232,121,249,0.06), transparent 50%),
+    linear-gradient(165deg, var(--bg) 0%, var(--bg2) 55%, #0d0d12 100%);
+  color: var(--ink);
+  font-family: var(--font);
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+.hidden { display: none !important; }
+
+.screen {
+  min-height: 100dvh; min-height: 100vh;
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+  display: flex; flex-direction: column;
+  max-width: 520px; margin: 0 auto;
+}
+.screen-center { justify-content: center; align-items: center; text-align: center; }
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; margin-bottom: 12px; min-height: 44px;
+}
+.topbar-title { font-size: 0.95rem; font-weight: 800; color: var(--ink); letter-spacing: 0.04em; }
+.topbar-stats { display: flex; gap: 8px; align-items: center; font-size: 0.85rem; font-weight: 700; color: var(--ink-dim); }
+.stat-pill {
+  background: var(--card); border-radius: 999px; padding: 6px 12px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow); display: flex; align-items: center; gap: 4px;
+}
+.stat-pill .gold { color: var(--gold2); }
+
+.icon-btn {
+  width: var(--tap); height: var(--tap); min-width: var(--tap);
+  border-radius: 12px; display: grid; place-items: center;
+  background: var(--card); color: var(--ink); font-size: 1.15rem;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.icon-btn:hover { border-color: rgba(34,211,238,0.35); box-shadow: var(--glow-cyan); }
+.icon-btn:active { transform: scale(0.94); }
+.icon-btn.muted { opacity: 0.5; }
+
+.logo-wrap {
+  width: 128px; height: 128px; margin: 0 auto 18px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #2a2418, #121218 70%);
+  display: grid; place-items: center;
+  box-shadow: var(--glow-gold), 0 0 0 1px rgba(243,214,122,0.35), var(--shadow);
+  border: 2px solid var(--gold2);
+}
+.logo-wrap svg { width: 96px; height: 96px; }
+
+h1.app-name {
+  font-size: 2.05rem; font-weight: 900; color: var(--ink);
+  letter-spacing: -0.01em; margin-bottom: 8px;
+  background: linear-gradient(135deg, var(--gold3), var(--gold2) 40%, var(--aqua) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  /* fallback for no clip support via text-shadow not needed; ink on fail */
+}
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  h1.app-name { color: var(--gold2); background: none; }
+}
+.tagline { color: var(--ink-dim); font-size: 1.05rem; line-height: 1.5; margin-bottom: 14px; max-width: 340px; }
+.brand { font-size: 0.85rem; color: var(--ink-dim); margin-bottom: 20px; }
+.brand strong { color: var(--gold2); font-weight: 800; }
+
+.feature-list {
+  text-align: left; width: 100%; max-width: 360px;
+  background: var(--card); border-radius: var(--radius); padding: 14px 16px;
+  box-shadow: var(--shadow); margin-bottom: 20px; list-style: none;
+  border: 1px solid var(--border);
+}
+.feature-list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 0; font-size: 0.95rem; line-height: 1.4; color: var(--ink);
+  border-bottom: 1px solid var(--border);
+}
+.feature-list li:last-child { border-bottom: none; }
+.feature-list .ico { flex-shrink: 0; width: 28px; height: 28px; }
+
+.btn-row { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 340px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: var(--tap); padding: 13px 22px; border-radius: 12px;
+  font-size: 1.02rem; font-weight: 800; letter-spacing: 0.02em;
+  transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+  box-shadow: var(--shadow);
+}
+.btn:active { transform: scale(0.98); }
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold3), var(--gold2) 45%, var(--gold));
+  color: #1a1408;
+  box-shadow: var(--glow-gold), var(--shadow);
+}
+.btn-primary:active { box-shadow: 0 2px 10px rgba(224,184,74,0.35); }
+.btn-secondary {
+  background: var(--card-hi); color: var(--ink);
+  border: 1px solid rgba(34,211,238,0.45);
+  box-shadow: var(--glow-cyan), var(--shadow);
+}
+.btn-ghost {
+  background: transparent; color: var(--ink-dim); box-shadow: none;
+  font-weight: 600; font-size: 0.9rem; min-height: 40px;
+  border: 1px solid transparent;
+}
+.btn-ghost:hover { color: var(--ink); border-color: var(--border); }
+.parent-note {
+  margin-top: 18px; font-size: 0.8rem; color: var(--ink-dim); line-height: 1.45;
+  max-width: 360px; background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px;
+}
+.parent-note strong { color: var(--gold3); }
+
+.badge-demo {
+  background: linear-gradient(135deg, var(--magenta), #c026d3);
+  color: #fff; font-size: 0.68rem; font-weight: 900;
+  padding: 3px 8px; border-radius: 6px; letter-spacing: 0.08em;
+  vertical-align: middle;
+}
+
+/* How to play */
+.howto-card {
+  background: var(--card); border-radius: var(--radius); padding: 22px;
+  box-shadow: var(--shadow); text-align: left; width: 100%;
+  border: 1px solid var(--border);
+}
+.howto-card h2 { font-size: 1.35rem; margin-bottom: 10px; color: var(--ink); }
+.howto-card ol { padding-left: 1.2rem; margin-bottom: 14px; color: var(--ink-dim); line-height: 1.55; }
+.howto-card li { margin-bottom: 6px; }
+.hero-banner {
+  display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, rgba(224,184,74,0.12), rgba(34,211,238,0.08));
+  border-radius: 12px; padding: 12px;
+  margin-bottom: 14px; border: 1px solid rgba(243,214,122,0.35);
+}
+.hero-banner svg { width: 56px; height: 56px; flex-shrink: 0; }
+.hero-banner p { font-size: 0.92rem; line-height: 1.4; font-weight: 600; color: var(--ink); }
+
+/* Game HUD */
+.hud {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
+}
+.level-label { font-weight: 800; font-size: 1rem; }
+.timer-bar-wrap {
+  flex: 1; min-width: 120px; height: 10px; background: rgba(255,255,255,0.06);
+  border-radius: 999px; overflow: hidden; border: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.timer-bar {
+  height: 100%; width: 100%; background: linear-gradient(90deg, var(--gold), var(--aqua));
+  border-radius: 999px; transform-origin: left center;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 12px rgba(34,211,238,0.4);
+}
+.prompt-card {
+  background: var(--card); border-radius: var(--radius); padding: 14px 16px;
+  box-shadow: var(--shadow); margin-bottom: 14px; text-align: center;
+  border: 1px solid var(--border);
+}
+.prompt-label { font-size: 0.78rem; font-weight: 700; color: var(--aqua); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.prompt-target { display: flex; justify-content: center; align-items: center; min-height: 72px; }
+.prompt-target svg { width: 64px; height: 64px; }
+.prompt-hint { margin-top: 8px; font-size: 0.95rem; font-weight: 700; color: var(--ink); }
+
+.grid {
+  display: grid; gap: 10px; flex: 1; align-content: start;
+  grid-template-columns: repeat(3, 1fr);
+}
+.grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+.grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+.tile {
+  aspect-ratio: 1; background: var(--card-hi); border-radius: 14px;
+  display: grid; place-items: center; box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: transform 0.12s, border-color 0.12s, background 0.12s, box-shadow 0.12s;
+  position: relative; -webkit-user-select: none; user-select: none;
+}
+.tile svg { width: 70%; height: 70%; pointer-events: none; }
+.tile:active { transform: scale(0.95); }
+.tile.correct {
+  border-color: var(--success); background: rgba(52,211,153,0.15);
+  box-shadow: 0 0 20px rgba(52,211,153,0.25);
+}
+.tile.wrong {
+  border-color: var(--danger); background: rgba(251,113,133,0.12);
+  animation: shake 0.35s ease;
+}
+.tile.disabled { pointer-events: none; opacity: 0.65; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.08); }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes floaty {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.pop { animation: pop 0.4s ease; }
+.floaty { animation: floaty 2.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .floaty, .pop, .tile.wrong { animation: none !important; }
+  .timer-bar { transition: none; }
+}
+
+.celebrate {
+  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+  pointer-events: none; z-index: 40;
+}
+.celebrate-bubble {
+  background: linear-gradient(135deg, rgba(26,22,12,0.96), rgba(18,18,24,0.96));
+  border: 1px solid rgba(243,214,122,0.55); color: var(--gold3);
+  font-weight: 900; font-size: 1.1rem; padding: 16px 22px; border-radius: 14px;
+  box-shadow: var(--glow-gold), var(--shadow); text-align: center; max-width: 86%;
+  animation: pop 0.45s ease;
+}
+
+/* Round result / between */
+.result-card {
+  background: var(--card); border-radius: var(--radius); padding: 26px 22px;
+  box-shadow: var(--shadow); text-align: center; width: 100%;
+  border: 1px solid var(--border);
+}
+.result-card h2 { font-size: 1.5rem; margin: 10px 0 8px; }
+.result-card p { color: var(--ink-dim); line-height: 1.45; margin-bottom: 8px; }
+.result-score { font-size: 1.2rem; font-weight: 800; color: var(--gold2); margin: 12px 0; }
+.stars { display: flex; justify-content: center; gap: 6px; margin: 10px 0 16px; }
+.stars svg { width: 36px; height: 36px; }
+
+/* Modal */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  display: flex; align-items: flex-end; justify-content: center;
+  z-index: 50; padding: 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom));
+}
+.modal {
+  background: var(--card-hi); border-radius: 18px 18px 14px 14px;
+  padding: 24px 20px 18px; width: 100%; max-width: 420px;
+  box-shadow: 0 -12px 48px rgba(0,0,0,0.55), 0 0 0 1px rgba(243,214,122,0.2);
+  text-align: center; border: 1px solid var(--border);
+}
+.modal h2 { font-size: 1.4rem; margin-bottom: 8px; }
+.modal p { color: var(--ink-dim); line-height: 1.45; margin-bottom: 14px; }
+.modal .illus { width: 88px; height: 88px; margin: 0 auto 10px; }
+.modal .btn-row { margin-top: 4px; }
+
+/* Win screen */
+.win-hero { width: 140px; height: 140px; margin: 0 auto 12px; }
+
+.footer-tiny {
+  margin-top: auto; padding-top: 16px; font-size: 0.75rem; color: var(--ink-dim); text-align: center;
+}
+</style>
+</head>
+<body>
+
+<!-- ========== LANDING ========== -->
+<section id="screen-landing" class="screen screen-center">
+  <div class="logo-wrap floaty" aria-hidden="true">
+    <svg viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="48" cy="48" r="44" fill="#22d3ee"/>
+      <circle cx="48" cy="48" r="36" fill="#1a1a22"/>
+      <!-- Spark hero face -->
+      <circle cx="48" cy="50" r="22" fill="#f3d67a"/>
+      <circle cx="40" cy="46" r="3.2" fill="#0a0a0c"/>
+      <circle cx="56" cy="46" r="3.2" fill="#0a0a0c"/>
+      <path d="M40 56 Q48 62 56 56" stroke="#0a0a0c" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <!-- Lightning brain spark -->
+      <path d="M58 22 L50 36 H58 L46 54 L54 40 H46 Z" fill="#e0b84a" stroke="#0a0a0c" stroke-width="1.5" stroke-linejoin="round"/>
+      <circle cx="28" cy="28" r="3" fill="#e879f9"/>
+      <circle cx="70" cy="30" r="2.5" fill="#a3e635"/>
+    </svg>
+  </div>
+  <h1 class="app-name">Find It First</h1>
+  <p class="tagline">A fast pattern-spotting game where your quick brain is the winning move.</p>
+  <p class="brand">By Judith · <strong id="store-name-label">Apps by Judith</strong></p>
+  <ul class="feature-list">
+    <li>
+      <svg class="ico" viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="#2a2418"/><path d="M14 6 L16 12 H22 L17 16 L19 22 L14 18 L9 22 L11 16 L6 12 H12 Z" fill="#f3d67a"/></svg>
+      <span>Spot the match or odd one out — speed + noticing details wins.</span>
+    </li>
+    <li>
+      <svg class="ico" viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="#0f2a22"/><path d="M10 14 L13 17 L19 10" stroke="#a3e635" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Celebrates racing thoughts &amp; quick pattern recognition — no shame, no “fixing.”</span>
+    </li>
+    <li>
+      <svg class="ico" viewBox="0 0 28 28"><circle cx="14" cy="14" r="12" fill="#2a1810"/><text x="14" y="19" text-anchor="middle" font-size="14" font-weight="800" fill="#f3d67a">🔥</text></svg>
+      <span>Streaks &amp; points that stick around between play sessions.</span>
+    </li>
+  </ul>
+  <div class="btn-row">
+    <button type="button" class="btn btn-primary" id="btn-demo">Play</button>
+  </div>
+  <p class="parent-note"><strong>Parents:</strong> Short rounds of spotting patterns under a gentle timer. Built for curious, fast-thinking kids — including ADHD brains that notice everything.</p>
+  <p class="footer-tiny">Works offline as a single file · No account needed</p>
+</section>
+
+<!-- ========== HOW TO ========== -->
+<section id="screen-howto" class="screen screen-center hidden">
+  <div class="howto-card">
+    <div class="hero-banner">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="32" cy="34" r="20" fill="#f3d67a"/>
+        <circle cx="25" cy="30" r="3" fill="#0a0a0c"/>
+        <circle cx="39" cy="30" r="3" fill="#0a0a0c"/>
+        <path d="M25 40 Q32 46 39 40" stroke="#0a0a0c" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+        <path d="M40 10 L34 22 H40 L30 36 L36 24 H30 Z" fill="#e0b84a" stroke="#0a0a0c" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+      <p>Your fast brain spots patterns others miss. That’s the hero trait in this game.</p>
+    </div>
+    <h2>How to play</h2>
+    <ol>
+      <li>Look at the target at the top.</li>
+      <li>Tap the matching shape — or the odd one out — before the timer runs down.</li>
+      <li>Faster correct taps = more points. Streaks give bonus gold.</li>
+      <li>Misses reset the streak, but you always get another try. No shame.</li>
+    </ol>
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary" id="btn-start">Let’s go!</button>
+      <button type="button" class="btn btn-ghost" id="btn-howto-back">Back</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== GAME ========== -->
+<section id="screen-game" class="screen hidden">
+  <div class="topbar">
+    <button type="button" class="icon-btn" id="btn-home" aria-label="Home">⌂</button>
+    <div class="topbar-title">Find It First <span class="badge-demo hidden" id="demo-badge">DEMO</span></div>
+    <button type="button" class="icon-btn" id="btn-mute" aria-label="Mute">🔊</button>
+  </div>
+  <div class="hud">
+    <div class="level-label" id="level-label">Round 1</div>
+    <div class="topbar-stats">
+      <span class="stat-pill" title="Points"><span class="gold">★</span> <span id="hud-points">0</span></span>
+      <span class="stat-pill" title="Streak">🔥 <span id="hud-streak">0</span></span>
+    </div>
+  </div>
+  <div class="timer-bar-wrap" aria-hidden="true"><div class="timer-bar" id="timer-bar"></div></div>
+  <div class="prompt-card">
+    <div class="prompt-label" id="prompt-label">Find the match</div>
+    <div class="prompt-target" id="prompt-target"></div>
+    <p class="prompt-hint" id="prompt-hint">Tap the one that matches!</p>
+  </div>
+  <div class="grid" id="game-grid" role="group" aria-label="Choices"></div>
+</section>
+
+<!-- ========== ROUND RESULT ========== -->
+<section id="screen-result" class="screen screen-center hidden">
+  <div class="result-card pop">
+    <div id="result-illus" class="win-hero"></div>
+    <h2 id="result-title">Nice spot!</h2>
+    <p id="result-msg">Your quick brain caught that!</p>
+    <div class="stars" id="result-stars"></div>
+    <p class="result-score" id="result-score">+50 points</p>
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary" id="btn-next">Next round</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== WIN ========== -->
+<section id="screen-win" class="screen screen-center hidden">
+  <div class="result-card pop">
+    <div class="win-hero" id="win-illus"></div>
+    <h2>You found them all!</h2>
+    <p id="win-msg">Racing thoughts, lightning eyes — your pattern brain saved the day.</p>
+    <p class="result-score" id="win-score">0 points</p>
+    <p style="font-weight:700;margin-bottom:14px;">Best streak: <span id="win-streak">0</span> 🔥</p>
+    <div class="btn-row">
+      <button type="button" class="btn btn-primary" id="btn-play-again">Play again</button>
+      <button type="button" class="btn btn-secondary" id="btn-win-home">Home</button>
+    </div>
+  </div>
+</section>
+
+<!-- Celebrate overlay -->
+<div id="celebrate" class="celebrate hidden"><div class="celebrate-bubble" id="celebrate-text"></div></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ——— Store config (set before selling) ———
+  const BUY_URL = '#';
+  const STORE_NAME = 'Apps by Judith';
+
+  const LS_FULL = 'findItFirstFull';
+  const LS_POINTS = 'findItFirstPoints';
+  const LS_STREAK = 'findItFirstStreak';
+  const LS_BEST = 'findItFirstBestStreak';
+  const LS_MUTE = 'findItFirstMute';
+
+  const DEMO_ROUNDS = 2;
+  const FULL_LEVELS = 7;
+
+  const FAST_MS = 1800;
+  const MID_MS = 3200;
+
+  const CELEBRATE_FAST = [
+    'Your quick brain caught that!',
+    'Lightning eyes! You spotted it first!',
+    'Racing thoughts for the win!',
+    'Pattern hero! That was fast!',
+    'Your noticing superpower strikes again!'
+  ];
+  const CELEBRATE_OK = [
+    'Nice spot — you found it!',
+    'You noticed the difference!',
+    'Sharp eyes! Keep going!',
+    'That’s the pattern brain at work!'
+  ];
+  const MISS_COPY = [
+    'Almost! Your brain is still warming up — try the next one.',
+    'Close! Patterns love a second look. You’ve got this.',
+    'Missed that one — no shame. Ready for the next find?'
+  ];
+
+  // ——— Tiny SVG icon factory ———
+  const COLORS = {
+    gold: '#e0b84a', gold2: '#f3d67a', aqua: '#22d3ee', deep: '#06b6d4',
+    ink: '#0a0a0c', mint: '#a3e635', coral: '#fb7185', cream: '#f6e7a1',
+    sky: '#67e8f9', white: '#f4f4f7', lilac: '#e879f9', peach: '#fb923c'
+  };
+
+  function svgWrap(inner, vb) {
+    return '<svg viewBox="' + (vb || '0 0 64 64') + '" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">' + inner + '</svg>';
+  }
+
+  const ICONS = {
+    star: function (c) {
+      c = c || COLORS.gold;
+      return svgWrap('<polygon points="32,6 38,24 57,24 42,36 48,54 32,43 16,54 22,36 7,24 26,24" fill="' + c + '" stroke="#0a0a0c" stroke-width="2" stroke-linejoin="round"/>');
+    },
+    heart: function (c) {
+      c = c || COLORS.coral;
+      return svgWrap('<path d="M32 54 C32 54 8 38 8 22 C8 14 14 10 20 10 C26 10 30 14 32 18 C34 14 38 10 44 10 C50 10 56 14 56 22 C56 38 32 54 32 54Z" fill="' + c + '" stroke="#0a0a0c" stroke-width="2" stroke-linejoin="round"/>');
+    },
+    moon: function (c) {
+      c = c || COLORS.gold2;
+      return svgWrap('<path d="M40 8 A24 24 0 1 0 40 56 A18 18 0 1 1 40 8Z" fill="' + c + '" stroke="#0a0a0c" stroke-width="2"/>');
+    },
+    sun: function (c) {
+      c = c || COLORS.gold;
+      return svgWrap('<circle cx="32" cy="32" r="14" fill="' + c + '" stroke="#0a0a0c" stroke-width="2"/>' +
+        '<g stroke="' + c + '" stroke-width="3" stroke-linecap="round">' +
+        '<line x1="32" y1="4" x2="32" y2="12"/><line x1="32" y1="52" x2="32" y2="60"/>' +
+        '<line x1="4" y1="32" x2="12" y2="32"/><line x1="52" y1="32" x2="60" y2="32"/>' +
+        '<line x1="12" y1="12" x2="18" y2="18"/><line x1="46" y1="46" x2="52" y2="52"/>' +
+        '<line x1="12" y1="52" x2="18" y2="46"/><line x1="46" y1="18" x2="52" y2="12"/></g>');
+    },
+    cloud: function (c) {
+      c = c || COLORS.aqua;
+      return svgWrap('<ellipse cx="32" cy="36" rx="22" ry="14" fill="' + c + '" stroke="#0a0a0c" stroke-width="2"/>' +
+        '<circle cx="22" cy="30" r="10" fill="' + c + '"/><circle cx="36" cy="26" r="12" fill="' + c + '"/>' +
+        '<ellipse cx="32" cy="36" rx="22" ry="14" fill="none" stroke="#0a0a0c" stroke-width="2"/>');
+    },
+    fish: function (c) {
+      c = c || COLORS.deep;
+      return svgWrap('<ellipse cx="30" cy="32" rx="18" ry="12" fill="' + c + '" stroke="#0a0a0c" stroke-width="2"/>' +
+        '<polygon points="46,32 58,20 58,44" fill="' + c + '" stroke="#0a0a0c" stroke-width="2" stroke-linejoin="round"/>' +
+        '<circle cx="22" cy="30" r="2.5" fill="#0a0a0c"/>');
+    },
+    leaf: function (c) {
+      c = c || COLORS.mint;
+      return svgWrap('<path d="M32 56 C32 56 10 40 10 24 C10 14 20 8 32 8 C44 8 54 14 54 24 C54 40 32 56 32 56Z" fill="' + c + '" stroke="#0a0a0c" stroke-width="2"/>' +
+        '<path d="M32 56 V16" stroke="#0a0a0c" stroke-width="2" fill="none"/>');
+    },
+    bolt: function (c) {
+      c = c || COLORS.gold;
+      return svgWrap('<path d="M36 6 L20 34 H32 L26 58 L48 28 H34 L40 6Z" fill="' + c + '" stroke="#0a0a0c" stroke-width="2" stroke-linejoin="round"/>');
+    },
+    flower: function (c) {
+      c = c || COLORS.lilac;
+      return svgWrap('<circle cx="32" cy="20" r="8" fill="' + c + '"/><circle cx="20" cy="30" r="8" fill="' + c + '"/>' +
+        '<circle cx="44" cy="30" r="8" fill="' + c + '"/><circle cx="24" cy="44" r="8" fill="' + c + '"/>' +
+        '<circle cx="40" cy="44" r="8" fill="' + c + '"/><circle cx="32" cy="34" r="7" fill="' + COLORS.gold2 + '" stroke="#0a0a0c" stroke-width="1.5"/>');
+    },
+    diamond: function (c) {
+      c = c || COLORS.aqua;
+      return svgWrap('<polygon points="32,6 58,32 32,58 6,32" fill="' + c + '" stroke="#0a0a0c" stroke-width="2" stroke-linejoin="round"/>');
+    },
+    circle: function (c) {
+      c = c || COLORS.peach;
+      return svgWrap('<circle cx="32" cy="32" r="22" fill="' + c + '" stroke="#0a0a0c" stroke-width="2"/>');
+    },
+    square: function (c) {
+      c = c || COLORS.lilac;
+      return svgWrap('<rect x="12" y="12" width="40" height="40" rx="6" fill="' + c + '" stroke="#0a0a0c" stroke-width="2"/>');
+    },
+    triangle: function (c) {
+      c = c || COLORS.coral;
+      return svgWrap('<polygon points="32,8 56,52 8,52" fill="' + c + '" stroke="#0a0a0c" stroke-width="2" stroke-linejoin="round"/>');
+    },
+    pentagon: function (c) {
+      c = c || COLORS.mint;
+      return svgWrap('<polygon points="32,8 56,26 48,54 16,54 8,26" fill="' + c + '" stroke="#0a0a0c" stroke-width="2" stroke-linejoin="round"/>');
+    },
+    bird: function (c) {
+      c = c || COLORS.deep;
+      return svgWrap('<ellipse cx="30" cy="34" rx="16" ry="12" fill="' + c + '" stroke="#0a0a0c" stroke-width="2"/>' +
+        '<circle cx="42" cy="28" r="8" fill="' + c + '" stroke="#0a0a0c" stroke-width="2"/>' +
+        '<circle cx="45" cy="26" r="2" fill="#0a0a0c"/><polygon points="50,28 60,30 50,34" fill="' + COLORS.gold + '"/>' +
+        '<path d="M18 30 Q10 20 22 24" stroke="#0a0a0c" stroke-width="2" fill="none"/>');
+    },
+    apple: function (c) {
+      c = c || COLORS.coral;
+      return svgWrap('<path d="M32 18 C28 10 22 12 22 12 C26 16 28 18 32 20 C36 18 38 16 42 12 C42 12 36 10 32 18Z" fill="' + COLORS.mint + '"/>' +
+        '<ellipse cx="32" cy="38" rx="16" ry="18" fill="' + c + '" stroke="#0a0a0c" stroke-width="2"/>');
+    },
+    sparkHero: function () {
+      return svgWrap(
+        '<circle cx="32" cy="34" r="20" fill="#f3d67a"/>' +
+        '<circle cx="25" cy="30" r="3" fill="#0a0a0c"/><circle cx="39" cy="30" r="3" fill="#0a0a0c"/>' +
+        '<path d="M25 40 Q32 46 39 40" stroke="#0a0a0c" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
+        '<path d="M40 8 L34 20 H40 L30 34 L36 22 H30 Z" fill="#e0b84a" stroke="#0a0a0c" stroke-width="1.2" stroke-linejoin="round"/>' +
+        '<circle cx="14" cy="16" r="3" fill="#e879f9"/><circle cx="52" cy="14" r="2.5" fill="#22d3ee"/>'
+      );
+    },
+    trophy: function () {
+      return svgWrap(
+        '<rect x="26" y="44" width="12" height="8" fill="#e0b84a" stroke="#0a0a0c" stroke-width="1.5"/>' +
+        '<rect x="20" y="52" width="24" height="6" rx="2" fill="#f3d67a" stroke="#0a0a0c" stroke-width="1.5"/>' +
+        '<path d="M18 14 H46 V30 C46 40 38 44 32 44 C26 44 18 40 18 30Z" fill="#f3d67a" stroke="#0a0a0c" stroke-width="2"/>' +
+        '<path d="M18 18 H10 C10 28 16 32 18 32" fill="none" stroke="#0a0a0c" stroke-width="2"/>' +
+        '<path d="M46 18 H54 C54 28 48 32 46 32" fill="none" stroke="#0a0a0c" stroke-width="2"/>' +
+        '<circle cx="32" cy="28" r="5" fill="#e0b84a"/>'
+      );
+    },
+    starEmpty: function () {
+      return svgWrap('<polygon points="32,6 38,24 57,24 42,36 48,54 32,43 16,54 22,36 7,24 26,24" fill="#1a1a22" stroke="#3a3a48" stroke-width="2" stroke-linejoin="round"/>');
+    },
+    starFill: function () {
+      return ICONS.star(COLORS.gold);
+    }
+  };
+
+  const ICON_KEYS = ['star', 'heart', 'moon', 'sun', 'cloud', 'fish', 'leaf', 'bolt', 'flower', 'diamond', 'circle', 'square', 'triangle', 'pentagon', 'bird', 'apple'];
+  const COLOR_KEYS = ['gold', 'gold2', 'aqua', 'deep', 'mint', 'coral', 'lilac', 'peach'];
+
+  // ——— State ———
+  const state = {
+    mode: 'demo',
+    muted: false,
+    round: 0,
+    totalRounds: DEMO_ROUNDS,
+    points: 0,
+    streak: 0,
+    bestStreak: 0,
+    sessionPoints: 0,
+    upgradeShown: false,
+    locked: false,
+    roundStart: 0,
+    timerId: null,
+    timeLimit: 6000,
+    current: null
+  };
+
+  const $ = function (sel) { return document.querySelector(sel); };
+  const $$ = function (sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); };
+
+  function isFull() { return true; }
+
+  function loadPersist() {
+    try {
+      if (localStorage.getItem(LS_FULL) === '1') state.mode = 'full';
+      state.points = parseInt(localStorage.getItem(LS_POINTS) || '0', 10) || 0;
+      state.streak = parseInt(localStorage.getItem(LS_STREAK) || '0', 10) || 0;
+      state.bestStreak = parseInt(localStorage.getItem(LS_BEST) || '0', 10) || 0;
+      state.muted = localStorage.getItem(LS_MUTE) === '1';
+    } catch (e) {}
+  }
+
+  function savePersist() {
+    try {
+      localStorage.setItem(LS_POINTS, String(state.points));
+      localStorage.setItem(LS_STREAK, String(state.streak));
+      localStorage.setItem(LS_BEST, String(state.bestStreak));
+      localStorage.setItem(LS_MUTE, state.muted ? '1' : '0');
+    } catch (e) {}
+  }
+
+  function showScreen(id) {
+    $$('.screen').forEach(function (el) { el.classList.add('hidden'); });
+    var s = document.getElementById(id);
+    if (s) s.classList.remove('hidden');
+  }
+
+  function rand(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function pickN(arr, n) {
+    return shuffle(arr).slice(0, n);
+  }
+
+  // Simple beep via Web Audio (no external assets)
+  var audioCtx = null;
+  function beep(freq, dur, type) {
+    if (state.muted) return;
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      var o = audioCtx.createOscillator();
+      var g = audioCtx.createGain();
+      o.type = type || 'sine';
+      o.frequency.value = freq;
+      g.gain.value = 0.08;
+      o.connect(g); g.connect(audioCtx.destination);
+      o.start();
+      g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+      o.stop(audioCtx.currentTime + dur);
+    } catch (e) {}
+  }
+
+  function flashCelebrate(text) {
+    var el = $('#celebrate');
+    var t = $('#celebrate-text');
+    t.textContent = text;
+    el.classList.remove('hidden');
+    setTimeout(function () { el.classList.add('hidden'); }, 1100);
+  }
+
+  // ——— Level generation ———
+  function timeForRound(r) {
+    // Shorter as levels climb; still forgiving
+    return Math.max(3500, 7000 - r * 450);
+  }
+
+  function makeMatchRound(round) {
+    var count = round < 2 ? 6 : (round < 4 ? 8 : 9);
+    if (round >= 5) count = 12;
+    var keys = pickN(ICON_KEYS, Math.min(count, ICON_KEYS.length));
+    var targetKey = keys[0];
+    var targetColor = COLORS[rand(COLOR_KEYS)];
+    var tiles = [];
+    // One correct match
+    tiles.push({ key: targetKey, color: targetColor, correct: true });
+    // Distractors: same shape different color OR different shapes
+    var usedColors = [targetColor];
+    for (var i = 1; i < count; i++) {
+      var k = keys[i % keys.length];
+      if (k === targetKey) {
+        // same shape, different color
+        var altColors = COLOR_KEYS.map(function (ck) { return COLORS[ck]; }).filter(function (c) {
+          return usedColors.indexOf(c) === -1;
+        });
+        var col = altColors.length ? rand(altColors) : COLORS.ink;
+        usedColors.push(col);
+        tiles.push({ key: k, color: col, correct: false });
+      } else {
+        tiles.push({ key: k, color: COLORS[rand(COLOR_KEYS)], correct: false });
+      }
+    }
+    // Ensure exactly one correct
+    tiles = shuffle(tiles);
+    return {
+      type: 'match',
+      label: 'Find the match',
+      hint: 'Tap the one that matches the target!',
+      target: { key: targetKey, color: targetColor },
+      tiles: tiles,
+      cols: count <= 6 ? 3 : (count <= 9 ? 3 : 4)
+    };
+  }
+
+  function makeOddRound(round) {
+    var count = round < 2 ? 6 : (round < 5 ? 8 : 9);
+    var baseKey = rand(ICON_KEYS);
+    var baseColor = COLORS[rand(COLOR_KEYS)];
+    var oddKey = rand(ICON_KEYS.filter(function (k) { return k !== baseKey; }));
+    var oddColor = COLORS[rand(COLOR_KEYS)];
+    var tiles = [];
+    for (var i = 0; i < count - 1; i++) {
+      tiles.push({ key: baseKey, color: baseColor, correct: false });
+    }
+    tiles.push({ key: oddKey, color: oddColor, correct: true });
+    tiles = shuffle(tiles);
+    return {
+      type: 'odd',
+      label: 'Find the odd one out',
+      hint: 'Which one doesn’t belong?',
+      target: null,
+      tiles: tiles,
+      cols: count <= 6 ? 3 : 3
+    };
+  }
+
+  function makeRound(round) {
+    // Alternate / mix match and odd-one-out
+    if (round % 2 === 0) return makeMatchRound(round);
+    return makeOddRound(round);
+  }
+
+  function renderIcon(spec) {
+    var fn = ICONS[spec.key];
+    if (!fn) return ICONS.star(spec.color);
+    return fn(spec.color);
+  }
+
+  function updateHud() {
+    $('#hud-points').textContent = String(state.points);
+    $('#hud-streak').textContent = String(state.streak);
+    $('#level-label').textContent = 'Round ' + (state.round + 1) + ' / ' + state.totalRounds;
+    $('#demo-badge').classList.toggle('hidden', isFull());
+    $('#btn-mute').textContent = state.muted ? '🔇' : '🔊';
+    $('#btn-mute').classList.toggle('muted', state.muted);
+  }
+
+  function clearTimer() {
+    if (state.timerId) { clearInterval(state.timerId); state.timerId = null; }
+  }
+
+  function startTimer() {
+    clearTimer();
+    var bar = $('#timer-bar');
+    var limit = state.timeLimit;
+    state.roundStart = Date.now();
+    bar.style.width = '100%';
+    state.timerId = setInterval(function () {
+      var elapsed = Date.now() - state.roundStart;
+      var left = Math.max(0, 1 - elapsed / limit);
+      bar.style.width = (left * 100) + '%';
+      if (elapsed >= limit) {
+        clearTimer();
+        onTimeout();
+      }
+    }, 50);
+  }
+
+  function startRound() {
+    state.locked = false;
+    state.current = makeRound(state.round);
+    state.timeLimit = timeForRound(state.round);
+    updateHud();
+
+    $('#prompt-label').textContent = state.current.label;
+    $('#prompt-hint').textContent = state.current.hint;
+    var targetEl = $('#prompt-target');
+    if (state.current.target) {
+      targetEl.innerHTML = renderIcon(state.current.target);
+    } else {
+      targetEl.innerHTML = '<span style="font-size:2rem;font-weight:900;color:var(--gold)">?</span>';
+    }
+
+    var grid = $('#game-grid');
+    grid.className = 'grid' + (state.current.cols === 4 ? ' cols-4' : (state.current.cols === 2 ? ' cols-2' : ''));
+    grid.innerHTML = '';
+    state.current.tiles.forEach(function (tile, idx) {
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'tile pop';
+      btn.setAttribute('aria-label', 'Choice ' + (idx + 1));
+      btn.innerHTML = renderIcon(tile);
+      btn.addEventListener('click', function () { onPick(tile, btn); });
+      grid.appendChild(btn);
+    });
+
+    showScreen('screen-game');
+    startTimer();
+  }
+
+  function onTimeout() {
+    if (state.locked) return;
+    state.locked = true;
+    state.streak = 0;
+    savePersist();
+    beep(180, 0.25, 'triangle');
+    showResult(false, 0, 'Time’s up — your brain was ready, the clock was faster. Next round!');
+  }
+
+  function onPick(tile, btn) {
+    if (state.locked) return;
+    state.locked = true;
+    clearTimer();
+    var elapsed = Date.now() - state.roundStart;
+    $$('#game-grid .tile').forEach(function (t) { t.classList.add('disabled'); });
+
+    if (tile.correct) {
+      btn.classList.add('correct');
+      var base = 40 + state.round * 8;
+      var speedBonus = 0;
+      var msg;
+      if (elapsed <= FAST_MS) {
+        speedBonus = 40;
+        msg = rand(CELEBRATE_FAST);
+        beep(660, 0.12); setTimeout(function () { beep(880, 0.15); }, 80);
+      } else if (elapsed <= MID_MS) {
+        speedBonus = 20;
+        msg = rand(CELEBRATE_OK);
+        beep(520, 0.14);
+      } else {
+        speedBonus = 8;
+        msg = rand(CELEBRATE_OK);
+        beep(440, 0.12);
+      }
+      state.streak += 1;
+      if (state.streak > state.bestStreak) state.bestStreak = state.streak;
+      var streakBonus = Math.min(50, (state.streak - 1) * 8);
+      var gained = base + speedBonus + streakBonus;
+      state.points += gained;
+      state.sessionPoints += gained;
+      savePersist();
+      flashCelebrate(msg);
+      setTimeout(function () { showResult(true, gained, msg); }, 650);
+    } else {
+      btn.classList.add('wrong');
+      // Reveal correct
+      $$('#game-grid .tile').forEach(function (t, i) {
+        if (state.current.tiles[i].correct) t.classList.add('correct');
+      });
+      state.streak = 0;
+      savePersist();
+      beep(200, 0.2, 'triangle');
+      var miss = rand(MISS_COPY);
+      setTimeout(function () { showResult(false, 0, miss); }, 700);
+    }
+  }
+
+  function starSvg(filled) {
+    return filled ? ICONS.starFill() : ICONS.starEmpty();
+  }
+
+  function showResult(ok, gained, msg) {
+    var illus = $('#result-illus');
+    illus.innerHTML = ok ? ICONS.sparkHero() : ICONS.cloud(COLORS.aqua);
+    $('#result-title').textContent = ok ? 'You found it!' : 'Keep noticing!';
+    $('#result-msg').textContent = msg;
+    $('#result-score').textContent = ok ? ('+' + gained + ' points · streak ' + state.streak) : ('Streak reset · total ' + state.points);
+    var stars = $('#result-stars');
+    stars.innerHTML = '';
+    var n = ok ? (gained >= 80 ? 3 : (gained >= 50 ? 2 : 1)) : 0;
+    for (var i = 0; i < 3; i++) {
+      var wrap = document.createElement('span');
+      wrap.innerHTML = starSvg(i < n);
+      stars.appendChild(wrap.firstChild);
+    }
+    showScreen('screen-result');
+  }
+
+  function afterRound() {
+    state.round += 1;
+
+    // Demo gate after DEMO_ROUNDS
+    if (!isFull() && state.round >= DEMO_ROUNDS) {
+      if (!state.upgradeShown) {
+        state.upgradeShown = true;
+        showUpgrade();
+        return;
+      }
+      // If they already saw upgrade and continued, end demo run
+      showWin(true);
+      return;
+    }
+
+    if (state.round >= state.totalRounds) {
+      showWin(false);
+      return;
+    }
+    startRound();
+  }
+
+  function showWin(demoEnded) {
+    $('#win-illus').innerHTML = ICONS.trophy();
+    $('#win-msg').textContent = demoEnded
+      ? 'Demo complete! Your quick brain already proved itself — unlock the full game for more rounds.'
+      : 'Racing thoughts, lightning eyes — your pattern brain saved the day.';
+    $('#win-score').textContent = state.sessionPoints + ' points this run · ' + state.points + ' all-time';
+    $('#win-streak').textContent = String(state.bestStreak);
+    showScreen('screen-win');
+    if (!state.muted) { beep(523, 0.12); setTimeout(function () { beep(659, 0.12); }, 100); setTimeout(function () { beep(784, 0.2); }, 200); }
+  }
+
+  function showUpgrade() {
+    $('#modal-upgrade').classList.remove('hidden');
+  }
+  function hideUpgrade() {
+    $('#modal-upgrade').classList.add('hidden');
+  }
+
+  function openBuy() {
+    if (BUY_URL && BUY_URL !== '#') {
+      window.open(BUY_URL, '_blank', 'noopener');
+    } else {
+      alert('Set BUY_URL near the top of this file to your store checkout link.\n\nStore: ' + STORE_NAME);
+    }
+  }
+
+  function unlockFull() {
+    try { localStorage.setItem(LS_FULL, '1'); } catch (e) {}
+    state.mode = 'full';
+    state.totalRounds = FULL_LEVELS;
+    hideUpgrade();
+    $('#modal-unlock').classList.add('hidden');
+    $('#demo-badge').classList.add('hidden');
+    alert('Unlocked! Full Find It First is ready on this device. Have fun spotting.');
+    // If upgrade appeared mid-run, continue into remaining full levels
+    var onResult = !$('#screen-result').classList.contains('hidden');
+    var onWin = !$('#screen-win').classList.contains('hidden');
+    if (onResult || onWin) {
+      if (state.round < state.totalRounds) {
+        startRound();
+      } else {
+        showWin(false);
+      }
+    }
+  }
+
+  function beginPlay() {
+    loadPersist();
+    state.round = 0;
+    state.sessionPoints = 0;
+    state.upgradeShown = false;
+    state.mode = 'full';
+    state.totalRounds = FULL_LEVELS;
+    // Keep persistent streak across sessions (don't reset on play)
+    updateHud();
+    startRound();
+  }
+
+  function bind() {
+    $('#store-name-label').textContent = STORE_NAME;
+
+    $('#btn-demo').addEventListener('click', function () {
+      state.mode = 'full';
+      showScreen('screen-howto');
+    });
+
+    $('#btn-howto-back').addEventListener('click', function () { showScreen('screen-landing'); });
+    $('#btn-start').addEventListener('click', beginPlay);
+
+    $('#btn-home').addEventListener('click', function () {
+      clearTimer();
+      showScreen('screen-landing');
+    });
+    $('#btn-mute').addEventListener('click', function () {
+      state.muted = !state.muted;
+      savePersist();
+      updateHud();
+    });
+
+    $('#btn-next').addEventListener('click', afterRound);
+    $('#btn-play-again').addEventListener('click', beginPlay);
+    $('#btn-win-home').addEventListener('click', function () { showScreen('screen-landing'); });
+
+  }
+
+  loadPersist();
+  bind();
+  updateHud();
+})();
+</script>
+</body>
+</html>
