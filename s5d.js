@@ -118,7 +118,8 @@ const FILES = {
   "aether": "private/aether.html",
   "after-the-silence": "private/after-the-silence.html",
   "slowly": "private/slowly.html",
-  "hello-again": "private/hello-again.html"
+  "hello-again": "private/hello-again.html",
+  "enough": "private/enough.html"
 };
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
