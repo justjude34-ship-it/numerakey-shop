@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Hello, You — Your Dating Profile Companion</title>
+<link rel="manifest" href='data:application/manifest+json,{"name":"Hello, You","short_name":"Hello, You","start_url":".","display":"standalone","background_color":"#000000","theme_color":"#000000","icons":[{"src":"data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 192 192%27%3E%3Crect width=%27192%27 height=%27192%27 fill=%27%23000%27/%3E%3Ccircle cx=%2780%27 cy=%2796%27 r=%2748%27 fill=%27%23ff6b9d%27 fill-opacity=%27.8%27/%3E%3Ccircle cx=%27112%27 cy=%2796%27 r=%2748%27 fill=%27%23ffc371%27 fill-opacity=%27.8%27/%3E%3C/svg%3E","sizes":"192x192","type":"image/svg+xml"}]}'>
+<style>
+:root{--bg:#000;--card:#111015;--card2:#18161e;--line:#2a2733;--text:#f2eff6;--mute:#9b96a8;--a:#ff6b9d;--b:#ffc371;--c:#9d7bff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+body{padding-bottom:90px}
+.wrap{max-width:640px;margin:0 auto;padding:0 18px}
+.hero{position:relative;overflow:hidden;padding:34px 0 10px;text-align:center}
+.hero svg{width:100%;max-width:420px;height:auto;display:block;margin:0 auto}
+h1{font-size:2.3rem;margin:6px 0 4px;letter-spacing:-.5px;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mute);margin:0 auto 6px;max-width:440px}
+h2{font-size:1.4rem;margin:8px 0 4px;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+h3{margin:18px 0 6px;font-size:1rem;color:var(--b)}
+p{margin:6px 0}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:rgba(0,0,0,.94);border-top:1px solid var(--line);display:flex;justify-content:center;gap:2px;padding:6px 6px calc(6px + env(safe-area-inset-bottom));z-index:10;backdrop-filter:blur(8px)}
+.tab{flex:1;max-width:120px;background:none;border:0;color:var(--mute);font:inherit;font-size:.72rem;padding:6px 2px;border-radius:12px;cursor:pointer}
+.tab svg{display:block;margin:0 auto 2px;width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tab.on{color:var(--text);background:var(--card2)}
+.tab.on svg{stroke:var(--a)}
+.view{display:none;padding-top:10px}.view.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin:12px 0}
+label{display:block;font-size:.85rem;color:var(--mute);margin:12px 0 4px}
+input,textarea,select{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:11px 12px;font:inherit;font-size:1rem}
+textarea{min-height:90px;resize:vertical}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--a)}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.btn{background:linear-gradient(90deg,var(--a),var(--b));color:#14060b;border:0;border-radius:14px;padding:13px 18px;font:inherit;font-weight:700;cursor:pointer;width:100%;margin-top:14px}
+.btn.ghost{background:var(--card2);color:var(--text);border:1px solid var(--line);font-weight:500}
+.btn.sm{width:auto;padding:8px 14px;margin:8px 8px 0 0;font-size:.85rem}
+.bio{white-space:pre-wrap;background:var(--card2);border-radius:14px;padding:14px;margin-top:8px;border-left:3px solid var(--a)}
+.tag{display:inline-block;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--b)}
+.meta{color:var(--mute);font-size:.8rem}
+.chk{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.chk:last-child{border:0}
+.chk input{width:22px;height:22px;margin-top:2px;accent-color:var(--a);flex:none}
+.chk b{display:block}
+.note{padding:10px 12px;border-radius:12px;margin:8px 0;background:var(--card2);border-left:3px solid var(--mute)}
+.note.good{border-color:#5ee6a8}.note.warn{border-color:var(--b)}.note.bad{border-color:var(--a)}
+.pill{display:inline-block;padding:6px 12px;border-radius:999px;background:var(--card2);border:1px solid var(--line);margin:4px 4px 0 0;font-size:.85rem;cursor:pointer}
+.pill.on{border-color:var(--a);color:var(--a)}
+.sv{border-left:3px solid var(--a)}.sv.fav{border-left-color:var(--b);background:linear-gradient(90deg,rgba(255,195,113,.08),transparent)}.sv .tag{margin-bottom:4px}.empty{color:var(--mute);text-align:center;padding:26px 10px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#fff;color:#000;padding:9px 16px;border-radius:999px;font-size:.85rem;opacity:0;pointer-events:none;transition:opacity .25s;z-index:20}
+.toast.on{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <svg viewBox="0 0 420 170" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <radialGradient id="g1" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ff6b9d" stop-opacity=".9"/><stop offset="1" stop-color="#ff6b9d" stop-opacity="0"/></radialGradient>
+        <radialGradient id="g2" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#ffc371" stop-opacity=".9"/><stop offset="1" stop-color="#ffc371" stop-opacity="0"/></radialGradient>
+        <linearGradient id="g3" x1="0" x2="1"><stop offset="0" stop-color="#ff6b9d"/><stop offset="1" stop-color="#ffc371"/></linearGradient>
+      </defs>
+      <circle cx="170" cy="85" r="80" fill="url(#g1)"/>
+      <circle cx="250" cy="85" r="80" fill="url(#g2)"/>
+      <circle cx="170" cy="85" r="46" fill="none" stroke="url(#g3)" stroke-width="2"/>
+      <circle cx="250" cy="85" r="46" fill="none" stroke="url(#g3)" stroke-width="2"/>
+      <path d="M210 52 C 226 70, 226 100, 210 118 C 194 100, 194 70, 210 52Z" fill="url(#g3)" fill-opacity=".55"/>
+      <g fill="#fff" fill-opacity=".8"><circle cx="60" cy="30" r="1.6"/><circle cx="360" cy="40" r="1.4"/><circle cx="90" cy="140" r="1.2"/><circle cx="335" cy="135" r="1.8"/><circle cx="30" cy="95" r="1.2"/><circle cx="395" cy="95" r="1.2"/></g>
+    </svg>
+    <h1>Hello, You</h1>
+    <p class="sub">Write a dating profile that sounds like you. Everything stays on this device.</p>
+  </div>
+
+  <!-- BUILD -->
+  <section class="view on" id="v-build">
+    <h2>Build your bio</h2>
+    <p class="meta">Answer what you like. Blank is fine. Tap again for fresh versions.</p>
+    <div class="card">
+      <div class="row">
+        <div><label>First name</label><input id="f-name" autocomplete="off"></div>
+        <div><label>What you do</label><input id="f-work" placeholder="nurse, builder, teacher…" autocomplete="off"></div>
+      </div>
+      <label>Things you love (comma separated)</label>
+      <input id="f-loves" placeholder="beach walks, cooking curries, op-shop finds" autocomplete="off">
+      <label>A small, true, specific detail about you</label>
+      <input id="f-fact" placeholder="I can name every bird in my street" autocomplete="off">
+      <label>A perfect weekend looks like</label>
+      <input id="f-weekend" placeholder="markets, a long lunch, nowhere to be" autocomplete="off">
+      <label>What your friends say about you</label>
+      <input id="f-friends" placeholder="I'm the one who always has snacks" autocomplete="off">
+      <div class="row">
+        <div><label>You're looking for</label>
+          <select id="f-seek"><option value="rel">A relationship</option><option value="lt">Something long-term</option><option value="see">To see where it goes</option><option value="fr">Friendship first</option></select></div>
+        <div><label>Your humour</label>
+          <select id="f-humour"><option>Dry</option><option>Playful</option><option>Warm</option></select></div>
+      </div>
+      <label>What you want in someone</label>
+      <input id="f-want" placeholder="kind, curious, can laugh at themselves" autocomplete="off">
+      <button class="btn" id="b-gen">Write my bios</button>
+    </div>
+    <div id="bios"></div>
+  </section>
+
+  <!-- PROMPTS -->
+  <section class="view" id="v-prompts">
+    <h2>Prompt answers</h2>
+    <p class="meta">Specific beats clever. Aim for one real detail per answer.</p>
+    <div id="prompts"></div>
+  </section>
+
+  <!-- PHOTOS -->
+  <section class="view" id="v-photos">
+    <h2>Photo plan</h2>
+    <p class="meta">Six photos is plenty. Tick them off as you find them.</p>
+    <div class="card" id="photos"></div>
+    <div class="card">
+      <h3 style="margin-top:0">Quick rules</h3>
+      <p>Natural light, recent, and only photos where you are clearly the one in focus. Skip heavy filters, sunglasses in every shot, and group photos as your first.</p>
+    </div>
+  </section>
+
+  <!-- CHECK -->
+  <section class="view" id="v-check">
+    <h2>Profile check</h2>
+    <p class="meta">Paste your bio and get straight notes. Nothing leaves your phone.</p>
+    <div class="card">
+      <textarea id="c-text" placeholder="Paste your bio here…" style="min-height:140px"></textarea>
+      <button class="btn" id="b-check">Check it</button>
+    </div>
+    <div id="check-out"></div>
+  </section>
+
+  <!-- OPENERS -->
+  <section class="view" id="v-open">
+    <h2>First messages</h2>
+    <p class="meta">Pick one detail from their profile. That's your opener.</p>
+    <div class="card">
+      <label>Something specific from their profile</label>
+      <input id="o-detail" placeholder="their photo with the huge dog / love of sourdough" autocomplete="off">
+      <label>Their name (optional)</label>
+      <input id="o-name" autocomplete="off">
+      <button class="btn" id="b-open">Give me openers</button>
+    </div>
+    <div id="openers"></div>
+    <div class="card">
+      <h3 style="margin-top:0">Worth remembering</h3>
+      <p>Keep your history for later. Early chats are for finding out if you like each other. Share the heavy stuff when someone has shown you who they are.</p>
+    </div>
+  </section>
+
+  <!-- SAVED -->
+  <section class="view" id="v-saved">
+    <h2>My profile</h2>
+    <p class="meta">Your ready-to-paste board. Pick or type the final text for each spot, then copy it straight into your dating app.</p>
+    <div class="card" style="padding-top:6px">
+      <label>Which app are you pasting into?</label>
+      <select id="m-app"><option>Tinder</option><option>Bumble</option><option>Hinge</option><option>Other (no limit)</option></select>
+      <button class="btn" id="b-auto">Do it for me</button>
+      <p class="meta" id="m-note"></p>
+      <div id="m-board"></div>
+      <button class="btn" id="b-copyall">Copy everything</button>
+    </div>
+    <h2 style="margin-top:22px">Scrapbook</h2>
+    <p class="meta">Paste in suggestions from anywhere (a friend, another app, an AI chat) and keep them here. Use the dropdowns above to move one onto your board.</p>
+    <div class="card">
+      <textarea id="s-text" placeholder="Paste a bio, prompt answer, opener or any suggestion here…" style="min-height:110px"></textarea>
+      <div id="s-labels" style="margin-top:8px"></div>
+      <button class="btn" id="b-save">Save it</button>
+      <button class="btn ghost" id="b-cancel" style="display:none">Cancel edit</button>
+    </div>
+    <div id="s-filters" style="margin:6px 0"></div>
+    <div id="s-list"></div>
+  </section>
+</div>
+
+<nav class="tabs" id="tabs">
+  <button class="tab on" data-v="build"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>Bio</button>
+  <button class="tab" data-v="prompts"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>Prompts</button>
+  <button class="tab" data-v="photos"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 9"/></svg>Photos</button>
+  <button class="tab" data-v="check"><svg viewBox="0 0 24 24"><path d="M9 11l3 3 8-8"/><path d="M20 12v7a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h9"/></svg>Check</button>
+  <button class="tab" data-v="open"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>Openers</button>
+  <button class="tab" data-v="saved"><svg viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Profile</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+var $=function(id){return document.getElementById(id)};
+var store={get:function(k,d){try{var v=localStorage.getItem('hy_'+k);return v?JSON.parse(v):d}catch(e){return d}},set:function(k,v){try{localStorage.setItem('hy_'+k,JSON.stringify(v))}catch(e){}}};
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on')},1600)}
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function copy(text){
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){toast('Copied')},fallback)}else fallback();
+  function fallback(){var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');toast('Copied')}catch(e){toast('Press and hold to copy')}document.body.removeChild(ta)}
+}
+
+function bindActions(root){
+  Array.prototype.forEach.call(root.querySelectorAll('[data-copy]'),function(b){b.addEventListener('click',function(){copy(decodeURIComponent(b.getAttribute('data-copy')))})});
+  Array.prototype.forEach.call(root.querySelectorAll('[data-save]'),function(b){b.addEventListener('click',function(){addSaved(decodeURIComponent(b.getAttribute('data-save')),b.getAttribute('data-label')||'Other');b.textContent='Saved';b.disabled=true})});
+}
+/* tabs */
+var tabs=document.querySelectorAll('.tab');
+Array.prototype.forEach.call(tabs,function(t){t.addEventListener('click',function(){
+  Array.prototype.forEach.call(tabs,function(x){x.classList.remove('on')});t.classList.add('on');
+  Array.prototype.forEach.call(document.querySelectorAll('.view'),function(v){v.classList.remove('on')});
+  $('v-'+t.getAttribute('data-v')).classList.add('on');window.scrollTo(0,0);
+})});
+
+/* ---------- BUILD ---------- */
+var fields=['name','work','loves','fact','weekend','friends','seek','humour','want'];
+var saved=store.get('form',{});
+fields.forEach(function(f){var el=$('f-'+f);if(saved[f]!==undefined)el.value=saved[f];el.addEventListener('input',saveForm);el.addEventListener('change',saveForm)});
+function saveForm(){var o={};fields.forEach(function(f){o[f]=$('f-'+f).value});store.set('form',o)}
+function val(f){return $('f-'+f).value.trim()}
+function list(s){return s.split(/[,;\n]+/).map(function(x){return x.trim()}).filter(Boolean)}
+function joinList(a){if(a.length<=1)return a.join('');return a.slice(0,-1).join(', ')+' and '+a[a.length-1]}
+function lc(s){return s.charAt(0).toLowerCase()+s.slice(1)}
+function cap(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+function stripDot(s){return s.replace(/[.!\s]+$/,'')}
+var seekLine={
+  rel:['I\'m looking for a relationship, a real one.','Here for a relationship with someone worth coming home to.','Looking for my person, and happy to take the scenic route there.'],
+  lt:['I\'m after something long-term.','Hoping to build something that lasts.','Looking for the long game, with good company along the way.'],
+  see:['Open to seeing where this goes.','No script. I\'d rather meet someone and see what happens.','Curious and open. Let\'s see what happens.'],
+  fr:['Friendship first, then whatever grows from it.','I\'d like to start as friends and let things unfold.','Good conversation first. The rest follows.']
+};
+var lastMade={},lastOrder=[];
+function build(){
+  var name=val('name'),work=val('work'),loves=list(val('loves')),fact=stripDot(val('fact')),wk=stripDot(val('weekend')),fr=stripDot(val('friends')),want=list(val('want')),seek=val('seek'),hum=val('humour');
+  var intro=[],i;
+  function opener(tone){
+    var o=[];
+    if(work)o.push(pick(tone==='warm'?['I work as '+aOr(work)+'.','By day I\'m '+aOr(work)+'.']:tone==='play'?['Professionally, '+aOr(work)+'. Unprofessionally, see below.','Day job: '+work+'. Real personality: below.']:['I\'m '+aOr(work)+'.','I work as '+aOr(work)+'.']));
+    return o;
+  }
+  function aOr(w){return /^(a|an|the)\s/i.test(w)?w:(/^[aeiou]/i.test(w)?'an ':'a ')+w}
+  function lovesLine(tone){
+    if(!loves.length)return '';
+    var l=joinList(loves);
+    return pick(tone==='warm'?['I\'m happiest with '+l+'.','You\'ll usually find me doing one of these: '+l+'.','What lights me up: '+l+'.']:tone==='play'?['Currently obsessed with '+l+'. Ask me anything.','My personality in a list: '+l+'.','Known for '+l+'. Yes, all of them.']:['I enjoy '+l+'.','Interests: '+l+'.','I spend my time on '+l+'.']);
+  }
+  function factLine(tone){
+    if(!fact)return '';
+    return pick(tone==='play'?[cap(fact)+'. Fight me.',cap(fact)+'. It comes up more than you\'d think.']:tone==='warm'?['Small thing about me: '+lc(fact)+'.',cap(fact)+'.']:[cap(fact)+'.']);
+  }
+  function wkLine(tone){
+    if(!wk)return '';
+    return pick(tone==='play'?['Ideal weekend: '+wk+'. Join me.','Weekend plan: '+wk+'. Seats available.']:tone==='warm'?['A perfect weekend for me is '+wk+'.','My idea of a good weekend: '+wk+'.']:['Weekends: '+wk+'.']);
+  }
+  function frLine(tone){
+    if(!fr)return '';
+    return pick(tone==='play'?['My friends say: '+fr+'. They\'re not wrong.','According to my friends, '+lc(fr)+'.']:tone==='warm'?['My friends would tell you: '+fr+'.']:['Friends describe me this way: '+fr+'.']);
+  }
+  function wantLine(tone){
+    if(!want.length)return '';
+    var w=joinList(want);
+    return pick(tone==='play'?['You: '+w+'. Me: fully available for banter.','Qualifications for the role: '+w+'.']:tone==='warm'?['I\'d love to meet someone '+w+'.','Drawn to people who are '+w+'.']:['I value someone '+w+'.']);
+  }
+  function closer(tone){
+    var q=tone==='play'?['Tell me your most unhinged harmless opinion.','Your move. Best meal you\'ve ever had?','Opening line is optional. A good story is not.']:tone==='warm'?['If that sounds like you, I\'d love to hear from you.','Say hello. I\'m a good listener and a better laugher.','Tell me one thing that made you smile this week.']:['If this sounds like a fit, send me a message.','Message me and let\'s see if we get on.','What\'s the best thing you\'ve eaten lately?'];
+    return pick(q);
+  }
+  function make(tone){
+    var parts=[];
+    var o=opener(tone);if(o.length)parts.push(o[0]);
+    var l=lovesLine(tone);if(l)parts.push(l);
+    var f=factLine(tone);if(f)parts.push(f);
+    var w=wkLine(tone);if(w)parts.push(w);
+    var fl=frLine(tone);if(fl)parts.push(fl);
+    parts.push(pick(seekLine[seek]));
+    var wl=wantLine(tone);if(wl)parts.push(wl);
+    parts.push(closer(tone));
+    var text=parts.join(tone==='straight'?' ':'\n\n');
+    return text;
+  }
+  var order=hum==='Dry'?['straight','play','warm']:hum==='Playful'?['play','warm','straight']:['warm','straight','play'];
+  lastOrder=order;
+  var labels={warm:'Warm',play:'Playful',straight:'Straightforward'};
+  var html='';
+  order.forEach(function(t){
+    var txt=make(t);lastMade[t]=txt;
+    html+='<div class="card"><span class="tag">'+labels[t]+'</span><div class="bio">'+esc(txt)+'</div><div class="meta" style="margin-top:6px">'+txt.length+' characters</div><button class="btn ghost sm" data-copy="'+encodeURIComponent(txt)+'">Copy</button><button class="btn ghost sm" data-save="'+encodeURIComponent(txt)+'" data-label="Bio">Save</button></div>';
+  });
+  $('bios').innerHTML=html;
+  bindActions($('bios'));
+  store.set('lastBio',html);
+}
+$('b-gen').addEventListener('click',function(){
+  if(!val('loves')&&!val('fact')&&!val('work')&&!val('weekend')){toast('Add at least one detail first');return}
+  build();$('bios').scrollIntoView({behavior:'smooth'});
+});
+var lb=store.get('lastBio','');if(lb){$('bios').innerHTML=lb;bindActions($('bios'))}
+
+/* ---------- PROMPTS ---------- */
+var PROMPTS=[
+ ['I\'m weirdly good at…','Name the oddly specific skill, then one line on how it came about.'],
+ ['The way to my heart is…','Be concrete. A food, a gesture, a habit. Not "kindness".'],
+ ['A perfect Sunday looks like…','Give a sequence: morning, afternoon, evening.'],
+ ['Two truths and a lie','Make one truth surprising so they have something to ask about.'],
+ ['I\'ll know it\'s going well when…','Describe a small moment, not a big promise.'],
+ ['My most controversial opinion is…','Keep it harmless and a little funny. Food opinions always work.'],
+ ['The last thing that made me laugh out loud…','A tiny, real story beats a joke.'],
+ ['I get way too excited about…','Let your enthusiasm show. Specifics are charming.'],
+ ['Best trip I\'ve taken…','Where, who with, and one detail you still remember.'],
+ ['Something I\'m learning right now…','Shows curiosity. Admit you\'re bad at it.'],
+ ['A green flag I look for…','Pick one behaviour you can actually spot on a first date.'],
+ ['Together we could…','Suggest an actual date. "Try the new laksa place" beats "travel the world".']
+];
+var pa=store.get('prompts',{});
+var ph='';
+PROMPTS.forEach(function(p,i){
+  ph+='<div class="card"><span class="tag">'+esc(p[0])+'</span><p class="meta">'+esc(p[1])+'</p><textarea id="p-'+i+'" placeholder="Your answer…">'+esc(pa[i]||'')+'</textarea><div class="meta" id="pc-'+i+'"></div><button class="btn ghost sm" data-pc="'+i+'">Copy</button><button class="btn ghost sm" data-ps="'+i+'">Save</button></div>';
+});
+$('prompts').innerHTML=ph;
+PROMPTS.forEach(function(p,i){
+  var ta=$('p-'+i);var cnt=$('pc-'+i);
+  function upd(){cnt.textContent=ta.value.length?ta.value.length+' characters':''}
+  upd();
+  ta.addEventListener('input',function(){pa[i]=ta.value;store.set('prompts',pa);upd()});
+});
+Array.prototype.forEach.call(document.querySelectorAll('[data-pc]'),function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-pc');var t=$('p-'+i).value.trim();if(t)copy(t);else toast('Nothing to copy yet')})});
+
+Array.prototype.forEach.call(document.querySelectorAll('[data-ps]'),function(b){b.addEventListener('click',function(){var i=b.getAttribute('data-ps');var t=$('p-'+i).value.trim();if(!t){toast('Nothing to save yet');return}addSaved(PROMPTS[i][0]+'\n'+t,'Prompt')})});
+
+/* ---------- PHOTOS ---------- */
+var PH=[
+ ['Lead photo','A clear, smiling shot of just you, face visible, good light. This one does the heavy lifting.'],
+ ['Full-length','Standing or walking, so people can see you whole. Relaxed beats posed.'],
+ ['Doing something you love','Cooking, hiking, playing music, with a pet. It gives them something to ask about.'],
+ ['With people','One shot with friends or family, not first, and clear which one is you.'],
+ ['A candid laugh','Mid-laugh, mid-story. It shows your personality.'],
+ ['Somewhere you love','A place that says something about you. Keep you in the frame.']
+];
+var pc=store.get('photos',{});
+var phh='';
+PH.forEach(function(p,i){phh+='<label class="chk"><input type="checkbox" data-ph="'+i+'"'+(pc[i]?' checked':'')+'><span><b>'+(i+1)+'. '+esc(p[0])+'</b><span class="meta">'+esc(p[1])+'</span></span></label>'});
+$('photos').innerHTML=phh;
+Array.prototype.forEach.call(document.querySelectorAll('[data-ph]'),function(c){c.addEventListener('change',function(){pc[c.getAttribute('data-ph')]=c.checked;store.set('photos',pc)})});
+
+/* ---------- CHECK ---------- */
+var CLICHES=['live laugh love','love to travel','work hard play hard','partner in crime','looking for my other half','looking for my better half','good vibes only','swipe right','fluent in sarcasm','just ask','i love to laugh','here for a good time','looking for a good time','wine','adventure','netflix and chill','no drama','nice guy','nice girl','sapiosexual','introvert','extrovert','foodie'];
+var NEGS=['no drama','not here for','don\'t message','dont message','if you','no hookups','no games','tired of','fed up','sick of','must be','must have','never','no one who','not looking for','swipe left','don\'t waste','dont waste','no time wasters','no timewasters','no ghost','no one-word','no one word'];
+$('b-check').addEventListener('click',function(){
+  var t=$('c-text').value.trim();
+  if(!t){toast('Paste your bio first');return}
+  var low=t.toLowerCase();var words=t.split(/\s+/).filter(Boolean).length;
+  var out=[];
+  function add(cls,txt){out.push('<div class="note '+cls+'">'+txt+'</div>')}
+  if(words<25)add('warn','<b>Short.</b> '+words+' words. Add two or three specific details so people have something to reply to.');
+  else if(words>130)add('warn','<b>Long.</b> '+words+' words. People skim. Cut to your strongest three or four points.');
+  else add('good','<b>Good length.</b> '+words+' words.');
+  var neg=NEGS.filter(function(n){return low.indexOf(n)>-1});
+  if(neg.length>=2)add('bad','<b>Lots of "no"s.</b> Phrases like "'+esc(neg[0])+'" and "'+esc(neg[1])+'" read as guarded. Say what you want, not what you\'re avoiding.');
+  else if(neg.length===1)add('warn','<b>One negative.</b> "'+esc(neg[0])+'". Try flipping it into what you do want.');
+  else add('good','<b>Positive tone.</b> You\'re saying what you want, not what you don\'t.');
+  var cl=CLICHES.filter(function(c){return low.indexOf(c)>-1});
+  if(cl.length)add('warn','<b>Clichés spotted:</b> '+cl.slice(0,4).map(esc).join(', ')+'. Swap each for a real example, like which trip, which food, which drink.');
+  var caps=(t.match(/(?:^|[.!?]\s+|\n)\s*\S/g)||[]).length;
+  var proper=(t.match(/\b[A-Z][a-z]{3,}\b/g)||[]).length-caps;
+  var nums=(t.match(/\b\d+\b/g)||[]).length;
+  if(proper+nums<1)add('warn','<b>Few specifics.</b> Names of places, dishes, bands or hobbies make you easier to message. Add one or two.');
+  else add('good','<b>Has specifics.</b> That gives people something to reply to.');
+  if(t.indexOf('?')===-1&&!/message me|tell me|ask me|say hi|say hello|your move/i.test(t))add('warn','<b>No invitation.</b> End with a question or an easy prompt, so replying feels simple.');
+  else add('good','<b>Clear invitation to reply.</b>');
+  var ex=(t.match(/!/g)||[]).length;
+  if(ex>3)add('warn','<b>Lots of exclamation marks</b> ('+ex+'). Keep two at most.');
+  if(/\b(i|i'm|im|my|me)\b/gi.test(t)){var iCount=(t.match(/\b(i|i'm|im|i've|i'll)\b/gi)||[]).length;if(words>20&&iCount/words>0.12)add('warn','<b>Very "I"-heavy.</b> Mix in "you" or "we" so it feels like a conversation.')}
+  if(!/\b(looking for|want|hoping|open to|here for|after)\b/i.test(t))add('warn','<b>Intent unclear.</b> One sentence on what you\'re hoping for saves everyone time.');
+  $('check-out').innerHTML=out.join('');
+});
+
+/* ---------- OPENERS ---------- */
+$('b-open').addEventListener('click',function(){
+  var d=$('o-detail').value.trim().replace(/[.!?\s]+$/,'');
+  var n=$('o-name').value.trim();
+  if(!d){toast('Add one detail from their profile');return}
+  var hi=n?'Hi '+n+'. ':'Hi. ';
+  var list=[
+   hi+'I couldn\'t get past '+d+'. What\'s the story?',
+   hi+'Quick question about '+d+': how did that start?',
+   hi+d.charAt(0).toUpperCase()+d.slice(1)+'. Tell me more, I\'m genuinely curious.',
+   hi+'Your '+d+' made me smile. What do you love most about it?',
+   hi+'Okay, I have to ask about '+d+'. Best part?',
+   hi+'Settle something for me: '+d+'. Is it as good as it looks?'
+  ];
+  var s=shuffle(list).slice(0,4);
+  var html='';
+  s.forEach(function(x){html+='<div class="card"><div class="bio">'+esc(x)+'</div><button class="btn ghost sm" data-copy="'+encodeURIComponent(x)+'">Copy</button><button class="btn ghost sm" data-save="'+encodeURIComponent(x)+'" data-label="Opener">Save</button></div>'});
+  $('openers').innerHTML=html;
+  bindActions($('openers'));
+});
+
+/* ---------- SAVED ---------- */
+var LABELS=['Bio','Prompt','Opener','Other'];
+var items=store.get('saved',[]);
+var curLabel='Bio',filter='All',editId=null;
+function persist(){store.set('saved',items)}
+function addSaved(text,label){
+  text=String(text||'').trim();if(!text){toast('Nothing to save');return}
+  items.unshift({id:Date.now()+Math.random(),text:text,label:label||'Other',fav:false});
+  persist();renderSaved();toast('Saved to your scrapbook');
+}
+function pills(el,opts,cur,fn){
+  el.innerHTML='';
+  opts.forEach(function(o){var p=document.createElement('span');p.className='pill'+(o===cur?' on':'');p.textContent=o;p.addEventListener('click',function(){fn(o)});el.appendChild(p)});
+}
+function renderSaved(){refreshPicks();
+  pills($('s-labels'),LABELS,curLabel,function(o){curLabel=o;renderSaved()});
+  pills($('s-filters'),['All','★ Favourites'].concat(LABELS),filter,function(o){filter=o;renderSaved()});
+  var list=items.filter(function(x){return filter==='All'||(filter==='★ Favourites'?x.fav:x.label===filter)});
+  list.sort(function(a,b){return (b.fav?1:0)-(a.fav?1:0)});
+  var h='';
+  list.forEach(function(x){
+    h+='<div class="card sv'+(x.fav?' fav':'')+'"><span class="tag">'+esc(x.label)+(x.fav?' · ★':'')+'</span><div class="bio">'+esc(x.text)+'</div>'
+     +'<button class="btn ghost sm" data-a="copy" data-id="'+x.id+'">Copy</button>'
+     +'<button class="btn ghost sm" data-a="fav" data-id="'+x.id+'">'+(x.fav?'Unstar':'★ Star')+'</button>'
+     +'<button class="btn ghost sm" data-a="edit" data-id="'+x.id+'">Edit</button>'
+     +'<button class="btn ghost sm" data-a="del" data-id="'+x.id+'">Delete</button></div>';
+  });
+  $('s-list').innerHTML=h||'<div class="empty">'+(items.length?'Nothing here yet.':'Nothing saved yet. Paste something above, or tap Save on any bio, prompt or opener.')+'</div>';
+  Array.prototype.forEach.call($('s-list').querySelectorAll('[data-a]'),function(b){b.addEventListener('click',function(){
+    var id=b.getAttribute('data-id'),a=b.getAttribute('data-a');
+    var it=items.filter(function(x){return String(x.id)===id})[0];if(!it)return;
+    if(a==='copy')copy(it.text);
+    else if(a==='fav'){it.fav=!it.fav;persist();renderSaved()}
+    else if(a==='edit'){editId=it.id;$('s-text').value=it.text;curLabel=it.label;$('b-save').textContent='Update';$('b-cancel').style.display='block';renderSaved();$('s-text').scrollIntoView({behavior:'smooth',block:'center'});$('s-text').focus()}
+    else if(a==='del'){if(b.getAttribute('data-sure')){items=items.filter(function(x){return x!==it});persist();renderSaved();toast('Deleted')}else{b.setAttribute('data-sure','1');b.textContent='Tap again to delete';setTimeout(function(){b.removeAttribute('data-sure');b.textContent='Delete'},2500)}}
+  })});
+}
+function endEdit(){editId=null;$('s-text').value='';$('b-save').textContent='Save it';$('b-cancel').style.display='none';renderSaved()}
+$('b-save').addEventListener('click',function(){
+  var t=$('s-text').value.trim();if(!t){toast('Paste something first');return}
+  if(editId!==null){items.forEach(function(x){if(x.id===editId){x.text=t;x.label=curLabel}});persist();toast('Updated');endEdit()}
+  else{addSaved(t,curLabel);$('s-text').value='';}
+});
+$('b-cancel').addEventListener('click',endEdit);
+
+/* ---------- BOARD ---------- */
+var SLOTS=['Bio','Prompt 1','Prompt 2','Prompt 3','Extra'];
+var board=store.get('board',{});
+$('m-app').value=store.get('boardApp','Tinder');
+function limitFor(slot){var a=$('m-app').value;if(a==='Tinder')return slot==='Bio'?500:0;if(a==='Bumble')return slot==='Bio'?300:0;if(a==='Hinge')return /^Prompt/.test(slot)?150:0;return 0}
+var bh='';
+SLOTS.forEach(function(sl,i){bh+='<label>'+sl+'</label><select id="m-pick-'+i+'"></select><textarea id="m-t-'+i+'" style="margin-top:6px;min-height:80px" placeholder="Final text for '+sl.toLowerCase()+'…"></textarea><div class="row" style="align-items:center;margin-top:4px"><span class="meta" id="m-c-'+i+'"></span><button class="btn ghost sm" style="flex:none;margin:0" data-mc="'+i+'">Copy</button></div>'});
+$('m-board').innerHTML=bh;
+function counter(i){
+  var t=$('m-t-'+i).value,lim=limitFor(SLOTS[i]),c=$('m-c-'+i);
+  c.textContent=t.length?(lim?t.length+' / '+lim:t.length+' characters'):(lim?'Limit '+lim:'');
+  c.style.color=lim&&t.length>lim?'var(--a)':'';
+}
+SLOTS.forEach(function(sl,i){
+  var ta=$('m-t-'+i);ta.value=board[i]||'';counter(i);
+  ta.addEventListener('input',function(){board[i]=ta.value;store.set('board',board);counter(i)});
+  $('m-pick-'+i).addEventListener('change',function(){var id=this.value;if(!id)return;var it=items.filter(function(x){return String(x.id)===id})[0];if(it){ta.value=it.text;board[i]=it.text;store.set('board',board);counter(i)}this.value=''});
+});
+$('m-app').addEventListener('change',function(){store.set('boardApp',this.value);SLOTS.forEach(function(s,i){counter(i)})});
+Array.prototype.forEach.call(document.querySelectorAll('[data-mc]'),function(b){b.addEventListener('click',function(){var t=$('m-t-'+b.getAttribute('data-mc')).value.trim();if(t)copy(t);else toast('Nothing here yet')})});
+$('b-copyall').addEventListener('click',function(){
+  var out=[];SLOTS.forEach(function(s,i){var t=$('m-t-'+i).value.trim();if(t)out.push(t)});
+  if(out.length)copy(out.join('\n\n'));else toast('Your board is empty')
+});
+function refreshPicks(){
+  if(!$('m-board'))return;
+  SLOTS.forEach(function(sl,i){
+    var el=$('m-pick-'+i);if(!el)return;
+    var h='<option value="">Fill from saved…</option>';
+    items.forEach(function(x){h+='<option value="'+x.id+'">'+(x.fav?'★ ':'')+esc(x.label)+': '+esc(x.text.replace(/\s+/g,' ').slice(0,42))+'</option>'});
+    el.innerHTML=h;
+  });
+}
+refreshPicks();
+var autoSure=false;
+$('b-auto').addEventListener('click',function(){
+  var btn=this;
+  if(!val('loves')&&!val('fact')&&!val('work')&&!val('weekend')){toast('Fill in the Bio tab first');return}
+  var has=false;SLOTS.forEach(function(s,i){if($('m-t-'+i).value.trim())has=true});
+  if(has&&!autoSure){autoSure=true;btn.textContent='Replace what\'s on the board? Tap again';setTimeout(function(){autoSure=false;btn.textContent='Do it for me'},3000);return}
+  autoSure=false;btn.textContent='Do it for me';
+  build();
+  var loves=list(val('loves')),fact=stripDot(val('fact')),wk=stripDot(val('weekend')),fr=stripDot(val('friends')),want=list(val('want'));
+  var out=[lastMade[lastOrder[0]]],titles=['Bio'];
+  var p1=fact?cap(fact)+'.':(loves[0]?'Anything involving '+loves[0]+'.':'');
+  var p2=wk?cap(wk)+'. Slow start, good food, no alarm.':'';
+  var p3=loves[0]?'Spend a weekend on '+loves[0]+' and see who\'s better at it.':(want.length?'Find out if we\'re '+joinList(want)+' together.':'');
+  var p4=fr?'Friends say: '+fr+'.':'';
+  var notes=[];
+  out.push(p1);notes.push(p1?'Prompt 1: "I\'m weirdly good at…"':'');
+  out.push(p2);notes.push(p2?'Prompt 2: "A perfect Sunday looks like…"':'');
+  out.push(p3);notes.push(p3?'Prompt 3: "Together we could…"':'');
+  out.push(p4);
+  out.forEach(function(t,i){$('m-t-'+i).value=t||'';board[i]=t||'';counter(i)});
+  store.set('board',board);
+  var n=notes.filter(Boolean);
+  $('m-note').textContent=n.length?'Pick these prompts in your app: '+n.join(' · '):'';
+  toast('Board filled. Tweak anything, then copy.');
+});
+renderSaved();
+})();
+</script>
+</body>
+</html>
