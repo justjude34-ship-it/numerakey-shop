@@ -140,19 +140,15 @@ document.addEventListener('DOMContentLoaded',function(){
     }
   }
   tryAutoplayWithSound();
+  /* Browsers only allow sound after a real tap/click/key press (touchstart and scroll don't count). */
+  var EVTS=['pointerup','touchend','click','keydown'];
   function onGesture(){
     unmuteAndPlay();
-    if(unlocked){
-      document.removeEventListener('pointerdown',onGesture,true);
-      document.removeEventListener('touchstart',onGesture,true);
-      document.removeEventListener('keydown',onGesture,true);
-      document.removeEventListener('scroll',onGesture,true);
-    }
+    setTimeout(function(){
+      if(unlocked||faded){ EVTS.forEach(function(e){document.removeEventListener(e,onGesture,true);}); }
+    },400);
   }
-  document.addEventListener('pointerdown',onGesture,true);
-  document.addEventListener('touchstart',onGesture,{capture:true,passive:true});
-  document.addEventListener('keydown',onGesture,true);
-  document.addEventListener('scroll',onGesture,{capture:true,passive:true});
+  EVTS.forEach(function(e){document.addEventListener(e,onGesture,true);});
 });
 </script>
 
