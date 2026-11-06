@@ -170,6 +170,12 @@ h1,h2{color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.6)}
 @keyframes rise{0%{opacity:0;transform:translate(0,0) scale(.5)}15%{opacity:1}100%{opacity:0;transform:translate(var(--x,0px),-150px) scale(1.25)}}
 .alive .tapme{position:absolute;left:0;right:0;bottom:8px;text-align:center;color:#fff;font:700 .85rem var(--sans);text-shadow:0 1px 6px rgba(60,20,80,.8);pointer-events:none;animation:fade 1s ease 1.5s both}
 @media(prefers-reduced-motion:reduce){.alive .ff,.alive .hrt{display:none}}
+
+.burstwrap{position:relative}
+.burst{position:absolute;left:50%;top:50%;width:0;height:0;pointer-events:none;z-index:3}
+.burst i{position:absolute;left:-6px;top:-6px;width:12px;height:12px;background:#ffd25e;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);filter:drop-shadow(0 0 4px #fff6b0);opacity:0;animation:spark 1.3s ease-out var(--d,0s) both}
+@keyframes spark{0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.5) rotate(180deg)}}
+@media(prefers-reduced-motion:reduce){.burst{display:none}}
 </style>
 </head>
 <body>
@@ -339,6 +345,7 @@ function aliveFigure(alt){var fig=el('figure',{class:'pic alive reveal',title:'T
  fig.addEventListener('click',function(e){var r=fig.getBoundingClientRect();var x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100;for(var k=0;k<4;k++)setTimeout(function(){heart(fig,Math.max(4,Math.min(94,x+Math.random()*10-5)),Math.max(10,y))},k*120);chime()});
  aliveTimer=setInterval(function(){heart(fig,52+Math.random()*16,36)},1700);
  return fig}
+function burst(){var w=el('div',{class:'burst','aria-hidden':'true'});var cols=['#ffd25e','#ff8fa8','#7cc5ff','#8fd9a6','#fff'];for(var i=0;i<16;i++){var ang=i/16*Math.PI*2+Math.random()*.3,r=90+Math.random()*80,s=el('i');s.style.setProperty('--dx',Math.cos(ang)*r+'px');s.style.setProperty('--dy',Math.sin(ang)*r*.8+'px');s.style.setProperty('--d',(Math.random()*.25)+'s');s.style.background=cols[i%cols.length];w.append(s)}return w}
 function progress(){var d=el('div',{class:'dots',role:'img','aria-label':'Chapter '+(P.i+1)+' of '+TOTAL});for(var i=0;i<TOTAL;i++)d.append(el('span',{class:'dot'+(i<P.i||(i===P.i&&(P.phase==='kind'||P.phase==='end'))?' done':'')+(i===P.i?' cur':'')}));return d}
 function cardFace(sc,isNew){var c=sc.card;return el('div',{class:'mcard'+(isNew?' new':'')},img(sc.kind.art,sc.kind.alt,null),el('div',{class:'mc-t'},el('h3',{text:c.title}),el('p',{text:c.line})))}
 function playView(){var sc=curScene(),isNight=P.i===6,ph=P.phase,v=[];
@@ -359,7 +366,7 @@ function playView(){var sc=curScene(),isNight=P.i===6,ph=P.phase,v=[];
  else if(ph==='ask'&&isNight){var earned=SC.filter(function(c){return hasCard(c.id)});var g=el('div',{class:'cardgrid'});
   earned.forEach(function(c){g.append(el('button',{class:'mcard',type:'button','aria-label':'Choose '+c.card.title,onclick:function(){pickFav(c.id)}},img(c.kind.art,'',null),el('div',{class:'mc-t'},el('h3',{text:c.card.title}))))});
   v.push(g)}
- else if(ph==='kind'){if(pendingCard){var cs=SC.filter(function(c){return c.id===pendingCard})[0];v.push(el('section',{'aria-label':'New Manners Card'},el('span',{class:'newtag',text:'New Manners Card'}),cardFace(cs,true)))}
+ else if(ph==='kind'){if(pendingCard){var cs=SC.filter(function(c){return c.id===pendingCard})[0];v.push(el('section',{class:'burstwrap','aria-label':'New Manners Card'},el('span',{class:'newtag',text:'New Manners Card'}),cardFace(cs,true),burst()))}
   v.push(el('button',{class:'btn green wide',type:'button',onclick:nextScene,text:P.i===5?'On to bedtime':'Next chapter →'}))}
  else if(ph==='oops'){v.push(el('section',{class:'card'},el('h3',{text:'Want to try again?'}),el('p',{class:'muted',text:'Everyone makes oopsies. Let’s see what happens if Poppy does it a different way.'}),el('button',{class:'btn primary wide',type:'button','data-retry':'',onclick:function(){startScene(P.i)},text:'Try again'})))}
  else if(ph==='end'){var fc=SC.filter(function(c){return c.id===S.fav})[0];
