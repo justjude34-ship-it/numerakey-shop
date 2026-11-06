@@ -154,6 +154,22 @@ h1,h2{color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.6)}
 .tabbtn[aria-current=page]{color:#5a2f7e;background:#ffe9a8}
 .sheet{background:#fff1cf;border-top:3px solid #d9a63c}
 .avatar{border-color:#fff1cf}
+
+/* living last page */
+.alive{cursor:pointer}
+.alive>img{animation:kb 22s ease-in-out infinite alternate;transform-origin:62% 60%}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.07)}}
+.alive .glow{position:absolute;width:30%;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(255,214,120,.85) 0,rgba(255,190,80,.38) 30%,rgba(255,170,60,0) 68%);mix-blend-mode:screen;pointer-events:none;animation:flick 3.1s ease-in-out infinite}
+.alive .glow.g2{animation-duration:3.7s;animation-delay:-1.2s}
+@keyframes flick{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(.92)}35%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}60%{opacity:.7}78%{opacity:.95}}
+.alive .ff{position:absolute;width:7px;height:7px;border-radius:50%;background:#fff6b0;box-shadow:0 0 8px 3px rgba(255,236,130,.9);pointer-events:none;opacity:0;animation:drift var(--t,9s) ease-in-out var(--d,0s) infinite}
+@keyframes drift{0%{opacity:0;transform:translate(0,0)}15%{opacity:1}50%{opacity:.8;transform:translate(var(--x,20px),var(--y,-30px))}85%{opacity:1}100%{opacity:0;transform:translate(calc(var(--x,20px)*2),calc(var(--y,-30px)*.3))}}
+.alive .tw{position:absolute;width:5px;height:5px;background:#fff;border-radius:50%;box-shadow:0 0 6px 2px rgba(255,255,255,.8);pointer-events:none;animation:twk 2.6s ease-in-out var(--d,0s) infinite}
+@keyframes twk{0%,100%{opacity:.15;transform:scale(.6)}50%{opacity:1;transform:scale(1.3)}}
+.alive .hrt{position:absolute;font-size:22px;line-height:1;pointer-events:none;animation:rise 3.6s ease-out forwards;filter:drop-shadow(0 0 6px rgba(255,120,160,.8))}
+@keyframes rise{0%{opacity:0;transform:translate(0,0) scale(.5)}15%{opacity:1}100%{opacity:0;transform:translate(var(--x,0px),-150px) scale(1.25)}}
+.alive .tapme{position:absolute;left:0;right:0;bottom:8px;text-align:center;color:#fff;font:700 .85rem var(--sans);text-shadow:0 1px 6px rgba(60,20,80,.8);pointer-events:none;animation:fade 1s ease 1.5s both}
+@media(prefers-reduced-motion:reduce){.alive .ff,.alive .hrt{display:none}}
 </style>
 </head>
 <body>
@@ -311,6 +327,18 @@ function nextScene(){stopSpeak();if(DEMO&&P.i>=FREE-1){P=null;render();top();dem
 function pickFav(id){stopSpeak();chime();S.fav=id;S.scene=TOTAL;S.finished=(S.finished||0)+1;P.phase='end';save();render();top()}
 function leave(){stopSpeak();P=null;render();top()}
 
+
+var aliveTimer=null;
+function stopAlive(){if(aliveTimer){clearInterval(aliveTimer);aliveTimer=null}}
+function heart(fig,x,y){var h=el('span',{class:'hrt','aria-hidden':'true',text:['\u2764','\ud83d\udc97','\u2728','\ud83d\udc9b'][Math.floor(Math.random()*4)]});h.style.left=x+'%';h.style.top=y+'%';h.style.setProperty('--x',(Math.random()*60-30)+'px');fig.append(h);setTimeout(function(){h.remove()},3700)}
+function aliveFigure(alt){var fig=el('figure',{class:'pic alive reveal',title:'Tap me'});fig.append(img('s7-night',alt,null));
+ fig.append(el('span',{class:'glow',style:'left:54%;top:15%'}),el('span',{class:'glow g2',style:'left:87%;top:12%'}));
+ for(var i=0;i<12;i++){var f=el('span',{class:'ff','aria-hidden':'true'});f.style.left=(8+Math.random()*84)+'%';f.style.top=(30+Math.random()*60)+'%';f.style.setProperty('--x',(Math.random()*50-25)+'px');f.style.setProperty('--y',(-20-Math.random()*50)+'px');f.style.setProperty('--t',(7+Math.random()*6)+'s');f.style.setProperty('--d',(-Math.random()*10)+'s');fig.append(f)}
+ [[10,10],[22,20],[33,8],[16,32],[6,24]].forEach(function(p,i){var t=el('span',{class:'tw','aria-hidden':'true'});t.style.left=p[0]+'%';t.style.top=p[1]+'%';t.style.setProperty('--d',(-i*.7)+'s');fig.append(t)});
+ fig.append(el('span',{class:'tapme','aria-hidden':'true',text:'Tap the picture'}));
+ fig.addEventListener('click',function(e){var r=fig.getBoundingClientRect();var x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100;for(var k=0;k<4;k++)setTimeout(function(){heart(fig,Math.max(4,Math.min(94,x+Math.random()*10-5)),Math.max(10,y))},k*120);chime()});
+ aliveTimer=setInterval(function(){heart(fig,52+Math.random()*16,36)},1700);
+ return fig}
 function progress(){var d=el('div',{class:'dots',role:'img','aria-label':'Chapter '+(P.i+1)+' of '+TOTAL});for(var i=0;i<TOTAL;i++)d.append(el('span',{class:'dot'+(i<P.i||(i===P.i&&(P.phase==='kind'||P.phase==='end'))?' done':'')+(i===P.i?' cur':'')}));return d}
 function cardFace(sc,isNew){var c=sc.card;return el('div',{class:'mcard'+(isNew?' new':'')},img(sc.kind.art,sc.kind.alt,null),el('div',{class:'mc-t'},el('h3',{text:c.title}),el('p',{text:c.line})))}
 function playView(){var sc=curScene(),isNight=P.i===6,ph=P.phase,v=[];
@@ -318,7 +346,7 @@ function playView(){var sc=curScene(),isNight=P.i===6,ph=P.phase,v=[];
  v.push(progress());
  var artKey,alt,blur=(ph==='ask');
  if(isNight){artKey='s7-night';alt=NIGHT.alt}else if(ph==='oops'){artKey=sc.oops.art;alt=sc.oops.alt}else{artKey=sc.kind.art;alt=sc.kind.alt}
- v.push(el('figure',{class:'pic'+(blur?' blur':' reveal'),'aria-hidden':blur?'true':null},img(artKey,blur?'':alt,null),blur?el('div',{class:'cap'},el('small',{text:'Chapter '+sc.n+' of '+TOTAL}),el('span',{text:sc.title})):null));
+ if(ph==='end')v.push(aliveFigure(alt));else v.push(el('figure',{class:'pic'+(blur?' blur':' reveal'),'aria-hidden':blur?'true':null},img(artKey,blur?'':alt,null),blur?el('div',{class:'cap'},el('small',{text:'Chapter '+sc.n+' of '+TOTAL}),el('span',{text:sc.title})):null));
  var text,w;
  if(ph==='ask')text=nm(sc.prompt);else if(ph==='kind')text=nm(sc.kind.text);else if(ph==='oops')text=nm(sc.oops.text);else text=nm(NIGHT.end);
  w=words(text);
@@ -408,7 +436,7 @@ function printSummary(){var b=document.getElementById('printbox');b.replaceChild
 var TABS=[['story','Story','book'],['cards','Cards','star'],['oops','Oops','again'],['grown','Grown-ups','lock']];
 function go(t){tab=t;stopSpeak();if(t!=='story')P=null;render();top()}
 function buildNav(){var nav=document.getElementById('nav');nav.replaceChildren();TABS.forEach(function(t){nav.append(el('button',{class:'tabbtn',type:'button','aria-current':tab===t[0]?'page':null,onclick:function(){if(t[0]==='story'&&tab==='story'&&P){leave();return}go(t[0])}},el('span',{html:icon(t[2])}),el('span',{text:t[1]})))})}
-function render(){var m=document.getElementById('main');var views={story:viewStory,cards:viewCards,oops:viewOops,grown:viewGrown};m.replaceChildren(views[tab]());buildNav()}
+function render(){stopAlive();var m=document.getElementById('main');var views={story:viewStory,cards:viewCards,oops:viewOops,grown:viewGrown};m.replaceChildren(views[tab]());buildNav()}
 document.addEventListener('visibilitychange',function(){if(document.hidden)stopSpeak()});
 window.addEventListener('pagehide',stopSpeak);
 try{var mf={name:DEMO?'Why Manners Matter Demo':'Why Manners Matter',short_name:DEMO?'Manners Demo':'Manners',start_url:location.href.split('#')[0],display:'standalone',background_color:'#7cc4f4',theme_color:'#4aa3ea',icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ffd25e'/%3E%3Cpath d='M32 50C14 37 12 26 19 20c5-4 11-2 13 3 2-5 8-7 13-3 7 6 5 17-13 30z' fill='%23ff8fa8'/%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml',purpose:'any'}]};var l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/manifest+json'}));document.head.append(l)}catch(e){}
