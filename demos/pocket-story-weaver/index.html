@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#060711">
+<link rel="icon" href="data:,">
+<title>Pocket Story Weaver (Demo)</title>
+<style>
+:root{--bg:#060711;--mid:#0e1124;--card:#151934;--cy:#00f5d4;--pk:#ff4d8d;--gd:#ffd166;--pu:#9b5de5;--mt:#06d6a0;--tx:#f3f1ff;--dim:#b9b6d6;--line:rgba(255,255,255,.14)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{background:radial-gradient(1200px 700px at 15% -10%,#2a1850 0,transparent 60%),radial-gradient(900px 600px at 100% 10%,#0b3b45 0,transparent 55%),var(--bg);color:var(--tx);font:16px/1.5 "Trebuchet MS","Segoe UI",system-ui,sans-serif;padding-bottom:84px;transition:filter .4s}
+body.amber{filter:sepia(.85) saturate(1.2) brightness(.78) hue-rotate(-12deg)}
+#stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1;max-width:980px;margin:0 auto;padding:14px 16px}
+h1,h2,h3{font-family:"Trebuchet MS","Segoe UI",system-ui,sans-serif;margin:0}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+header h1{font-size:22px;letter-spacing:.2px;background:linear-gradient(90deg,var(--cy),var(--pk),var(--gd));-webkit-background-clip:text;background-clip:text;color:transparent}
+header p{margin:0;color:var(--dim);font-size:13px}
+.ic{width:20px;height:20px;vertical-align:-4px}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:16px;font-weight:700;font-size:14px;border:1px solid var(--line);background:rgba(255,255,255,.07);min-height:44px;transition:transform .12s,border-color .2s}
+.btn:active{transform:scale(.96)}
+.btn:hover{border-color:var(--cy)}
+.btn.main{background:linear-gradient(90deg,var(--pk),var(--pu));border-color:transparent;color:#fff}
+.btn.gold{background:linear-gradient(90deg,#ffb347,var(--gd));color:#2b1d3c;border-color:transparent}
+.btn.sm{padding:7px 12px;min-height:38px;font-size:13px;border-radius:13px}
+.glass{background:rgba(21,25,52,.72);border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(8px)}
+/* cards */
+.deck{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.slot{display:flex;flex-direction:column;gap:8px}
+.flip{perspective:900px;aspect-ratio:3/4.3;cursor:pointer}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.3,1.3,.5,1);transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;display:flex;flex-direction:column}
+.back{background:repeating-linear-gradient(45deg,#1b1650 0 10px,#241a66 10px 20px);border:2px solid var(--gd);align-items:center;justify-content:center}
+.back svg{width:56%;opacity:.9}
+.front{transform:rotateY(180deg);background:linear-gradient(170deg,#1c2150,#12163a);border:2px solid var(--c)}
+.front .pic{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:8px 8px 0;background:radial-gradient(circle at 50% 55%,rgba(255,255,255,.14),transparent 68%)}
+.front .pic svg,.front .pic img{max-width:100%;max-height:100%;width:100%;height:100%;object-fit:contain}
+.front .pic img{border-radius:12px;object-fit:cover}
+.front .txt{padding:6px 8px 9px;text-align:center}
+.front .tag{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--c);font-weight:700}
+.front .nm{font-size:12.5px;font-weight:700;line-height:1.2;margin-top:2px}
+.slot .lbl{text-align:center;font-weight:700;font-size:12px;color:var(--c);letter-spacing:.6px;text-transform:uppercase}
+.slot .acts{display:flex;gap:6px;justify-content:center}
+.slot .acts button{width:44px;height:40px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center}
+.slot .acts button.lk{border-color:var(--c);color:var(--c);background:rgba(255,255,255,.12)}
+.trait{font-size:12px;color:var(--dim);text-align:center;min-height:2.6em}
+.c-who{--c:var(--cy)}.c-what{--c:var(--pk)}.c-where{--c:var(--gd)}
+/* story */
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.seg button{padding:10px 16px;font-weight:700;font-size:14px;min-height:44px}
+.seg button.on{background:linear-gradient(90deg,var(--cy),var(--mt));color:#06202a}
+.story{padding:18px;margin-top:14px}
+.title-in{width:100%;text-overflow:ellipsis;font:700 17px "Trebuchet MS",system-ui,sans-serif;color:var(--gd);background:transparent;border:0;border-bottom:1px dashed var(--line);padding:6px 0;margin-bottom:10px}
+.title-in:focus{outline:none;border-color:var(--gd)}
+.paras p{font:18px/1.7 Georgia,"Times New Roman",serif;margin:0 0 14px}
+.paras p.add{padding:12px 14px;border-radius:16px;background:rgba(255,77,141,.12);border:1px solid rgba(255,77,141,.35);color:var(--gd)}
+.paras p:first-child::first-letter{font-size:2.3em;float:left;line-height:.9;margin:4px 8px 0 0;color:var(--pk);font-weight:700}
+.choices{display:grid;gap:10px;margin-top:6px}
+.choice{display:flex;align-items:center;justify-content:space-between;gap:10px;text-align:left;padding:13px 15px;border-radius:18px;border:1px solid var(--line);background:rgba(255,255,255,.06);font-weight:700;font-size:14px}
+.choice span.p{flex:none;padding:5px 10px;border-radius:12px;background:rgba(255,77,141,.2);color:var(--pk);font-size:12px}
+.choice:hover{border-color:var(--pk)}
+.sec-h{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin:20px 0 8px;font-weight:700}
+.note{font-size:13px;color:var(--dim)}
+/* doodle */
+.doodle canvas{width:100%;height:auto;border-radius:18px;border:2px solid var(--line);touch-action:none;background:#060711;display:block}
+.sw{width:34px;height:34px;border-radius:50%;border:2px solid transparent;flex:none}
+.sw.on{border-color:#fff;transform:scale(1.15)}
+.stk{width:46px;height:46px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.07);padding:5px}
+.stk svg{width:100%;height:100%}
+input[type=range]{accent-color:var(--pk);width:120px}
+/* shelf */
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.book{overflow:hidden;display:flex;flex-direction:column}
+.book img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;cursor:pointer}
+.book .bd{padding:12px 14px}
+.book h3{font-size:16px;color:var(--cy)}
+.book p{font:13px/1.5 Georgia,serif;color:var(--dim);margin:6px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.book .ft{display:flex;justify-content:space-between;padding:8px 14px 12px;border-top:1px solid var(--line)}
+.empty{text-align:center;padding:36px 20px}
+.empty svg{width:90px}
+/* nav */
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:center;gap:10px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(6,7,17,.92);border-top:1px solid var(--line)}
+nav button{flex:1;max-width:200px;padding:10px;border-radius:16px;font-weight:700;font-size:14px;color:var(--dim);display:flex;align-items:center;justify-content:center;gap:8px;min-height:46px}
+nav button.on{background:rgba(0,245,212,.14);color:var(--cy)}
+/* modals */
+.ov{position:fixed;inset:0;z-index:50;background:rgba(3,4,12,.8);display:none;align-items:flex-end;justify-content:center;padding:0}
+.ov.on{display:flex}
+.sheet{width:100%;max-width:560px;max-height:92vh;overflow:auto;background:#12163a;border:1px solid var(--line);border-radius:26px 26px 0 0;padding:20px 18px 26px}
+@media(min-width:640px){.ov{align-items:center;padding:20px}.sheet{border-radius:26px}}
+.sheet h2{font-size:22px;color:var(--gd);margin-bottom:6px}
+.field{display:block;margin:12px 0 4px;font-size:13px;font-weight:700;color:var(--dim)}
+.txt-in{width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.07);color:var(--tx);font:inherit}
+.txt-in:focus{outline:2px solid var(--cy);outline-offset:1px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 5px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid var(--c);color:var(--c);background:rgba(255,255,255,.06);margin:3px 3px 3px 0}
+.pill svg{width:24px;height:24px}
+.reader img.cv{width:100%;border-radius:16px;margin-bottom:12px}
+#toast{position:fixed;left:50%;bottom:96px;transform:translate(-50%,20px);opacity:0;z-index:70;background:#241a66;border:1px solid var(--gd);color:#fff;padding:10px 16px;border-radius:14px;font-size:14px;font-weight:700;transition:.3s;pointer-events:none;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+.demo-pill{display:inline-block;margin-left:8px;padding:2px 9px;border-radius:999px;background:rgba(255,209,102,.18);color:var(--gd);font-size:11px;font-weight:700;vertical-align:2px;-webkit-text-fill-color:var(--gd)}
+.hide{display:none!important}
+@media(min-width:760px){.deck{gap:18px;max-width:760px;margin-left:auto;margin-right:auto}.front .nm{font-size:15px}.front .tag{font-size:11px}.trait{font-size:13px}.wrap{padding:22px}header h1{font-size:28px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+<div class="wrap">
+ <header>
+  <div><h1>Pocket Story Weaver<span class="demo-pill">Demo</span></h1><p>Flip three cards. Weave a bedtime story.</p></div>
+  <button class="btn sm" id="dim" aria-label="Bedtime dimmer"></button>
+ </header>
+
+ <section id="v-weave">
+  <div class="row"><button class="btn main" id="shufAll"></button><span class="note" id="demoNote"></span></div>
+  <div class="deck" id="deck"></div>
+
+  <div class="glass story">
+   <div class="row" style="justify-content:space-between">
+    <div class="seg" role="tablist"><button id="m-spark" class="on">Quick Spark</button><button id="m-full">Full Tale</button></div>
+    <button class="btn sm" id="spin"></button>
+   </div>
+   <div style="margin-top:14px"><input class="title-in" id="title" maxlength="80" aria-label="Story title"></div>
+   <div class="paras" id="paras"></div>
+   <div id="chWrap"><div class="sec-h">What happens next?</div><div class="choices" id="choices"></div></div>
+  </div>
+
+  <div class="glass story doodle">
+   <h3 style="color:var(--cy)">Doodle the cover</h3>
+   <p class="note" style="margin:4px 0 10px">Draw with your finger, add stickers, then save the story to your bookshelf.</p>
+   <canvas id="cv" width="600" height="450"></canvas>
+   <div class="row" style="margin-top:12px" id="sw"></div>
+   <div class="row" style="margin-top:10px"><label class="note" for="bs">Brush</label><input type="range" id="bs" min="3" max="20" value="8"><button class="btn sm" id="cvReset"></button></div>
+   <div class="sec-h" style="margin-top:14px">Stickers</div>
+   <div class="row" id="stk"></div>
+   <div class="row" style="margin-top:18px">
+    <button class="btn gold" id="save"></button>
+    <button class="btn" id="read"></button>
+    <button class="btn" id="custom"></button>
+   </div>
+  </div>
+ </section>
+
+ <section id="v-shelf" class="hide">
+  <h2 style="margin:6px 0 12px;color:var(--cy)">Keepsake Bookshelf <span class="note" id="shelfN"></span></h2>
+  <div class="shelf" id="shelf"></div>
+ </section>
+</div>
+
+<nav>
+ <button id="n-weave" class="on"></button>
+ <button id="n-shelf"></button>
+</nav>
+
+<div class="ov" id="o-read"><div class="sheet reader" id="readBox"></div></div>
+<div class="ov" id="o-custom"><div class="sheet" id="customBox"></div></div>
+<div class="ov" id="o-more"><div class="sheet" id="moreBox"></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ---------- illustrations: 36 cards, 8 stickers, UI icons (all inline SVG, no emoji) ---------- */
+var INK='#2b1d3c';
+function eyes(a,b,y,r){r=r||4.2;return '<circle cx="'+a+'" cy="'+y+'" r="'+r+'" fill="'+INK+'"/><circle cx="'+b+'" cy="'+y+'" r="'+r+'" fill="'+INK+'"/><circle cx="'+(a+1.4)+'" cy="'+(y-1.5)+'" r="'+(r*.38)+'" fill="#fff"/><circle cx="'+(b+1.4)+'" cy="'+(y-1.5)+'" r="'+(r*.38)+'" fill="#fff"/>'}
+function cheeks(a,b,y){return '<ellipse cx="'+a+'" cy="'+y+'" rx="4.5" ry="3" fill="#ff8fb0" opacity=".6"/><ellipse cx="'+b+'" cy="'+y+'" rx="4.5" ry="3" fill="#ff8fb0" opacity=".6"/>'}
+function smile(x,y,w){w=w||6;return '<path d="M'+(x-w)+' '+y+'q'+w+' '+(w*.95)+' '+(w*2)+' 0" fill="none" stroke="'+INK+'" stroke-width="2.2" stroke-linecap="round"/>'}
+function star(x,y,s,c){return '<path transform="translate('+x+' '+y+') scale('+s+')" d="M0-6 1.8-1.9 6-1.5 2.8 1.3 3.7 5.6 0 3.3-3.7 5.6-2.8 1.3-6-1.5-1.8-1.9z" fill="'+(c||'#ffd166')+'"/>'}
+var SH='<ellipse cx="60" cy="109" rx="30" ry="5" fill="#000" opacity=".28"/>';
+function wrap(s){return '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+s+'</svg>'}
+function heartP(x,y,s,c){return '<path transform="translate('+x+' '+y+') scale('+s+')" d="M0 7C-12-2-9-10-3-9 0-8.5 0-6 0-6S0-8.5 3-9C9-10 12-2 0 7z" fill="'+c+'"/>'}
+function note(x,y,c){return '<g fill="'+c+'"><circle cx="'+x+'" cy="'+y+'" r="3"/><path d="M'+(x+2.4)+' '+y+'V'+(y-11)+'l5 2" stroke="'+c+'" stroke-width="1.8" fill="none"/></g>'}
+function cloud(x,y,s,c){return '<g transform="translate('+x+' '+y+') scale('+s+')" fill="'+(c||'#fff')+'"><circle cx="-14" cy="2" r="10"/><circle cx="0" cy="-4" r="13"/><circle cx="14" cy="2" r="10"/><rect x="-24" y="2" width="48" height="10" rx="5"/></g>'}
+
+var ART={};
+/* ===== WHO ===== */
+ART.wombat=wrap(SH+'<ellipse cx="60" cy="82" rx="30" ry="26" fill="#a47c5b"/><ellipse cx="60" cy="90" rx="17" ry="15" fill="#ead3b3"/><circle cx="37" cy="40" r="8" fill="#a47c5b"/><circle cx="83" cy="40" r="8" fill="#a47c5b"/><circle cx="37" cy="40" r="4" fill="#d9a98a"/><circle cx="83" cy="40" r="4" fill="#d9a98a"/><ellipse cx="60" cy="56" rx="29" ry="25" fill="#b88d6a"/><ellipse cx="60" cy="63" rx="12" ry="8.5" fill="#ead3b3"/><ellipse cx="60" cy="60" rx="7" ry="4.6" fill="#4a3228"/>'+eyes(48,72,49)+cheeks(40,80,62)+'<g transform="rotate(-38 88 62)"><rect x="76" y="56" width="32" height="11" rx="3" fill="#e0a93b"/><rect x="102" y="53" width="9" height="17" rx="3" fill="#c98b1f"/><rect x="73" y="58" width="6" height="7" rx="2" fill="#f7d36e"/></g><ellipse cx="76" cy="82" rx="6" ry="5" fill="#a47c5b"/>'+star(100,24,1.2)+star(18,26,.8,'#9be7ff'));
+ART.knight=wrap(SH+'<ellipse cx="62" cy="94" rx="22" ry="13" fill="#ffd166"/><path d="M54 83v22M66 83v22" stroke="#3a2a14" stroke-width="5"/><ellipse cx="50" cy="80" rx="13" ry="7" fill="#bfe6ff" opacity=".8" transform="rotate(-20 50 80)"/><ellipse cx="72" cy="80" rx="13" ry="7" fill="#bfe6ff" opacity=".8" transform="rotate(20 72 80)"/><circle cx="36" cy="94" r="10" fill="#ffd166"/><circle cx="32" cy="92" r="2" fill="'+INK+'"/><circle cx="40" cy="92" r="2" fill="'+INK+'"/><path d="M84 94l9-3-3 7z" fill="#3a2a14"/><rect x="52" y="54" width="18" height="24" rx="8" fill="#7aa7ff"/><circle cx="61" cy="44" r="12" fill="#ffd6b3"/>'+eyes(56,66,45,2.6)+smile(61,50,3.5)+'<path d="M49 43a12 12 0 0 1 24 0z" fill="#cfd8e6"/><path d="M49 43h24" stroke="#9aa8c0" stroke-width="2.4"/><circle cx="55" cy="37" r="1.2" fill="#9aa8c0"/><circle cx="62" cy="34" r="1.2" fill="#9aa8c0"/><circle cx="67" cy="38" r="1.2" fill="#9aa8c0"/><ellipse cx="61" cy="29" rx="3" ry="7" fill="#ff5d8f"/><circle cx="48" cy="66" r="8" fill="#ff8fb0"/>'+star(48,66,.9,'#fff')+'<path d="M76 62l15-20" stroke="#dfe6f2" stroke-width="3.2" stroke-linecap="round"/><path d="M72 62l8 4" stroke="#e0a93b" stroke-width="3" stroke-linecap="round"/>');
+ART.owl=wrap(SH+'<ellipse cx="60" cy="70" rx="33" ry="35" fill="#d9a43e"/><ellipse cx="29" cy="74" rx="9" ry="22" fill="#b98524" transform="rotate(8 29 74)"/><ellipse cx="91" cy="74" rx="9" ry="22" fill="#b98524" transform="rotate(-8 91 74)"/><path d="M47 80q4 6 8 0q4 6 8 0q4 6 8 0M47 90q4 6 8 0q4 6 8 0q4 6 8 0" stroke="#f3d37a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M36 38l6-14 9 12zM84 38l-6-14-9 12z" fill="#b98524"/><circle cx="47" cy="52" r="15" fill="#fff3d6"/><circle cx="73" cy="52" r="15" fill="#fff3d6"/><circle cx="47" cy="52" r="9" fill="#2f6bff"/><circle cx="73" cy="52" r="9" fill="#2f6bff"/><circle cx="47" cy="52" r="4.5" fill="#101a4a"/><circle cx="73" cy="52" r="4.5" fill="#101a4a"/><circle cx="50" cy="48" r="2.6" fill="#fff"/><circle cx="76" cy="48" r="2.6" fill="#fff"/><path d="M55 58h10l-5 9z" fill="#ff9a3c"/><circle cx="60" cy="98" r="7" fill="none" stroke="#fff3d6" stroke-width="4" stroke-dasharray="3 2.2"/><circle cx="60" cy="98" r="3" fill="#fff3d6"/>'+star(100,26,1,'#9be7ff'));
+ART.dragon=wrap(SH+'<path d="M84 90q22 0 22-16-8 4-14 0" fill="#ffd6e6"/><path d="M30 70q-18-20 6-28-4 14 6 22z" fill="#e4d4ff"/><path d="M90 70q18-20-6-28 4 14-6 22z" fill="#e4d4ff"/><ellipse cx="60" cy="84" rx="28" ry="23" fill="#fff1f6"/><ellipse cx="60" cy="90" rx="16" ry="13" fill="#ffd6e6"/><path d="M44 62l-4-9 9 4zM60 59l0-11 6 9zM76 62l5-8-10 3z" fill="#ffb3d1"/><circle cx="60" cy="48" r="25" fill="#fff1f6"/><path d="M43 29l-4-13 12 8zM77 29l4-13-12 8z" fill="#ff9ec7"/><ellipse cx="60" cy="58" rx="13" ry="8.5" fill="#ffd6e6"/><circle cx="55" cy="58" r="1.4" fill="#e58aa9"/><circle cx="65" cy="58" r="1.4" fill="#e58aa9"/>'+eyes(48,72,45)+cheeks(40,80,55)+'<path d="M53 63q7 6 14 0" fill="#ff7aa6" stroke="'+INK+'" stroke-width="1.6"/><g fill="#ffb3d1"><circle cx="96" cy="30" r="8"/><circle cx="106" cy="22" r="6"/><circle cx="104" cy="34" r="5"/><circle cx="90" cy="20" r="5"/></g>');
+ART.otter=wrap(SH+'<path d="M82 98q22 4 24-12-12 6-20 2z" fill="#8b5e3c"/><ellipse cx="58" cy="86" rx="26" ry="22" fill="#8b5e3c"/><ellipse cx="58" cy="90" rx="15" ry="14" fill="#f1d9b5"/><circle cx="38" cy="46" r="6" fill="#8b5e3c"/><circle cx="78" cy="46" r="6" fill="#8b5e3c"/><circle cx="58" cy="56" r="23" fill="#9a6a45"/><ellipse cx="58" cy="64" rx="15" ry="10" fill="#f1d9b5"/><ellipse cx="58" cy="60" rx="5" ry="3.4" fill="'+INK+'"/>'+eyes(48,68,52)+cheeks(40,76,62)+smile(58,67,4)+'<path d="M30 62l-12-3M30 66l-12 2M86 62l12-3M86 66l12 2" stroke="#f1d9b5" stroke-width="1.6" stroke-linecap="round"/><path d="M36 42q22-24 44 0z" fill="#e63946"/><rect x="34" y="40" width="48" height="7" rx="3.5" fill="#fff"/><path d="M48 24q10 6 20 0" stroke="#fff" stroke-width="3" fill="none"/><circle cx="58" cy="35" r="4.5" fill="#ffd166"/><g transform="translate(86 96)"><path d="M0 8L-12-10Q0-18 12-10z" fill="#ff9ec7"/><path d="M0 8L-5-12M0 8l5-14" stroke="#fff" stroke-width="1.4" opacity=".8"/></g>');
+ART.hedgehog=wrap(SH+'<circle cx="58" cy="68" r="35" fill="#7a5230"/><circle cx="58" cy="68" r="38" fill="none" stroke="#5b3a1f" stroke-width="8" stroke-dasharray="4 5"/><ellipse cx="58" cy="80" rx="25" ry="22" fill="#f4dcc0"/><circle cx="38" cy="62" r="6" fill="#d9a98a"/><circle cx="78" cy="62" r="6" fill="#d9a98a"/><ellipse cx="58" cy="82" rx="5" ry="3.6" fill="'+INK+'"/>'+eyes(48,68,72)+cheeks(40,76,82)+smile(58,88,4)+'<g transform="translate(92 88)"><path d="M-9 -2h18q0 14-9 14t-9-14z" fill="#e0b27a"/><path d="M-11 -3q11-12 22 0z" fill="#8b5a2b"/><rect x="-1.4" y="-12" width="2.8" height="6" rx="1.4" fill="#6b4420"/><path d="M-3 -18q-4-5 0-9M3 -18q4-5 0-9" stroke="#ffe9c4" stroke-width="1.8" fill="none" stroke-linecap="round"/></g>');
+ART.fox=wrap(SH+'<path d="M80 92q34 6 28-30 4 14-14 18z" fill="#f28c38"/><path d="M104 66q6 10-8 18 4-12 8-18z" fill="#fff"/><ellipse cx="58" cy="86" rx="24" ry="21" fill="#f28c38"/><ellipse cx="58" cy="92" rx="13" ry="13" fill="#fff6e8"/><path d="M38 40l-3-20 18 12zM78 40l3-20-18 12z" fill="#f28c38"/><path d="M39 36l-1-10 8 6zM77 36l1-10-8 6z" fill="#3a2a30"/><circle cx="58" cy="56" r="23" fill="#f28c38"/><path d="M35 60q11 14 23 14t23-14q-10 4-23 4t-23-4z" fill="#fff6e8"/><ellipse cx="58" cy="63" rx="4.6" ry="3.2" fill="'+INK+'"/>'+eyes(47,69,52)+cheeks(40,76,62)+smile(58,69,4)+star(14,38,1,'#ffd166')+star(104,28,1.2,'#9be7ff')+star(20,92,.8,'#ff9ec7')+star(100,100,.8,'#ffd166'));
+ART.frog=wrap(SH+'<ellipse cx="60" cy="106" rx="38" ry="7" fill="#2e9a5a"/><circle cx="40" cy="104" r="5" fill="#ff9ec7"/><ellipse cx="60" cy="86" rx="28" ry="21" fill="#6fcf6f"/><ellipse cx="60" cy="92" rx="16" ry="13" fill="#d8f5b8"/><ellipse cx="60" cy="60" rx="30" ry="21" fill="#6fcf6f"/><circle cx="43" cy="42" r="11" fill="#6fcf6f"/><circle cx="77" cy="42" r="11" fill="#6fcf6f"/><circle cx="43" cy="42" r="8" fill="#fff"/><circle cx="77" cy="42" r="8" fill="#fff"/><circle cx="44" cy="43" r="4.2" fill="'+INK+'"/><circle cx="78" cy="43" r="4.2" fill="'+INK+'"/><circle cx="45.5" cy="41.5" r="1.4" fill="#fff"/><circle cx="79.5" cy="41.5" r="1.4" fill="#fff"/><circle cx="43" cy="42" r="10" fill="none" stroke="#e0a93b" stroke-width="2"/><circle cx="77" cy="42" r="10" fill="none" stroke="#e0a93b" stroke-width="2"/><path d="M53 42h14" stroke="#e0a93b" stroke-width="2"/>'+cheeks(38,82,62)+'<path d="M44 62q16 12 32 0" fill="#d94f6b" stroke="'+INK+'" stroke-width="1.8"/><g transform="rotate(-24 34 88)"><path d="M22 92q0-14 12-14t12 14q0 12-12 12t-12-12z" fill="#b8692f"/><rect x="31" y="62" width="5" height="18" rx="2" fill="#6b3d17"/></g><path d="M28 70l56 22" stroke="#e0b27a" stroke-width="2.2"/>'+note(98,52,'#ffd166')+note(106,70,'#ff9ec7'));
+ART.sheep=wrap(SH+'<g fill="#fff"><circle cx="36" cy="78" r="15"/><circle cx="84" cy="78" r="15"/><circle cx="60" cy="92" r="17"/><circle cx="46" cy="94" r="12"/><circle cx="74" cy="94" r="12"/><circle cx="60" cy="68" r="22"/><circle cx="40" cy="52" r="12"/><circle cx="80" cy="52" r="12"/><circle cx="60" cy="40" r="13"/></g><ellipse cx="60" cy="58" rx="17" ry="19" fill="#4a3b5c"/><ellipse cx="38" cy="58" rx="7" ry="4" fill="#4a3b5c" transform="rotate(20 38 58)"/><ellipse cx="82" cy="58" rx="7" ry="4" fill="#4a3b5c" transform="rotate(-20 82 58)"/><ellipse cx="60" cy="66" rx="4" ry="2.8" fill="#ff9ec7"/><circle cx="53" cy="56" r="3.2" fill="#fff"/><circle cx="67" cy="56" r="3.2" fill="#fff"/><circle cx="53.4" cy="56.4" r="1.7" fill="'+INK+'"/><circle cx="67.4" cy="56.4" r="1.7" fill="'+INK+'"/><path d="M48 36q12-24 32 0q-10-3-16 4z" fill="#8f7bff"/><circle cx="82" cy="28" r="3.5" fill="#fff"/>'+star(66,32,.7,'#ffd166')+'<path d="M96 108V66q0-10 10-8" stroke="#e0a93b" stroke-width="4" fill="none" stroke-linecap="round"/>'+star(18,28,.9,'#9be7ff')+star(104,100,.7,'#ff9ec7'));
+ART.koala=wrap(SH+'<ellipse cx="58" cy="80" rx="24" ry="20" fill="#b9b9c9"/><ellipse cx="58" cy="82" rx="14" ry="13" fill="#e8e8f0"/><circle cx="32" cy="44" r="14" fill="#b9b9c9"/><circle cx="84" cy="44" r="14" fill="#b9b9c9"/><circle cx="32" cy="44" r="8" fill="#ffb3c9"/><circle cx="84" cy="44" r="8" fill="#ffb3c9"/><circle cx="58" cy="54" r="23" fill="#c9c9d8"/><ellipse cx="58" cy="60" rx="7" ry="9" fill="#2b2b36"/>'+eyes(46,70,50,3.6)+cheeks(40,76,62)+smile(58,70,4)+'<g transform="translate(88 78) rotate(12)"><rect x="-10" y="-7" width="20" height="14" rx="2" fill="#fff"/><path d="M-10-7L0 2l10-9" stroke="#e0b27a" stroke-width="1.4" fill="none"/>'+heartP(0,4,.5,'#ff5d8f')+'</g><path d="M30 98h22v-8H34z" fill="#e63946"/><path d="M64 98h22v-8H68z" fill="#e63946"/><circle cx="35" cy="106" r="4" fill="#ff5d8f"/><circle cx="46" cy="106" r="4" fill="#ffd166"/><circle cx="69" cy="106" r="4" fill="#6fcf6f"/><circle cx="80" cy="106" r="4" fill="#7aa7ff"/><path d="M12 74h12M8 84h14M12 94h10" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".6"/>');
+ART.bunnysaur=wrap(SH+'<path d="M84 94q26 4 24-22-6 10-18 12z" fill="#cdb4ff"/><path d="M92 90l8-6-2 10zM100 80l8-4-4 9z" fill="#ff9ec7"/><ellipse cx="58" cy="86" rx="26" ry="21" fill="#cdb4ff"/><ellipse cx="58" cy="92" rx="14" ry="12" fill="#f1e8ff"/><path d="M36 74l-8-6 10-1zM48 66l-4-9 8 3z" fill="#ff9ec7"/><ellipse cx="42" cy="24" rx="7" ry="20" fill="#cdb4ff" transform="rotate(-8 42 24)"/><ellipse cx="74" cy="24" rx="7" ry="20" fill="#cdb4ff" transform="rotate(8 74 24)"/><ellipse cx="42" cy="26" rx="3.4" ry="14" fill="#ffb3d1" transform="rotate(-8 42 26)"/><ellipse cx="74" cy="26" rx="3.4" ry="14" fill="#ffb3d1" transform="rotate(8 74 26)"/><circle cx="58" cy="56" r="22" fill="#cdb4ff"/><ellipse cx="58" cy="64" rx="10" ry="7" fill="#f1e8ff"/><ellipse cx="58" cy="61" rx="3.6" ry="2.6" fill="#ff5d8f"/>'+eyes(48,68,52)+cheeks(40,76,62)+smile(58,67,4)+'<g><circle cx="42" cy="38" r="5" fill="#ff7aa6"/><circle cx="50" cy="35" r="5" fill="#ffd166"/><circle cx="58" cy="34" r="5" fill="#ff7aa6"/><circle cx="66" cy="35" r="5" fill="#7aa7ff"/><circle cx="74" cy="38" r="5" fill="#ff7aa6"/><circle cx="50" cy="35" r="1.8" fill="#fff"/><circle cx="66" cy="35" r="1.8" fill="#fff"/></g>');
+ART.robot=wrap(SH+'<rect x="36" y="64" width="48" height="36" rx="12" fill="#c8d3ea"/><rect x="42" y="70" width="36" height="22" rx="8" fill="#2b2548"/>'+heartP(60,80,1.2,'#ffb347')+'<circle cx="60" cy="80" r="14" fill="#ffb347" opacity=".18"/><rect x="22" y="68" width="14" height="8" rx="4" fill="#9fb0d0"/><rect x="84" y="68" width="14" height="8" rx="4" fill="#9fb0d0"/><rect x="42" y="98" width="12" height="8" rx="4" fill="#9fb0d0"/><rect x="66" y="98" width="12" height="8" rx="4" fill="#9fb0d0"/><rect x="34" y="24" width="52" height="38" rx="14" fill="#dfe6f5"/><rect x="40" y="30" width="40" height="26" rx="10" fill="#2b2548"/><circle cx="51" cy="43" r="4.6" fill="#ffb347"/><circle cx="69" cy="43" r="4.6" fill="#ffb347"/><path d="M54 50q6 4 12 0" stroke="#ffb347" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M60 24V14" stroke="#9fb0d0" stroke-width="3"/><circle cx="60" cy="12" r="4.5" fill="#ff5d8f"/><circle cx="60" cy="12" r="8" fill="#ff5d8f" opacity=".25"/>'+star(100,34,.9,'#ffd166')+star(18,50,.8,'#9be7ff'));
+/* ===== WHAT ===== */
+ART.shell=wrap(SH+'<defs><linearGradient id="sh1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd6e6"/><stop offset="1" stop-color="#b79bff"/></linearGradient></defs><path d="M60 100L18 56Q60 6 102 56z" fill="url(#sh1)"/><path d="M60 100L30 52M60 100L44 40M60 100L60 34M60 100L76 40M60 100L90 52" stroke="#fff" stroke-width="2.4" opacity=".7" stroke-linecap="round"/><ellipse cx="60" cy="100" rx="14" ry="7" fill="#f1e8ff"/>'+note(26,34,'#ffd166')+note(96,26,'#9be7ff')+note(104,50,'#ff9ec7'));
+ART.brush=wrap(SH+'<defs><linearGradient id="br1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff5d8f"/><stop offset=".33" stop-color="#ffd166"/><stop offset=".66" stop-color="#6fe8d6"/><stop offset="1" stop-color="#9b5de5"/></linearGradient></defs><path d="M10 96q20-26 40-8t40-34" stroke="url(#br1)" stroke-width="8" fill="none" stroke-linecap="round" opacity=".9"/><g transform="rotate(-42 66 60)"><rect x="48" y="52" width="52" height="11" rx="5" fill="#e0a93b"/><rect x="38" y="50" width="12" height="15" rx="2" fill="#cfd8e6"/><path d="M38 50q-22 2-24 7.5t24 7.5z" fill="url(#br1)"/></g>'+star(100,24,1.2)+star(24,36,.8,'#ff9ec7'));
+ART.jar=wrap(SH+'<rect x="40" y="18" width="40" height="12" rx="4" fill="#d9a066"/><rect x="36" y="28" width="48" height="10" rx="5" fill="#e8d4ff" opacity=".9"/><path d="M34 38h52q6 10 6 30t-10 36H38q-10-16-10-36t6-30z" fill="#e8d4ff" opacity=".5" stroke="#fff" stroke-width="2.4"/><g><circle cx="52" cy="70" r="9" fill="#ffe27a" opacity=".35"/><circle cx="52" cy="70" r="4.5" fill="#ffe27a"/><circle cx="70" cy="58" r="9" fill="#ffe27a" opacity=".35"/><circle cx="70" cy="58" r="4.5" fill="#fff6b0"/><circle cx="64" cy="86" r="9" fill="#ff9ec7" opacity=".35"/><circle cx="64" cy="86" r="4.5" fill="#ffb3d1"/><circle cx="46" cy="52" r="4" fill="#ffe27a" opacity=".7"/></g><path d="M42 80q8 8 16 0" stroke="#ffd166" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M40 48q-2 14 0 26" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".7" fill="none"/>'+star(100,40,1)+star(18,60,.8,'#6fe8d6'));
+ART.compass=wrap(SH+'<circle cx="60" cy="62" r="42" fill="#e0a93b"/><circle cx="60" cy="62" r="35" fill="#fff3d6"/><circle cx="60" cy="62" r="35" fill="none" stroke="#c98b1f" stroke-width="2.4"/><circle cx="60" cy="14" r="6" fill="none" stroke="#e0a93b" stroke-width="4"/><g stroke="#c98b1f" stroke-width="2.4" stroke-linecap="round"><path d="M60 32v6M60 86v6M30 62h6M84 62h6"/></g><path d="M60 62L52 38 60 28 68 38z" fill="#ff5d8f"/><path d="M60 62L52 86 60 96 68 86z" fill="#7aa7ff" opacity=".85" transform="scale(1 .6) translate(0 41)"/><circle cx="60" cy="62" r="4.5" fill="#c98b1f"/>'+heartP(60,44,.9,'#fff')+heartP(36,86,.6,'#ff9ec7')+heartP(88,36,.6,'#ff9ec7'));
+ART.door=wrap(SH+'<path d="M30 108V30q0-22 30-22t30 22v78z" fill="#8b5a2b"/><path d="M38 108V34M82 108V34M30 70q30 6 60 0" stroke="#6b4420" stroke-width="2.2" fill="none"/><path d="M44 108V62q0-20 16-20t16 20v46z" fill="#ffd98a"/><path d="M46 108V64q0-17 14-17t14 17v44z" fill="#d9304f"/><circle cx="68" cy="82" r="3" fill="#ffd166"/><circle cx="60" cy="72" r="26" fill="#ffd98a" opacity=".25"/><ellipse cx="54" cy="104" rx="9" ry="5" fill="#ff9ec7"/>'+star(100,28,1)+star(18,44,.8,'#9be7ff'));
+ART.musicbox=wrap(SH+'<rect x="20" y="70" width="80" height="36" rx="6" fill="#b8692f"/><rect x="24" y="74" width="72" height="8" rx="3" fill="#d9894a"/><path d="M20 70l8-16h64l8 16z" fill="#8b4a1f"/><path d="M26 68l6-12h56l6 12z" fill="#2b2548"/><rect x="96" y="82" width="12" height="4" rx="2" fill="#e0a93b"/><circle cx="110" cy="84" r="4" fill="#e0a93b"/><g>'+star(40,40,1.8)+star(62,24,2.2,'#9be7ff')+star(82,42,1.6,'#ff9ec7')+star(52,56,1,'#fff')+star(74,58,1,'#ffd166')+'</g><path d="M44 94q16 8 32 0" stroke="#ffd166" stroke-width="3" fill="none" stroke-linecap="round"/>');
+ART.teacup=wrap(SH+'<ellipse cx="60" cy="100" rx="38" ry="8" fill="#f1e8ff"/><path d="M26 56h62q0 38-31 38T26 56z" fill="#fff"/><path d="M26 56h62q0 8-2 14H28q-2-6-2-14z" fill="#ff9ec7"/><path d="M88 62q18 0 14 14t-24 10" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="57" cy="56" rx="31" ry="6" fill="#8b4a1f"/><path d="M42 56q8-4 16 0t14 0" stroke="#d9894a" stroke-width="2" fill="none"/><g fill="#ffb3d1"><circle cx="42" cy="82" r="3"/><circle cx="57" cy="86" r="3"/><circle cx="72" cy="82" r="3"/></g>'+heartP(46,38,1.1,'#ff9ec7')+heartP(64,26,1.4,'#ffb3d1')+heartP(76,42,.9,'#ff9ec7'));
+ART.boots=wrap(SH+cloud(60,100,1.4,'#fff')+'<g><path d="M24 40h24v38q10 0 12 10H20z" fill="#9b5de5"/><rect x="22" y="36" width="28" height="8" rx="4" fill="#f1e8ff"/><path d="M20 88h40" stroke="#6a35b3" stroke-width="5" stroke-linecap="round"/><path d="M68 22h24v38q10 0 12 10H64z" fill="#ff5d8f"/><rect x="66" y="18" width="28" height="8" rx="4" fill="#fff0f6"/><path d="M64 70h40" stroke="#c23a69" stroke-width="5" stroke-linecap="round"/></g><path d="M18 96q-8 6-6 14M100 80q10 4 8 14" stroke="#9be7ff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-dasharray="1 5"/>'+star(100,20,1)+star(14,34,.9,'#ffd166'));
+ART.seed=wrap(SH+'<path d="M40 108l-8-22 14-8 14 10 14-10 14 8-8 22z" fill="#6fe8d6"/><path d="M40 108l6-30 14 10zM60 88l-14-10M60 88l14-10" stroke="#fff" stroke-width="1.6" opacity=".6" fill="none"/><path d="M60 86V54" stroke="#4fb86a" stroke-width="4" stroke-linecap="round"/><path d="M60 70q-18-2-20-18 16 0 20 18z" fill="#6fcf6f"/><path d="M60 62q18-2 20-16-16 0-20 16z" fill="#4fb86a"/><circle cx="60" cy="40" r="16" fill="#ffd98a" opacity=".35"/><rect x="54" y="30" width="12" height="16" rx="5" fill="#ffd166"/><rect x="56" y="26" width="8" height="5" rx="2" fill="#c98b1f"/><circle cx="60" cy="38" r="4" fill="#fff6b0"/>'+star(92,28,1.1)+star(26,36,.8,'#9be7ff')+star(96,70,.7,'#ff9ec7'));
+ART.key=wrap(SH+'<g transform="rotate(-40 60 60)"><rect x="52" y="52" width="62" height="10" rx="5" fill="#bfe6ff"/><path d="M96 62v12h8V62zM84 62v9h7v-9z" fill="#9ed6ff"/><circle cx="34" cy="57" r="18" fill="#bfe6ff"/><circle cx="34" cy="57" r="10" fill="#e8f6ff"/>'+star(34,57,2.2,'#ffd166')+'</g><path d="M24 24l3 7 7 3-7 3-3 7-3-7-7-3 7-3zM96 90l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#fff"/>'+star(98,26,1.2,'#9be7ff')+star(20,92,.9,'#fff'));
+ART.quilt=wrap(SH+'<g transform="rotate(-10 60 60)"><g><rect x="18" y="38" width="28" height="22" fill="#ff9ec7"/><rect x="46" y="38" width="28" height="22" fill="#ffd166"/><rect x="74" y="38" width="28" height="22" fill="#6fe8d6"/><rect x="18" y="60" width="28" height="22" fill="#9b5de5"/><rect x="46" y="60" width="28" height="22" fill="#ff9ec7"/><rect x="74" y="60" width="28" height="22" fill="#ffd166"/></g><path d="M18 38h84v44H18z" fill="none" stroke="#fff" stroke-width="2.4" stroke-dasharray="4 3"/><path d="M26 82v10M38 82v8M50 82v10M62 82v8M74 82v10M86 82v8M96 82v10" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></g>'+cloud(24,26,.7,'#fff')+cloud(100,100,.7,'#fff')+star(96,24,1)+star(18,100,.8,'#ffd166'));
+ART.lantern=wrap(SH+'<path d="M60 8q-18 0-18 14" stroke="#e0a93b" stroke-width="3.4" fill="none" stroke-linecap="round"/><rect x="46" y="20" width="28" height="9" rx="3" fill="#c98b1f"/><path d="M42 30h36q10 18 0 40H42q-10-22 0-40z" fill="#ff8a3c"/><path d="M42 30h36q10 18 0 40H42q-10-22 0-40z" fill="#ffd98a" opacity=".6"/><path d="M52 30q-8 20 0 40M68 30q8 20 0 40" stroke="#c75a1c" stroke-width="2" fill="none"/><rect x="46" y="70" width="28" height="9" rx="3" fill="#c98b1f"/><circle cx="60" cy="50" r="30" fill="#ffd98a" opacity=".25"/><circle cx="60" cy="50" r="6" fill="#fff6b0"/><g fill="#ffe27a"><circle cx="24" cy="46" r="4"/><circle cx="96" cy="60" r="4"/><circle cx="34" cy="92" r="4"/><circle cx="88" cy="94" r="4"/></g><g fill="#ffe27a" opacity=".3"><circle cx="24" cy="46" r="9"/><circle cx="96" cy="60" r="9"/><circle cx="34" cy="92" r="9"/><circle cx="88" cy="94" r="9"/></g>');
+/* ===== WHERE ===== */
+ART.bakery=wrap('<ellipse cx="60" cy="108" rx="40" ry="5" fill="#000" opacity=".2"/>'+cloud(60,92,2.2,'#fff')+'<rect x="34" y="46" width="52" height="36" rx="3" fill="#ffd98a"/><path d="M28 46l32-22 32 22z" fill="#d9304f"/><path d="M34 46h52v6H34z" fill="#fff"/><path d="M34 46h13v6H34zM60 46h13v6H60z" fill="#ff5d8f"/><rect x="52" y="62" width="16" height="20" rx="8" fill="#8b4a1f"/><rect x="38" y="58" width="12" height="12" rx="2" fill="#bfe6ff"/><rect x="70" y="58" width="12" height="12" rx="2" fill="#bfe6ff"/><rect x="70" y="26" width="8" height="16" fill="#b8692f"/><path d="M74 22q-5-6 0-10t0-8" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" opacity=".9"/><circle cx="60" cy="38" r="5" fill="#d9894a"/><path d="M60 38m-3 0a3 3 0 1 1 6 0a1.6 1.6 0 1 1-3.2 0" stroke="#fff" stroke-width="1.2" fill="none"/>'+star(100,26,1)+star(16,38,.8,'#ffd166'));
+ART.forest=wrap('<ellipse cx="60" cy="110" rx="44" ry="5" fill="#000" opacity=".25"/><circle cx="92" cy="26" r="11" fill="#fff6d8"/><circle cx="97" cy="23" r="10" fill="#1b2a41" opacity=".0"/><g fill="#2f8f6d"><path d="M22 104L40 54 58 104z"/><path d="M62 104L82 48 102 104z"/></g><g fill="#3fb88a"><path d="M24 90L40 44 56 90z"/><path d="M64 90L82 38 100 90z"/></g><g fill="#1f6b52"><path d="M42 106L60 40 78 106z"/></g><g fill="#2fa07b"><path d="M44 96L60 34 76 96z"/></g><rect x="56" y="100" width="8" height="10" fill="#6b4420"/><g stroke="#e0b27a" stroke-width="1.4"><path d="M38 52v8M52 62v8M64 48v8M82 60v8M72 74v8M94 80v8"/></g><g fill="#ffb347"><circle cx="38" cy="64" r="5"/><circle cx="52" cy="74" r="5"/><circle cx="64" cy="60" r="5"/><circle cx="82" cy="72" r="5"/><circle cx="72" cy="86" r="5"/><circle cx="94" cy="92" r="5"/></g><g fill="#ffe27a" opacity=".35"><circle cx="38" cy="64" r="10"/><circle cx="52" cy="74" r="10"/><circle cx="64" cy="60" r="10"/><circle cx="82" cy="72" r="10"/><circle cx="72" cy="86" r="10"/><circle cx="94" cy="92" r="10"/></g>'+star(20,24,1)+star(46,18,.7,'#9be7ff'));
+ART.sub=wrap('<ellipse cx="60" cy="112" rx="44" ry="5" fill="#000" opacity=".25"/><g fill="#9be7ff" opacity=".55"><circle cx="20" cy="30" r="5"/><circle cx="30" cy="18" r="3"/><circle cx="100" cy="40" r="4"/><circle cx="106" cy="26" r="2.5"/></g><path d="M16 108q10-14 6 0M96 108q-4-16 6 0M100 110q8-20 10 0" stroke="#3fb88a" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="60" cy="84" rx="40" ry="18" fill="#ffd166"/><ellipse cx="60" cy="90" rx="36" ry="10" fill="#ffb347" opacity=".6"/><rect x="82" y="64" width="6" height="14" fill="#c98b1f"/><path d="M82 64h12v5" stroke="#c98b1f" stroke-width="4" fill="none"/><g fill="#bfe6ff" stroke="#c98b1f" stroke-width="2.4"><circle cx="40" cy="84" r="6.5"/><circle cx="60" cy="84" r="6.5"/><circle cx="80" cy="84" r="6.5"/></g><path d="M20 84q-14-8-10 12" stroke="#c98b1f" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="56" y="48" width="8" height="18" rx="3" fill="#8b5a2b"/><circle cx="60" cy="38" r="17" fill="#4fb86a"/><circle cx="48" cy="46" r="11" fill="#6fcf6f"/><circle cx="72" cy="46" r="11" fill="#6fcf6f"/><circle cx="58" cy="34" r="3" fill="#ff8fb0"/><circle cx="68" cy="42" r="3" fill="#ff8fb0"/><path d="M104 62l5-3 1 6-6-1z" fill="#ff9ec7"/><path d="M10 60l7-4-2 8z" fill="#7aa7ff"/>');
+ART.library=wrap('<ellipse cx="60" cy="112" rx="46" ry="5" fill="#000" opacity=".25"/><rect x="8" y="16" width="32" height="92" rx="4" fill="#6b4420"/><rect x="80" y="16" width="32" height="92" rx="4" fill="#6b4420"/><g><rect x="12" y="22" width="5" height="20" fill="#ff5d8f"/><rect x="18" y="26" width="5" height="16" fill="#ffd166"/><rect x="24" y="20" width="6" height="22" fill="#6fe8d6"/><rect x="31" y="24" width="5" height="18" fill="#9b5de5"/><rect x="12" y="52" width="6" height="22" fill="#7aa7ff"/><rect x="19" y="56" width="5" height="18" fill="#ff9ec7"/><rect x="25" y="50" width="5" height="24" fill="#ffd166"/><rect x="31" y="54" width="5" height="20" fill="#6fcf6f"/><rect x="12" y="84" width="5" height="18" fill="#ffd166"/><rect x="18" y="82" width="6" height="20" fill="#ff5d8f"/><rect x="25" y="86" width="5" height="16" fill="#9b5de5"/><rect x="84" y="22" width="6" height="20" fill="#ffd166"/><rect x="91" y="26" width="5" height="16" fill="#ff5d8f"/><rect x="97" y="20" width="5" height="22" fill="#7aa7ff"/><rect x="103" y="24" width="5" height="18" fill="#6fe8d6"/><rect x="84" y="52" width="5" height="22" fill="#9b5de5"/><rect x="90" y="56" width="6" height="18" fill="#ffd166"/><rect x="97" y="50" width="5" height="24" fill="#ff9ec7"/><rect x="103" y="54" width="5" height="20" fill="#ff5d8f"/><rect x="84" y="84" width="6" height="18" fill="#6fcf6f"/><rect x="91" y="82" width="5" height="20" fill="#7aa7ff"/><rect x="97" y="86" width="6" height="16" fill="#ffd166"/></g><g fill="#4a2f14"><rect x="10" y="44" width="28" height="3"/><rect x="10" y="76" width="28" height="3"/><rect x="82" y="44" width="28" height="3"/><rect x="82" y="76" width="28" height="3"/></g><g transform="translate(60 74)"><path d="M-14-10q0-10 14-10t14 10v14h-28z" fill="#d9304f"/><rect x="-18" y="-2" width="8" height="16" rx="4" fill="#b02040"/><rect x="10" y="-2" width="8" height="16" rx="4" fill="#b02040"/><rect x="-14" y="6" width="28" height="12" rx="4" fill="#ff5d8f"/></g><path d="M44 96q16 6 32 0" stroke="#fff" stroke-width="2" stroke-dasharray="1 5" fill="none" stroke-linecap="round"/>'+star(60,28,1.6)+star(52,44,.9,'#9be7ff')+star(70,40,.9,'#ff9ec7'));
+ART.dandelion=wrap('<ellipse cx="60" cy="112" rx="46" ry="5" fill="#000" opacity=".2"/><path d="M0 100q30-24 60-6t60-8v34H0z" fill="#7c4dcc"/><path d="M0 108q40-18 70-4t50-6v18H0z" fill="#5d3aa8"/><g stroke="#4fb86a" stroke-width="3.4" fill="none" stroke-linecap="round"><path d="M32 110q-4-30 2-48"/><path d="M82 110q6-24 0-44"/></g><g><circle cx="34" cy="50" r="19" fill="#fff" opacity=".5"/><g stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M34 50l-17-9M34 50l-14 14M34 50l0 19M34 50l14 14M34 50l17-9M34 50l0-19M34 50l-12-14M34 50l12-14"/></g><circle cx="34" cy="50" r="4" fill="#ffd166"/><circle cx="84" cy="58" r="15" fill="#fff" opacity=".5"/><g stroke="#fff" stroke-width="1.8" stroke-linecap="round"><path d="M84 58l-13-7M84 58l-10 11M84 58l0 15M84 58l10 11M84 58l13-7M84 58l0-15"/></g><circle cx="84" cy="58" r="3.4" fill="#ffd166"/></g><g fill="#fff" opacity=".9"><circle cx="64" cy="24" r="2"/><circle cx="96" cy="30" r="2.4"/><circle cx="52" cy="40" r="1.8"/><circle cx="106" cy="46" r="1.8"/></g><g stroke="#fff" stroke-width="1.2" opacity=".8"><path d="M64 26v8M96 32v9M52 42v6"/></g>'+star(100,14,1)+star(14,18,.8,'#ffd166'));
+ART.clocktower=wrap('<ellipse cx="60" cy="112" rx="34" ry="5" fill="#000" opacity=".25"/><path d="M84 12a14 14 0 1 0 12 22 11 11 0 1 1-12-22z" fill="#fff6d8"/>'+star(24,22,1.1)+star(40,10,.8,'#9be7ff')+star(100,60,.9,'#ff9ec7')+'<path d="M44 108V56h32v52z" fill="#8f7bff"/><path d="M40 56h40l-20-34z" fill="#d9304f"/><path d="M60 22V12" stroke="#e0a93b" stroke-width="3"/>'+star(60,10,1,'#ffd166')+'<circle cx="60" cy="72" r="15" fill="#fff3d6" stroke="#e0a93b" stroke-width="3.4"/><path d="M60 72V62M60 72l8 4" stroke="#2b1d3c" stroke-width="2.6" stroke-linecap="round"/><circle cx="60" cy="72" r="2" fill="#2b1d3c"/><rect x="54" y="92" width="12" height="16" rx="6" fill="#4a3b8c"/><rect x="46" y="58" width="6" height="8" rx="3" fill="#bfe6ff"/><rect x="68" y="58" width="6" height="8" rx="3" fill="#bfe6ff"/>');
+ART.mars=wrap('<path d="M0 98q30-16 60-6t60-12v40H0z" fill="#d9633a"/><path d="M0 108q40-10 70-2t50-4v14H0z" fill="#b8472a"/><circle cx="96" cy="26" r="12" fill="#ffd98a"/><ellipse cx="96" cy="26" rx="20" ry="4" fill="none" stroke="#ff9ec7" stroke-width="2.4" transform="rotate(-18 96 26)"/>'+star(18,22,1)+star(44,12,.8,'#9be7ff')+'<path d="M20 104q0-60 40-60t40 60z" fill="#bfe6ff" opacity=".4" stroke="#fff" stroke-width="2.6"/><path d="M60 44v60M40 52v52M80 52v52" stroke="#fff" stroke-width="1.4" opacity=".5"/><g><path d="M40 104q0-14 8-20" stroke="#4fb86a" stroke-width="3" fill="none"/><circle cx="48" cy="80" r="7" fill="#ff5d8f"/><circle cx="48" cy="80" r="2.6" fill="#ffd166"/><path d="M62 104q0-20-4-30" stroke="#4fb86a" stroke-width="3" fill="none"/><circle cx="58" cy="70" r="8" fill="#7aa7ff"/><circle cx="58" cy="70" r="3" fill="#fff"/><path d="M78 104q0-12-6-16" stroke="#4fb86a" stroke-width="3" fill="none"/><circle cx="72" cy="84" r="6" fill="#ffd166"/><circle cx="72" cy="84" r="2.2" fill="#ff9ec7"/></g><rect x="52" y="48" width="16" height="10" rx="5" fill="#9b5de5"/>');
+ART.train=wrap('<ellipse cx="60" cy="112" rx="46" ry="5" fill="#000" opacity=".25"/><path d="M0 40q30-24 60-6t60-4" stroke="#6fe8d6" stroke-width="8" fill="none" opacity=".5" stroke-linecap="round"/><path d="M0 52q40-18 70-4t50-6" stroke="#ff9ec7" stroke-width="6" fill="none" opacity=".4" stroke-linecap="round"/><path d="M0 108L30 58l22 30 18-24 24 44z" fill="#fff"/><path d="M0 108L30 58 40 72 22 108z" fill="#ffe1ea"/><path d="M26 64l4-6 4 6z" fill="#ff5d8f"/><path d="M52 88l6-8 6 8z" fill="#ff5d8f" opacity="0"/><rect x="22" y="70" width="58" height="30" rx="8" fill="#b8692f"/><rect x="62" y="56" width="26" height="44" rx="8" fill="#8b4a1f"/><path d="M66 66h18q0 8-9 8t-9-8z" fill="#ffe1ea"/><path d="M22 76q6 6 12 0t12 0t12 0t12 0" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round"/><rect x="28" y="82" width="10" height="9" rx="2" fill="#ffd98a"/><rect x="44" y="82" width="10" height="9" rx="2" fill="#ffd98a"/><rect x="26" y="52" width="10" height="20" rx="3" fill="#d9894a"/><path d="M30 46q-8-8 0-14t-2-12" stroke="#fff" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".85"/><circle cx="34" cy="102" r="8" fill="#ff5d8f"/><circle cx="58" cy="102" r="8" fill="#ffd166"/><circle cx="78" cy="102" r="8" fill="#6fe8d6"/><circle cx="34" cy="102" r="3" fill="#fff"/><circle cx="58" cy="102" r="3" fill="#fff"/><circle cx="78" cy="102" r="3" fill="#fff"/>'+star(100,18,1)+star(16,24,.8,'#ffd166'));
+ART.palace=wrap('<ellipse cx="60" cy="112" rx="48" ry="5" fill="#000" opacity=".25"/><path d="M6 108V46l18-16 18 16v62z" fill="#ff9ec7"/><path d="M78 108V46l18-16 18 16v62z" fill="#9b5de5"/><rect x="34" y="52" width="52" height="56" rx="6" fill="#ffd166"/><path d="M26 52l34-26 34 26z" fill="#6fe8d6"/><path d="M60 26V12" stroke="#c98b1f" stroke-width="3"/><path d="M60 12l14 5-14 6z" fill="#ff5d8f"/><path d="M24 30V16" stroke="#c98b1f" stroke-width="3"/><path d="M24 16l11 4-11 5z" fill="#ffd166"/><path d="M96 30V16" stroke="#c98b1f" stroke-width="3"/><path d="M96 16l11 4-11 5z" fill="#6fe8d6"/><path d="M6 76h36M78 76h36M34 82h52" stroke="#fff" stroke-width="2.4" opacity=".6"/><path d="M46 108V88q0-14 14-14t14 14v20z" fill="#d9304f"/><path d="M2 40q58 24 116 0" stroke="#fff6b0" stroke-width="1.6" fill="none"/><g fill="#fff6b0"><circle cx="16" cy="45" r="3"/><circle cx="36" cy="50" r="3"/><circle cx="60" cy="52" r="3"/><circle cx="84" cy="50" r="3"/><circle cx="104" cy="45" r="3"/></g>'+star(110,14,.9,'#ffd166'));
+ART.lagoon=wrap('<ellipse cx="60" cy="112" rx="46" ry="5" fill="#000" opacity=".2"/><path d="M12 62a48 48 0 0 1 96 0" fill="none" stroke="#ff5d8f" stroke-width="6"/><path d="M18 62a42 42 0 0 1 84 0" fill="none" stroke="#ffb347" stroke-width="6"/><path d="M24 62a36 36 0 0 1 72 0" fill="none" stroke="#ffe27a" stroke-width="6"/><path d="M30 62a30 30 0 0 1 60 0" fill="none" stroke="#6fe8d6" stroke-width="6"/><path d="M36 62a24 24 0 0 1 48 0" fill="none" stroke="#7aa7ff" stroke-width="6"/><path d="M42 62a18 18 0 0 1 36 0" fill="none" stroke="#9b5de5" stroke-width="6"/><path d="M0 70h28l8 16 -8 24H0z" fill="#6b4420" opacity="0"/><path d="M48 34h24v60H48z" fill="#bfe6ff" opacity=".85"/><path d="M52 34v60M60 34v60M68 34v60" stroke="#fff" stroke-width="2.4" opacity=".8"/><ellipse cx="60" cy="96" rx="40" ry="12" fill="#6fe8d6"/><ellipse cx="60" cy="96" rx="40" ry="12" fill="none" stroke="#fff" stroke-width="2.4" opacity=".7"/><ellipse cx="60" cy="94" rx="14" ry="5" fill="#fff" opacity=".7"/><path d="M6 100q-4-24 8-30 2 14 8 22zM114 100q4-24-8-30-2 14-8 22z" fill="#4fb86a"/><g fill="#fff"><circle cx="40" cy="80" r="2.4"/><circle cx="84" cy="76" r="2"/><circle cx="76" cy="88" r="2.4"/><circle cx="46" cy="70" r="1.6"/></g>');
+ART.observatory=wrap('<ellipse cx="60" cy="112" rx="40" ry="5" fill="#000" opacity=".25"/>'+star(100,18,1.1)+star(18,26,.9,'#9be7ff')+'<path d="M52 108V70h16v38z" fill="#8b5a2b"/><path d="M52 90h16" stroke="#6b4420" stroke-width="2.4"/><g fill="#4fb86a"><circle cx="60" cy="78" r="26"/><circle cx="36" cy="88" r="16"/><circle cx="84" cy="88" r="16"/></g><g fill="#6fcf6f"><circle cx="48" cy="72" r="14"/><circle cx="74" cy="76" r="14"/></g><path d="M36 54a24 24 0 0 1 48 0v10H36z" fill="#dfe6f5"/><path d="M36 64h48v8H36z" fill="#9fb0d0"/><path d="M58 30a2 2 0 0 1 4 0v14h-4z" fill="#2b2548" opacity="0"/><path d="M56 32h10l8-14-9-5z" fill="#2b2548"/><path d="M56 32l-4 18h14l4-4" fill="#1b1538" opacity="0"/><rect x="62" y="22" width="26" height="9" rx="4" fill="#e0a93b" transform="rotate(-38 62 28)"/><circle cx="46" cy="54" r="2.6" fill="#ffd98a"/><circle cx="60" cy="48" r="2.6" fill="#ffd98a"/><path d="M84 80q18 0 26 12" stroke="#e0b27a" stroke-width="2.4" fill="none" stroke-dasharray="3 3"/><rect x="104" y="88" width="10" height="4" rx="1" fill="#8b5a2b"/>');
+ART.carousel=wrap('<ellipse cx="60" cy="110" rx="48" ry="9" fill="#6fe8d6"/><ellipse cx="60" cy="106" rx="42" ry="8" fill="#f4dcc0"/><ellipse cx="60" cy="102" rx="34" ry="6" fill="#d9a066"/><path d="M26 44q34-34 68 0z" fill="#d9304f"/><path d="M26 44q8-16 16-22l-4 22zM50 44l4-26 6 0 0 26zM70 44l-4-26 6 2 8 24z" fill="#fff" opacity=".9"/><path d="M22 44h76v6H22z" fill="#ffd166"/><circle cx="60" cy="12" r="4.4" fill="#ffd166"/><path d="M60 12v10" stroke="#c98b1f" stroke-width="3"/><g stroke="#e0a93b" stroke-width="4"><path d="M36 50v50M60 50v50M84 50v50"/></g><g fill="#fff"><ellipse cx="48" cy="82" rx="12" ry="7"/><path d="M58 78l8-12-2 14z"/><path d="M38 78l-8-6 4 10z"/><path d="M40 70q4-14 14-6z" fill="#ffe1ea"/></g><circle cx="42" cy="74" r="1.8" fill="'+INK+'"/><path d="M36 86v10M44 88v10M54 88v10" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M50 74q16-4 24 10" stroke="#ff9ec7" stroke-width="3" fill="none" stroke-linecap="round"/>'+star(104,34,1)+star(14,50,.8,'#ff9ec7'));
+/* ===== stickers & custom badges ===== */
+var STICK={
+ star:'<path d="M60 12l14 30 33 4-24 23 6 33-29-16-29 16 6-33-24-23 33-4z" fill="#ffd166" stroke="#fff3b8" stroke-width="4" stroke-linejoin="round"/>',
+ moon:'<path d="M78 14a46 46 0 1 0 28 66A38 38 0 0 1 78 14z" fill="#fff0a8" stroke="#ffe27a" stroke-width="4"/><circle cx="44" cy="62" r="5" fill="#f0d86a"/><circle cx="58" cy="82" r="3.4" fill="#f0d86a"/>',
+ crown:'<path d="M18 92l-6-52 30 22 18-34 18 34 30-22-6 52z" fill="#ffd166" stroke="#e0a93b" stroke-width="4" stroke-linejoin="round"/><circle cx="12" cy="40" r="6" fill="#ff5d8f"/><circle cx="60" cy="22" r="6" fill="#6fe8d6"/><circle cx="108" cy="40" r="6" fill="#ff5d8f"/><rect x="20" y="92" width="80" height="12" rx="4" fill="#e0a93b"/>',
+ heart:'<path d="M60 104C14 72 12 38 36 30c14-4 22 4 24 12 2-8 10-16 24-12 24 8 22 42-24 74z" fill="#ff5d8f" stroke="#ff9ec7" stroke-width="4" stroke-linejoin="round"/><ellipse cx="38" cy="44" rx="8" ry="5" fill="#fff" opacity=".6" transform="rotate(-30 38 44)"/>',
+ butterfly:'<path d="M60 58C40 20 10 26 16 54c4 18 28 14 44 4z" fill="#ff9ec7"/><path d="M60 58C80 20 110 26 104 54c-4 18-28 14-44 4z" fill="#b79bff"/><path d="M60 62C44 70 30 98 48 100c10 0 12-20 12-38z" fill="#ffb3d1"/><path d="M60 62c16 8 30 36 12 38-10 0-12-20-12-38z" fill="#cdb4ff"/><rect x="57" y="40" width="6" height="50" rx="3" fill="#4a3b5c"/><path d="M58 40q-8-14-14-14M62 40q8-14 14-14" stroke="#4a3b5c" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="36" cy="46" r="5" fill="#fff" opacity=".7"/><circle cx="84" cy="46" r="5" fill="#fff" opacity=".7"/>',
+ rainbow:'<path d="M10 92a50 50 0 0 1 100 0" fill="none" stroke="#ff5d8f" stroke-width="9"/><path d="M19 92a41 41 0 0 1 82 0" fill="none" stroke="#ffb347" stroke-width="9"/><path d="M28 92a32 32 0 0 1 64 0" fill="none" stroke="#ffe27a" stroke-width="9"/><path d="M37 92a23 23 0 0 1 46 0" fill="none" stroke="#6fe8d6" stroke-width="9"/><path d="M46 92a14 14 0 0 1 28 0" fill="none" stroke="#9b5de5" stroke-width="9"/><g fill="#fff"><circle cx="16" cy="98" r="10"/><circle cx="30" cy="102" r="9"/><circle cx="104" cy="98" r="10"/><circle cx="90" cy="102" r="9"/></g>',
+ paw:'<ellipse cx="60" cy="78" rx="26" ry="22" fill="#b79bff"/><ellipse cx="28" cy="52" rx="10" ry="14" fill="#b79bff" transform="rotate(-20 28 52)"/><ellipse cx="48" cy="34" rx="10" ry="14" fill="#b79bff" transform="rotate(-6 48 34)"/><ellipse cx="72" cy="34" rx="10" ry="14" fill="#b79bff" transform="rotate(6 72 34)"/><ellipse cx="92" cy="52" rx="10" ry="14" fill="#b79bff" transform="rotate(20 92 52)"/><ellipse cx="60" cy="82" rx="12" ry="9" fill="#e4d4ff"/>',
+ flower:'<g fill="#ff9ec7"><circle cx="60" cy="28" r="18"/><circle cx="92" cy="52" r="18"/><circle cx="80" cy="90" r="18"/><circle cx="40" cy="90" r="18"/><circle cx="28" cy="52" r="18"/></g><circle cx="60" cy="62" r="16" fill="#ffd166"/><circle cx="55" cy="58" r="4" fill="#fff3b8"/>'
+};
+var STICK_NAMES={star:'Star',moon:'Moon',crown:'Crown',heart:'Heart',butterfly:'Butterfly',rainbow:'Rainbow',paw:'Paw',flower:'Flower'};
+function stickSVG(k){return '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">'+STICK[k]+'</svg>'}
+/* ===== UI icons (24px line icons) ===== */
+var IC={
+ shuffle:'<path d="M3 7h4l10 10h4M3 17h4l3-3M14 10l3-3h4"/><path d="M18 4l3 3-3 3M18 14l3 3-3 3"/>',
+ lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+ unlock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 7.5-2"/>',
+ book:'<path d="M4 5a2 2 0 0 1 2-2h14v15H6a2 2 0 0 0-2 2z"/><path d="M4 20a2 2 0 0 0 2 2h14"/>',
+ moon:'<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+ trash:'<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>',
+ spark:'<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M19 3v4M17 5h4"/>',
+ brush:'<path d="M18 3l3 3-9 9-3-3z"/><path d="M9 12c-3 0-5 2-5 5 0 2-1 3-2 3 4 2 9 1 9-3 0-2-1-3-2-5z"/>',
+ speaker:'<path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/>',
+ close:'<path d="M5 5l14 14M19 5L5 19"/>',
+ photo:'<rect x="3" y="6" width="18" height="14" rx="3"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/>',
+ down:'<path d="M12 3v12M7 11l5 5 5-5M5 20h14"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ undo:'<path d="M4 9h11a5 5 0 0 1 0 10H8"/><path d="M8 5L4 9l4 4"/>',
+ wand:'<path d="M4 20L16 8"/><path d="M15 4l1 3 3 1-3 1-1 3-1-3-3-1 3-1zM20 13l.6 1.6L22 15l-1.4.4L20 17l-.6-1.6L18 15l1.4-.4z"/>'
+};
+function ic(k,cls){return '<svg class="ic'+(cls?' '+cls:'')+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+IC[k]+'</svg>'}
+
+/* ---------- data ---------- */
+var DEMO=true;
+var SHOP='https://numerakey-shop.vercel.app/#/app/pocket-story-weaver';
+var D={
+who:[
+['Barnaby the Stargazing Wombat','wombat','Star Explorer','Carries a brass spyglass & loves warm blueberry muffins'],
+['Pip the Button-Sized Knight','knight','Tiny Hero','Rides a friendly bumblebee and wears a silver thimble helmet'],
+['Lumi the Clockwork Owl','owl','Night Inventor','Has softly ticking golden feathers and glowing sapphire eyes'],
+['Ember the Marshmallow Dragon','dragon','Cozy Dragon','Puffs tiny pink cotton-candy clouds whenever she giggles'],
+['Captain Coral the Sea Otter','otter','Ocean Sailor',"Wears a striped captain's hat and collects smooth rainbow shells"],
+['Bramble the Velvet Hedgehog','hedgehog','Tea Maker','Brews soothing honey-chamomile tea inside hollowed acorns'],
+['Zuzu the Stardust Fox','fox','Moon Dancer','Leaves twinkling neon footprints whenever she skips through snow'],
+['Professor Puddles the Treefrog','frog','Musician','Plays gentle lullabies on a glowing lilypad violin'],
+['Milo the Cloud-Shepherd','sheep','Sky Keeper','Herds fluffy cumulus sheep across the sunset sky'],
+['Twinkle the Roller-Skating Koala','koala','Speedy Friend','Delivers bedtime letters on rainbow-wheeled roller skates'],
+['Princess Peony the Bunnysaur','bunnysaur','Gentle Giant','Half fluffy bunny, half friendly dinosaur with a flower crown'],
+['Cosmo the Pocket Robot','robot','Star Buddy','Has a heart-shaped screen that glows warm amber at bedtime']],
+what:[
+['a Whispering Moon-Shell','shell','Ocean Relic','Hums a comforting lullaby whenever held near a listening ear'],
+['a Runaway Rainbow Paintbrush','brush','Magic Art','Anything painted with it comes to life in shimmering colours'],
+['a Jar of Bottled Giggles','jar','Joy Potion','Glows like fireflies and makes grumpy shadows dance'],
+['a Golden Compass of Kindness','compass','Wayfinder','Always points toward whoever needs a warm hug or helping paw'],
+['a Velvet Pocket-Door','door','Secret Portal','Opens into a cozy pillow fort inside the nearest tree trunk'],
+['a Music Box of Falling Stars','musicbox','Lullaby Box','Projects miniature dancing constellations across the ceiling'],
+['a Teacup That Never Cools','teacup','Cozy Cup','Refills itself with warm vanilla cocoa whenever shared'],
+['a Pair of Cloud-Bounce Boots','boots','Sky Gear','Lets the wearer hop gently from cloud to cloud like trampolines'],
+['a Crystal Seed of Wishes','seed','Living Gem','Sprouts into a glowing lantern-tree when watered with a kind word'],
+['a Key Made of Frozen Starlight','key','Mystery Key','Unlocks secret treasure chests hidden inside rainbows'],
+['a Flying Patchwork Quilt','quilt','Cozy Carpet','Wraps passengers in warmth while gliding smoothly through the night'],
+['a Lantern of Friendly Fireflies','lantern','Nightlight','Shines in seven pretty colours to guide travellers home']],
+where:[
+['the Floating Cloud Bakery','bakery','Sky Realm','Drifts above sleepy hills, smelling of cinnamon rolls & starlight'],
+['the Whispering Lantern Forest','forest','Glow Woods','Silver trees hang glowing paper lanterns from every branch'],
+['a Cozy Submarine Treehouse','sub','Coral Haven','Nestled in a coral garden where friendly seahorses tap on windows'],
+['the Midnight Library of Dreams','library','Sanctuary','Plush velvet armchairs float slowly between shelves of storybooks'],
+['the Valley of Giant Dandelions','dandelion','Soft Meadow','Fluffy wish-seeds float like parachutes under a purple twilight sky'],
+['the Clocktower of Sleepy Moons','clocktower','Star Tower','Where gentle night breezes polish the stars before bedtime'],
+['the Crystal Greenhouse on Mars','mars','Space Dome','Filled with singing neon flowers and zero-gravity hammocks'],
+['the Gingerbread Sleeper Train','train','Cozy Express','Chugs softly through peppermint mountains under the aurora'],
+['Pillow-Fort Palace','palace','Royal Cushion','Built from ten thousand velvet cushions and glowing fairy lights'],
+['the Rainbow Waterfall Lagoon','lagoon','Shimmer Cove','Where the water sparkles like liquid diamonds and warm mist'],
+['the Treetop Observatory','observatory','Acorn Dome','Connected by swaying rope bridges high in the ancient redwoods'],
+['the Starlight Carousel Island','carousel','Wonder Isle','Where wooden pegasus horses gently rock to sleep at dusk']]
+};
+var TYPES=['who','what','where'],LBL={who:'Who',what:'What',where:'Where'};
+var KEY={cards:'psw_deluxe_custom_cards_v2',shelf:'psw_deluxe_bookshelf_v2',amber:'psw_deluxe_amber_v2'};
+var decks={},active={},locked={who:false,what:false,where:false},mode='spark',seed=0,added=[],left=3,cvColor='#00F5D4',selDeck='who',photo=null,customIcon='star';
+TYPES.forEach(function(t){decks[t]=D[t].map(function(c){return{val:c[0],art:c[1],tag:c[2],trait:c[3]}})});
+/* ---------- helpers ---------- */
+function $(id){return document.getElementById(id)}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}}
+function toast(t){var e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(function(){e.classList.remove('on')},2400)}
+function lc(s){return String(s).charAt(0).toLowerCase()+String(s).slice(1)}
+function picOf(c,big){if(c.photo)return '<img src="'+c.photo+'" alt="">';return c.art&&ART[c.art]?ART[c.art]:stickSVG(c.icon||'star')}
+function pick(t){var pool=decks[t],cur=active[t]&&active[t].val,ch=pool.length>1?pool.filter(function(c){return c.val!==cur}):pool;return ch[Math.floor(Math.random()*ch.length)]}
+/* ---------- cards ---------- */
+function buildDeck(){
+ $('deck').innerHTML=TYPES.map(function(t){return '<div class="slot c-'+t+'"><div class="lbl">'+LBL[t]+'</div>'+
+ '<div class="flip" id="f-'+t+'" role="button" tabindex="0" aria-label="Flip the '+LBL[t]+' card"><div class="in"><div class="face back">'+wrap('<circle cx="60" cy="60" r="34" fill="none" stroke="#ffd166" stroke-width="3" stroke-dasharray="3 6"/>'+star(60,60,5)+star(24,28,1.4,'#00f5d4')+star(98,34,1.2,'#ff4d8d')+star(30,98,1.1,'#ff4d8d')+star(96,96,1.5,'#00f5d4'))+'</div><div class="face front" id="ff-'+t+'"></div></div></div>'+
+ '<div class="trait" id="tr-'+t+'"></div>'+
+ '<div class="acts"><button data-a="spin" data-t="'+t+'" aria-label="New '+LBL[t]+' card">'+ic('shuffle')+'</button><button data-a="lock" data-t="'+t+'" id="lk-'+t+'" aria-label="Keep this '+LBL[t]+' card">'+ic('unlock')+'</button></div></div>'}).join('');
+}
+function paintCard(t,c){
+ $('ff-'+t).innerHTML='<div class="pic">'+picOf(c)+'</div><div class="txt"><div class="tag">'+esc(c.tag||'Family Card')+'</div><div class="nm">'+esc(c.val)+'</div></div>';
+ $('tr-'+t).textContent=c.trait;
+}
+function demoLeft(){var n=$('demoNote');if(!n)return;n.textContent=DEMO?(left>0?left+' free shuffle'+(left===1?'':'s')+' left in this demo':'Demo shuffles used up'):''}
+function useShuffle(){if(!DEMO)return true;if(left<=0){more('Want more shuffles?','The demo lets you try three shuffles. The full app has unlimited shuffles, plus the Full Tale, your own family cards and a Keepsake Bookshelf.');return false}left--;demoLeft();return true}
+function spinOne(t,free){
+ if(locked[t]){toast('Tap the lock on '+LBL[t]+' to spin it again');return}
+ if(!free&&!useShuffle())return;
+ var f=$('f-'+t);f.classList.remove('on');
+ setTimeout(function(){active[t]=pick(t);paintCard(t,active[t]);f.classList.add('on');if(navigator.vibrate)try{navigator.vibrate(25)}catch(e){}added=[];weave();paintCover()},320);
+}
+function shuffleAll(){
+ var any=TYPES.some(function(t){return!locked[t]});if(!any){toast('All three cards are locked');return}
+ if(!useShuffle())return;
+ TYPES.forEach(function(t,i){if(locked[t])return;var f=$('f-'+t);f.classList.remove('on');setTimeout(function(){active[t]=pick(t);paintCard(t,active[t]);f.classList.add('on');if(i===2||true){added=[];weave();paintCover()}},300+i*140)});
+}
+function initialDraw(){TYPES.forEach(function(t,i){setTimeout(function(){active[t]=pick(t);paintCard(t,active[t]);$('f-'+t).classList.add('on');if(i===2){weave();paintCover()}},200+i*160)})}
+function toggleLock(t){locked[t]=!locked[t];var b=$('lk-'+t);b.classList.toggle('lk',locked[t]);b.innerHTML=ic(locked[t]?'lock':'unlock');toast(locked[t]?LBL[t]+' card kept':LBL[t]+' card free to spin')}
+/* ---------- story ---------- */
+var CH=[];
+function weave(){
+ var w=active.who,x=active.what,y=active.where;if(!w||!x||!y)return;
+ var W=esc(w.val),X=esc(x.val),Y=esc(y.val),wt=esc(lc(w.trait)),xt=esc(lc(x.trait)),yt=esc(lc(y.trait));
+ var hero=esc(w.val.split(' the ')[0]),place=esc(y.val.replace(/^the\s+/i,''));
+ var titles=[hero+' & The Secret of '+place,'Starlight Over '+place,'The Night '+hero+' Found '+X];
+ if(!weave.keep)$('title').value=titles[seed%3].replace(/&amp;/g,'&').replace(/&#39;/g,"'");
+ var open=[
+ 'Just as the first silver stars blinked awake above '+Y+' (a magical place that '+yt+'), '+W+' ('+wt+') spotted something shimmering beside a velvet cushion: '+X+'! Everyone whispered that it '+xt+'.',
+ 'Deep inside '+Y+', where it '+yt+', '+W+' was getting ready for a cosy evening when a friendly knock sounded at the door. Waiting on a mossy pillow was '+X+', glowing with gentle rainbow light!',
+ 'It was the quietest hour of twilight in '+Y+'. '+W+', who '+wt+', was following a trail of floating starlight when they discovered '+X+' tucked underneath a silver leaf.'];
+ var p=[open[seed%3]].concat(added);
+ var full=[[
+ 'Evening had draped a soft, indigo blanket over '+Y+', an enchanted realm that '+yt+'. The busy giggles of the afternoon had faded into a peaceful hush, and the little starlight lanterns were beginning to glow like warm golden honey.',
+ 'Right in the cosy heart of this wonderland lived '+W+'. Every friend in the neighbourhood knew that this gentle hero '+wt+'. Tonight, however, before curling up under a fluffy quilt, a soft shimmer caught their eye near the window.',
+ 'Resting on a cushion of velvet moss was '+X+'. Ancient bedtime legends told that this treasure '+xt+'. With gentle paws and wide, curious eyes, '+hero+' reached out and cradled the magical discovery.',
+ 'At once, a soothing ripple of warmth floated through '+Y+'. The night breeze outside slowed to a rhythmic purr, and tiny golden sparkles danced across the ceiling, painting sleepy pictures of calm oceans, drifting clouds, and smiling moons.',
+ 'With a big, contented yawn, '+W+' tucked '+X+' safely beside their pillow. Knowing that kindness and magic were watching over '+Y+', their eyelids grew heavy, their breathing grew slow and deep, and they floated off into the sweetest dreams until morning.'],[
+ 'High among the velvet shadows of '+Y+', a wondrous sanctuary that '+yt+', the nightly star-watch was just beginning. It was the favourite hour of '+W+', who '+wt+'.',
+ 'While making a final cosy round to make sure all the little fireflies and woodland friends were tucked in tight, '+hero+' stumbled upon a remarkable surprise: '+X+'.',
+ 'Even in the soft twilight, it was easy to see how special it was. It '+xt+'. Carefully, '+hero+' carried the treasure up to the highest balcony of '+Y+'.',
+ 'As the silver moon rose high, '+X+' shared its quiet lullaby with the entire world below. Every rustling leaf, every twinkling star, and every sleepy heart felt wrapped in a warm circle of comfort.',
+ 'At last, '+W+' curled into a cosy ball. Snuggled safely inside '+Y+', with '+X+' glowing softly like a friendly nightlight nearby, the whole universe whispered, "Goodnight, sleep tight."'],[
+ 'Once upon a lavender twilight in '+Y+', where it always '+yt+', '+W+' was searching for the cosiest spot in the world to rest. As someone who '+wt+', bedtime comfort was very important!',
+ 'Underneath a shimmering archway, a gentle chime echoed through the stillness. There sat '+X+', waiting patiently to be discovered.',
+ 'The moment '+hero+' picked it up, its secret magic awakened: it '+xt+'. Every big thought of the day melted away like sugar in warm cocoa.',
+ 'Step by slow, quiet step, '+W+' followed the comforting glow of '+X+' into the snuggliest corner of '+Y+', where a nest of cloud-soft pillows was waiting.',
+ 'Listening to the steady, peaceful rhythm of the stars, '+W+' closed their eyes, safe, loved, and ready for tomorrow\'s gentle adventures.']][seed%3];
+ CH=[
+ ['Tap '+x.val+' three times and listen closely','When '+hero+' tapped '+X+' three times, it chimed like a tiny silver bell and revealed a secret candy-lit staircase inside '+Y+', leading to a room full of floating bedtime storybooks!'],
+ ['Invite a sleepy little friend to share the magic','Just then, a tiny yawning dormouse peeked out from behind a teacup! Together, '+hero+' used '+X+' to weave a warm blanket of starlight that tucked every creature in '+Y+' safely into bed.'],
+ ['Make a cosy bedtime wish upon '+x.val,'Closing their eyes, '+hero+' made a gentle wish. Instantly, '+X+' filled '+Y+' with the scent of warm vanilla cookies and painted dancing constellations across the ceiling until everyone drifted to sleep.']];
+ var spark=mode==='spark';
+ $('paras').innerHTML=(spark?p.map(function(t,i){return '<p'+(i?' class="add"':'')+'>'+t+'</p>'}):full.map(function(t){return '<p>'+t+'</p>'})).join('');
+ $('chWrap').classList.toggle('hide',!spark);
+ $('choices').innerHTML=CH.map(function(c,i){return '<button class="choice" data-ch="'+i+'"><span>'+esc(c[0])+'</span><span class="p">+ Add chapter</span></button>'}).join('');
+}
+function setMode(m){
+ if(m==='full'&&DEMO){more('The Full Tale','The full app turns your three cards into a five-part bedtime tale. The demo has the Quick Spark and its story choices.');return}
+ mode=m;$('m-spark').classList.toggle('on',m==='spark');$('m-full').classList.toggle('on',m==='full');weave();
+}
+function plainParas(){return Array.prototype.map.call(document.querySelectorAll('#paras p'),function(p){return p.textContent})}
+/* ---------- doodle pad ---------- */
+var cv,cx,painting=false,prev={x:0,y:0},imgCache={};
+var BRUSH=['#00F5D4','#FF4D8D','#FFD166','#9B5DE5','#06D6A0','#FFFFFF'];
+function svgImg(svg,cb){
+ var key=svg.length+svg.slice(0,60);
+ if(imgCache[key]){cb(imgCache[key]);return}
+ var im=new Image();im.onload=function(){imgCache[key]=im;cb(im)};
+ im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+}
+function paintCover(){
+ if(!cx)return;
+ var g=cx.createLinearGradient(0,0,cv.width,cv.height);g.addColorStop(0,'#060711');g.addColorStop(.5,'#131836');g.addColorStop(1,'#241338');
+ cx.fillStyle=g;cx.fillRect(0,0,cv.width,cv.height);
+ for(var i=0;i<40;i++){cx.fillStyle=i%3===0?'#FFD166':(i%2===0?'#00F5D4':'#FFFFFF');cx.globalAlpha=Math.random()*.7+.2;cx.beginPath();cx.arc(Math.random()*cv.width,Math.random()*cv.height,Math.random()*2.2+.6,0,6.283);cx.fill()}
+ cx.globalAlpha=1;
+ if(active.who&&active.what&&active.where){
+  var spots=[['who',.27,.58,'#00F5D4',190],['what',.5,.4,'#FF4D8D',150],['where',.73,.58,'#FFD166',190]];
+  var stamp=function(s){cx.save();cx.shadowColor=s.col;cx.shadowBlur=24;cx.drawImage(s.im,s.x-s.sz/2,s.y-s.sz/2,s.sz,s.sz);cx.restore()};
+  var tok=paintCover.tok=(paintCover.tok||0)+1,got=[],n=0;
+  spots.forEach(function(s,i){var c=active[s[0]];
+   var finish=function(im){got[i]={im:im,x:cv.width*s[1],y:cv.height*s[2],col:s[3],sz:s[4]};if(++n===3&&tok===paintCover.tok)got.forEach(stamp)};
+   if(c.photo){var im=new Image();im.onload=function(){var k=document.createElement('canvas');k.width=k.height=200;var kx=k.getContext('2d');kx.beginPath();kx.arc(100,100,98,0,6.283);kx.clip();kx.drawImage(im,0,0,200,200);finish(k)};im.src=c.photo}
+   else svgImg(svgDoc(picOf(c)),finish)})
+ }
+}
+function svgDoc(s){return s.indexOf('<svg')===0&&s.indexOf('xmlns')<0?s.replace('<svg','<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240"'):s.replace('<svg ','<svg width="240" height="240" ')}
+function initDoodle(){
+ cv=$('cv');cx=cv.getContext('2d');
+ var pt=function(e){var r=cv.getBoundingClientRect();return{x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.height}};
+ cv.addEventListener('pointerdown',function(e){e.preventDefault();painting=true;prev=pt(e);try{cv.setPointerCapture(e.pointerId)}catch(x){}dot(prev)});
+ cv.addEventListener('pointermove',function(e){if(!painting)return;e.preventDefault();var p=pt(e);cx.save();cx.beginPath();cx.moveTo(prev.x,prev.y);cx.lineTo(p.x,p.y);cx.strokeStyle=cvColor;cx.lineWidth=+$('bs').value;cx.lineCap='round';cx.lineJoin='round';cx.shadowColor=cvColor;cx.shadowBlur=14;cx.stroke();cx.restore();prev=p});
+ var stop=function(){painting=false};cv.addEventListener('pointerup',stop);cv.addEventListener('pointercancel',stop);
+ function dot(p){cx.save();cx.beginPath();cx.arc(p.x,p.y,+$('bs').value/2,0,6.283);cx.fillStyle=cvColor;cx.shadowColor=cvColor;cx.shadowBlur=14;cx.fill();cx.restore()}
+ $('sw').innerHTML=BRUSH.map(function(c,i){return '<button class="sw'+(i?'':' on')+'" data-c="'+c+'" style="background:'+c+';box-shadow:0 0 10px '+c+'" aria-label="Brush colour '+(i+1)+'"></button>'}).join('');
+ $('stk').innerHTML=Object.keys(STICK).map(function(k){return '<button class="stk" data-k="'+k+'" aria-label="'+STICK_NAMES[k]+' sticker">'+stickSVG(k)+'</button>'}).join('');
+ paintCover();
+}
+function stamp(k){
+ var x=Math.random()*(cv.width-160)+80,y=Math.random()*(cv.height-160)+80;
+ svgImg(svgDoc(stickSVG(k)),function(im){cx.save();cx.shadowColor='#FFD166';cx.shadowBlur=16;cx.drawImage(im,x-34,y-34,68,68);cx.restore()});
+}
+/* ---------- shelf & reader ---------- */
+function shelfList(){try{var r=lsGet(KEY.shelf);return r?JSON.parse(r):[]}catch(e){return[]}}
+function saveBook(){
+ if(DEMO){more('The Keepsake Bookshelf','The full app saves every story you weave, with its doodled cover, so you can read it together again whenever you like.');return}
+ var b={id:'bk_'+Date.now(),title:$('title').value.trim()||'Magical Bedtime Story',date:new Date().toLocaleDateString('en-AU',{day:'numeric',month:'short',year:'numeric'}),who:active.who,what:active.what,where:active.where,paragraphs:plainParas(),coverImg:cv.toDataURL('image/jpeg',.8)};
+ var l=shelfList();l.unshift(b);
+ if(lsSet(KEY.shelf,JSON.stringify(l))){renderShelf();toast('Saved to your Keepsake Bookshelf')}else toast('Bookshelf is full. Remove an older story first.');
+}
+function renderShelf(){
+ var l=shelfList();$('shelfN').textContent=l.length?'('+l.length+')':'';
+ if(!l.length){$('shelf').innerHTML='<div class="glass empty" style="grid-column:1/-1">'+stickSVG('star').replace('<svg','<svg style="width:84px"')+'<h3 style="margin:10px 0 6px;color:var(--gd)">Your bookshelf is ready</h3><p class="note">Flip three cards, doodle a cover, then tap Save to Bookshelf.</p></div>';return}
+ $('shelf').innerHTML=l.map(function(b){return '<div class="glass book"><img src="'+b.coverImg+'" alt="Cover of '+esc(b.title)+'" data-open="'+b.id+'"><div class="bd"><h3>'+esc(b.title)+'</h3><p>'+esc(b.paragraphs[0]||'')+'</p></div><div class="ft"><button class="btn sm" data-open="'+b.id+'">'+ic('book')+' Read</button><button class="btn sm" data-del="'+b.id+'">'+ic('trash')+' Remove</button></div></div>'}).join('');
+}
+function showReader(b){
+ var pill=function(t,c){return '<span class="pill c-'+t+'">'+(c.photo?'<img src="'+c.photo+'" alt="" style="width:24px;height:24px;border-radius:50%;object-fit:cover">':picOf(c))+esc(c.val)+'</span>'};
+ $('readBox').innerHTML='<div class="row" style="justify-content:space-between"><h2>'+esc(b.title)+'</h2><button class="btn sm" data-x="o-read" aria-label="Close">'+ic('close')+'</button></div><p class="note">'+esc(b.date)+'</p><img class="cv" src="'+b.coverImg+'" alt="Story cover"><div>'+pill('who',b.who)+pill('what',b.what)+pill('where',b.where)+'</div><div class="paras" style="margin-top:14px">'+b.paragraphs.map(function(p){return '<p>'+esc(p)+'</p>'}).join('')+'</div><div class="row"><button class="btn gold" id="saveCv">'+ic('down')+' Save cover picture</button></div>';
+ $('readBox').dataset.cover=b.coverImg;$('readBox').dataset.title=b.title;
+ $('o-read').classList.add('on');
+}
+function preview(){showReader({title:$('title').value.trim()||"Tonight's Bedtime Story",date:'Cosy storybook view',who:active.who,what:active.what,where:active.where,paragraphs:plainParas(),coverImg:cv.toDataURL('image/jpeg',.85)})}
+/* ---------- custom cards ---------- */
+function openCustom(){
+ if(DEMO){more('Your own family cards','In the full app you can add cards for your own family, pets and favourite places, with a photo if you like.');return}
+ photo=null;selDeck='who';customIcon='star';
+ $('customBox').innerHTML='<div class="row" style="justify-content:space-between"><h2>Make a family card</h2><button class="btn sm" data-x="o-custom" aria-label="Close">'+ic('close')+'</button></div>'+
+ '<label class="field">Which deck?</label><div class="seg" id="cdeck">'+TYPES.map(function(t){return '<button data-d="'+t+'"'+(t==='who'?' class="on"':'')+'>'+LBL[t]+'</button>'}).join('')+'</div>'+
+ '<label class="field" for="cn">Name</label><input class="txt-in" id="cn" maxlength="40" placeholder="Grandpa Joe the Gardener">'+
+ '<label class="field" for="ct">What are they like?</label><input class="txt-in" id="ct" maxlength="90" placeholder="Hums while he waters the tomatoes">'+
+ '<label class="field">Picture</label><div class="row" id="cicons">'+Object.keys(STICK).map(function(k){return '<button class="stk'+(k==='star'?'" style="border-color:var(--gd)':'')+'" data-i="'+k+'" aria-label="'+STICK_NAMES[k]+'">'+stickSVG(k)+'</button>'}).join('')+'</div>'+
+ '<div class="row" style="margin-top:10px"><label class="btn sm" for="cph">'+ic('photo')+' <span id="cphs">Use a photo instead</span></label><input type="file" id="cph" accept="image/*" class="hide"></div>'+
+ '<div class="row" style="margin-top:18px"><button class="btn main" id="csave">Add to my deck</button></div>';
+ $('o-custom').classList.add('on');
+}
+function saveCustom(){
+ var name=$('cn').value.trim();if(!name){toast('Please give your card a name');return}
+ var c={val:name,trait:$('ct').value.trim()||'A beloved family favourite full of magic',icon:customIcon,tag:'Family Card',photo:photo||null};
+ decks[selDeck].unshift(c);
+ try{var r=lsGet(KEY.cards),s=r?JSON.parse(r):{who:[],what:[],where:[]};s[selDeck]=s[selDeck]||[];s[selDeck].unshift(c);lsSet(KEY.cards,JSON.stringify(s))}catch(e){}
+ active[selDeck]=c;paintCard(selDeck,c);$('f-'+selDeck).classList.add('on');added=[];weave();paintCover();
+ $('o-custom').classList.remove('on');toast('Added '+name+' to your '+LBL[selDeck]+' deck');
+}
+function loadCustom(){
+ try{var r=lsGet(KEY.cards);if(!r)return;var s=JSON.parse(r);TYPES.forEach(function(t){if(Array.isArray(s[t]))decks[t]=s[t].concat(decks[t])})}catch(e){}
+}
+/* ---------- misc ---------- */
+function more(h,t){$('moreBox').innerHTML='<h2>'+esc(h)+'</h2><p>'+esc(t)+'</p><div class="row" style="margin-top:16px"><a class="btn gold" href="'+SHOP+'" target="_blank" rel="noopener">See the full app</a><button class="btn" data-x="o-more">Keep playing the demo</button></div>';$('o-more').classList.add('on')}
+function view(v){['weave','shelf'].forEach(function(k){$('v-'+k).classList.toggle('hide',k!==v);$('n-'+k).classList.toggle('on',k===v)});if(v==='shelf')renderShelf();window.scrollTo(0,0)}
+function setAmber(on){document.body.classList.toggle('amber',on);$('dim').innerHTML=ic(on?'sun':'moon')+' <span>'+(on?'Normal':'Bedtime')+'</span>';lsSet(KEY.amber,on?'1':'0')}
+function stars(){
+ var c=$('stars'),g=c.getContext('2d'),S=[],w,h;
+ function size(){w=c.width=innerWidth;h=c.height=innerHeight;S=[];for(var i=0;i<70;i++)S.push({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.6+.4,p:Math.random()*6.28,c:i%5===0?'#FFD166':(i%7===0?'#00F5D4':'#fff')})}
+ size();addEventListener('resize',size);
+ var still=matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+ function loop(t){g.clearRect(0,0,w,h);S.forEach(function(s){g.globalAlpha=.25+.55*Math.abs(Math.sin(t/1400+s.p));g.fillStyle=s.c;g.beginPath();g.arc(s.x,s.y,s.r,0,6.283);g.fill()});g.globalAlpha=1;if(!still)requestAnimationFrame(loop)}
+ requestAnimationFrame(loop);
+}
+function manifest(){try{var m={name:'Pocket Story Weaver',short_name:'Story Weaver',start_url:'.',display:'standalone',background_color:'#060711',theme_color:'#060711',icons:[]};var l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify(m)],{type:'application/json'}));document.head.appendChild(l)}catch(e){}}
+/* ---------- wire up ---------- */
+document.addEventListener('DOMContentLoaded',function(){
+ $('shufAll').innerHTML=ic('shuffle')+' Shuffle all three';$('spin').innerHTML=ic('wand')+' New plot';
+ $('cvReset').innerHTML=ic('undo')+' Clear';$('save').innerHTML=ic('book')+' Save to Bookshelf';$('read').innerHTML=ic('book')+' Read together';$('custom').innerHTML=ic('plus')+' Family card';
+ $('n-weave').innerHTML=ic('spark')+' Weave';$('n-shelf').innerHTML=ic('book')+' Bookshelf';
+ loadCustom();buildDeck();initDoodle();stars();manifest();demoLeft();
+ setAmber(lsGet(KEY.amber)==='1');
+ initialDraw();
+ document.addEventListener('click',function(e){
+  var b=e.target.closest('[data-a],[data-ch],[data-c],[data-k],[data-open],[data-del],[data-x],[data-d],[data-i]');
+  if(b){
+   if(b.dataset.a==='spin')spinOne(b.dataset.t);
+   else if(b.dataset.a==='lock')toggleLock(b.dataset.t);
+   else if(b.dataset.ch!=null){var c=CH[+b.dataset.ch];if(added.indexOf(c[1])<0){added.push(c[1]);weave();toast('Chapter added')}else toast('That chapter is already in your story')}
+   else if(b.dataset.c){cvColor=b.dataset.c;document.querySelectorAll('#sw .sw').forEach(function(s){s.classList.toggle('on',s===b)})}
+   else if(b.dataset.k)stamp(b.dataset.k);
+   else if(b.dataset.open){var bk=shelfList().filter(function(x){return x.id===b.dataset.open})[0];if(bk)showReader(bk)}
+   else if(b.dataset.del){lsSet(KEY.shelf,JSON.stringify(shelfList().filter(function(x){return x.id!==b.dataset.del})));renderShelf();toast('Removed')}
+   else if(b.dataset.x)$(b.dataset.x).classList.remove('on');
+   else if(b.dataset.d){selDeck=b.dataset.d;document.querySelectorAll('#cdeck button').forEach(function(s){s.classList.toggle('on',s===b)})}
+   else if(b.dataset.i){customIcon=b.dataset.i;document.querySelectorAll('#cicons .stk').forEach(function(s){s.style.borderColor=s===b?'var(--gd)':''})}
+   return}
+  var f=e.target.closest('.flip');if(f){var t=f.id.slice(2);if(f.classList.contains('on'))spinOne(t);else{active[t]=active[t]||pick(t);f.classList.add('on')}}
+  if(e.target.classList&&e.target.classList.contains('ov'))e.target.classList.remove('on');
+ });
+ document.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('flip')){e.preventDefault();e.target.click()}if(e.key==='Escape')document.querySelectorAll('.ov.on').forEach(function(o){o.classList.remove('on')})});
+ $('shufAll').onclick=shuffleAll;$('spin').onclick=function(){seed=(seed+1)%3;added=[];weave.keep=false;weave();toast('Fresh story plot')};
+ $('m-spark').onclick=function(){setMode('spark')};$('m-full').onclick=function(){setMode('full')};
+ $('title').addEventListener('input',function(){weave.keep=true});
+ $('cvReset').onclick=function(){paintCover()};$('save').onclick=saveBook;$('read').onclick=preview;$('custom').onclick=openCustom;
+ $('n-weave').onclick=function(){view('weave')};$('n-shelf').onclick=function(){if(DEMO){more('The Keepsake Bookshelf','The full app saves every story you weave, with its doodled cover, so you can read it together again whenever you like.');return}view('shelf')};
+ $('dim').onclick=function(){setAmber(!document.body.classList.contains('amber'))};
+ document.addEventListener('change',function(e){
+  if(e.target.id!=='cph')return;var file=e.target.files[0];if(!file)return;
+  var r=new FileReader();r.onload=function(ev){var im=new Image();im.onload=function(){var k=document.createElement('canvas');k.width=k.height=240;var s=Math.min(im.width,im.height);k.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,240,240);photo=k.toDataURL('image/jpeg',.82);$('cphs').textContent='Photo ready'};im.src=ev.target.result};r.readAsDataURL(file);
+ });
+ document.addEventListener('click',function(e){
+  if(e.target.id==='csave'||e.target.closest&&e.target.closest('#csave'))saveCustom();
+  if(e.target.closest&&e.target.closest('#saveCv')){var a=document.createElement('a');a.href=$('readBox').dataset.cover;a.download=($('readBox').dataset.title||'story').replace(/[^\w]+/g,'-')+'.jpg';document.body.appendChild(a);a.click();a.remove()}
+ });
+});
+
+</script>
+</body>
+</html>
