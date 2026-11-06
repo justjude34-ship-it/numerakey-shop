@@ -108,6 +108,7 @@ const FILES = {
   "why-manners-matter": "private/why-manners-matter.html",
   "pocket-story-weaver": "private/pocket-story-weaver.html",
   "teach-me-feng-shui": "private/teach-me-feng-shui.html",
+  "teach-me-tarot": "private/teach-me-tarot.html",
   "the-gentle-no": "private/the-gentle-no.html",
   "digital-creation": "private/digital-creation.html",
   "you-can-build-this": "private/you-can-build-this.html",
