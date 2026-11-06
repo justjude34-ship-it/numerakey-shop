@@ -344,8 +344,8 @@ function cardFace(sc,isNew){var c=sc.card;return el('div',{class:'mcard'+(isNew?
 function playView(){var sc=curScene(),isNight=P.i===6,ph=P.phase,v=[];
  v.push(el('div',{class:'row'},el('button',{class:'btn small',type:'button',onclick:leave,text:'← Menu'}),S.photo?el('div',{class:'avatar',style:'width:44px;height:44px'},el('img',{src:S.photo,alt:''})):null));
  v.push(progress());
- var artKey,alt,blur=(ph==='ask');
- if(isNight){artKey='s7-night';alt=NIGHT.alt}else if(ph==='oops'){artKey=sc.oops.art;alt=sc.oops.alt}else{artKey=sc.kind.art;alt=sc.kind.alt}
+ var artKey,alt,opening=(ph==='ask'&&P.i===0),blur=(ph==='ask'&&!opening);
+ if(opening){artKey='cover';alt='Poppy the hedgehog waves in a sunny village lane'}else if(isNight){artKey='s7-night';alt=NIGHT.alt}else if(ph==='oops'){artKey=sc.oops.art;alt=sc.oops.alt}else{artKey=sc.kind.art;alt=sc.kind.alt}
  if(ph==='end')v.push(aliveFigure(alt));else v.push(el('figure',{class:'pic'+(blur?' blur':' reveal'),'aria-hidden':blur?'true':null},img(artKey,blur?'':alt,null),blur?el('div',{class:'cap'},el('small',{text:'Chapter '+sc.n+' of '+TOTAL}),el('span',{text:sc.title})):null));
  var text,w;
  if(ph==='ask')text=nm(sc.prompt);else if(ph==='kind')text=nm(sc.kind.text);else if(ph==='oops')text=nm(sc.oops.text);else text=nm(NIGHT.end);
