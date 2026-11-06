@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Why Manners Matter</title>
-<meta name="description" content="A read-aloud storybook where children choose how Poppy the hedgehog treats her friends, and see how small manners make people feel.">
+<meta name="description" content="A storybook to read together, where children choose how Poppy the hedgehog treats her friends, and see how small manners make people feel.">
 <meta name="theme-color" content="#4aa3ea">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -282,7 +282,7 @@ function toast(m){var t=document.getElementById('toast');t.textContent=m;t.style
 /* ---------- sound and reading ---------- */
 var ac=null;
 function chime(){if(S.mute)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();[660,880].forEach(function(f,i){var o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.value=f;g.gain.value=.035;o.connect(g);g.connect(ac.destination);var t=ac.currentTime+i*.14;o.start(t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.stop(t+.35)})}catch(e){}}
-var canSpeak=false;try{canSpeak='speechSynthesis' in window&&'SpeechSynthesisUtterance' in window}catch(e){}
+var canSpeak=false;try{canSpeak=false}catch(e){}
 function stopSpeak(){try{if(canSpeak)speechSynthesis.cancel()}catch(e){}}
 function words(text){var node=el('p',{class:'storytext'}),spans=[],ranges=[],re=/\S+/g,m,last=0;
  while((m=re.exec(text))){if(m.index>last)node.append(document.createTextNode(text.slice(last,m.index)));var s=el('span',{class:'w',text:m[0]});node.append(s);spans.push(s);ranges.push([m.index,m.index+m[0].length]);last=m.index+m[0].length}
@@ -416,7 +416,7 @@ function viewGrown(){
   return el('div',{class:'view'},el('h1',{text:'Grown-ups'}),el('section',{class:'card'},el('p',{class:'muted',text:'This corner has talking points and settings. To open it, answer this:'}),el('label',{class:'lab',for:'gate',id:'gq',text:'What is '+gateQ.a+' + '+gateQ.b+'?'}),inp,el('div',{style:'margin-top:12px'},el('button',{class:'btn primary',onclick:tryGate,text:'Open'}))))}
  var v=[el('h1',{text:'Grown-ups'})];
  v.push(el('section',{class:'card'},el('h2',{text:'How to use this'}),el('ul',{style:'margin:0;padding-left:20px'},
-  el('li',{text:'Read the story together. Tap “Read to me” for a voice, or read it yourself.'}),
+  el('li',{text:'Read the story aloud together. A grown-up’s voice is the best one, so let your child hear it from you.'}),
   el('li',{text:'Let your child choose. Both paths are safe. The “oops” pages show how others feel, with no telling-off.'}),
   el('li',{text:'Talk about feelings after each chapter. The questions below help.'}),
   el('li',{text:'Try one manner a day in real life.'}))));
