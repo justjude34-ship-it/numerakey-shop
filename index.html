@@ -98,16 +98,30 @@ document.addEventListener('DOMContentLoaded',function(){
   /* Quieter than full blast but audible */
   var QUIET=0.35;
   var unlocked=false;
+  /* Sound plays once: ~25s audible, then a soft fade to silence. No button, never returns. */
+  var PLAY_MS=25000, FADE_MS=4000, faded=false, fadeStarted=false;
+  function startFade(){
+    if(fadeStarted) return; fadeStarted=true;
+    setTimeout(function(){
+      var t0=Date.now();
+      (function step(){
+        var k=Math.min(1,(Date.now()-t0)/FADE_MS);
+        try{v.volume=QUIET*(1-k);}catch(e){}
+        if(k<1){ requestAnimationFrame(step); }
+        else { faded=true; try{v.muted=true;}catch(e){} }
+      })();
+    },PLAY_MS);
+  }
   function unmuteAndPlay(){
-    if(unlocked) return;
+    if(unlocked||faded) return;
     try{
       v.muted=false;
       v.volume=QUIET;
       var p=v.play();
       if(p&&typeof p.then==='function'){
-        p.then(function(){ unlocked=true; }).catch(function(){ /* still blocked */ });
+        p.then(function(){ unlocked=true; startFade(); }).catch(function(){ /* still blocked */ });
       } else {
-        unlocked=true;
+        unlocked=true; startFade();
       }
     }catch(e){
     }
@@ -117,7 +131,7 @@ document.addEventListener('DOMContentLoaded',function(){
     v.volume=QUIET;
     var p=v.play();
     if(p&&typeof p.then==='function'){
-      p.then(function(){ unlocked=true; }).catch(function(){
+      p.then(function(){ unlocked=true; startFade(); }).catch(function(){
         /* Browser blocked sound autoplay — keep video playing muted, unmute on first gesture */
         v.muted=true;
         v.play().catch(function(){
