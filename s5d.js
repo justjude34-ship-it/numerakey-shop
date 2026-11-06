@@ -105,6 +105,7 @@ const FILES = {
   "find-it-first": "private/find-it-first.html",
   "fox-trail": "private/fox-trail.html",
   "kindness-first": "private/kindness-first.html",
+  "why-manners-matter": "private/why-manners-matter.html",
   "teach-me-feng-shui": "private/teach-me-feng-shui.html",
   "the-gentle-no": "private/the-gentle-no.html",
   "digital-creation": "private/digital-creation.html",
