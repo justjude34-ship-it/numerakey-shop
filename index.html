@@ -100,18 +100,24 @@ document.addEventListener('DOMContentLoaded',function(){
   var unlocked=false;
   /* Sound plays once: ~25s audible, then a soft fade to silence. No button, never returns. */
   var PLAY_MS=25000, FADE_MS=4000, faded=false, fadeStarted=false;
+  var audibleMs=0;
   function startFade(){
     if(fadeStarted) return; fadeStarted=true;
-    setTimeout(function(){
-      var t0=Date.now();
-      (function step(){
-        var k=Math.min(1,(Date.now()-t0)/FADE_MS);
+    /* count only the time the sound is really audible, tick by tick */
+    var last=Date.now();
+    var iv=setInterval(function(){
+      var now=Date.now(), dt=now-last; last=now;
+      if(faded){ clearInterval(iv); return; }
+      if(!v.paused && !v.muted) audibleMs+=dt;
+      if(audibleMs>=PLAY_MS){
+        var k=Math.min(1,(audibleMs-PLAY_MS)/FADE_MS);
         try{v.volume=QUIET*(1-k);}catch(e){}
-        if(k<1){ requestAnimationFrame(step); }
-        else { faded=true; try{v.muted=true;}catch(e){} }
-      })();
-    },PLAY_MS);
+        if(k>=1){ faded=true; try{v.volume=0;}catch(e){} try{v.muted=true;}catch(e){} clearInterval(iv); }
+      }
+    },100);
   }
+  /* once faded, never let the sound come back */
+  v.addEventListener('volumechange',function(){ if(faded && !v.muted){ try{v.muted=true;}catch(e){} } });
   function unmuteAndPlay(){
     if(unlocked||faded) return;
     try{
