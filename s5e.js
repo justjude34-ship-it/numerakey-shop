@@ -29,16 +29,6 @@ APPS.push({ slug:"after-the-silence", name:"After the Silence", cat:"narc", pric
 artFor(APPS[APPS.length - 1]).motif = "field";
 (function(){const i=APPS.findIndex(a=>a.slug==="after-the-silence");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.cat==="narc");APPS.splice(f<0?APPS.length:f,0,x);})();
 
-/* Learn shelf order: Digital Creation For Scaredy Cats first, then You Can Build an App. */
-(function(){
-  ["you-can-build-this","digital-creation"].forEach(function(slug){
-    const i=APPS.findIndex(a=>a.slug===slug);if(i<0)return;
-    const x=APPS.splice(i,1)[0];
-    const f=APPS.findIndex(a=>a.cat==="learn");
-    APPS.splice(f<0?APPS.length:f,0,x);
-  });
-})();
-
 /* Apps added in this file load after the buy links are set in s5d.js, so set them again here. */
 APPS.forEach(a => {
   if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
@@ -96,3 +86,13 @@ APPS.push({ slug:"teach-me-tarot", name:"Teach Me Tarot", cat:"learn", price:39,
   "Practise as you go with one-card, three-card and Celtic Cross readings, test yourself with the card quiz, and save your readings to a private journal. The cards are shown in the Lumen deck where available, and the course works with any deck. It works offline, needs no account, and keeps everything on your device."
 ], inside:["Four short lessons: how a reading works, the 78 cards, reversed cards and spreads","All 78 cards, each with upright and reversed meanings and keywords","Love and work notes for every Major Arcana card","The four suits, the numbers and the court cards explained","Practice spreads: one card, Past Present Future, Situation Challenge Advice, and the Celtic Cross","A ten-question card quiz and a quick quiz after every lesson","A private journal for your readings, with backup and restore","No account, works offline, nothing sent away"] });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
+
+/* Learn shelf order: Digital Creation, You Can Build an App, Teach Me Tarot, Teach Me Palmistry, Teach Me Numerology, then the rest. */
+(function(){
+  ["numerakey-learn","teach-me-palmistry","teach-me-tarot","you-can-build-this","digital-creation"].forEach(function(slug){
+    const i=APPS.findIndex(a=>a.slug===slug);if(i<0)return;
+    const x=APPS.splice(i,1)[0];
+    const f=APPS.findIndex(a=>a.cat==="learn");
+    APPS.splice(f<0?APPS.length:f,0,x);
+  });
+})();
