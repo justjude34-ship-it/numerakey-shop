@@ -20,11 +20,10 @@ h1,h2,h3{font-weight:normal;line-height:1.2}
 .hero h1{font-size:2.5rem;letter-spacing:.5px}
 .hero p{color:var(--muted);margin-top:8px;font-style:italic}
 .hero .fan{display:flex;justify-content:center;gap:0;margin:20px 0 4px;height:190px;overflow:hidden;padding-top:8px}
-.hero .fan .c{width:98px;height:max-content;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px #000a;border:1px solid #d9b66a55;transform-origin:50% 120%;margin:0 -16px;background:#000}
-.hero .fan .c:nth-child(1){transform:rotate(-12deg) translateY(10px)}
-.hero .fan .c:nth-child(2){transform:rotate(-4deg)}
-.hero .fan .c:nth-child(3){transform:rotate(4deg)}
-.hero .fan .c:nth-child(4){transform:rotate(12deg) translateY(10px)}
+.hero .fan .c{width:98px;height:max-content;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px #000a;border:1px solid #d9b66a55;transform-origin:50% 120%;margin:0 -6px;background:#000}
+.hero .fan .c:nth-child(1){transform:rotate(-9deg) translateY(8px)}
+.hero .fan .c:nth-child(2){transform:rotate(0deg)}
+.hero .fan .c:nth-child(3){transform:rotate(9deg) translateY(8px)}
 .fan svg,.fan img{display:block;width:100%;height:100%;object-fit:cover}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;margin:14px 0}
 .panel h2{font-size:1.35rem;margin-bottom:8px}
@@ -259,7 +258,7 @@ function home(){
   var next=null;for(var i=0;i<LESSONS.length;i++){if(!S.lessons[i]&&!(DEMO&&i>1)){next={h:"#/lesson/"+i,t:"Continue: "+LESSONS[i].t};break}}
   if(!next){for(var k=0;k<CARDS.length;k++){if(!S.studied[k]&&open(k)){next={h:"#/card/"+k,t:"Continue with "+CARDS[k].name};break}}}
   if(!next)next={h:"#/practice",t:"Do a practice reading"};
-  var fan=[0,1,2,3].map(function(i){return'<div class="c">'+art(CARDS[i])+'</div>'}).join("");
+  var fan=[0,1,2].map(function(i){return'<div class="c">'+art(CARDS[i])+'</div>'}).join("");
   return'<div class="wrap"><div class="hero"><h1 class="grad">Teach Me Tarot</h1><p>All 78 cards, taught one clear idea at a time.</p><div class="fan">'+fan+'</div></div>'+demoNote()
   +'<div class="panel"><h2>Your progress</h2><div class="bar"><i style="width:'+pct+'%"></i></div><p class="lead">'+done+' of 78 cards studied • '+lessonDone()+' of '+(DEMO?2:LESSONS.length)+' lessons done</p><p style="margin-top:12px"><a class="btn" href="'+next.h+'">'+esc(next.t)+'</a></p></div>'
   +'<div class="panel"><h2>Start here</h2><div class="list">'+LESSONS.map(function(l,i){var lk=DEMO&&i>1;return'<a class="item'+(S.lessons[i]?' done':'')+(lk?' lock':'')+'" href="'+(lk?'#/locked':'#/lesson/'+i)+'"><span class="n">'+(i+1)+'</span><span><b>'+esc(l.t)+'</b><small>'+esc(l.sub)+(lk?' • full course':'')+'</small></span></a>'}).join("")+'</div></div>'
