@@ -312,8 +312,10 @@ function demoEnd(){openSheet(function(p,api){add(p,[el('h2',{'data-autofocus':''
 function readPhoto(file,done){if(file.size>15e6)return toast('That photo is too big.');var r=new FileReader();r.onerror=function(){toast('Couldn’t open that photo.')};
  r.onload=function(){var im=new Image();im.onerror=function(){toast('Couldn’t open that photo.')};im.onload=function(){try{var d=Math.min(im.width,im.height),sx=(im.width-d)/2,sy=(im.height-d)/2,c=document.createElement('canvas');c.width=c.height=160;c.getContext('2d').drawImage(im,sx,sy,d,d,0,0,160,160);S.photo=c.toDataURL('image/jpeg',.72);save();done()}catch(e){toast('Couldn’t use that photo.')}};im.src=r.result};r.readAsDataURL(file)}
 function photoPicker(){var box=el('div',{class:'row gap'});
- var inp=el('input',{type:'file',accept:'image/*',style:'display:none','aria-label':'Choose a photo',onchange:function(){if(inp.files&&inp.files[0])readPhoto(inp.files[0],build);inp.value=''}});
- function build(){box.replaceChildren();add(box,[el('div',{class:'avatar'},S.photo?el('img',{src:S.photo,alt:'Your photo'}):el('span',{text:'Photo'})),el('button',{class:'btn small',type:'button',text:S.photo?'Change photo':'Add a photo (optional)',onclick:function(){inp.click()}}),S.photo?el('button',{class:'link',type:'button',text:'Remove',onclick:function(){S.photo='';save();build()}}):null,inp])}
+ function build(){box.replaceChildren();
+  var inp=el('input',{type:'file',accept:'image/*','aria-label':'Choose a photo',style:'position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0',onchange:function(){var f=inp.files&&inp.files[0];if(f)readPhoto(f,build)}});
+  var lab=el('label',{class:'btn small',style:'position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center'},el('span',{text:S.photo?'Change photo':'Add a photo (optional)'}),inp);
+  add(box,[el('div',{class:'avatar'},S.photo?el('img',{src:S.photo,alt:'Your photo'}):el('span',{text:'Photo'})),lab,S.photo?el('button',{class:'link',type:'button',text:'Remove',onclick:function(){S.photo='';save();build()}}):null])}
  build();return box}
 function openIntro(){openSheet(function(p,api){var nameIn=el('input',{class:'field',id:'nm',type:'text',maxlength:'20',autocomplete:'off',placeholder:'Your first name','data-autofocus':'',value:S.name||''});
  function go(){S.name=nameIn.value.trim().slice(0,20);S.intro=true;save();api.close();render()}
