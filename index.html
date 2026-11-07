@@ -109,6 +109,8 @@ document.addEventListener('DOMContentLoaded',function(){
       faded=true;
       try{v.volume=0;}catch(e){}
       try{v.muted=true;}catch(e){}
+      /* belt and braces: pausing always silences; resume the picture muted */
+      try{v.pause();v.muted=true;var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}
       if(iv) clearInterval(iv);
       v.removeEventListener('timeupdate',tick);
     }
