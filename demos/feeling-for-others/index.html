@@ -350,10 +350,11 @@ function readPhoto(file,done,say){say=say||function(){};
  function fromData(){var r=new FileReader();r.onerror=function(){say('Couldn’t open that photo. Try another one.')};r.onload=function(){draw(r.result,false)};r.readAsDataURL(file)}
  function draw(src,isBlob){var im=new Image();im.onerror=function(){if(isBlob){fromData()}else say('Couldn’t open that photo. Try another one.')};
   im.onload=function(){try{var w=im.naturalWidth||im.width,h=im.naturalHeight||im.height,d=Math.min(w,h),sx=(w-d)/2,sy=(h-d)/2,c=document.createElement('canvas');c.width=c.height=160;c.getContext('2d').drawImage(im,sx,sy,d,d,0,0,160,160);S.photo=c.toDataURL('image/jpeg',.72);save();if(isBlob&&url){try{URL.revokeObjectURL(url)}catch(e){}}say('');done()}catch(e){say('Couldn’t use that photo. Try another one.')}};im.src=src}
- if(url)draw(url,true);else fromData()}
+ function legacy(){if(url)draw(url,true);else fromData()}
+ if(window.createImageBitmap){createImageBitmap(file).then(function(bm){try{var w=bm.width,h=bm.height,d=Math.min(w,h),sx=(w-d)/2,sy=(h-d)/2,c=document.createElement('canvas');c.width=c.height=160;c.getContext('2d').drawImage(bm,sx,sy,d,d,0,0,160,160);S.photo=c.toDataURL('image/jpeg',.72);save();if(url){try{URL.revokeObjectURL(url)}catch(e){}}say('');done()}catch(e){legacy()}}).catch(legacy)}else legacy()}
 function photoPicker(){var box=el('div',{class:'row gap'});
  function build(){box.replaceChildren();
-  var msg=el('p',{class:'muted',role:'status','aria-live':'polite',style:'flex-basis:100%;margin:6px 0 0;min-height:1.2em'});function pick(){var f=inp.files&&inp.files[0];if(f&&!inp._busy){inp._busy=1;readPhoto(f,build,function(t){msg.textContent=t})}}
+  var msg=el('p',{class:'muted',role:'status','aria-live':'polite',style:'flex-basis:100%;margin:6px 0 0;min-height:1.2em'});function pick(){var f=inp.files&&inp.files[0];if(f&&!inp._busy){inp._busy=1;readPhoto(f,build,function(t){msg.textContent=t;if(t&&t.indexOf('Opening')!==0){inp._busy=0;try{inp.value=''}catch(e){}}})}}
   var inp=el('input',{type:'file',accept:'image/*','aria-label':'Choose a photo',style:'position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0',onchange:pick,oninput:pick});
   var lab=el('label',{class:'btn small',style:'position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center'},el('span',{text:S.photo?'Change photo':'Add a photo (optional)'}),inp);
   add(box,[el('div',{class:'avatar'},S.photo?el('img',{src:S.photo,alt:'Your photo'}):el('span',{text:'Photo'})),lab,S.photo?el('button',{class:'link',type:'button',text:'Remove',onclick:function(){S.photo='';save();build()}}):null,msg])}
