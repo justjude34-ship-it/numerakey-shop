@@ -180,7 +180,6 @@ h1,h2{color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.6)}
 @keyframes spark{0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}20%{opacity:1}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.5) rotate(180deg)}}
 @media(prefers-reduced-motion:reduce){.burst{display:none}}
 </style>
-<style>/* title sits under the artwork, not on it */.view .hero-t{position:static;background:none;padding:14px 6px 2px;color:var(--ink);text-align:center}.view .hero-t h1{color:var(--ink);text-shadow:none}.view .hero-t p{color:#7a6350}</style>
 </head>
 <body>
 <div class="wrap"><main id="main" tabindex="-1"></main></div>
@@ -309,13 +308,19 @@ function confirmSheet(title,text,okLabel,onOk){openSheet(function(p,api){p.appen
 function demoEnd(){openSheet(function(p,api){add(p,[el('h2',{'data-autofocus':'',tabindex:'-1',text:'That’s the end of the demo'}),el('p',{text:'You’ve met Poppy and tried three chapters. The full app has all seven chapters, six Manners Cards, the whole Oops Gallery, the bedtime ending and a grown-ups’ corner with talking points.'}),el('p',{class:'muted',text:'It’s in the NumeraKey shop.'}),el('div',{class:'stack'},el('a',{class:'btn primary wide',href:BUY,target:'_blank',rel:'noopener',text:'Visit the NumeraKey shop'}),el('button',{class:'btn wide',onclick:api.close,text:'Keep looking around'}))])},{label:'Demo'})}
 
 /* ---------- photo and name ---------- */
-function readPhoto(file,done){if(file.size>15e6)return toast('That photo is too big.');var r=new FileReader();r.onerror=function(){toast('Couldn’t open that photo.')};
- r.onload=function(){var im=new Image();im.onerror=function(){toast('Couldn’t open that photo.')};im.onload=function(){try{var d=Math.min(im.width,im.height),sx=(im.width-d)/2,sy=(im.height-d)/2,c=document.createElement('canvas');c.width=c.height=160;c.getContext('2d').drawImage(im,sx,sy,d,d,0,0,160,160);S.photo=c.toDataURL('image/jpeg',.72);save();done()}catch(e){toast('Couldn’t use that photo.')}};im.src=r.result};r.readAsDataURL(file)}
+function readPhoto(file,done,say){say=say||function(){};
+ if(file.size>40e6){say('That photo is too big. Try a smaller one.');return}
+ say('Opening your photo…');var url=null;try{url=(window.URL||window.webkitURL).createObjectURL(file)}catch(e){}
+ function fromData(){var r=new FileReader();r.onerror=function(){say('Couldn’t open that photo. Try another one.')};r.onload=function(){draw(r.result,false)};r.readAsDataURL(file)}
+ function draw(src,isBlob){var im=new Image();im.onerror=function(){if(isBlob){fromData()}else say('Couldn’t open that photo. Try another one.')};
+  im.onload=function(){try{var w=im.naturalWidth||im.width,h=im.naturalHeight||im.height,d=Math.min(w,h),sx=(w-d)/2,sy=(h-d)/2,c=document.createElement('canvas');c.width=c.height=160;c.getContext('2d').drawImage(im,sx,sy,d,d,0,0,160,160);S.photo=c.toDataURL('image/jpeg',.72);save();if(isBlob&&url){try{URL.revokeObjectURL(url)}catch(e){}}say('');done()}catch(e){say('Couldn’t use that photo. Try another one.')}};im.src=src}
+ if(url)draw(url,true);else fromData()}
 function photoPicker(){var box=el('div',{class:'row gap'});
  function build(){box.replaceChildren();
-  var inp=el('input',{type:'file',accept:'image/*','aria-label':'Choose a photo',style:'position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0',onchange:function(){var f=inp.files&&inp.files[0];if(f)readPhoto(f,build)}});
+  var msg=el('p',{class:'muted',role:'status','aria-live':'polite',style:'flex-basis:100%;margin:6px 0 0;min-height:1.2em'});function pick(){var f=inp.files&&inp.files[0];if(f&&!inp._busy){inp._busy=1;readPhoto(f,build,function(t){msg.textContent=t})}}
+  var inp=el('input',{type:'file',accept:'image/*','aria-label':'Choose a photo',style:'position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:0',onchange:pick,oninput:pick});
   var lab=el('label',{class:'btn small',style:'position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center'},el('span',{text:S.photo?'Change photo':'Add a photo (optional)'}),inp);
-  add(box,[el('div',{class:'avatar'},S.photo?el('img',{src:S.photo,alt:'Your photo'}):el('span',{text:'Photo'})),lab,S.photo?el('button',{class:'link',type:'button',text:'Remove',onclick:function(){S.photo='';save();build()}}):null])}
+  add(box,[el('div',{class:'avatar'},S.photo?el('img',{src:S.photo,alt:'Your photo'}):el('span',{text:'Photo'})),lab,S.photo?el('button',{class:'link',type:'button',text:'Remove',onclick:function(){S.photo='';save();build()}}):null,msg])}
  build();return box}
 function openIntro(){openSheet(function(p,api){var nameIn=el('input',{class:'field',id:'nm',type:'text',maxlength:'20',autocomplete:'off',placeholder:'Your first name','data-autofocus':'',value:S.name||''});
  function go(){S.name=nameIn.value.trim().slice(0,20);S.intro=true;save();api.close();render()}
@@ -384,7 +389,7 @@ function playView(){var sc=curScene(),isNight=P.i===6,ph=P.phase,v=[];
 function chapState(i){if(locked(i))return'Opens in the full app';if(i<S.scene)return'Played · tap to play again';if(i===S.scene)return'Next chapter';return'Play the chapters in order'}
 function viewStory(){if(P)return playView();
  var played=S.scene>=TOTAL,started=S.scene>0,v=[];
- v.push(el('section',{class:'pic'},img('cover','Poppy the hedgehog waves in a sunny village lane',null),S.photo?el('div',{class:'hero-av'},el('div',{class:'avatar'},el('img',{src:S.photo,alt:''}))):null));v.push(el('div',{class:'hero-t'},el('p',null,S.name?'Hello, '+S.name+'!':'Hello!',DEMO?el('span',{class:'pill',text:'DEMO'}):null),el('h1',{text:'Why Manners Matter'})));
+ v.push(el('section',{class:'pic'},img('cover','Poppy the hedgehog waves in a sunny village lane',null),S.photo?el('div',{class:'hero-av'},el('div',{class:'avatar'},el('img',{src:S.photo,alt:''}))):null,el('div',{class:'hero-t'},el('p',null,S.name?'Hello, '+S.name+'!':'Hello!',DEMO?el('span',{class:'pill',text:'DEMO'}):null),el('h1',{text:'Why Manners Matter'}))));
  v.push(el('section',{class:'card'},el('p',{text:'Poppy the hedgehog is going for a walk, and you decide what she does. A kind choice earns a Manners Card. Another choice shows how a friend might feel, then lets you try again.'}),
   el('div',{class:'stack'},
    el('button',{class:'btn green wide',type:'button',onclick:function(){startScene(DEMO?Math.min(S.scene,FREE-1):(played?0:Math.min(S.scene,TOTAL-1)))},text:played?'Read it again':(started?'Continue the story':'Start the story')}),
