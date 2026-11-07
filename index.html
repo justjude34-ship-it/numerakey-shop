@@ -98,8 +98,8 @@ document.addEventListener('DOMContentLoaded',function(){
   /* Quieter than full blast but audible */
   var QUIET=0.35;
   var unlocked=false;
-  /* Sound plays once: ~25s audible, then a soft fade to silence. No button, never returns. */
-  var PLAY_MS=25000, FADE_MS=4000, faded=false, fadeStarted=false;
+  /* Sound plays once through the 15s clip: ~11s audible, then a soft fade to silence as the clip ends. It never restarts when the picture loops. */
+  var PLAY_MS=11000, FADE_MS=4000, faded=false, fadeStarted=false;
   var audibleMs=0;
   function startFade(){
     if(fadeStarted) return; fadeStarted=true;
@@ -114,8 +114,13 @@ document.addEventListener('DOMContentLoaded',function(){
       if(iv) clearInterval(iv);
       v.removeEventListener('timeupdate',tick);
     }
+    var lastCt=-1;
     function tick(){
       if(faded) return;
+      /* the picture looped back to the start: the sound must not play again */
+      var ct=v.currentTime||0;
+      if(lastCt>1 && ct<lastCt-1){ kill(); return; }
+      lastCt=ct;
       var el=Date.now()-t0;
       if(el>=PLAY_MS){
         var k=Math.min(1,(el-PLAY_MS)/FADE_MS);
@@ -136,6 +141,7 @@ document.addEventListener('DOMContentLoaded',function(){
     try{
       v.muted=false;
       v.volume=QUIET;
+      try{v.currentTime=0;}catch(e){}
       var p=v.play();
       if(p&&typeof p.then==='function'){
         p.then(function(){ unlocked=true; startFade(); }).catch(function(){ /* still blocked */ });
