@@ -103,18 +103,29 @@ document.addEventListener('DOMContentLoaded',function(){
   var audibleMs=0;
   function startFade(){
     if(fadeStarted) return; fadeStarted=true;
-    /* count only the time the sound is really audible, tick by tick */
-    var last=Date.now();
-    var iv=setInterval(function(){
-      var now=Date.now(), dt=now-last; last=now;
-      if(faded){ clearInterval(iv); return; }
-      if(!v.paused && !v.muted) audibleMs+=dt;
-      if(audibleMs>=PLAY_MS){
-        var k=Math.min(1,(audibleMs-PLAY_MS)/FADE_MS);
-        try{v.volume=QUIET*(1-k);}catch(e){}
-        if(k>=1){ faded=true; try{v.volume=0;}catch(e){} try{v.muted=true;}catch(e){} clearInterval(iv); }
+    /* wall-clock timing from the moment sound starts; driven by a timer AND by video timeupdate, so it cannot stall */
+    var t0=Date.now(), iv=null;
+    function kill(){
+      faded=true;
+      try{v.volume=0;}catch(e){}
+      try{v.muted=true;}catch(e){}
+      if(iv) clearInterval(iv);
+      v.removeEventListener('timeupdate',tick);
+    }
+    function tick(){
+      if(faded) return;
+      var el=Date.now()-t0;
+      if(el>=PLAY_MS){
+        var k=Math.min(1,(el-PLAY_MS)/FADE_MS);
+        try{v.volume=Math.max(0,QUIET*(1-k));}catch(e){}
+        if(k>=1) kill();
       }
-    },100);
+    }
+    iv=setInterval(tick,100);
+    v.addEventListener('timeupdate',tick);
+    document.addEventListener('visibilitychange',tick);
+    /* hard stop no matter what */
+    setTimeout(kill,PLAY_MS+FADE_MS+300);
   }
   /* once faded, never let the sound come back */
   v.addEventListener('volumechange',function(){ if(faded && !v.muted){ try{v.muted=true;}catch(e){} } });
