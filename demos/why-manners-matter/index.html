@@ -393,7 +393,8 @@ function viewStory(){if(P)return playView();
  v.push(el('section',{class:'card'},el('p',{text:'Poppy the hedgehog is going for a walk, and you decide what she does. A kind choice earns a Manners Card. Another choice shows how a friend might feel, then lets you try again.'}),
   el('div',{class:'stack'},
    el('button',{class:'btn green wide',type:'button',onclick:function(){startScene(DEMO?Math.min(S.scene,FREE-1):(played?0:Math.min(S.scene,TOTAL-1)))},text:played?'Read it again':(started?'Continue the story':'Start the story')}),
-   started&&!played?el('button',{class:'btn wide',type:'button',onclick:function(){startScene(0)},text:'Start from the beginning'}):null)));
+   started&&!played?el('button',{class:'btn wide',type:'button',onclick:function(){startScene(0)},text:'Start from the beginning'}):null,
+   el('button',{class:'btn wide',type:'button',onclick:openIntro,text:(S.name||S.photo)?'Change my name or photo':'Add my name and photo'}))));
  var list=el('div',{class:'list'});
  SC.concat([NIGHT]).forEach(function(c,i){var ok=reached(i),art=i===6?'s7-night':c.kind.art;
   list.append(el('button',{class:'chap'+(ok?'':' locked'),type:'button','aria-label':'Chapter '+c.n+', '+c.title+'. '+chapState(i),onclick:function(){if(locked(i)){demoEnd();return}if(!ok){toast('Play the chapters in order first.');return}startScene(i)}},img(art,'',null),el('span',null,el('strong',{text:c.n+'. '+c.title}),el('em',{text:chapState(i)}))))});
