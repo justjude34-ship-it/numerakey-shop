@@ -139,6 +139,13 @@ details li{margin-bottom:6px}
 .credit svg{vertical-align:-2px;margin-left:4px}
 .fall{position:absolute;top:-30px;z-index:6;pointer-events:none;animation:fall 2.8s linear forwards;font-size:22px}
 @keyframes fall{to{transform:translateY(420px) rotate(360deg);opacity:0}}
+.view>.pic{margin-left:-14px;margin-right:-14px;border-radius:0;border-left:0;border-right:0}
+.page{font-size:1.06rem;line-height:1.6;padding:15px 16px 15px 20px}
+.enl{position:absolute;right:10px;top:10px;z-index:7;width:46px;height:46px;border-radius:50%;border:2px solid var(--gold);background:rgba(0,0,0,.65);color:#fff;font:700 1.35rem/1 var(--sans);cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center}
+.lb{position:fixed;inset:0;z-index:90;background:#000;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.lb img{width:100%;height:100%;object-fit:contain;display:block}
+.lb .hint{position:absolute;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom));text-align:center;color:var(--cream);font:700 .95rem var(--sans);text-shadow:0 1px 6px #000;pointer-events:none}
+@media(orientation:landscape){.lb .hint{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -256,8 +263,9 @@ function maxStars(){return CH.length*(DEMO?1:AD.length)*2}
 function starsFor(c){var n=0;AD.forEach(function(a){var s=stars(c,a.id);n+=s.g+s.s});return n}
 function go(t,c,a){V.t=t;if(c!==undefined)V.c=c;if(a!==undefined)V.a=a;V.pg=0;V.ch=null;V.taps=0;render()}
 function avatar(c,cls){return el('span',{class:'avatar '+(cls||'')},img('a_'+c))}
+function addEnl(){var f=main.querySelectorAll('.pic');for(var k=0;k<f.length;k++){(function(fig){var im=fig.querySelector('img');if(!im||!im.src||fig.querySelector('.enl'))return;var b=el('button',{class:'enl',type:'button','aria-label':'Make the picture bigger',text:'\u2922'});b.addEventListener('click',function(e){e.stopPropagation();var d=el('div',{class:'lb',role:'dialog','aria-label':'Picture. Tap to close.'},el('img',{src:im.src,alt:im.alt}),el('div',{class:'hint',text:'Turn your phone sideways for a bigger picture. Tap to close.'}));d.addEventListener('click',function(){d.remove()});document.body.appendChild(d)});b.addEventListener('pointerdown',function(e){e.stopPropagation()});fig.appendChild(b)})(f[k])}}
 function render(){main.innerHTML='';window.scrollTo(0,0);nav.style.display=V.t==='story'?'none':'flex';
-var v=({home:home,friend:friendView,story:story,badges:badges,grown:grown})[V.t]();main.appendChild(v);drawNav()}
+var v=({home:home,friend:friendView,story:story,badges:badges,grown:grown})[V.t]();main.appendChild(v);addEnl();drawNav()}
 function drawNav(){nav.innerHTML='';[['home','★','Play'],['badges','✿','Badges'],['grown','♡','Grown-ups']].forEach(function(t){var on=(t[0]==='home'&&(V.t==='home'||V.t==='friend'))||V.t===t[0];nav.appendChild(el('button',{class:'tabbtn','aria-current':on?'page':null,onclick:function(){go(t[0])}},el('span',{text:t[1]}),t[2]))})}
 function credit(){var svg='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round"><path d="M12 21C4 14.5 3 9.5 6 6.8c2.2-2 5-1.2 6 1 1-2.2 3.8-3 6-1 3 2.7 2 7.7-6 14.2z"/></svg>';var d=el('div',{class:'credit'});d.appendChild(document.createTextNode('Apps by Judith'));var s=el('span');s.innerHTML=svg;d.appendChild(s);return d}
 function home(){var v=el('div',{class:'view'});
