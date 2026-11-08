@@ -23,13 +23,18 @@ module.exports = async (req, res) => {
     const app = APPS.find(a => a.slug === slug);
     if (!app || !FILES[slug] || !/^[a-z0-9-]+$/.test(slug)) return fail(404, "App not found.");
 
-    const file = fs.readFileSync(path.join(__dirname, "..", "private", slug + ".html"));
+    const filePath = path.join(__dirname, "..", "private", slug + ".html");
+    const size = fs.statSync(filePath).size;
     const name = app.name.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "") + ".html";
     res.statusCode = 200;
     res.setHeader("Content-Type", "text/html; charset=utf-8");
     res.setHeader("Content-Disposition", 'attachment; filename="' + name + '"');
     res.setHeader("Cache-Control", "private, no-store");
-    res.end(file);
+    res.setHeader("Content-Length", String(size));
+    /* Stream the file so big apps (Adventure Friends is ~9 MB) are not capped by the buffered response limit. */
+    const stream = fs.createReadStream(filePath);
+    stream.on("error", e => { console.error("stream failed:", e.message); res.destroy(e); });
+    stream.pipe(res);
   } catch (e) {
     console.error("download failed:", e.message);
     fail(500, "Download is not available right now. Email hello@numerakey.com with your receipt and we'll sort it out.");
