@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Dear Me – Demo</title>
+<meta name="theme-color" content="#ff9a8b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Dear Me">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23ff6f91'/%3E%3Cpath d='M50 74C24 56 26 34 40 32c6-1 10 3 10 7 0-4 4-8 10-7 14 2 16 24-10 42z' fill='%23fff3b0'/%3E%3C/svg%3E">
+<style>
+:root{--top:#ff9a8b;--bot:#ffe3a3;--h1:#ff6f91;--h2:#ffc75f;--acc:#ff5d8f;--acc2:#ff9a3c;--ink:#4a2c5e;--soft:#7d5a8f;--card:#fffaf0;--line:#f6d6c2}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%}
+body{font-family:ui-rounded,"SF Pro Rounded","Nunito","Trebuchet MS",system-ui,sans-serif;color:var(--ink);background:linear-gradient(180deg,var(--top),var(--bot));background-attachment:fixed;min-height:100vh}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+#bg svg{position:absolute;left:0;bottom:0;width:100%;height:100%}
+#app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 28px)}
+h1,h2,h3{margin:0}
+.title{font-family:"Bradley Hand","Segoe Print","Comic Sans MS",cursive;font-size:44px;font-weight:700;text-align:center;background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.1;padding:4px 0}
+.sub{text-align:center;color:var(--ink);opacity:.8;margin:2px 0 14px;font-size:15px}
+.card{background:var(--card);border-radius:24px;padding:18px;margin:14px 0;box-shadow:0 8px 22px rgba(120,60,110,.18);border:2px solid rgba(255,255,255,.7)}
+.card h3{font-size:17px;margin-bottom:8px}
+.lab{font-weight:700;margin:0 0 8px;font-size:15px}
+.btn{display:block;width:100%;border:0;border-radius:999px;padding:15px 18px;font:inherit;font-weight:800;font-size:17px;color:#fff;background:linear-gradient(90deg,var(--acc),var(--acc2));box-shadow:0 5px 14px rgba(120,60,110,.28);cursor:pointer;margin:10px 0 0}
+.btn:active{transform:scale(.98)}
+.btn.alt{background:#fff;color:var(--acc);box-shadow:inset 0 0 0 2.5px var(--acc),0 3px 8px rgba(120,60,110,.12)}
+.btn.small{display:inline-block;width:auto;padding:10px 18px;font-size:15px}
+.btn.danger{background:#e8456b}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.top h2{flex:1;font-size:20px;text-align:center;margin-right:42px}
+.back{width:42px;height:42px;border-radius:50%;border:0;background:var(--card);font-size:26px;line-height:1;color:var(--acc);box-shadow:0 3px 10px rgba(120,60,110,.2);cursor:pointer}
+input[type=text],input[type=date],select,textarea{width:100%;font:inherit;color:var(--ink);background:#fff8ec;border:2.5px solid var(--line);border-radius:16px;padding:12px 14px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--acc)}
+textarea{min-height:240px;resize:vertical;font-family:"Bradley Hand","Segoe Print","Comic Sans MS",cursive;font-size:19px;line-height:1.55;background:repeating-linear-gradient(#fff8ec,#fff8ec 29px,#f6dcc8 30px);background-attachment:local;padding:8px 14px}
+.moods{display:flex;flex-wrap:wrap;gap:8px}
+.moods button{width:50px;height:50px;border-radius:16px;border:2.5px solid var(--line);background:#fff8ec;font-size:28px;cursor:pointer}
+.moods button.on{border-color:var(--acc);background:#ffe1ea;transform:scale(1.1)}
+.prompt{background:#fff1b8;border-radius:16px;padding:10px 12px;margin:12px 0;font-size:15px;display:flex;gap:8px;align-items:center}
+.prompt span{flex:1}
+.prompt button{border:0;background:transparent;font-size:22px;color:var(--acc);cursor:pointer}
+.dots{display:flex;justify-content:center;gap:16px;margin:14px 0}
+.dots i{width:20px;height:20px;border-radius:50%;border:3px solid var(--acc);background:transparent;transition:.15s}
+.dots i.on{background:var(--acc)}
+.keys{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:290px;margin:0 auto}
+.keys button{height:62px;border-radius:50%;border:0;background:#fff;font:inherit;font-size:26px;font-weight:700;color:var(--ink);box-shadow:0 4px 10px rgba(120,60,110,.2);cursor:pointer}
+.keys button:active{background:#ffe1ea}
+.shake{animation:sh .4s}
+@keyframes sh{20%{transform:translateX(-10px)}40%{transform:translateX(10px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+.msg{text-align:center;min-height:22px;font-weight:700;margin:4px 0}
+.msg.bad{color:#d62e5b}
+.link{background:none;border:0;color:var(--ink);text-decoration:underline;font:inherit;font-size:14px;cursor:pointer;opacity:.85}
+.center{text-align:center}
+.cover{display:flex;flex-direction:column;align-items:center}
+.cover svg{width:170px;height:auto;filter:drop-shadow(0 8px 12px rgba(120,60,110,.3))}
+.entry{display:flex;gap:12px;align-items:center;padding:12px;border-radius:18px;background:#fff8ec;margin:8px 0;cursor:pointer;border:2px solid var(--line)}
+.entry .em{font-size:30px}
+.entry .t{flex:1;min-width:0}
+.entry .d{font-weight:800;font-size:14px}
+.entry .s{font-size:14px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chips button{border:0;border-radius:999px;padding:8px 16px;font:inherit;font-weight:800;background:#fff;color:var(--acc);cursor:pointer}
+.chips button.on{background:var(--acc);color:#fff}
+.month{font-weight:800;margin:14px 0 2px;color:var(--acc)}
+.swatches{display:flex;gap:12px;flex-wrap:wrap}
+.swatches button{width:56px;height:56px;border-radius:50%;border:4px solid #fff;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.2)}
+.swatches button.on{border-color:var(--ink)}
+.read{white-space:pre-wrap;font-family:"Bradley Hand","Segoe Print","Comic Sans MS",cursive;font-size:20px;line-height:1.6}
+.big{font-size:54px;text-align:center}
+.foot{text-align:center;font-size:14px;margin-top:22px;opacity:.9}
+.toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 24px);transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-weight:700;z-index:50;box-shadow:0 6px 16px rgba(0,0,0,.3);max-width:90%;text-align:center}
+.modal{position:fixed;inset:0;background:rgba(74,44,94,.55);z-index:40;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal .box{background:var(--card);border-radius:24px;padding:22px;max-width:340px;width:100%}
+.modal p{margin:0 0 6px;font-size:16px;line-height:1.45}
+small.n{display:block;opacity:.8;line-height:1.4}
+#printArea{display:none}
+@media print{
+ body{background:none}#app,#bg,.toast,.modal{display:none!important}
+ #printArea{display:block;color:#000;font-family:Georgia,serif}
+ #printArea h1{text-align:center}
+ #printArea .pg{page-break-inside:avoid;margin:0 0 22px;padding-bottom:12px;border-bottom:1px solid #bbb}
+ #printArea .pd{font-weight:bold}#printArea .pt{white-space:pre-wrap;margin-top:4px}
+}
+</style>
+</head>
+<body>
+<div id="bg" aria-hidden="true">
+<svg viewBox="0 0 400 800" preserveAspectRatio="xMidYMax slice">
+ <circle cx="320" cy="110" r="46" fill="#fff3b0" opacity=".95"/>
+ <circle cx="320" cy="110" r="64" fill="#fff3b0" opacity=".3"/>
+ <g fill="#fff" opacity=".85">
+  <ellipse cx="80" cy="170" rx="46" ry="16"/><ellipse cx="108" cy="157" rx="30" ry="16"/><ellipse cx="55" cy="160" rx="26" ry="13"/>
+  <ellipse cx="300" cy="330" rx="40" ry="13"/><ellipse cx="324" cy="320" rx="26" ry="13"/>
+  <ellipse cx="90" cy="470" rx="38" ry="12"/><ellipse cx="114" cy="461" rx="24" ry="12"/>
+ </g>
+ <path d="M0 690 Q100 620 210 676 T400 650 V800 H0Z" fill="var(--h2)" opacity=".9"/>
+ <path d="M0 740 Q120 680 230 728 T400 706 V800 H0Z" fill="var(--h1)"/>
+ <g fill="#fff" opacity=".9"><circle cx="60" cy="760" r="4"/><circle cx="150" cy="775" r="3"/><circle cx="310" cy="765" r="4"/><circle cx="360" cy="780" r="3"/></g>
+</svg>
+</div>
+<div id="app"></div>
+<div id="printArea"></div>
+
+<script>
+"use strict";
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const enc=new TextEncoder(),dec=new TextDecoder();
+function b64(buf){const u=new Uint8Array(buf);let s='';for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));return btoa(s)}
+function unb64(s){const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+const store={
+ get(k){try{return localStorage.getItem(k)}catch(e){return null}},
+ set(k,v){try{localStorage.setItem(k,v);return true}catch(e){return false}},
+ del(k){try{localStorage.removeItem(k)}catch(e){}},
+ keys(){try{return Object.keys(localStorage)}catch(e){return[]}}
+};
+const DEMO=true,KP='dmd_',P=KP+'e_';
+const pad2=n=>String(n).padStart(2,'0');
+const keyOf=d=>d.getFullYear()+'-'+pad2(d.getMonth()+1)+'-'+pad2(d.getDate());
+const todayKey=()=>keyOf(new Date());
+const parse=k=>{const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const fmtLong=k=>parse(k).toLocaleDateString('en-AU',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+const fmtShort=k=>parse(k).toLocaleDateString('en-AU',{weekday:'short',day:'numeric',month:'short'});
+const monthName=(y,m)=>new Date(y,m-1,1).toLocaleDateString('en-AU',{month:'long'});
+
+/* ---------- crypto: PIN -> key, AES-GCM ---------- */
+async function deriveKey(pin,salt){
+ const base=await crypto.subtle.importKey('raw',enc.encode(pin),'PBKDF2',false,['deriveKey']);
+ return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:250000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function encObj(key,obj){
+ const iv=crypto.getRandomValues(new Uint8Array(12));
+ const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},key,enc.encode(JSON.stringify(obj)));
+ return{iv:b64(iv),ct:b64(ct)};
+}
+async function decObj(key,rec){
+ const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(rec.iv)},key,unb64(rec.ct));
+ return JSON.parse(dec.decode(pt));
+}
+
+/* ---------- data ---------- */
+const S={key:null,entries:{},view:'',pad:null,dirty:false,fails:0,lockedUntil:0,hiddenAt:0};
+const meta=()=>{try{return JSON.parse(store.get(KP+'meta'))}catch(e){return null}};
+const getName=()=>store.get(KP+'name')||'';
+async function loadAll(){
+ S.entries={};
+ for(const k of store.keys().filter(k=>k.startsWith(P))){
+  try{S.entries[k.slice(P.length)]=await decObj(S.key,JSON.parse(store.get(k)))}catch(e){}
+ }
+}
+async function saveEntry(date,obj){
+ const rec=await encObj(S.key,obj);
+ if(!store.set(P+date,JSON.stringify(rec))){toast('Not enough space to save');return false}
+ S.entries[date]=obj;return true;
+}
+const dates=()=>Object.keys(S.entries).sort().reverse();
+
+/* ---------- themes ---------- */
+const THEMES={
+ sunrise:{n:'Sunrise',top:'#ff9a8b',bot:'#ffe3a3',h1:'#ff6f91',h2:'#ffc75f',acc:'#ff5d8f',acc2:'#ff9a3c'},
+ lagoon:{n:'Lagoon',top:'#4fd1d9',bot:'#cdf7df',h1:'#1fbf9f',h2:'#8be3b2',acc:'#00a39a',acc2:'#3cc7a0'},
+ berry:{n:'Berry',top:'#c77dff',bot:'#ffb3d1',h1:'#a259e6',h2:'#ff8fbd',acc:'#b046d8',acc2:'#ff5d9e'},
+ meadow:{n:'Meadow',top:'#8fd3f4',bot:'#fff0a8',h1:'#52c46a',h2:'#b7e36b',acc:'#2fb35a',acc2:'#f2b01e'}
+};
+function applyTheme(n){
+ const t=THEMES[n]||THEMES.sunrise,r=document.documentElement.style;
+ r.setProperty('--top',t.top);r.setProperty('--bot',t.bot);r.setProperty('--h1',t.h1);r.setProperty('--h2',t.h2);r.setProperty('--acc',t.acc);r.setProperty('--acc2',t.acc2);
+ const m=document.querySelector('meta[name=theme-color]');if(m)m.content=t.top;
+}
+const curTheme=()=>store.get(KP+'theme')||'sunrise';
+
+/* ---------- UI utilities ---------- */
+function show(html,view){S.view=view||'';S.pad=null;$('#app').innerHTML=html;window.scrollTo(0,0)}
+let toastT;
+function toast(t){document.querySelectorAll('.toast').forEach(e=>e.remove());const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);clearTimeout(toastT);toastT=setTimeout(()=>d.remove(),2600)}
+function ask(msg,yes,danger){
+ return new Promise(res=>{
+  const m=document.createElement('div');m.className='modal';
+  m.innerHTML=`<div class="box"><p>${msg}</p><div class="row" style="margin-top:14px"><button class="btn alt small" data-r="0">Cancel</button><button class="btn small ${danger?'danger':''}" data-r="1">${esc(yes)}</button></div></div>`;
+  m.onclick=e=>{const b=e.target.closest('button');if(!b)return;m.remove();res(b.dataset.r==='1')};
+  document.body.appendChild(m);
+ });
+}
+const BUY='https://numerakey-shop.vercel.app/#/app/dear-me';
+function demoEnd(){
+ const m=document.createElement('div');m.className='modal';
+ m.innerHTML=`<div class="box"><p style="font-weight:800;font-size:19px">That's the demo peek ♡</p><p>You've seen how Dear Me works. The full diary has no page limit, a printed keepsake of each year, backup and restore, and your pages stay locked on your device.</p><div class="row" style="margin-top:14px;flex-direction:column"><a class="btn small" style="text-decoration:none;text-align:center" href="${BUY}" target="_blank" rel="noopener">Visit the NumeraKey shop</a><button class="btn alt small" data-r="0">Keep looking around</button></div></div>`;
+ m.onclick=e=>{if(e.target.closest('button'))m.remove()};
+ document.body.appendChild(m);
+}
+function heart(){return '<span aria-hidden="true">♡</span>'}
+const foot=()=>`<div class="foot">Apps by Judith ${heart()}</div>`;
+
+const coverSvg=`<svg viewBox="0 0 200 230" role="img" aria-label="A diary with a heart lock">
+ <rect x="22" y="14" width="156" height="200" rx="18" fill="var(--acc)"/>
+ <rect x="22" y="14" width="30" height="200" rx="14" fill="var(--acc2)"/>
+ <rect x="52" y="14" width="6" height="200" fill="#fff" opacity=".35"/>
+ <rect x="150" y="26" width="16" height="176" rx="5" fill="#fff3b0" opacity=".9"/>
+ <g fill="#fff3b0"><circle cx="86" cy="52" r="5"/><circle cx="148" cy="190" r="0"/></g>
+ <path d="M100 150c-34-22-32-52-12-54 8-1 12 4 12 9 0-5 4-10 12-9 20 2 22 32-12 54z" fill="#fff3b0"/>
+ <rect x="92" y="108" width="16" height="22" rx="6" fill="var(--acc)"/>
+ <path d="M88 78l3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff"/>
+ <path d="M126 62l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#fff" opacity=".9"/>
+ <circle cx="150" cy="170" r="9" fill="#fff3b0"/><rect x="146" y="170" width="8" height="14" rx="3" fill="#fff3b0"/>
+</svg>`;
+
+/* ---------- PIN pad ---------- */
+function pinPad(el,cb){
+ let p='';
+ el.innerHTML=`<div class="dots">${'<i></i>'.repeat(4)}</div><div class="keys">${[1,2,3,4,5,6,7,8,9,'',0,'⌫'].map(k=>k===''?'<span></span>':`<button type="button" data-k="${k}" aria-label="${k==='⌫'?'delete':k}">${k}</button>`).join('')}</div>`;
+ const dots=[...el.querySelectorAll('.dots i')];
+ const paint=()=>dots.forEach((d,i)=>d.classList.toggle('on',i<p.length));
+ const api={disabled:false,
+  reset(){p='';paint()},
+  shake(){el.classList.add('shake');setTimeout(()=>el.classList.remove('shake'),420)},
+  press(k){
+   if(api.disabled)return;
+   if(k==='⌫'||k==='Backspace')p=p.slice(0,-1);
+   else if(/^\d$/.test(k)&&p.length<4)p+=k;
+   else return;
+   paint();
+   if(p.length===4){const v=p;api.disabled=true;setTimeout(async()=>{await cb(v,api);api.disabled=false},120)}
+  }};
+ el.onclick=e=>{const b=e.target.closest('button[data-k]');if(b)api.press(b.dataset.k)};
+ S.pad=api;return api;
+}
+document.addEventListener('keydown',e=>{if(S.pad&&!e.ctrlKey&&!e.metaKey){if(/^\d$/.test(e.key)||e.key==='Backspace')S.pad.press(e.key)}});
+
+/* ---------- screens ---------- */
+function start(){
+ applyTheme(curTheme());
+ if(!window.crypto||!crypto.subtle){show(`<div class="card center"><h3>Oops</h3><p>This diary needs a secure connection (https) to lock your pages. Please open it from its web address.</p></div>`);return}
+ meta()?renderLock():renderSetup(0);
+}
+
+let setupData={name:'',theme:'sunrise',pin:''};
+function renderSetup(step,note){
+ if(step===0){
+  show(`<div class="cover">${coverSvg}</div>
+   <h1 class="title">Dear Me</h1><p class="sub">Your own private diary. Just for you.</p>
+   <div class="card">
+    <p class="lab">What's your name? <small class="n">(it goes on your cover – you can skip this)</small></p>
+    <input type="text" id="nm" maxlength="24" placeholder="Your name" value="${esc(setupData.name)}" autocomplete="off">
+    <p class="lab" style="margin-top:16px">Pick your colours</p>
+    <div class="swatches">${Object.entries(THEMES).map(([k,t])=>`<button data-act="theme" data-arg="${k}" class="${setupData.theme===k?'on':''}" style="background:linear-gradient(135deg,${t.top},${t.h1})" aria-label="${t.n}"></button>`).join('')}</div>
+    <button class="btn" data-act="setup1">Next</button>
+   </div>${foot()}`,'setup');
+ }else{
+  const first=step===1;
+  show(`<h1 class="title" style="font-size:36px">${first?'Make a secret PIN':'Type it again'}</h1>
+   <p class="sub">${first?'4 numbers only you know. It locks your diary.':'Just to be sure.'}</p>
+   <div class="card"><div id="pp"></div><div class="msg ${note?'bad':''}" id="mg">${esc(note||'')}</div>
+   ${first?`<small class="n center">Remember it! Your pages are scrambled by your PIN, so if it's forgotten they can't be opened again.</small>`:''}</div>`,'setup');
+  pinPad($('#pp'),async(pin,api)=>{
+   if(first){setupData.pin=pin;renderSetup(2)}
+   else if(pin!==setupData.pin){api.shake();api.reset();setupData.pin='';setTimeout(()=>renderSetup(1,"Those didn't match – try again"),450)}
+   else{
+    $('#mg').textContent='Locking it up…';
+    const salt=crypto.getRandomValues(new Uint8Array(16));
+    S.key=await deriveKey(pin,salt);
+    const check=await encObj(S.key,'ok');
+    store.set(KP+'meta',JSON.stringify({salt:b64(salt),check}));
+    store.set(KP+'name',setupData.name.trim());store.set(KP+'theme',setupData.theme);
+    setupData={name:'',theme:'sunrise',pin:''};
+    S.entries={};toast('Your diary is ready ♡');renderHome();
+   }
+  });
+ }
+}
+
+function renderLock(){
+ const nm=getName();
+ show(`<div class="cover">${coverSvg}</div>
+  <h1 class="title">${nm?esc(nm)+"'s Diary":'Dear Me'}</h1>
+  <p class="sub">Enter your PIN</p>
+  <div class="card"><div id="pp"></div><div class="msg" id="mg"></div>
+  <div class="center"><button class="link" data-act="forgot">Forgot my PIN</button></div></div>${foot()}`,'lock');
+ const m=meta();
+ pinPad($('#pp'),async(pin,api)=>{
+  const wait=S.lockedUntil-Date.now();
+  if(wait>0){api.shake();api.reset();$('#mg').textContent='Too many tries – wait '+Math.ceil(wait/1000)+'s';$('#mg').className='msg bad';return}
+  try{
+   const k=await deriveKey(pin,unb64(m.salt));
+   const ok=await decObj(k,m.check);
+   if(ok!=='ok')throw 0;
+   S.key=k;S.fails=0;await loadAll();renderHome();resetIdle();
+  }catch(e){
+   S.fails++;api.shake();api.reset();
+   const g=$('#mg');g.className='msg bad';
+   if(S.fails>=5){S.lockedUntil=Date.now()+30000;S.fails=0;g.textContent='Too many tries – wait 30s'}
+   else g.textContent='Not quite – try again';
+  }
+ });
+}
+
+function renderHome(){
+ const tk=todayKey(),has=!!S.entries[tk],nm=getName(),td=parse(tk);
+ const mm=pad2(td.getMonth()+1)+'-'+pad2(td.getDate());
+ const past=dates().filter(d=>d.slice(5)===mm&&d.slice(0,4)<tk.slice(0,4));
+ const total=dates().length;
+ show(`<div class="cover">${coverSvg}</div>
+  <h1 class="title">${nm?esc(nm)+"'s Diary":'Dear Me'}</h1>
+  <p class="sub">${esc(fmtLong(tk))}${DEMO?' <b style="background:#fffaf0;color:var(--acc);border-radius:999px;padding:2px 10px;font-size:12px;margin-left:6px">DEMO</b>':''}</p>
+  <div class="card">
+   <button class="btn" style="margin-top:0" data-act="write" data-arg="${tk}">${has?"Add to today's page":"Write today's page"}</button>
+   <div class="row"><button class="btn alt" data-act="memories">My memories</button><button class="btn alt" data-act="settings">Settings</button></div>
+   <div class="center" style="margin-top:12px;font-size:14px">${total?total+' page'+(total===1?'':'s')+' so far':'Your first page is waiting ✨'}</div>
+  </div>
+  ${past.map(d=>{const e=S.entries[d],yrs=Number(tk.slice(0,4))-Number(d.slice(0,4));return `<div class="card"><h3>✨ ${yrs} year${yrs===1?'':'s'} ago today</h3>${entryRow(d,e)}</div>`}).join('')}
+  <div class="center"><button class="link" data-act="lock">Lock my diary</button> · <button class="link" data-act="help">Need to talk to someone?</button></div>${foot()}`,'home');
+}
+
+function entryRow(d,e){
+ const snip=(e.text||'').replace(/\s+/g,' ').trim();
+ return `<div class="entry" data-act="view" data-arg="${d}"><div class="em">${esc(e.mood||'📖')}</div><div class="t"><div class="d">${esc(fmtShort(d))}</div><div class="s">${esc(snip||'(no words, just a feeling)')}</div></div></div>`;
+}
+
+const MOODS=[['😄','happy'],['😊','good'],['🥰','loved'],['🤩','excited'],['😌','calm'],['😐','okay'],['😴','tired'],['😢','sad'],['😠','angry'],['😰','worried']];
+const PROMPTS=["Today I felt…","Something that made me smile today was…","One thing I'm proud of is…","Something I'm looking forward to…","If I could change one thing about today…","A person who made my day better…","Something I learned today…","Something I want to remember about right now…","What's on my mind tonight…","Three things I'm thankful for…","If I could do anything tomorrow, I'd…","Something that made me laugh…","A thing I'm still wondering about…","Something kind I did or someone did for me…","A dream or wish I have…"];
+let curMood='',curPrompt='';
+function renderWrite(date,keepText){
+ const e=S.entries[date]||{};
+ const txt=keepText!==undefined?keepText:(e.text||'');
+ if(keepText===undefined){curMood=e.mood||'';curPrompt=e.prompt||PROMPTS[Math.floor(Math.random()*PROMPTS.length)]}
+ show(`<div class="top"><button class="back" data-act="home" aria-label="Back">‹</button><h2>${S.entries[date]?'My page':'New page'}</h2></div>
+  <div class="card">
+   <input type="date" id="dt" value="${date}" max="${todayKey()}" aria-label="Date">
+   <p class="lab" style="margin-top:14px">How are you feeling?</p>
+   <div class="moods">${MOODS.map(([m,l])=>`<button type="button" data-act="mood" data-arg="${m}" title="${l}" class="${curMood===m?'on':''}">${m}</button>`).join('')}</div>
+   <div class="prompt">✨ <span id="pr">${esc(curPrompt)}</span><button type="button" data-act="newprompt" aria-label="Another idea">↻</button></div>
+   <textarea id="txt" placeholder="Dear Diary,&#10;&#10;">${esc(txt)}</textarea>
+   <button class="btn" data-act="save" data-arg="${date}">Save my page</button>
+   ${S.entries[date]?`<button class="btn alt" data-act="del" data-arg="${date}">Tear out this page</button>`:''}
+  </div>`,'write');
+ S.dirty=false;
+ $('#txt').addEventListener('input',()=>{S.dirty=true});
+ $('#dt').addEventListener('change',ev=>{
+  const v=ev.target.value;if(!v||v>todayKey())return;
+  renderWrite(v);
+ });
+}
+async function doSave(date,quiet){
+ if(DEMO&&!S.entries[date]&&dates().length>=1){if(!quiet)demoEnd();return false}
+ const t=($('#txt')||{}).value||'';
+ if(!t.trim()&&!curMood){if(!quiet)toast('Write a little or pick a feeling first');return false}
+ const prev=S.entries[date]||{};
+ const ok=await saveEntry(date,{mood:curMood,text:t,prompt:curPrompt,ts:prev.ts||Date.now(),edited:Date.now()});
+ if(ok){S.dirty=false}
+ return ok;
+}
+
+function renderView(d){
+ const e=S.entries[d];if(!e){renderHome();return}
+ show(`<div class="top"><button class="back" data-act="memories" aria-label="Back">‹</button><h2>${esc(fmtShort(d))}</h2></div>
+  <div class="card"><div class="big">${esc(e.mood||'📖')}</div>
+   <p class="center" style="font-weight:800;margin:6px 0 12px">${esc(fmtLong(d))}</p>
+   ${e.prompt?`<div class="prompt"><span>✨ ${esc(e.prompt)}</span></div>`:''}
+   <div class="read">${esc(e.text||'')}</div>
+   <div class="row" style="margin-top:14px"><button class="btn alt small" data-act="write" data-arg="${d}">Edit</button><button class="btn alt small" data-act="del" data-arg="${d}">Tear out</button></div>
+  </div>`,'view');
+}
+
+let memYear='';
+function renderMemories(){
+ const ds=dates();
+ const years=[...new Set(ds.map(d=>d.slice(0,4)))];
+ if(!years.includes(memYear))memYear=years[0]||'';
+ let body='';
+ if(!ds.length)body=`<div class="card center"><div class="big">📖</div><p>No pages yet. Your memories will gather here.</p></div>`;
+ else{
+  const list=ds.filter(d=>d.startsWith(memYear));
+  let cm='';
+  body=`<div class="chips">${years.map(y=>`<button data-act="year" data-arg="${y}" class="${y===memYear?'on':''}">${y}</button>`).join('')}</div><div class="card">`;
+  list.forEach(d=>{const m=d.slice(5,7);if(m!==cm){cm=m;body+=`<div class="month">${monthName(Number(memYear),Number(m))}</div>`}body+=entryRow(d,S.entries[d])});
+  body+='</div>';
+ }
+ show(`<div class="top"><button class="back" data-act="home" aria-label="Back">‹</button><h2>My memories</h2></div>${body}`,'memories');
+}
+
+function renderSettings(){
+ const years=[...new Set(dates().map(d=>d.slice(0,4)))];
+ show(`<div class="top"><button class="back" data-act="home" aria-label="Back">‹</button><h2>Settings</h2></div>
+  <div class="card"><h3>My cover</h3>
+   <input type="text" id="nm" maxlength="24" placeholder="Your name" value="${esc(getName())}">
+   <div class="swatches" style="margin-top:12px">${Object.entries(THEMES).map(([k,t])=>`<button data-act="theme2" data-arg="${k}" class="${curTheme()===k?'on':''}" style="background:linear-gradient(135deg,${t.top},${t.h1})" aria-label="${t.n}"></button>`).join('')}</div>
+   <button class="btn alt small" style="margin-top:12px" data-act="savename">Save name</button></div>
+  <div class="card"><h3>Keep my pages safe</h3>
+   <small class="n">Your pages are scrambled with your PIN and live only on this device. There's no account and nobody else can read them. Save a backup now and then, especially before changing phones.</small>
+   <button class="btn" data-act="export">Save a backup</button>
+   <button class="btn alt" data-act="import">Restore from a backup</button>
+   <input type="file" id="fi" accept=".json,application/json" hidden></div>
+  <div class="card"><h3>Print a year</h3>
+   ${years.length?`<select id="py">${years.map(y=>`<option>${y}</option>`).join('')}</select><button class="btn alt" data-act="print">Print or save as PDF</button>`:'<small class="n">Once you have some pages, you can print them as a keepsake.</small>'}</div>
+  <div class="card"><h3>My PIN</h3>
+   <button class="btn alt" style="margin-top:0" data-act="changepin">Change my PIN</button>
+   <button class="btn alt" data-act="lock">Lock my diary now</button>
+   <button class="btn danger" data-act="erase">Erase everything</button></div>
+  <div class="center"><button class="link" data-act="help">Need to talk to someone?</button></div>${foot()}`,'settings');
+}
+
+function renderHelp(){
+ const back=S.key?'home':'lock';
+ show(`<div class="top"><button class="back" data-act="${back}" aria-label="Back">‹</button><h2>Need to talk?</h2></div>
+  <div class="card"><div class="big">💛</div>
+  <p>If something is worrying you, or someone is hurting you or making you feel unsafe, it's okay to tell a grown-up you trust.</p>
+  <p>You can also talk to <b>Kids Helpline</b> any time, free: <b>1800 55 1800</b>.</p>
+  <p>In an emergency, call <b>000</b>.</p></div>`,'help');
+}
+
+/* ---------- actions ---------- */
+const acts={
+ theme(a){setupData.name=($('#nm')||{}).value||'';setupData.theme=a;applyTheme(a);renderSetup(0)},
+ setup1(){setupData.name=($('#nm')||{}).value||'';renderSetup(1)},
+ theme2(a){store.set(KP+'theme',a);applyTheme(a);renderSettings()},
+ savename(){store.set(KP+'name',($('#nm').value||'').trim());toast('Saved ♡');renderSettings()},
+ home(){renderHome()},
+ write(a){renderWrite(a)},
+ mood(a){curMood=curMood===a?'':a;document.querySelectorAll('.moods button').forEach(b=>b.classList.toggle('on',b.dataset.arg===curMood));S.dirty=true},
+ newprompt(){let p;do{p=PROMPTS[Math.floor(Math.random()*PROMPTS.length)]}while(p===curPrompt);curPrompt=p;$('#pr').textContent=p},
+ async save(a){if(await doSave(a)){toast('Saved ♡');renderView(a);if(DEMO)setTimeout(demoEnd,900)}},
+ async del(a){if(await ask('Tear out this page? It can\'t be put back.','Tear it out',true)){store.del(P+a);delete S.entries[a];toast('Page removed');renderMemories()}},
+ view(a){renderView(a)},
+ memories(){renderMemories()},
+ year(a){memYear=a;renderMemories()},
+ settings(){renderSettings()},
+ help(){renderHelp()},
+ lock(){lockNow()},
+ async forgot(){
+  if(await ask("PINs can't be reset because they scramble your pages. If you've forgotten it, the only way in is to start a fresh diary, which erases the old pages on this device. Start fresh?",'Start fresh',true)){wipe();toast('Fresh diary ready');renderSetup(0)}
+ },
+ async erase(){
+  if(await ask('Erase every page and your PIN from this device?','Yes, erase',true)&&await ask('Really? This can\'t be undone (unless you saved a backup).','Erase everything',true)){wipe();toast('All erased');renderSetup(0)}
+ },
+ async export(){
+  const entries={};store.keys().filter(k=>k.startsWith(P)).forEach(k=>{entries[k.slice(P.length)]=JSON.parse(store.get(k))});
+  const data={app:'dear-me',v:1,meta:meta(),name:getName(),theme:curTheme(),entries};
+  const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dear-me-backup-'+todayKey()+'.json';
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+  toast('Backup saved – keep it safe ♡');
+ },
+ import(){const f=$('#fi');f.onchange=()=>importFile(f.files[0]);f.click()},
+ print(){doPrint($('#py').value)},
+ changepin(){changePin(0)}
+};
+document.addEventListener('click',e=>{
+ const t=e.target.closest('[data-act]');if(!t)return;
+ const f=acts[t.dataset.act];if(f)f(t.dataset.arg);
+});
+
+function wipe(){
+ store.keys().filter(k=>k.startsWith(P)||k.startsWith(KP)).forEach(k=>store.del(k));
+ S.key=null;S.entries={};setupData={name:'',theme:'sunrise',pin:''};applyTheme('sunrise');
+}
+async function lockNow(){
+ if(S.view==='write'&&S.dirty&&S.key){try{await doSave(($('#dt')||{}).value||todayKey(),true)}catch(e){}}
+ S.key=null;S.entries={};clearTimeout(idleT);
+ if(meta())renderLock();
+}
+async function importFile(file){
+ if(!file)return;
+ try{
+  const d=JSON.parse(await file.text());
+  if(d.app!=='dear-me'||!d.meta||!d.meta.salt||!d.meta.check||typeof d.entries!=='object')throw 0;
+  if(!await ask('Restoring replaces everything in this diary on this device with the backup. You\'ll need the PIN you had when you saved it.','Restore',true))return;
+  store.keys().filter(k=>k.startsWith(P)).forEach(k=>store.del(k));
+  store.set(KP+'meta',JSON.stringify(d.meta));store.set(KP+'name',d.name||'');
+  if(THEMES[d.theme])store.set(KP+'theme',d.theme);
+  Object.entries(d.entries).forEach(([k,v])=>{if(/^\d{4}-\d{2}-\d{2}$/.test(k))store.set(P+k,JSON.stringify(v))});
+  S.key=null;S.entries={};applyTheme(curTheme());toast('Restored – enter your PIN');renderLock();
+ }catch(e){toast("That doesn't look like a Dear Me backup")}
+}
+function doPrint(y){
+ const list=dates().filter(d=>d.startsWith(y)).reverse();
+ $('#printArea').innerHTML=`<h1>${esc(getName()?getName()+"'s Diary":'Dear Me')} – ${esc(y)}</h1>`+list.map(d=>{const e=S.entries[d];return `<div class="pg"><div class="pd">${esc(fmtLong(d))} ${esc(e.mood||'')}</div>${e.prompt?`<div><i>${esc(e.prompt)}</i></div>`:''}<div class="pt">${esc(e.text||'')}</div></div>`}).join('');
+ window.print();
+}
+window.addEventListener('afterprint',()=>{$('#printArea').innerHTML=''});
+
+function changePin(step,np,note){
+ const first=step===0;
+ show(`<div class="top"><button class="back" data-act="settings" aria-label="Back">‹</button><h2>Change PIN</h2></div>
+  <p class="sub">${first?'Type your new PIN':'Type it again'}</p>
+  <div class="card"><div id="pp"></div><div class="msg bad" id="mg">${esc(note||'')}</div></div>`,'pin');
+ pinPad($('#pp'),async(pin,api)=>{
+  if(first){changePin(1,pin)}
+  else if(pin!==np){api.shake();setTimeout(()=>changePin(0,'',"Those didn't match – try again"),450)}
+  else{
+   $('#mg').className='msg';$('#mg').textContent='Re-locking your pages…';
+   const salt=crypto.getRandomValues(new Uint8Array(16)),k=await deriveKey(pin,salt);
+   const check=await encObj(k,'ok'),recs={};
+   for(const d of Object.keys(S.entries))recs[d]=await encObj(k,S.entries[d]);
+   store.set(KP+'meta',JSON.stringify({salt:b64(salt),check}));
+   for(const d in recs)store.set(P+d,JSON.stringify(recs[d]));
+   S.key=k;toast('New PIN set ♡');renderSettings();
+  }
+ });
+}
+
+/* ---------- auto-lock ---------- */
+let idleT;
+function resetIdle(){clearTimeout(idleT);if(S.key)idleT=setTimeout(lockNow,5*60*1000)}
+['pointerdown','keydown'].forEach(ev=>document.addEventListener(ev,resetIdle,{passive:true}));
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){S.hiddenAt=Date.now()}
+ else if(S.key&&S.hiddenAt&&Date.now()-S.hiddenAt>30000){lockNow()}
+});
+
+/* ---------- PWA ---------- */
+try{
+ const man={name:'Dear Me – My Private Diary',short_name:'Dear Me',start_url:location.href.split('#')[0],display:'standalone',background_color:'#ffe3a3',theme_color:'#ff9a8b',
+  icons:[{src:"data:image/svg+xml,"+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='112' fill='#ff6f91'/><path d='M256 380C124 288 134 176 204 166c30-4 52 16 52 38 0-22 22-42 52-38 70 10 80 122-52 214z' fill='#fff3b0'/></svg>"),sizes:'512x512',type:'image/svg+xml',purpose:'any'}]};
+ const l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify(man)],{type:'application/manifest+json'}));document.head.appendChild(l);
+ if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
+}catch(e){}
+
+start();
+</script>
+</body>
+</html>

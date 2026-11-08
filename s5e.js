@@ -110,3 +110,11 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
     APPS.splice(f<0?APPS.length:f,0,x);
   });
 })();
+
+/* Dear Me: PIN-locked private diary for children and tweens, $39, Family shelf after Kindness First. Paid file: private/dear-me.html. Cover: covers/dear-me.jpg. Demo: demos/dear-me/. */
+APPS.push({ slug:"dear-me", name:"Dear Me", cat:"family", price:39, status:"live", ready:true, cover:"covers/dear-me.jpg", demo:"https://numerakey-shop.vercel.app/demos/dear-me/", desc:"A private diary for children and tweens, locked with a PIN, with mood stickers, daily prompts and a look-back to this day in past years.", tag:"Lock it. Write it. Look back.", body:[
+  "Remember the diary with the tiny lock? Dear Me is that, on a phone or tablet. Your child makes a four-digit PIN, picks a cover colour and adds their name, then writes whatever they like. Nobody else can read it, because the pages are scrambled with their PIN and kept only on their device.",
+  "Each day has a page with mood stickers and a gentle prompt to start from, such as Something that made me smile today. Years later, My memories brings every page back by year and month, and On this day shows what they wrote a year ago. Save a backup to move to a new device, or print a year as a keepsake."
+], inside:["A page a day with mood stickers and ten feelings to choose from","Fifteen gentle prompts, with a shuffle button","A cover with their name and four bright colour themes","PIN lock, with pages scrambled by the PIN","Locks itself when they step away","Memories by year and month, plus On this day","Save a backup and restore it on a new device","Print or save a year as a PDF","A page for when they need to talk to someone","Works offline, no account"] });
+artFor(APPS[APPS.length - 1]).motif = "orbits";
+(function(){const i=APPS.findIndex(a=>a.slug==="dear-me");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.slug==="kindness-first");APPS.splice(f<0?APPS.length:f+1,0,x);})();
