@@ -204,6 +204,16 @@ h1,h2{color:var(--ink);text-shadow:0 1px 0 rgba(255,255,255,.6)}
 .alive .shoot{position:absolute;left:78%;top:4%;font-size:26px;pointer-events:none;animation:shoot 1.4s ease-in forwards;z-index:3}
 @keyframes shoot{0%{opacity:0;transform:translate(0,0)}15%{opacity:1}100%{opacity:0;transform:translate(-240px,150px)}}
 @media(prefers-reduced-motion:reduce){.pic .hrt,.pic.wig img,.alive .shoot{animation:none}.pic .hrt{display:none}}
+
+/* storybook: big pictures, small text */
+.view>.pic,.view>section.pic{margin-left:-16px;margin-right:-16px;border-radius:0;border-left:0;border-right:0}
+.page{font-size:1.02rem;line-height:1.55;padding:14px 16px 14px 20px}
+.page .kick{font-size:.8rem}
+.enl{position:absolute;right:10px;top:10px;z-index:5;width:46px;height:46px;border-radius:50%;border:2px solid #fff1cf;background:rgba(40,25,10,.6);color:#fff;font:700 1.35rem/1 var(--sans);cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center}
+.lb{position:fixed;inset:0;z-index:90;background:#000;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+.lb img{width:100%;height:100%;object-fit:contain;display:block}
+.lb .hint{position:absolute;left:0;right:0;bottom:calc(14px + env(safe-area-inset-bottom));text-align:center;color:#fff1cf;font:700 .95rem var(--sans);text-shadow:0 1px 6px #000;pointer-events:none}
+@media(orientation:landscape){.lb .hint{display:none}}
 </style>
 </head>
 <body>
@@ -430,6 +440,10 @@ function catchFly(fig,f){flyN++;f.style.display='none';chime();var r=fig.getBoun
  if(flyN%5===0){toast('Five fireflies! Wally says well done.');fig.append(burst())}}
 var tapN=0;
 function tapStar(fig,x,y){tapN++;if(tapN%5!==0)return;var s=el('span',{class:'shoot','aria-hidden':'true',text:'✨'});fig.append(s);setTimeout(function(){s.remove()},1500);toast('A shooting star! Make a wish.')}
+
+(function(){var m=document.getElementById('main');if(!m)return;function lb(src,alt){var d=document.createElement('div');d.className='lb';d.setAttribute('role','dialog');d.setAttribute('aria-label','Picture. Tap to close.');var i=document.createElement('img');i.src=src;i.alt=alt||'';var h=document.createElement('div');h.className='hint';h.textContent='Turn your phone sideways for a bigger picture. Tap to close.';d.appendChild(i);d.appendChild(h);d.addEventListener('click',function(){d.remove()});document.body.appendChild(d)}
+function add(){var f=m.querySelectorAll('.pic:not(.blur):not(.enl-ok)');for(var k=0;k<f.length;k++){var fig=f[k];var im=fig.querySelector('img');if(!im||!im.src)continue;fig.classList.add('enl-ok');var b=document.createElement('button');b.className='enl';b.type='button';b.setAttribute('aria-label','Make the picture bigger');b.textContent='⤢';(function(im,b){b.addEventListener('click',function(e){e.stopPropagation();lb(im.src,im.alt)})})(im,b);fig.appendChild(b)}}
+new MutationObserver(add).observe(m,{childList:true,subtree:true});add()})();
 function progress(){var d=el('div',{class:'dots',role:'img','aria-label':'Chapter '+(P.i+1)+' of '+TOTAL});for(var i=0;i<TOTAL;i++)d.append(el('span',{class:'dot'+(i<P.i||(i===P.i&&(P.phase==='kind'||P.phase==='end'))?' done':'')+(i===P.i?' cur':'')}));return d}
 function cardFace(sc,isNew){var c=sc.card;return el('div',{class:'mcard'+(isNew?' new':'')},img(sc.kind.art,sc.kind.alt,null),el('div',{class:'mc-t'},el('h3',{text:c.title}),el('p',{text:c.line})))}
 function playView(){var sc=curScene(),isNight=P.i===6,ph=P.phase,v=[];
