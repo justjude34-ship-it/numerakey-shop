@@ -238,7 +238,8 @@ luna:{s:'Luna the bat flew through the Moon Garden, her wings spread wide, with 
 var AV_POS={};
 var S={name:'',st:{},tw:{},snd:1};
 try{var r=JSON.parse(localStorage.getItem(KEY)||'null');if(r)for(var k in r)S[k]=r[k]}catch(e){}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+try{if(!S.name){var m=document.cookie.match(/afname=([^;]*)/);if(m)S.name=decodeURIComponent(m[1])}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}try{document.cookie='afname='+encodeURIComponent(S.name||'')+';max-age=31536000;path=/;SameSite=Lax'}catch(e){}}
 var V={t:'home',c:null,pg:0,a:null,ch:null,taps:0};
 var main=document.getElementById('main'),nav=document.getElementById('nav'),toastEl=document.getElementById('toast');
 function el(tag,at){var e=document.createElement(tag);at=at||{};for(var k in at){var v=at[k];if(k==='text')e.textContent=v;else if(k==='class')e.className=v;else if(k.slice(0,2)==='on')e.addEventListener(k.slice(2),v);else if(v!==null&&v!==undefined&&v!==false)e.setAttribute(k,v)}
@@ -274,12 +275,11 @@ function home(){var v=el('div',{class:'view'});
 var hero=el('figure',{class:'pic z1'},el('div',{class:'pin'},img('hero','Ten animal friends together')),el('div',{class:'hero-t'},el('h1',{},'Adventure Friends',DEMO?el('span',{class:'pill',text:'DEMO'}):null),el('p',{text:'Pick a friend. Pick an adventure. Choose what happens next.'})));
 hero.addEventListener('click',function(e){var r=hero.getBoundingClientRect();var x=(e.clientX-r.left)/r.width*100,y=(e.clientY-r.top)/r.height*100;spark(hero,x,y,8,['★','♥','✦']);chime(Math.floor(Math.random()*6))});
 v.appendChild(hero);
-v.appendChild(el('h2',{text:S.name?'Hello, '+S.name+'! Who comes with you?':'Who will go with you?'}));
+v.appendChild(el('h2',{text:S.name?'Hello, '+S.name+'! Who comes with you?':'Who will go with you?'}));var nmi=el('input',{class:'field',type:'text',maxlength:'20',placeholder:'Your name (optional)',autocomplete:'off',value:S.name||'',style:'margin:0 0 12px',oninput:function(){S.name=nmi.value.trim();save()},onchange:function(){render()}});v.appendChild(nmi);
 var g=el('div',{class:'cardgrid'});CH.forEach(function(c){g.appendChild(el('button',{class:'fcard',onclick:function(){chime(1);go('friend',c.id)}},el('div',{class:'ph'},img('p_'+c.id,c.n),el('span',{class:'stars',text:'★ '+starsFor(c.id)})),el('div',{class:'t'},el('h3',{text:c.n}),el('p',{text:c.tr}))))});
 v.appendChild(g);
 if(DEMO)v.appendChild(el('div',{class:'card',style:'text-align:center'},el('h3',{text:'Enjoying the demo?'}),el('p',{class:'muted',text:'The full app has all five adventures for all ten friends: fifty stories in all.'}),el('a',{class:'btn primary',href:SHOP,target:'_blank',rel:'noopener',text:'Get the full app'})));
 v.appendChild(credit());
-if(!S.asked){S.asked=1;save();setTimeout(nameSheet,400)}
 return v}
 function nameSheet(){var inp=el('input',{class:'field',type:'text',maxlength:'20',placeholder:'Type a name',autocomplete:'off',value:S.name||''});var close=sheet([el('h2',{text:'What’s your name?'}),el('p',{class:'muted',text:'So your friends can cheer for you.'}),inp,el('div',{class:'row',style:'margin-top:14px'},el('button',{class:'btn',text:'Skip',onclick:function(){close()}}),el('button',{class:'btn primary',text:'Start',onclick:function(){S.name=inp.value.trim();save();close();render()}}))])}
 function friendView(){var c=chOf(V.c),v=el('div',{class:'view'});
