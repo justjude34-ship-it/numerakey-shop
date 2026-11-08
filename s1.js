@@ -15,6 +15,7 @@ const SITE = {
       buy:    optional full Lemon Squeezy URL; otherwise store + /buy/<slug>
    ========================================================================== */
 const CATEGORIES = [
+  { id:"kids",     name:"Kids",         colour:"#FFB347", note:"Stories, diaries and games for little hands." },
   { id:"family",   name:"Family",       colour:"#F5A3B8", note:"Everyone under one roof." },
   { id:"learn",    name:"Learn",        colour:"#5EEAD4", note:"Courses to work through at your own pace." },
   { id:"dating",   name:"Dating",       colour:"#F58FB0", note:"Starting again, safely and slowly." },
