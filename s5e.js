@@ -125,3 +125,13 @@ APPS.push({ slug:"dear-me", name:"Dear Me", cat:"family", price:39, status:"live
 ], inside:["A page a day with mood stickers and ten feelings to choose from","Fifteen gentle prompts, with a shuffle button","A cover with their name and four bright colour themes","PIN lock, with pages scrambled by the PIN","Locks itself when they step away","Memories by year and month, plus On this day","Save a backup and restore it on a new device","Print or save a year as a PDF","A page for when they need to talk to someone","Works offline, no account"] });
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 (function(){const i=APPS.findIndex(a=>a.slug==="dear-me");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.slug==="kindness-first");APPS.splice(f<0?APPS.length:f+1,0,x);})();
+
+/* Family shelf grouping: all the kids' apps together first, then the grown-up numerology apps (Under One Roof, Are You My Person?). Keep this block last in this file. */
+(function(){
+  const order=["fox-trail","kindness-first","why-manners-matter","feeling-for-others","adventure-friends","wrens-thankful-garden","pocket-story-weaver","dear-me","money-jar","under-one-roof","are-you-my-person"];
+  const first=APPS.findIndex(a=>a.cat==="family");if(first<0)return;
+  const picked=order.map(s=>APPS.find(a=>a.slug===s)).filter(Boolean);
+  picked.forEach(x=>APPS.splice(APPS.indexOf(x),1));
+  const at=APPS.findIndex(a=>a.cat==="family");
+  APPS.splice(at<0?first:at,0,...picked);
+})();
