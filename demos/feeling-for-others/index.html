@@ -551,7 +551,7 @@ document.addEventListener('visibilitychange',function(){if(document.hidden)stopS
 window.addEventListener('pagehide',stopSpeak);
 try{var mf={name:DEMO?'Feeling for Others Demo':'Feeling for Others',short_name:DEMO?'Feelings Demo':'Feelings',start_url:location.href.split('#')[0],display:'standalone',background_color:'#7cc4f4',theme_color:'#4aa3ea',icons:[{src:"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23ffd25e'/%3E%3Cpath d='M32 50C14 37 12 26 19 20c5-4 11-2 13 3 2-5 8-7 13-3 7 6 5 17-13 30z' fill='%23ff8fa8'/%3E%3C/svg%3E",sizes:'512x512',type:'image/svg+xml',purpose:'any'}]};var l=document.createElement('link');l.rel='manifest';l.href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/manifest+json'}));document.head.append(l)}catch(e){}
 render();
-if(!S.intro)openIntro();
+
 })();
 </script>
 </body>
