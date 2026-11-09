@@ -254,12 +254,13 @@ document.addEventListener('DOMContentLoaded',function(){
   sync();
 });
 </script>
-<audio class="nk-hero-music" preload="auto" src="/audio/hero-music.m4a"></audio>
+<audio class="nk-hero-music" preload="auto" src="/audio/hero-waves.m4a"></audio>
 <script>
-/* Hero: the beach video always loops muted; the music is a separate track
-   ("Positive Acoustic Guitar Inspiration", Universfield, Pixabay, 1:24).
+/* Hero: the beach video always loops muted; the sound is a separate track of gentle waves
+   (audio/hero-waves.m4a, 48 seconds, generated for the shop, fades in and out by itself).
    It starts with sound if the browser allows it, otherwise on the first tap, click or key press,
-   plays the full track once and stops. It never restarts when the picture loops. */
+   plays once and stops. It never restarts when the picture loops.
+   The earlier guitar track is still in audio/hero-music.m4a if it is ever wanted back. */
 document.addEventListener('DOMContentLoaded',function(){
   var v=document.querySelector('.nk-hero-video__el');
   var m=document.querySelector('.nk-hero-music');
@@ -272,7 +273,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var pv=v.play(); if(pv&&pv.catch) pv.catch(function(){});
   if(!m) return;
   m.loop=false;
-  m.volume=0.9;
+  m.volume=0.7;
   var started=false;
   var EVTS=['pointerup','touchend','click','keydown'];
   function done(){ EVTS.forEach(function(e){document.removeEventListener(e,onGesture,true);}); }
