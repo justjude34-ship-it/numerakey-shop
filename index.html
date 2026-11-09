@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var pv=v.play(); if(pv&&pv.catch) pv.catch(function(){});
   if(!m) return;
   m.loop=false;
-  m.volume=0.7;
+  m.volume=0.4;
   var started=false;
   var EVTS=['pointerup','touchend','click','keydown'];
   function done(){ EVTS.forEach(function(e){document.removeEventListener(e,onGesture,true);}); }
