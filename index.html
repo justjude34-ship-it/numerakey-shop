@@ -17,32 +17,37 @@
 
 <!-- Welcome cover: shown on every visit; the Enter button is the greeting that starts the beach video and harp music. -->
 <style>
+/* Welcome cover: the beach video itself is the backdrop (it already carries the NumeraKey title),
+   with a soft welcome and one button in the shop's teal, purple and magenta. */
 html.nk-cover-open,html.nk-cover-open body{overflow:hidden}
-.nk-cover{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;text-align:center;
-  padding:max(28px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(28px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));
-  background:#0B0910;color:#F4EFE7;overflow:hidden;opacity:1;transition:opacity .8s ease,visibility 0s linear 0s}
-.nk-cover::before{content:"";position:absolute;inset:-60px;background:url(/images/hero.jpg) center 30%/cover no-repeat;filter:blur(24px) saturate(1.15) brightness(.9);transform:scale(1.06)}
-.nk-cover::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 46%,rgba(11,9,16,.38),rgba(11,9,16,.62) 80%)}
-.nk-cover__inner{position:relative;z-index:1;max-width:34rem;width:100%}
-.nk-cover__mark{font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-weight:600;font-size:clamp(3rem,11vw,5.4rem);line-height:1;letter-spacing:-.01em;margin:0;color:#F4EFE7;text-shadow:0 2px 18px rgba(0,0,0,.45)}
-.nk-cover__by{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:clamp(1.35rem,4.6vw,1.8rem);line-height:1.2;margin:.35em 0 0;color:#F4EFE7;opacity:.92;text-shadow:0 1px 12px rgba(0,0,0,.5)}
-.nk-cover__line{font-family:'Outfit',ui-sans-serif,system-ui,sans-serif;font-weight:300;font-size:clamp(1.05rem,3.6vw,1.25rem);line-height:1.5;margin:1.6em auto 2em;max-width:30ch;text-wrap:balance;color:#F4EFE7;text-shadow:0 1px 10px rgba(0,0,0,.55)}
-.nk-cover__btn{font-family:'Outfit',ui-sans-serif,system-ui,sans-serif;font-weight:500;font-size:1.15rem;letter-spacing:.02em;
-  min-height:60px;min-width:min(17rem,100%);padding:16px 36px;border:0;border-radius:999px;cursor:pointer;
-  background:#D9A441;color:#120C04;box-shadow:0 8px 28px rgba(0,0,0,.35);transition:transform .15s ease,background .15s ease;-webkit-tap-highlight-color:transparent}
-.nk-cover__btn:hover{background:#E6B455}
+html.nk-cover-open .nk-ring-stage,html.nk-cover-open .nk-hero-copy{opacity:0;pointer-events:none}
+.is-home .nk-ring-stage,.is-home .nk-hero-copy{transition:opacity 1.6s ease .5s}
+.nk-cover{position:fixed;inset:0;z-index:1000;display:flex;align-items:flex-end;justify-content:center;text-align:center;
+  padding:0 max(22px,env(safe-area-inset-right)) 0 max(22px,env(safe-area-inset-left));
+  background:linear-gradient(180deg,rgba(18,12,43,0) 0%,rgba(18,12,43,0) 36%,rgba(18,12,43,.5) 58%,rgba(8,5,20,.92) 100%);
+  color:#fff;opacity:1;transition:opacity .8s ease,visibility 0s linear 0s}
+.nk-cover__inner{position:relative;max-width:34rem;width:100%;padding-bottom:max(clamp(40px,13vh,120px),env(safe-area-inset-bottom))}
+.nk-cover__mark{margin:0 0 .15em;font-family:'Cormorant Garamond',Georgia,'Times New Roman',serif;font-style:italic;font-weight:400;
+  font-size:clamp(2.4rem,9vw,3.9rem);line-height:1.05;
+  background:linear-gradient(90deg,#7fe6e2,#c9b2ff 50%,#ffa9dc);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.08em}
+.nk-cover__line{font-family:'Outfit',ui-sans-serif,system-ui,sans-serif;font-weight:300;font-size:clamp(1rem,3.8vw,1.2rem);line-height:1.5;
+  margin:0 auto 1.7em;max-width:28ch;text-wrap:balance;color:rgba(255,255,255,.94);text-shadow:0 1px 10px rgba(20,10,60,.6)}
+.nk-cover__btn{font-family:'Outfit',ui-sans-serif,system-ui,sans-serif;font-weight:500;font-size:1.1rem;letter-spacing:.02em;
+  min-height:56px;min-width:min(16rem,100%);padding:15px 38px;border:0;border-radius:999px;cursor:pointer;color:#fff;
+  background:linear-gradient(90deg,#2EC4B6,#9B5DE5 55%,#E040B0);box-shadow:0 8px 26px rgba(155,93,229,.5);
+  transition:transform .15s ease,filter .15s ease;-webkit-tap-highlight-color:transparent}
+.nk-cover__btn:hover{filter:brightness(1.08)}
 .nk-cover__btn:active{transform:scale(.98)}
-.nk-cover__btn:focus-visible{outline:2px solid rgba(244,239,231,.85);outline-offset:4px}
+.nk-cover__btn:focus-visible{outline:2px solid rgba(255,255,255,.85);outline-offset:4px}
 .nk-cover[hidden]{display:none}
 .nk-cover.is-leaving{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .8s ease,visibility 0s linear .8s}
 @media (prefers-reduced-motion:reduce){.nk-cover,.nk-cover.is-leaving{transition:none}.nk-cover__btn{transition:none}}
 </style>
 <div class="nk-cover" role="dialog" aria-modal="true" aria-labelledby="nk-cover-title" aria-describedby="nk-cover-line">
   <div class="nk-cover__inner">
-    <h1 class="nk-cover__mark" id="nk-cover-title">NumeraKey</h1>
-    <p class="nk-cover__by">Apps by Judith</p>
+    <h1 class="nk-cover__mark" id="nk-cover-title">Welcome</h1>
     <p class="nk-cover__line" id="nk-cover-line">Gentle apps you buy once and keep forever.</p>
-    <button type="button" class="nk-cover__btn" autofocus>Enter the Shop</button>
+    <button type="button" class="nk-cover__btn">Enter the Shop</button>
   </div>
 </div>
 <script>document.documentElement.classList.add('nk-cover-open');</script>
@@ -290,8 +295,8 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 /* Hero: the beach video loops muted; the sound is a separate track of gentle waves
    (audio/hero-waves.m4a, 48s, fades in and out by itself, level baked into the file).
-   Both wait behind the welcome cover. Tapping "Enter the Shop" fades the cover,
-   starts the video (unless reduced motion is on: poster stays) and plays the waves once.
+   The video plays behind the welcome cover (unless reduced motion is on: poster stays); the waves wait for the tap.
+   Tapping "Enter the Shop" fades the cover, brings in the app ring and plays the waves once.
    If the visitor scrolls down to the apps, the waves fade out. It never restarts when the picture loops.
    The harp (audio/hero-music.m4a) and guitar tracks are still in the repo, unused. */
 document.addEventListener('DOMContentLoaded',function(){
@@ -301,7 +306,7 @@ document.addEventListener('DOMContentLoaded',function(){
   var btn=c&&c.querySelector('.nk-cover__btn');
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var rest=[].filter.call(document.body.children,function(el){return el!==c&&el.tagName!=='SCRIPT'&&el.tagName!=='STYLE';});
-  if(v){ v.muted=true; try{v.pause();}catch(e){} }
+  if(v){ v.muted=true; if(!reduce) play(v); }   /* the beach plays behind the welcome cover */
   if(m) m.loop=false;
   function setInert(on){ rest.forEach(function(el){ if(on){el.setAttribute('inert','');} else {el.removeAttribute('inert');} }); }
   function play(el){ try{ var p=el.play(); if(p&&p.catch) p.catch(function(){}); }catch(e){} }
@@ -332,7 +337,6 @@ document.addEventListener('DOMContentLoaded',function(){
   if(!c||!btn){ if(v&&!reduce) play(v); return; }
   setInert(true);
   btn.addEventListener('click',enter);
-  try{ btn.focus({preventScroll:true}); }catch(e){}
 });
 </script>
 
