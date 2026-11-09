@@ -27,6 +27,18 @@
   >
     <source src="/video/hero.mp4" type="video/mp4">
   </video>
+  <!-- Home page only: soft copy of the video behind (wide screens), the 3D ring of app covers, and the welcome line -->
+  <video class="nk-hero-soft" muted loop playsinline preload="none" poster="/images/hero.jpg" aria-hidden="true" tabindex="-1">
+    <source src="/video/hero.mp4" type="video/mp4">
+  </video>
+  <div class="nk-hero-scrim" aria-hidden="true"></div>
+  <div class="nk-ring-stage" id="nkStage" aria-label="A few apps from the shop"><div class="nk-ring" id="nkRing"></div></div>
+  <div class="nk-hero-copy">
+    <div class="nk-hero-hint" id="nkHint">Swipe to explore &middot; tap to open</div>
+    <p class="nk-hero-line">Small apps that <em>help.</em></p>
+    <p class="nk-hero-sub">Buy once, yours forever. They open on any phone or computer, with no account and no subscription.</p>
+    <a class="nk-hero-btn" id="nkBrowse" href="#/">Browse the shop</a>
+  </div>
 </section>
 
 <header class="bar">
@@ -86,6 +98,162 @@
 }
 @media (prefers-reduced-motion:reduce){.nk-hero-video__el{/* keep poster via paused state */}}
 </style>
+<style>
+/* ---------- Home hero: beach video + floating 3D ring of app covers ----------
+   Everything here is scoped to .is-home, so other pages keep the plain video above. */
+.nk-hero-soft,.nk-hero-scrim,.nk-ring-stage,.nk-hero-copy{display:none}
+.nk-hero-video.is-home{display:block;height:100vh;height:100svh;min-height:560px;line-height:normal;background:#3a3f8f;border-bottom:0;--cw:clamp(130px,min(42vw,26vh),250px)}
+.is-home .nk-hero-video__el{position:absolute;z-index:1;top:0;left:50%;transform:translateX(-50%);height:100%;max-height:none;width:100%;object-fit:cover;background:none}
+.is-home .nk-hero-scrim{display:block;position:absolute;z-index:2;inset:auto 0 0 0;height:46%;pointer-events:none;
+  background:linear-gradient(180deg,rgba(18,12,43,0) 0%,rgba(18,12,43,.55) 45%,rgba(8,5,20,.92) 82%,#000 100%)}
+@media (min-aspect-ratio:720/1238){
+  /* wider than the video: keep it portrait in the centre, soft copy fills the sides */
+  .is-home .nk-hero-video__el{width:auto;aspect-ratio:720/1238;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+  .is-home .nk-hero-soft{display:block;position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;
+    filter:blur(28px) saturate(1.15);transform:scale(1.15)}
+}
+.is-home .nk-ring-stage{display:block;position:absolute;z-index:3;left:0;right:0;top:34%;height:36%;
+  perspective:1100px;perspective-origin:50% 40%;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.is-home .nk-ring-stage.dragging{cursor:grabbing}
+.nk-ring{position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;will-change:transform}
+.nk-rc{position:absolute;left:calc(var(--cw) / -2);top:calc(var(--cw) * -.36);width:var(--cw);display:block;
+  border-radius:16px;padding:7px 7px 0;will-change:transform,opacity;-webkit-tap-highlight-color:transparent;
+  background:linear-gradient(160deg,rgba(255,255,255,.55),rgba(255,255,255,.2));
+  border:1px solid rgba(255,255,255,.75);
+  box-shadow:0 18px 40px rgba(40,20,90,.35),inset 0 1px 0 rgba(255,255,255,.8)}
+.nk-rc-cover{position:relative;display:grid;place-items:center;aspect-ratio:1200/630;border-radius:10px;overflow:hidden;
+  background:linear-gradient(135deg,#6a48c9,#c56fc0);text-align:center}
+.nk-rc-cover span{font-family:var(--display);font-weight:600;line-height:1;color:#fff;font-size:calc(var(--cw) * .13);padding:0 8%}
+.nk-rc-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+.nk-rc-meta{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:7px 4px 8px;
+  font-family:var(--ui);font-size:calc(var(--cw) * .052 + 2px);font-weight:500;letter-spacing:.04em;color:#120c2b;line-height:1.2}
+.nk-rc-meta b{text-transform:uppercase;font-weight:500;opacity:.8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nk-rc-meta i{font-style:normal;opacity:0;transition:opacity .4s;white-space:nowrap;color:#5a2fb5}
+.nk-rc.front .nk-rc-meta i{opacity:1}
+.nk-rc:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.is-home .nk-hero-copy{display:block;position:absolute;z-index:4;left:0;right:0;bottom:0;padding:0 22px 26px;text-align:center;color:#fff}
+.nk-hero-hint{margin-bottom:12px;font-family:var(--ui);font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(255,255,255,.8);transition:opacity .8s;pointer-events:none}
+.nk-hero-hint.gone{opacity:0}
+.nk-hero-line{font-family:var(--display);font-weight:400;font-size:clamp(30px,8vw,52px);line-height:1.05;margin:0}
+.nk-hero-line em{font-style:italic;background:linear-gradient(90deg,#7fe6e2,#c9b2ff 50%,#ffa9dc);
+  -webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.08em}
+.nk-hero-sub{margin:10px auto 16px;max-width:30em;font-family:var(--ui);font-size:clamp(14px,3.8vw,17px);line-height:1.45;color:rgba(255,255,255,.88)}
+.nk-hero-btn{display:inline-block;padding:13px 30px;border-radius:999px;font-family:var(--ui);font-weight:500;font-size:16px;color:#fff;
+  background:linear-gradient(90deg,var(--g1),var(--g2) 55%,var(--g3));box-shadow:0 8px 26px rgba(155,93,229,.5)}
+.nk-hero-btn:focus-visible{outline:3px solid #fff;outline-offset:3px}
+@media (min-width:900px){
+  .is-home .nk-ring-stage{top:30%;height:34%}
+  .is-home .nk-hero-copy{padding-bottom:40px}
+}
+</style>
+<script>
+/* Home hero ring: one live app from each of the first six shelves, in shop order,
+   so it follows the catalogue by itself. Swipe spins it, tapping the front card opens the app. */
+document.addEventListener('DOMContentLoaded',function(){
+  var hero=document.querySelector('.nk-hero-video'), stage=document.getElementById('nkStage'),
+      ring=document.getElementById('nkRing'), hint=document.getElementById('nkHint'),
+      soft=document.querySelector('.nk-hero-soft'), bar=document.querySelector('header.bar');
+  if(!hero||!stage||!ring||typeof APPS==='undefined'||typeof CATEGORIES==='undefined') return;
+
+  var picks=[];
+  CATEGORIES.forEach(function(c){
+    if(picks.length>=6) return;
+    var a=APPS.filter(function(x){return x.cat===c.id && x.status==='live' && x.cover;})[0];
+    if(a) picks.push({a:a,c:c});
+  });
+  if(picks.length<3) return;
+
+  var cards=picks.map(function(p){
+    var el=document.createElement('a');
+    el.className='nk-rc'; el.href='#/app/'+p.a.slug; el.draggable=false;
+    var cover=document.createElement('span'); cover.className='nk-rc-cover';
+    var nm=document.createElement('span'); nm.textContent=p.a.name; cover.appendChild(nm);
+    var img=new Image(); img.alt=p.a.name; img.decoding='async'; img.draggable=false;
+    img.onerror=function(){img.remove();}; img.src='/'+String(p.a.cover).replace(/^\//,'');
+    cover.appendChild(img);
+    var meta=document.createElement('span'); meta.className='nk-rc-meta';
+    var b=document.createElement('b'); b.textContent=p.c.name;
+    var i=document.createElement('i'); i.innerHTML='View app &rarr;';
+    meta.appendChild(b); meta.appendChild(i);
+    el.appendChild(cover); el.appendChild(meta); ring.appendChild(el);
+    return el;
+  });
+
+  var N=cards.length, step=Math.PI*2/N, rot=-0.3, vel=0, target=null;
+  var still=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var auto=still?0:0.0032, tiltX=0, tiltY=0, tx=0, ty=0, R=160, frontI=0, running=false, goDown=false;
+  function size(){ R=Math.max(130,Math.min(stage.clientWidth*0.42,(cards[0].offsetWidth||200)*1.72)); }
+
+  function isHome(){ var h=(location.hash||'#/').slice(1).split('?')[0]; return h===''||h==='/'; }
+  function toBar(){ if(bar) bar.scrollIntoView({behavior:'smooth',block:'start'}); }
+  function sync(){
+    var home=isHome();
+    hero.classList.toggle('is-home',home);
+    if(home){
+      size();
+      if(soft && !still && window.matchMedia('(min-aspect-ratio: 720/1238)').matches){ var p=soft.play(); if(p&&p.catch) p.catch(function(){}); }
+      if(!running){ running=true; requestAnimationFrame(frame); }
+    } else if(soft){ try{soft.pause();}catch(e){} }
+    if(goDown){ goDown=false; setTimeout(toBar,80); }
+  }
+  addEventListener('hashchange',sync);
+  addEventListener('resize',function(){ if(isHome()) size(); });
+
+  var down=false, lastX=0, moved=0;
+  stage.addEventListener('pointerdown',function(e){ down=true; lastX=e.clientX; moved=0; target=null; vel=0; stage.classList.add('dragging'); });
+  addEventListener('pointermove',function(e){
+    var r=stage.getBoundingClientRect();
+    tx=Math.max(-.5,Math.min(.5,(e.clientX-r.left)/r.width-.5)); ty=Math.max(-.5,Math.min(.5,(e.clientY-r.top)/r.height-.5));
+    if(!down) return;
+    var dx=e.clientX-lastX; lastX=e.clientX; moved+=Math.abs(dx);
+    vel=dx*0.006; rot+=vel;
+    if(moved>8) hint.classList.add('gone');
+  });
+  function up(){ down=false; stage.classList.remove('dragging'); }
+  addEventListener('pointerup',up); addEventListener('pointercancel',up);
+
+  cards.forEach(function(el,i){
+    el.addEventListener('dragstart',function(e){e.preventDefault();});
+    el.addEventListener('click',function(e){
+      if(moved>8){ e.preventDefault(); return; }            /* that was a swipe, not a tap */
+      hint.classList.add('gone');
+      if(i!==frontI){                                        /* tap a side card: bring it forward */
+        e.preventDefault();
+        var d=-i*step-rot; d=Math.atan2(Math.sin(d),Math.cos(d)); target=rot+d; vel=0;
+        return;
+      }
+      goDown=true;                                           /* tap the front card: open it */
+    });
+  });
+  var browse=document.getElementById('nkBrowse');
+  if(browse) browse.addEventListener('click',function(e){ e.preventDefault(); toBar(); });
+
+  var t0=performance.now();
+  function frame(now){
+    if(!hero.classList.contains('is-home')){ running=false; return; }
+    var t=(now-t0)/1000;
+    if(target!==null){ rot+=(target-rot)*0.09; if(Math.abs(target-rot)<0.002){ rot=target; target=null; } }
+    else if(!down){ rot+=vel+auto; vel*=0.94; }
+    tiltY+=(tx*14-tiltY)*0.06; tiltX+=(-ty*4-tiltX)*0.06;
+    ring.style.transform='rotateX('+(-1.5+tiltX).toFixed(2)+'deg) rotateY('+tiltY.toFixed(2)+'deg)';
+    var best=-1e9;
+    for(var i=0;i<N;i++){
+      var a=rot+i*step, x=Math.sin(a)*R, z=Math.cos(a)*R, y=still?0:Math.sin(t*0.9+i*1.7)*7, depth=(z+R)/(2*R), c=cards[i];
+      c.style.transform='translate3d('+x.toFixed(1)+'px,'+y.toFixed(1)+'px,'+z.toFixed(1)+'px) rotateY('+(Math.sin(a)*24).toFixed(1)+'deg)';
+      c.style.opacity=(0.35+0.65*depth).toFixed(2);
+      c.style.zIndex=Math.round(depth*100);
+      if(z>best){ best=z; frontI=i; }
+    }
+    for(var j=0;j<N;j++) cards[j].classList.toggle('front',j===frontI);
+    requestAnimationFrame(frame);
+  }
+  setTimeout(function(){ hint.classList.add('gone'); },9000);
+  sync();
+});
+</script>
 <audio class="nk-hero-music" preload="auto" src="/audio/hero-music.m4a"></audio>
 <script>
 /* Hero: the beach video always loops muted; the music is a separate track
