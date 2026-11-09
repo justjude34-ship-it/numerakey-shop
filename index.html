@@ -86,94 +86,41 @@
 }
 @media (prefers-reduced-motion:reduce){.nk-hero-video__el{/* keep poster via paused state */}}
 </style>
+<audio class="nk-hero-music" preload="auto" src="/audio/hero-music.m4a"></audio>
 <script>
+/* Hero: the beach video always loops muted; the music is a separate track
+   ("Positive Acoustic Guitar Inspiration", Universfield, Pixabay, 1:24).
+   It starts with sound if the browser allows it, otherwise on the first tap, click or key press,
+   plays the full track once and stops. It never restarts when the picture loops. */
 document.addEventListener('DOMContentLoaded',function(){
   var v=document.querySelector('.nk-hero-video__el');
+  var m=document.querySelector('.nk-hero-music');
   if(!v) return;
+  v.muted=true;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    try{v.pause();}catch(e){
-    }
+    try{v.pause();}catch(e){}
     return;
   }
-  /* Quieter than full blast but audible */
-  var QUIET=0.9;
-  var unlocked=false;
-  /* Sound plays once through the 15s clip: ~11s audible, then a soft fade to silence as the clip ends. It never restarts when the picture loops. */
-  var PLAY_MS=11000, FADE_MS=4000, faded=false, fadeStarted=false;
-  var audibleMs=0;
-  function startFade(){
-    if(fadeStarted) return; fadeStarted=true;
-    /* wall-clock timing from the moment sound starts; driven by a timer AND by video timeupdate, so it cannot stall */
-    var t0=Date.now(), iv=null;
-    function kill(){
-      faded=true;
-      try{v.volume=0;}catch(e){}
-      try{v.muted=true;}catch(e){}
-      /* belt and braces: pausing always silences; resume the picture muted */
-      try{v.pause();v.muted=true;var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});}catch(e){}
-      if(iv) clearInterval(iv);
-      v.removeEventListener('timeupdate',tick);
-    }
-    var lastCt=-1;
-    function tick(){
-      if(faded) return;
-      /* the picture looped back to the start: the sound must not play again */
-      var ct=v.currentTime||0;
-      if(lastCt>1 && ct<lastCt-1){ kill(); return; }
-      lastCt=ct;
-      var el=Date.now()-t0;
-      if(el>=PLAY_MS){
-        var k=Math.min(1,(el-PLAY_MS)/FADE_MS);
-        try{v.volume=Math.max(0,QUIET*(1-k));}catch(e){}
-        if(k>=1) kill();
-      }
-    }
-    iv=setInterval(tick,100);
-    v.addEventListener('timeupdate',tick);
-    document.addEventListener('visibilitychange',tick);
-    /* hard stop no matter what */
-    setTimeout(kill,PLAY_MS+FADE_MS+300);
-  }
-  /* once faded, never let the sound come back */
-  v.addEventListener('volumechange',function(){ if(faded && !v.muted){ try{v.muted=true;}catch(e){} } });
-  function unmuteAndPlay(){
-    if(unlocked||faded) return;
-    try{
-      v.muted=false;
-      v.volume=QUIET;
-      try{v.currentTime=0;}catch(e){}
-      var p=v.play();
-      if(p&&typeof p.then==='function'){
-        p.then(function(){ unlocked=true; startFade(); }).catch(function(){ /* still blocked */ });
-      } else {
-        unlocked=true; startFade();
-      }
-    }catch(e){
-    }
-  }
-  function tryAutoplayWithSound(){
-    v.muted=false;
-    v.volume=QUIET;
-    var p=v.play();
-    if(p&&typeof p.then==='function'){
-      p.then(function(){ unlocked=true; startFade(); }).catch(function(){
-        /* Browser blocked sound autoplay — keep video playing muted, unmute on first gesture */
-        v.muted=true;
-        v.play().catch(function(){
-        });
-      });
-    }
-  }
-  tryAutoplayWithSound();
-  /* Browsers only allow sound after a real tap/click/key press (touchstart and scroll don't count). */
+  var pv=v.play(); if(pv&&pv.catch) pv.catch(function(){});
+  if(!m) return;
+  m.loop=false;
+  m.volume=0.9;
+  var started=false;
   var EVTS=['pointerup','touchend','click','keydown'];
-  function onGesture(){
-    unmuteAndPlay();
-    setTimeout(function(){
-      if(unlocked||faded){ EVTS.forEach(function(e){document.removeEventListener(e,onGesture,true);}); }
-    },400);
+  function done(){ EVTS.forEach(function(e){document.removeEventListener(e,onGesture,true);}); }
+  function startMusic(){
+    if(started) return;
+    try{
+      var p=m.play();
+      if(p&&typeof p.then==='function'){
+        p.then(function(){ started=true; done(); }).catch(function(){ /* still blocked: wait for a gesture */ });
+      } else { started=true; done(); }
+    }catch(e){}
   }
+  /* Browsers only allow sound after a real tap/click/key press (touchstart and scroll don't count). */
+  function onGesture(){ startMusic(); }
   EVTS.forEach(function(e){document.addEventListener(e,onGesture,true);});
+  startMusic();
 });
 </script>
 
