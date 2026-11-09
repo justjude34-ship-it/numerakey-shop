@@ -256,14 +256,16 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 <audio class="nk-hero-music" preload="auto" src="/audio/hero-waves.m4a"></audio>
 <script>
-/* Hero: the beach video always loops muted; the sound is a separate track of gentle waves
-   (audio/hero-waves.m4a, 48 seconds, generated for the shop, fades in and out by itself).
-   It starts with sound if the browser allows it, otherwise on the first tap, click or key press,
-   plays once and stops. It never restarts when the picture loops.
-   The earlier guitar track is still in audio/hero-music.m4a if it is ever wanted back. */
+/* Hero sound: gentle waves (audio/hero-waves.m4a, 48s, fades in and out by itself, level baked in
+   so it is the same on every device). Browsers only allow sound after a tap or click, so:
+   - it starts straight away where the browser allows (some returning visitors on desktop),
+   - otherwise on the first tap or swipe ON the hero, never on a tap that opens an app or scrolls down,
+   - it only starts while the hero is on screen, and stops softly once the visitor scrolls down to the apps.
+   Plays once. The guitar track is still in audio/hero-music.m4a if it is ever wanted back. */
 document.addEventListener('DOMContentLoaded',function(){
   var v=document.querySelector('.nk-hero-video__el');
   var m=document.querySelector('.nk-hero-music');
+  var hero=document.querySelector('.nk-hero-video');
   if(!v) return;
   v.muted=true;
   if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
@@ -271,14 +273,15 @@ document.addEventListener('DOMContentLoaded',function(){
     return;
   }
   var pv=v.play(); if(pv&&pv.catch) pv.catch(function(){});
-  if(!m) return;
-  m.loop=false;
-  m.volume=0.4;
-  var started=false;
+  if(!m||!hero) return;
+  m.loop=false; m.volume=1;
+  var started=false, finished=false, ratio=1;
+  m.addEventListener('ended',function(){ finished=true; });
   var EVTS=['pointerup','touchend','click','keydown'];
   function done(){ EVTS.forEach(function(e){document.removeEventListener(e,onGesture,true);}); }
+  function onScreen(){ return ratio>=0.5; }
   function startMusic(){
-    if(started) return;
+    if(started||finished||!onScreen()) return;
     try{
       var p=m.play();
       if(p&&typeof p.then==='function'){
@@ -286,9 +289,25 @@ document.addEventListener('DOMContentLoaded',function(){
       } else { started=true; done(); }
     }catch(e){}
   }
-  /* Browsers only allow sound after a real tap/click/key press (touchstart and scroll don't count). */
-  function onGesture(){ startMusic(); }
+  function onGesture(e){
+    var t=e.target;
+    if(t&&t.closest&&t.closest('a,button,header,footer')) return;   /* opening an app or scrolling down is not "arriving" */
+    startMusic();
+  }
   EVTS.forEach(function(e){document.addEventListener(e,onGesture,true);});
+  function softStop(){
+    if(m.paused) return;
+    var vol=1, iv=setInterval(function(){
+      vol-=0.1; try{ m.volume=Math.max(0,vol); }catch(e){}
+      if(vol<=0){ clearInterval(iv); m.pause(); try{m.volume=1;}catch(e){} }
+    },120);
+  }
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(en){
+      ratio=en[0].intersectionRatio;
+      if(ratio<0.2 && started) softStop();
+    },{threshold:[0,0.2,0.5,1]}).observe(hero);
+  }
   startMusic();
 });
 </script>
