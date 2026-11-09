@@ -251,8 +251,50 @@ document.addEventListener('DOMContentLoaded',function(){
     requestAnimationFrame(frame);
   }
   setTimeout(function(){ hint.classList.add('gone'); },9000);
+  document.addEventListener('nk-enter',function(){ hint.classList.remove('gone'); setTimeout(function(){ hint.classList.add('gone'); },9000); });
   sync();
 });
+</script>
+<style>
+/* ---------- Welcome screen: one tap opens the shop and starts the waves ---------- */
+html.nk-gated,body.nk-gated{overflow:hidden}
+.nk-gate{touch-action:none}
+.is-home .nk-ring-stage,.is-home .nk-hero-copy{transition:opacity 1.6s ease .5s}
+.nk-gated .nk-ring-stage,.nk-gated .nk-hero-copy{opacity:0;pointer-events:none}
+.nk-gate{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;text-align:center;
+  cursor:pointer;color:#fff;transition:opacity 1.5s ease;-webkit-tap-highlight-color:transparent;
+  background:linear-gradient(180deg,rgba(18,12,43,0) 0%,rgba(18,12,43,0) 38%,rgba(18,12,43,.5) 60%,rgba(8,5,20,.92) 100%)}
+.nk-gate.out{opacity:0;pointer-events:none}
+.nk-gate-in{padding:0 22px clamp(40px,13vh,120px)}
+.nk-gate-hi{margin:0 0 8px;font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(36px,9vw,62px);line-height:1.05;text-shadow:0 2px 18px rgba(20,10,60,.55)}
+.nk-gate-sub{margin:0 auto 22px;max-width:24em;font-family:var(--ui);font-size:clamp(15px,4vw,18px);line-height:1.45;color:rgba(255,255,255,.92);text-shadow:0 1px 10px rgba(20,10,60,.6)}
+.nk-gate-btn{border:0;cursor:pointer}
+</style>
+<script>
+/* Welcome screen on the home page, once per visit. Its button is the tap browsers need before they allow sound,
+   so the waves start the moment the shop opens. Skipped for direct links to an app page, for return trips
+   within the same visit, and for visitors who ask for reduced motion (they get no sound). */
+(function(){
+  var h=(location.hash||'#/').slice(1).split('?')[0];
+  if(!(h===''||h==='/')) return;
+  try{ if(sessionStorage.getItem('nkEntered')) return; }catch(e){}
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var g=document.createElement('div');
+  g.className='nk-gate'; g.setAttribute('role','dialog'); g.setAttribute('aria-label','Welcome');
+  g.innerHTML='<div class="nk-gate-in"><p class="nk-gate-hi">Welcome</p><p class="nk-gate-sub">Take a breath. Come and have a look around.</p><button type="button" class="nk-hero-btn nk-gate-btn">Enter the shop</button></div>';
+  document.body.appendChild(g);
+  document.body.classList.add('nk-gated'); document.documentElement.classList.add('nk-gated');
+  function enter(){
+    if(!document.body.classList.contains('nk-gated')) return;
+    document.body.classList.remove('nk-gated'); document.documentElement.classList.remove('nk-gated');
+    window.scrollTo(0,0);
+    g.classList.add('out');
+    try{ sessionStorage.setItem('nkEntered','1'); }catch(e){}
+    document.dispatchEvent(new Event('nk-enter'));
+    setTimeout(function(){ g.remove(); },1700);
+  }
+  g.addEventListener('click',enter);
+})();
 </script>
 <audio class="nk-hero-music" preload="auto" src="/audio/hero-waves.m4a"></audio>
 <script>
@@ -280,8 +322,9 @@ document.addEventListener('DOMContentLoaded',function(){
   var EVTS=['pointerup','touchend','click','keydown'];
   function done(){ EVTS.forEach(function(e){document.removeEventListener(e,onGesture,true);}); }
   function onScreen(){ return ratio>=0.5; }
-  function startMusic(){
+  function startMusic(force){
     if(started||finished||!onScreen()) return;
+    if(!force && document.body.classList.contains('nk-gated')) return;   /* wait for the welcome button */
     try{
       var p=m.play();
       if(p&&typeof p.then==='function'){
@@ -295,6 +338,7 @@ document.addEventListener('DOMContentLoaded',function(){
     startMusic();
   }
   EVTS.forEach(function(e){document.addEventListener(e,onGesture,true);});
+  document.addEventListener('nk-enter',function(){ startMusic(true); });
   function softStop(){
     if(m.paused) return;
     var vol=1, iv=setInterval(function(){
