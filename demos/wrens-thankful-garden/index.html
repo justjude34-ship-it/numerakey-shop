@@ -166,6 +166,13 @@ canvas{display:block;width:100%;aspect-ratio:4/3;touch-action:none;background:#f
 .pips{position:absolute;left:10px;top:10px;display:flex;gap:6px;background:rgba(255,255,255,.8);border-radius:99px;padding:4px 10px}.pips i{font-style:normal;font-size:1.15rem;filter:grayscale(1);opacity:.4;transition:.4s}.pips i.on{filter:none;opacity:1;transform:scale(1.15)}
 .pic.stick{position:sticky;top:0;z-index:6;box-shadow:0 8px 22px rgba(75,46,94,.18)}.pic.stick .sc,.pic.stick .art{height:min(54vh,480px);width:100%;object-fit:cover;object-position:50% 60%}
 @media(min-width:768px){.wrap{max-width:760px}.sheet{max-width:760px}}
+.hero{position:fixed;inset:0;z-index:30;background:#fff3f6 linear-gradient(180deg,#ffe3ee 0,#fff3f6 40%,#fff8ee 100%);overflow-y:auto;display:flex;flex-direction:column}
+.hero>img{display:block;width:min(100%,520px);height:auto;margin:0 auto;-webkit-mask-image:linear-gradient(180deg,#000 82%,transparent);mask-image:linear-gradient(180deg,#000 82%,transparent)}
+.hero .hbody{margin-top:auto;padding:6px 24px calc(24px + env(safe-area-inset-bottom));text-align:center}
+.hero h1{margin:0 0 8px;font:700 clamp(2rem,8vw,3rem)/1.1 var(--serif);color:var(--ink)}
+.hero p{margin:0 auto 20px;max-width:30ch;color:var(--muted);font-size:1.1rem}
+.hero .btn{min-width:200px;font-size:1.2rem;padding:14px 30px}
+.hero .credit{margin-top:14px}
 </style>
 </head>
 <body>
@@ -180,7 +187,7 @@ var DEMO=true;
 var S={name:'',snd:1,seen:0,log:[],feel:{},draws:{},got:0,done:{}};
 try{var r=JSON.parse(localStorage.getItem(KEY)||'null');if(r)for(var k in r)S[k]=r[k]}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Storage is full or unavailable.')}}
-var V={t:S.seen?'garden':'story',pg:0,mood:1,taps:0,got:[],lens:0,sid:null,prog:0,who:''};if(!S.done)S.done={};
+var V={t:'hero',pg:0,mood:1,taps:0,got:[],lens:0,sid:null,prog:0,who:''};if(!S.done)S.done={};
 var main=document.getElementById('main'),nav=document.getElementById('nav'),toastEl=document.getElementById('toast');
 function el(tag,at){var e=document.createElement(tag);at=at||{};for(var k in at){var v=at[k];if(k==='text')e.textContent=v;else if(k==='html')e.innerHTML=v;else if(k==='class')e.className=v;else if(k.slice(0,2)==='on')e.addEventListener(k.slice(2),v);else if(v!==null&&v!==undefined&&v!==false)e.setAttribute(k,v)}
 (function add(list){for(var i=0;i<list.length;i++){var c=list[i];if(c===null||c===undefined||c===false)continue;if(Array.isArray(c)){add(c);continue}e.appendChild(typeof c==='string'||typeof c==='number'?document.createTextNode(String(c)):c)}})(Array.prototype.slice.call(arguments,2));return e}
@@ -304,7 +311,8 @@ function best(){var m=0,o=dayCount();for(var d in o)if(o[d]>m)m=o[d];return m}
 
 /* ---------- shell ---------- */
 function go(t){V.t=t;render()}
-function render(){main.innerHTML='';window.scrollTo(0,0);var v=({story:story,garden:garden,learn:learn,friends:friends,journal:journal,grown:grown})[V.t]();main.appendChild(v);nav.style.display='flex';nav.innerHTML='';[['garden','🌷','Garden'],['story','📖','Story'],['learn','💡','Learn'],['friends','🦋','Friends'],['journal','📓','Journal'],['grown','💗','Grown-ups']].forEach(function(t){nav.appendChild(el('button',{class:'tabbtn','aria-current':V.t===t[0]?'page':null,onclick:function(){go(t[0])}},el('span',{text:t[1]}),t[2]))})}
+function hero(){var v=el('div',{class:'hero'});v.appendChild(el('img',{src:ARTSLOT.grey,alt:'Wren the little blue bird in her flower garden'}));var b=el('div',{class:'hbody'},el('h1',{text:'Wren’s Thankful Garden'}),el('p',{text:'Little stories to help you notice what you’re thankful for.'}),el('button',{class:'btn primary',text:'Begin',onclick:function(){go(S.seen?'garden':'story')}}),credit());v.appendChild(b);return v}
+function render(){main.innerHTML='';window.scrollTo(0,0);var v=({hero:hero,story:story,garden:garden,learn:learn,friends:friends,journal:journal,grown:grown})[V.t]();main.appendChild(v);nav.innerHTML='';if(V.t==='hero'){nav.style.display='none';return}nav.style.display='flex';[['garden','🌷','Garden'],['story','📖','Story'],['learn','💡','Learn'],['friends','🦋','Friends'],['journal','📓','Journal'],['grown','💗','Grown-ups']].forEach(function(t){nav.appendChild(el('button',{class:'tabbtn','aria-current':V.t===t[0]?'page':null,onclick:function(){go(t[0])}},el('span',{text:t[1]}),t[2]))})}
 function credit(){var d=el('div',{class:'credit'});d.appendChild(document.createTextNode('Apps by Judith'));var s=el('span');s.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8b5fd6" stroke-width="2" stroke-linejoin="round"><path d="M12 21C4 14.5 3 9.5 6 6.8c2.2-2 5-1.2 6 1 1-2.2 3.8-3 6-1 3 2.7 2 7.7-6 14.2z"/></svg>';d.appendChild(s);return d}
 
 /* ---------- story library ---------- */
