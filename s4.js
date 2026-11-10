@@ -36,18 +36,6 @@ const AP4 = [
   inside:["Set up from your own rooms, not a template","One job a day, sized to fit","Nothing turns red when you miss a day","The whole house covered over time","Stays on your device"]
 },
 {
-  slug:"reclaim", name:"Reclaim", cat:"wellness", price:59, status:"live", ready:true,
-  cover:"covers/reclaim.jpg",
-  demo:"https://numerakey-shop.vercel.app/demos/reclaim/",
-  desc:"Someone to sit with \u2014 who asks for one small thing, not the whole mountain.",
-  tag:"One gentle day at a time.",
-  body:[
-    "Type what's on your mind and she answers that line. Then the only question that matters on a hard day: name the one thing that would make today feel a little lighter.",
-    "Small steps, kept where you left them."
-  ],
-  inside:["Type a line \u2014 she answers it","One small thing, rather than a plan","What you keep stays kept"]
-},
-{
   slug:"kindling", name:"Kindling", cat:"neuro", price:59, status:"live", ready:true,
   cover:"covers/kindling.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/kindling/",

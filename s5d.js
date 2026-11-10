@@ -36,7 +36,6 @@ const FILES = {
   "gentle-clear": "private/gentle-clear.html",
   "hearthaven": "private/hearthaven.html",
   "numera-plus": "private/numera-plus.html",
-  "reclaim": "private/reclaim.html",
   "adhd-companion": "private/adhd-companion.html",
   "binaural-studio": "private/binaural-studio.html",
   "cadence": "private/cadence.html",
