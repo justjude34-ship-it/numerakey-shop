@@ -67,6 +67,7 @@ html.nk-cover-open .nk-ring-stage,html.nk-cover-open .nk-hero-copy{opacity:0;poi
   <video class="nk-hero-soft" muted loop playsinline preload="none" poster="/images/hero.jpg" aria-hidden="true" tabindex="-1">
     <source src="/video/hero.mp4" type="video/mp4">
   </video>
+  <div class="nk-title-deco" aria-hidden="true"><span class="nk-td-heart"><svg class="nk-heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.3C1.6 7.8 3.6 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.4 0 5.4 3.3 4.2 6.7-1.700 4.700-9.2 9.3-9.2 9.3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span><span class="nk-td-key"><svg class="nk-key" viewBox="0 0 64 24" aria-hidden="true"><g fill="none" stroke="#E040B0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7.5" r="3.2"/><circle cx="9" cy="16.5" r="3.2"/><circle cx="4.5" cy="12" r="3.2"/><circle cx="13.5" cy="12" r="3.2"/><path d="M16.5 12H60M52 12v7M58 12v5M45 12v4"/></g></svg></span></div>
   <div class="nk-hero-scrim" aria-hidden="true"></div>
   <div class="nk-ring-stage" id="nkStage" aria-label="A few apps from the shop"><div class="nk-ring" id="nkRing"></div></div>
   <div class="nk-hero-copy">
@@ -81,7 +82,7 @@ html.nk-cover-open .nk-ring-stage,html.nk-cover-open .nk-hero-copy{opacity:0;poi
 <header class="bar">
   <div class="wrap">
     <a class="mark" href="#/"><span class="spectrum">NumeraKey</span></a>
-    <span class="by">By Judith</span>
+    <span class="by">By Judith <svg class="nk-heart" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.2-9.3C1.6 7.8 3.6 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.4 0 5.4 3.3 4.2 6.7-1.700 4.700-9.2 9.3-9.2 9.3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
     <nav>
       <a href="#/">Shop</a>
       <a href="#/how">How it works</a>
@@ -177,6 +178,14 @@ html.nk-cover-open .nk-ring-stage,html.nk-cover-open .nk-hero-copy{opacity:0;poi
 .nk-hero-line{font-family:var(--display);font-weight:400;font-size:clamp(30px,8vw,52px);line-height:1.05;margin:0}
 .nk-hero-line em{font-style:italic;background:linear-gradient(90deg,#7fe6e2,#c9b2ff 50%,#ffa9dc);
   -webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.08em}
+.nk-title-deco{display:none}
+.is-home .nk-title-deco{display:block;position:absolute;z-index:2;top:0;height:100%;aspect-ratio:720/1238;left:50%;transform:translateX(-50%);pointer-events:none}
+.nk-td-heart,.nk-td-key{position:absolute;transform:translate(-50%,-50%)}
+.nk-td-heart{left:78.5%;top:28%;width:5.2%;color:#E040B0;filter:drop-shadow(0 0 6px rgba(224,64,176,.6))}
+.nk-td-heart svg{display:block;width:100%;height:auto;margin:0}
+.nk-td-key{left:50%;top:33%;width:15%}
+.nk-td-key svg{display:block;width:100%;height:auto;filter:drop-shadow(0 0 8px rgba(224,64,176,.6))}
+.nk-heart{width:.95em;height:.95em;vertical-align:-.12em;margin-left:.25em;color:#E040B0}
 .nk-hero-price{display:inline-block;margin:12px 0 0;padding:6px 16px;border-radius:999px;font-family:var(--ui);font-size:clamp(13px,3.5vw,15px);color:#fff;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .nk-hero-price span{font-weight:600;margin-right:6px;background:linear-gradient(90deg,#7fe6e2,#c9b2ff 50%,#ffa9dc);-webkit-background-clip:text;background-clip:text;color:transparent}
 .nk-hero-sub{margin:10px auto 16px;max-width:30em;font-family:var(--ui);font-size:clamp(14px,3.8vw,17px);line-height:1.45;color:rgba(255,255,255,.88)}
