@@ -35,7 +35,7 @@ const CATEGORIES = [
 
 const AP1 = [
 {
-  slug:"sanctuary", name:"Sanctuary", cat:"narc", price:39, status:"live",
+  slug:"sanctuary", name:"Sanctuary", cat:"narc", price:19, status:"live",
   cover:"covers/sanctuary.jpg",
   demo:"https://numerakey-sanctuary-demo.vercel.app",
   desc:"The big one \u2014 a companion to talk to, a locked journal, grounding tools and sleep sound.",
@@ -47,7 +47,7 @@ const AP1 = [
   inside:["Aria \u2014 speak to her, or write","A journal you can lock","Grounding toolkit for the bad moments","Sleep sound on 20-minute, 45-minute or all-night timers","Audio tuned to stay clear if you're hard of hearing","Sections on self-esteem and on the children","Crisis help always one tap away"]
 },
 {
-  slug:"bloom-from-within", name:"Bloom From Within", cat:"ptsd", price:39, status:"live",
+  slug:"bloom-from-within", name:"Bloom From Within", cat:"ptsd", price:29, status:"live",
   cover:"covers/bloom-from-within.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/bloom-from-within/",
   desc:"Trauma recovery you can see moving — practices, check-ins and a progress view.",
@@ -59,7 +59,7 @@ const AP1 = [
   inside:["Practices you set and keep","Daily check-in on mood and activation","Journal alongside the tracking","Progress across weeks, not days","Private and offline, no account"]
 },
 {
-  slug:"coming-home", name:"Coming Home", cat:"wellness", price:59, status:"live", ready:true,
+  slug:"coming-home", name:"Coming Home", cat:"wellness", price:49, status:"live", ready:true,
   cover:"covers/coming-home.jpg",
   demo:"https://numerakey-coming-home-demo.vercel.app",
   desc:"Inner child work that builds a safe room first, then goes back for the parts still waiting there.",
@@ -71,7 +71,7 @@ const AP1 = [
   inside:["A safe room built before anything is opened","Paced by how much room you have today","Toxic shame \u2014 the two kinds, and how it hides","Family roles and the four F protectors","Parts work, not one single child","Letters, and notes kept on your device","Plain about what it is not"]
 },
 {
-  slug:"indomita", name:"Indomita", cat:"narc", price:39, status:"live",
+  slug:"indomita", name:"Indomita", cat:"narc", price:19, status:"live",
   cover:"covers/indomita.jpg",
   demo:"https://numerakey-indomita-demo.vercel.app",
   desc:"Surviving one \u2014 through the separation, the smear, and everything designed to wear you down.",
@@ -83,7 +83,7 @@ const AP1 = [
   inside:["Timestamped incident log","The pattern, visible across months","Communication templates that give them nothing","A clean chronology you can export","Nothing leaves your device"]
 },
 {
-  slug:"haven", name:"Haven", cat:"narc", price:39, status:"live",
+  slug:"haven", name:"Haven", cat:"narc", price:19, status:"live",
   cover:"covers/haven.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/haven/",
   desc:"Nervous system first \u2014 for the pull, the contact, and the days after.",
@@ -95,7 +95,7 @@ const AP1 = [
   inside:["Four states, including \"I don't know\"","Tools matched to the state you're actually in","One tap for the moment they make contact","Trauma bonds and hoovering, explained plainly","Nervous system before processing","A journal that never leaves the device"]
 },
 {
-  slug:"black-sheep", name:"The Black Sheep", cat:"narc", price:39, status:"live", ready:true,
+  slug:"black-sheep", name:"The Black Sheep", cat:"narc", price:19, status:"live", ready:true,
   cover:"covers/black-sheep.jpg",
   demo:"https://numerakey-black-sheep-demo.vercel.app",
   desc:"For the one the family named difficult \u2014 and for the adult watching the same coat held out to a child.",
@@ -107,7 +107,7 @@ const AP1 = [
   inside:["Five rooms, no homework, stay as long as it's true","The next lamb \u2014 when the system looks again","A recogniser that names patterns, never people","A decoder for what just happened","A family map of who holds which job","Shame-return cards, one sentence at a time","Quick exit button, and 000, Lifeline, Blue Knot, 1800RESPECT"]
 },
 {
-  slug:"cassandra", name:"Cassandra", cat:"narc", price:39, status:"live", ready:true,
+  slug:"cassandra", name:"Cassandra", cat:"narc", price:19, status:"live", ready:true,
   cover:"covers/cassandra.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/cassandra/",
   desc:"Naming narcissistic family patterns, so the thing you noticed has a shape.",
@@ -119,7 +119,7 @@ const AP1 = [
   inside:["Pattern library with plain examples","Map your own family roles","Reality-check log for gaslighting","Boundary scripts you can adapt","Private and offline"]
 },
 {
-  slug:"harbor", name:"Harbor", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"harbor", name:"Harbor", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/harbor.jpg",
   demo:"https://numerakey-harbor.vercel.app",
   desc:"A companion for living with MS \u2014 fatigue, fog, heat, flares, and the days that ask too much.",
@@ -131,7 +131,7 @@ const AP1 = [
   inside:["Talk or type \u2014 it speaks with your device's own voice","Daily check-in it remembers and refers back to","Fatigue, heat, fog, mobility, bladder, vision, pain","Energy banking, and a 4\u00b72\u00b76 breath","Questions to take to your neurologist","Lifeline 13 11 14 and 988 when it matters","A companion, never a substitute for your care team"]
 },
 {
-  slug:"spirit-breath", name:"Spirit Breath", cat:"wellness", price:89, status:"live", ready:true,
+  slug:"spirit-breath", name:"Spirit Breath", cat:"wellness", price:49, status:"live", ready:true,
   cover:"covers/spirit-breath.jpg",
   demo:"https://spirit-breath.vercel.app",
   desc:"A full breathwork practice \u2014 guided techniques, a seven-part journey, and the reasoning behind each one.",
@@ -143,7 +143,7 @@ const AP1 = [
   inside:["Guided sessions from ninety seconds up","A technique library with the why, not just the count","Seven-part journey through the essentials","Progress kept on your device","Safety guidance throughout","One file, works offline"]
 },
 {
-  slug:"rise", name:"Rise", cat:"narc", price:39, status:"live", ready:true,
+  slug:"rise", name:"Rise", cat:"narc", price:19, status:"live", ready:true,
   cover:"covers/rise.jpg",
   demo:"https://numerakey-rise-demo.vercel.app",
   desc:"Name the move as it happens, settle your body, protect your record, and keep going.",
@@ -155,7 +155,7 @@ const AP1 = [
   inside:["The playbook \u2014 expect it, feel it, counter it","Grounding for when the body is already alert","A check-in that clarifies without diagnosing","Exit ideas, digital safety, go-bag checklist","Regional hotlines \u2014 1800RESPECT and Lifeline first","Optional PIN on the whole app","Nothing leaves your device"]
 },
 {
-  slug:"narc-escape-guide", name:"Narc Escape Guide", cat:"narc", price:39, status:"live", ready:true,
+  slug:"narc-escape-guide", name:"Narc Escape Guide", cat:"narc", price:19, status:"live", ready:true,
   cover:"covers/narc-escape-guide.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/narc-escape-guide/",
   desc:"Name the tactics, check your own reality, and plan a quieter way out.",
@@ -167,7 +167,7 @@ const AP1 = [
   inside:["A plain vocabulary for the tactics","A private reality check, not a diagnosis","Leaving planned as a safety problem","What no contact actually looks like","Checklists stay on your device only","Crisis lines one tap away"]
 },
 {
-  slug:"auraflow", name:"AuraFlow Plus", cat:"sound", price:39, status:"live",
+  slug:"auraflow", name:"AuraFlow Plus", cat:"sound", price:29, status:"live",
   cover:"covers/auraflow.jpg",
   demo:"https://numerakey-auraflow-demo.vercel.app",
   desc:"Four moods and six layers of nature sound, mixed to whatever the evening needs.",
@@ -191,7 +191,7 @@ const AP1 = [
   inside:["Binaural beats, five bands, headphones required","Tibetan bronze bowls, struck on their own timing","The two modes never mix","Gesture control and journeys","Sleep timer and volume","A guide that explains the method","20 KB \u2014 the whole app is one file"]
 },
 {
-  slug:"binaural-studio", name:"Binaural Studio", cat:"sound", price:39, status:"live",
+  slug:"binaural-studio", name:"Binaural Studio", cat:"sound", price:29, status:"live",
   cover:"covers/binaural-studio.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/binaural-studio/",
   desc:"Five binaural presets layered with music and nature. Headphones required.",

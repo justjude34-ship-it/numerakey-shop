@@ -1,6 +1,6 @@
 const AP2 = [
 {
-  slug:"clarify", name:"Clarify", cat:"wellness", price:39, status:"live",
+  slug:"clarify", name:"Clarify", cat:"wellness", price:29, status:"live",
   cover:"covers/clarify.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/clarify/",
   desc:"For the decision you keep going round on, and the overwhelm underneath it.",
@@ -12,7 +12,7 @@ const AP2 = [
   inside:["Work a decision through, one piece at a time","Name the feeling before you weigh the options","Something to do with the overwhelm first","Breathing when the thinking won't start","Everything stays on your device"]
 },
 {
-  slug:"held", name:"Held", cat:"narc", price:39, status:"live",
+  slug:"held", name:"Held", cat:"narc", price:19, status:"live",
   cover:"covers/held.jpg",
   demo:"https://numerakey-held-demo.vercel.app",
   desc:"For daughters of narcissistic mothers \u2014 a warm friend at two in the morning.",
@@ -24,7 +24,7 @@ const AP2 = [
   inside:["Written for daughters of narcissistic mothers","Made for the two-in-the-morning hours","No forgiveness agenda, no steps to complete","Somewhere to put what you can't say aloud","Stays on your device"]
 },
 {
-  slug:"unspoken", name:"Unspoken", cat:"narc", price:39, status:"live",
+  slug:"unspoken", name:"Unspoken", cat:"narc", price:19, status:"live",
   cover:"covers/unspoken.jpg",
   demo:"https://numerakey-unspoken-demo.vercel.app",
   desc:"For daughters of narcissistic fathers \u2014 a private place to name the pattern.",
@@ -36,7 +36,7 @@ const AP2 = [
   inside:["Written for daughters of narcissistic fathers","Name the pattern in plain words","Private, with nothing to send or share","No forgiveness agenda","Stays on your device"]
 },
 {
-  slug:"ember", name:"Ember", cat:"narc", price:39, status:"live",
+  slug:"ember", name:"Ember", cat:"narc", price:19, status:"live",
   cover:"covers/ember.jpg",
   demo:"https://numerakey-ember-demo.vercel.app",
   desc:"For parents living with parental alienation \u2014 the loss nobody offers condolences for.",
@@ -48,7 +48,7 @@ const AP2 = [
   inside:["Written for alienated parents","Grief given its proper name","Somewhere to keep what you'd have told them","Steady ground for the days contact fails","Private, and stays on your phone"]
 },
 {
-  slug:"frequency-guide", name:"Frequency Guide", cat:"sound", price:39, status:"live",
+  slug:"frequency-guide", name:"Frequency Guide", cat:"sound", price:29, status:"live",
   cover:"covers/frequency-guide.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/frequency-guide/",
   desc:"Solfeggio tones and brainwave states, sorted by what you actually need.",
@@ -60,7 +60,7 @@ const AP2 = [
   inside:["Solfeggio tones filed by need","Brainwave state reference","Play pure tones in the app","Load your own entrainment tracks","Traditional associations, labelled as such","No medical claims"]
 },
 {
-  slug:"habit-swap", name:"Habit Swap", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"habit-swap", name:"Habit Swap", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/habit-swap.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/habit-swap/",
   desc:"You can't delete a habit, only replace it \u2014 so find the cue and put something kinder in its place.",
@@ -72,7 +72,7 @@ const AP2 = [
   inside:["The loop explained without the lecture","Cue detective \u2014 catch your own triggers","Design a swap that pays the same reward","Track whether it actually stuck","No streak shaming","Runs offline on your device"]
 },
 {
-  slug:"adhd-companion", name:"ADHD Wellness Companion", cat:"neuro", price:39, status:"live", ready:true,
+  slug:"adhd-companion", name:"ADHD Wellness Companion", cat:"neuro", price:29, status:"live", ready:true,
   cover:"covers/adhd-companion.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/adhd-companion/",
   desc:"Built around the hard part \u2014 starting \u2014 with a toolkit, a daily pulse, and five modules on how ADHD actually works.",
@@ -84,7 +84,7 @@ const AP2 = [
   inside:["Kickstart tools for initiation paralysis","Daily pulse check-in","Dopamine habits, reframes and anchors","Perfectionism and task-friction work","Five modules on how ADHD actually works","ASRS trait check \u2014 a self-screen, not a diagnosis"]
 },
 {
-  slug:"adhd-mate", name:"ADHD Mate", cat:"neuro", price:39, status:"live", ready:true,
+  slug:"adhd-mate", name:"ADHD Mate", cat:"neuro", price:29, status:"live", ready:true,
   cover:"covers/adhd-mate.jpg",
   demo:"https://numerakey-shop-git.vercel.app/demos/adhd-mate/",
   desc:"A quiet companion for ADHD days \u2014 a short chat, a focus sprint, tiny steps and a no-score check-in.",
@@ -96,7 +96,7 @@ const AP2 = [
   inside:["Chat with Mate in friend, coach or support voice","Focus sprints of 5, 15 or 25 minutes with a body double","Tiny steps \u2014 break the mountain down","Headspace check-in with no score","Breathing circle with soft sound, and grounding prompts","Notes stay on your device, and you can download them"]
 },
 {
-  slug:"quietshore", name:"Quietshore", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"quietshore", name:"Quietshore", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/quietshore.jpg",
   demo:"https://numerakey-quietshore-demo.vercel.app",
   desc:"Short sits with generated tides underneath, and a record of them that nobody else sees.",
@@ -108,7 +108,7 @@ const AP2 = [
   inside:["Timed sits in several lengths","Breath cue and a quiet bell","Tides generated locally, not streamed","A private ledger of your sessions","No streaks, badges or targets","Works entirely offline"]
 },
 {
-  slug:"unwritten", name:"Unwritten", cat:"narc", price:39, status:"live", ready:true,
+  slug:"unwritten", name:"Unwritten", cat:"narc", price:19, status:"live", ready:true,
   cover:"covers/unwritten.jpg",
   demo:"https://numerakey-unwritten-demo.vercel.app",
   desc:"For daughters of narcissistic mothers \u2014 the moves named one by one, so the fog gets a shape.",
@@ -120,7 +120,7 @@ const AP2 = [
   inside:["The moves named, one at a time","What each one is actually for","A line to hold onto after each","Grey rock, low contact and no contact","No forgiveness agenda, nothing to complete","One file, private to your device"]
 },
 {
-  slug:"goodwin-readings", name:"Numerology Reading", cat:"numerology", price:89, status:"live", ready:true,
+  slug:"goodwin-readings", name:"Numerology Reading", cat:"numerology", price:49, status:"live", ready:true,
   cover:"covers/goodwin-readings.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/goodwin-readings/",
   desc:"The complete Goodwin reading \u2014 the Core, the karmic debts, the Pinnacles, and the year you are standing in.",
@@ -132,7 +132,7 @@ const AP2 = [
   inside:["The full Core, plus Birthday and Maturity","Karmic debts 13, 14, 16 and 19 named","Intensity and the Planes of Expression","Life Periods, Pinnacles and Challenges","Personal Year, Transits and Essence","Masters 11 and 22 held, never flattened","Every calculation shown, step by step"]
 },
 {
-  slug:"numera-plus", name:"Numera Plus", cat:"numerology", price:89, status:"live", ready:true,
+  slug:"numera-plus", name:"Numera Plus", cat:"numerology", price:49, status:"live", ready:true,
   cover:"covers/numera-plus.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/numera-plus/",
   desc:"Your birth date in Phillips' 3\u00d73 grid \u2014 the arrows, the empty squares, and what they ask of you.",
@@ -144,7 +144,7 @@ const AP2 = [
   inside:["The 3\u00d73 grid built from your birth date","Arrows of strength and arrows of emptiness","All nine squares read one by one","Mind, Soul, Physical, Thought, Will, Action","Compare two charts side by side","Print the reading","Phillips credited, method shown"]
 },
 {
-  slug:"numera", name:"Numera", cat:"numerology", price:89, status:"live",
+  slug:"numera", name:"Numera", cat:"numerology", price:49, status:"live",
   cover:"covers/numera.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/numera/",
   desc:"The full reading \u2014 Phillips' birth chart and Goodwin's name numerology, run together on one page.",
@@ -156,7 +156,7 @@ const AP2 = [
   inside:["Phillips' 3\u00d73 birth chart with arrows, squares and planes","Goodwin's expression, soul urge and personality","Both systems assembled into one long-form reading","Business and brand name readings","A worked explanation of how the grid is built","Method credited to source, not passed off as secret"]
 },
 {
-  slug:"lumen-tarot", name:"Lumen Tarot", cat:"divine", price:39, status:"live",
+  slug:"lumen-tarot", name:"Lumen Tarot", cat:"divine", price:29, status:"live",
   cover:"covers/lumen-tarot.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/lumen-tarot/",
   desc:"A full tarot deck with a daily card and a three-card spread \u2014 upright and reversed, entirely private.",
@@ -168,7 +168,7 @@ const AP2 = [
   inside:["The full deck, upright and reversed","A daily card","A three-card spread","Sample cards to browse and learn from","Entirely private, entirely offline"]
 },
 {
-  slug:"tao", name:"Tao", cat:"divine", price:39, status:"live", ready:true,
+  slug:"tao", name:"Tao", cat:"divine", price:29, status:"live", ready:true,
   cover:"covers/tao.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/tao/",
   desc:"The Tao Te Ching, one chapter a day for eighty-one days, then round again.",

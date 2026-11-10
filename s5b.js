@@ -4,7 +4,7 @@
 STOPS.splice(0, STOPS.length, "#2EC4B6", "#9B5DE5", "#E040B0");
 
 APPS.push({
-  slug:"lantern", name:"Lantern", cat:"narc", price:39, status:"live", ready:true,
+  slug:"lantern", name:"Lantern", cat:"narc", price:19, status:"live", ready:true,
   cover:"covers/lantern.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/lantern/",
   desc:"A calm space to understand relationship patterns, steady yourself, and plan healthy next steps.",
@@ -18,7 +18,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"what-now", name:"What Now?", cat:"narc", price:29, status:"live", ready:true,
+  slug:"what-now", name:"What Now?", cat:"narc", price:19, status:"live", ready:true,
   cover:"covers/what-now.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/what-now/",
   desc:"Support and information for anyone in, leaving, or recovering from a relationship with a narcissist.",
@@ -32,7 +32,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"pulse-plus", name:"Pulse Plus", cat:"sound", price:39, status:"live", ready:true,
+  slug:"pulse-plus", name:"Pulse Plus", cat:"sound", price:29, status:"live", ready:true,
   cover:"covers/pulse-plus.jpg",
   demo:"https://numerakey-pulse-plus-demo.vercel.app",
   desc:"A neon music player in teal and magenta for the music you already own — add songs, build playlists, keep it all on your device.",
@@ -47,7 +47,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 
 
 APPS.push({
-  slug:"somni-plus", name:"Somni Plus", cat:"sound", price:79, status:"live", ready:true,
+  slug:"somni-plus", name:"Somni Plus", cat:"sound", price:49, status:"live", ready:true,
   cover:"covers/somni-plus.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/somni-plus/",
   desc:"Exclusive binaural sound, with ocean, rain or storm underneath. One voice, made on your device.",
@@ -61,7 +61,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"somni-three", name:"Somni Three", cat:"sound", price:79, status:"live", ready:true,
+  slug:"somni-three", name:"Somni Three", cat:"sound", price:49, status:"live", ready:true,
   cover:"covers/somni-three.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/somni-three/",
   desc:"Binaural beats, isochronic tones, singing bowls, and a vagus soundscape. One mode at a time.",
@@ -76,7 +76,7 @@ artFor(APPS[APPS.length - 1]).motif = "rings";
 
 
 APPS.push({
-  slug:"nova", name:"Nova", cat:"neuro", price:39, status:"live", ready:true,
+  slug:"nova", name:"Nova", cat:"neuro", price:29, status:"live", ready:true,
   cover:"covers/nova.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/nova/",
   desc:"Soft structure for a brain that runs on interest — tiny steps, short sprints, a mood check-in and a companion in three tones.",
@@ -90,7 +90,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"rise-beyond", name:"Rise Beyond", cat:"narc", price:39, status:"live", ready:true,
+  slug:"rise-beyond", name:"Rise Beyond", cat:"narc", price:19, status:"live", ready:true,
   cover:"covers/rise-beyond.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/rise-beyond/",
   desc:"Four short regulation practices to watch and breathe along with — water, the Om, sound and a singing bowl.",
@@ -103,7 +103,7 @@ APPS.push({
 });
 
 APPS.push({
-  slug:"uncluttered-path", name:"Uncluttered Path", cat:"home", price:39, status:"live", ready:true,
+  slug:"uncluttered-path", name:"Uncluttered Path", cat:"home", price:29, status:"live", ready:true,
   cover:"covers/uncluttered-path.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/uncluttered-path/",
   desc:"A gentle decluttering companion for when the mountain of stuff stops you starting — two minutes, one surface, one less thing.",
@@ -116,7 +116,7 @@ APPS.push({
 });
 
 APPS.push({
-  slug:"stillwater", name:"Stillwater", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"stillwater", name:"Stillwater", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/stillwater.jpg",
   demo:"https://numerakey-stillwater-demo.vercel.app",
   desc:"A private mood notebook kept on your phone — a check-in, a journal, a written coach and sounds made on the spot.",
@@ -130,7 +130,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"mysomni", name:"MySomni", cat:"sound", price:79, status:"live", ready:true,
+  slug:"mysomni", name:"MySomni", cat:"sound", price:49, status:"live", ready:true,
   cover:"covers/mysomni.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/mysomni/",
   desc:"A quieter night. One sound only — binaural beats, a Tibetan singing bowl or a deep temple OM.",
@@ -144,7 +144,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"first-light", name:"First Light", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"first-light", name:"First Light", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/first-light.jpg",
   demo:"https://numerakey-first-light-demo.vercel.app",
   desc:"A quiet sleep course — a diary, a steady rise time and three tools for the middle of the night.",
@@ -158,7 +158,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"budgetpilot", demo:"https://numerakey-shop.vercel.app/demos/budgetpilot/", name:"BudgetPilot", cat:"money", price:39, status:"live", ready:true,
+  slug:"budgetpilot", demo:"https://numerakey-shop.vercel.app/demos/budgetpilot/", name:"BudgetPilot", cat:"money", price:29, status:"live", ready:true,
   cover:"covers/budgetpilot.jpg",
   desc:"A private monthly budget in your pocket — income, expenses, what is left, and a coach that answers in plain numbers.",
   tag:"Know what's left. Keep it private.",
@@ -171,7 +171,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"palmistry-studio", name:"Palmistry Studio", cat:"divine", price:39, status:"live", ready:true,
+  slug:"palmistry-studio", name:"Palmistry Studio", cat:"divine", price:29, status:"live", ready:true,
   cover:"covers/palmistry-studio.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/palmistry-studio/",
   desc:"A quiet studio for reading your own left palm — add a photo, see the major lines, and learn what each one means.",
@@ -185,7 +185,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"aureole", name:"Aureole", cat:"sound", price:39, status:"live", ready:true,
+  slug:"aureole", name:"Aureole", cat:"sound", price:29, status:"live", ready:true,
   cover:"covers/aureole.jpg",
   demo:"https://justjude34-ship-it.github.io/aureole/",
   desc:"A full-screen mandala with binaural beds and breath practices — one file, dark and quiet.",
@@ -199,7 +199,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"lunara", name:"Lunara", cat:"wellness", price:89, status:"live", ready:true,
+  slug:"lunara", name:"Lunara", cat:"wellness", price:49, status:"live", ready:true,
   cover:"covers/lunara.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/lunara/",
   desc:"Private relaxation with binaural beats and singing bowls — one file, offline, buy once.",
@@ -228,7 +228,7 @@ artFor(APPS[APPS.length - 1]).motif = "rings";
 
 
 APPS.push({
-  slug:"elegy", name:"Elegy", cat:"narc", price:39, status:"live", ready:true,
+  slug:"elegy", name:"Elegy", cat:"narc", price:19, status:"live", ready:true,
   cover:"covers/elegy.jpg",
   demo:"https://numerakey-elegy-demo.vercel.app",
   desc:"A private companion for daughters of narcissistic mothers — a playbook, a sealed record, ready scripts, and the decisions that are still yours.",
@@ -242,7 +242,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"steady-day", name:"Steady Day", cat:"wellness", price:39, status:"live", ready:true, cover:"covers/steady-day.jpg",
+  slug:"steady-day", name:"Steady Day", cat:"wellness", price:29, status:"live", ready:true, cover:"covers/steady-day.jpg",
   demo:"https://numerakey-steady-day-demo.vercel.app",
   desc:"A calm personal logging companion for diabetes — glucose, meals, medication reminders and notes, kept on your device.",
   tag:"A quiet place to log your day.",
@@ -255,7 +255,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"hearthaven", name:"HeartHaven", cat:"wellness", price:39, status:"live", ready:true, cover:"covers/hearthaven.jpg",
+  slug:"hearthaven", name:"HeartHaven", cat:"wellness", price:29, status:"live", ready:true, cover:"covers/hearthaven.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/hearthaven/",
   desc:"A private sanctuary for reality, rest and recovery — reality-check language, grounding, singing-bowl tones and a journal, behind your own PIN.",
   tag:"Your private sanctuary.",
@@ -268,7 +268,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"lumina-sleep", name:"Lumina Sleep", cat:"sound", price:39, status:"live", ready:true,
+  slug:"lumina-sleep", name:"Lumina Sleep", cat:"sound", price:29, status:"live", ready:true,
   cover:"covers/lumina-sleep.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/lumina-sleep/",
   desc:"Ocean, rain and brown noise with delta, theta and alpha tones for drifting off — generated on your phone, with a sleep timer that fades out.",
@@ -282,7 +282,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"room-to-breathe", name:"Room to Breathe", cat:"home", price:39, status:"live", ready:true,
+  slug:"room-to-breathe", name:"Room to Breathe", cat:"home", price:29, status:"live", ready:true,
   cover:"covers/room-to-breathe.jpg",
   demo:"https://numerakey-room-to-breathe-demo.vercel.app",
   desc:"Clearing away the clutter, one small thing at a time — Mira sits with you while you do it.",
@@ -295,7 +295,7 @@ APPS.push({
 });
 
 APPS.push({
-  slug:"omni", name:"Omni", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"omni", name:"Omni", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/omni.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/omni/",
   desc:"A still-lake breathing studio \u2014 one orb, one breath at a time, in a day or night look.",
@@ -309,7 +309,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"cadence", name:"Cadence", cat:"numerology", price:89, status:"live", ready:true,
+  slug:"cadence", name:"Cadence", cat:"numerology", price:49, status:"live", ready:true,
   cover:"covers/cadence.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/cadence/",
   desc:"A numerology guide to your personal year, month and day, coloured by the essence you carry from your name.",
@@ -323,7 +323,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"still", name:"Still", cat:"wellness", price:89, status:"live", ready:true,
+  slug:"still", name:"Still", cat:"wellness", price:49, status:"live", ready:true,
   cover:"covers/still.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/still/",
   desc:"Binaural beds, bronze chimes and an ocean breath — for racing thoughts and nights that will not quiet.",
@@ -351,7 +351,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"astra-nova", name:"Astra Nova", cat:"divine", price:89, status:"live", ready:true,
+  slug:"astra-nova", name:"Astra Nova", cat:"divine", price:49, status:"live", ready:true,
   cover:"covers/astra-nova.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/astra-nova/",
   desc:"Your natal chart and a written reading, built from your birth date, time and place.",
@@ -365,7 +365,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"teach-me-the-i-ching", name:"Teach Me the I Ching", cat:"learn", price:39, status:"live", ready:true,
+  slug:"teach-me-the-i-ching", name:"Teach Me the I Ching", cat:"learn", price:29, status:"live", ready:true,
   cover:"covers/teach-me-the-i-ching.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/teach-me-the-i-ching/",
   desc:"A short path into the Book of Changes — yin and yang, the trigrams, how to cast with three coins, and how to read what you get.",
@@ -379,7 +379,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"teach-me-runes", name:"Teach Me Runes", cat:"learn", price:39, status:"live", ready:true,
+  slug:"teach-me-runes", name:"Teach Me Runes", cat:"learn", price:29, status:"live", ready:true,
   cover:"covers/teach-me-runes.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/teach-me-runes/",
   desc:"A study of the Elder Futhark — the name, the sound, and what the old poems actually say, rune by rune. Not a prediction.",
@@ -393,7 +393,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"teach-me-palmistry", name:"Teach Me Palmistry", cat:"learn", price:39, status:"live", ready:true,
+  slug:"teach-me-palmistry", name:"Teach Me Palmistry", cat:"learn", price:29, status:"live", ready:true,
   cover:"covers/teach-me-palmistry.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/teach-me-palmistry/",
   desc:"Palmistry for beginners \u2014 six lines and six mounts, each marked on a real palm, with a quiz to test your eye.",
@@ -407,7 +407,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"tally", name:"Tally", cat:"money", price:59, status:"soon", ready:true,
+  slug:"tally", name:"Tally", cat:"money", price:49, status:"soon", ready:true,
   cover:"covers/tally.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/tally/",
   desc:"A time and fee tracker for anyone who bills by the hour \u2014 a timer, a rate for every client, and a summary ready to invoice.",
@@ -421,7 +421,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"sky-almanac", name:"Sky Almanac", cat:"divine", price:39, status:"live", ready:true,
+  slug:"sky-almanac", name:"Sky Almanac", cat:"divine", price:29, status:"live", ready:true,
   cover:"covers/sky-almanac.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/sky-almanac/",
   desc:"The real sky, worked out on your phone: today\u2019s Moon, retrogrades, eclipses and your own chart. Never goes out of date.",

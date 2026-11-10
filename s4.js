@@ -1,6 +1,6 @@
 const AP4 = [
 {
-  slug:"accord", name:"Accord", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"accord", name:"Accord", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/accord.jpg",
   demo:"https://numerakey-accord-demo.vercel.app",
   desc:"A practice house built on the Four Agreements \u2014 four rooms, and somewhere to go when you slip.",
@@ -12,7 +12,7 @@ const AP4 = [
   inside:["Four rooms, one per agreement","A path you move along at your own pace","Learn \u2014 the reasoning, not just the slogans","Name it, breathe, choose a room \u2014 for the slips","Keep, for what you want to hold on to","Private to your device"]
 },
 {
-  slug:"night-garden", name:"Night Garden", cat:"ptsd", price:39, status:"live", ready:true,
+  slug:"night-garden", name:"Night Garden", cat:"ptsd", price:29, status:"live", ready:true,
   cover:"covers/night-garden.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/night-garden/",
   desc:"Understanding complex PTSD \u2014 twelve lessons, plain language, and the words for what keeps happening.",
@@ -24,7 +24,7 @@ const AP4 = [
   inside:["Twelve lessons in plain language","Where C-PTSD and ADHD wear the same coat","The nervous system map and the window of tolerance","Emotional flashbacks, and the four F responses","Limitations that are real \u2014 named, not glossed","Clear about what it is not","Reads offline, nothing stored elsewhere"]
 },
 {
-  slug:"tend", name:"Tend", cat:"home", price:39, status:"live", ready:true,
+  slug:"tend", name:"Tend", cat:"home", price:29, status:"live", ready:true,
   cover:"covers/tend.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/tend/",
   desc:"One small cleaning job a day, worked out from the rooms you actually have.",
@@ -36,7 +36,7 @@ const AP4 = [
   inside:["Set up from your own rooms, not a template","One job a day, sized to fit","Nothing turns red when you miss a day","The whole house covered over time","Stays on your device"]
 },
 {
-  slug:"kindling", name:"Kindling", cat:"neuro", price:59, status:"live", ready:true,
+  slug:"kindling", name:"Kindling", cat:"neuro", price:49, status:"live", ready:true,
   cover:"covers/kindling.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/kindling/",
   desc:"For finding out late \u2014 a quiet coach for adults who got the ADHD or AuDHD answer in middle age.",
@@ -48,7 +48,7 @@ const AP4 = [
   inside:["Written for late-identified ADHD and AuDHD adults","Reduce first, micro-step, or use the spark","The grief and the compensating self, named","Sessions you can keep","Clear about what it is not","One file, local only"]
 },
 {
-  slug:"nest-light", name:"Nest Light", cat:"wellness", price:59, status:"live", ready:true,
+  slug:"nest-light", name:"Nest Light", cat:"wellness", price:49, status:"live", ready:true,
   cover:"covers/nest-light.jpg",
   demo:"https://numerakey-nest-light-demo.vercel.app",
   desc:"Amy \u2014 a companion who answers out loud, with mood, breath and one tiny next step.",
@@ -60,7 +60,7 @@ const AP4 = [
   inside:["Amy answers out loud, using your phone's voice","Speak or type \u2014 either works","Mood check-ins that build a picture","Breathing for when thinking won't start","One tiny next step, never a plan","One file, nothing sent anywhere"]
 },
 {
-  slug:"here", demo:"https://numerakey-shop.vercel.app/demos/here/", name:"Here", cat:"ptsd", price:59, status:"live", ready:true,
+  slug:"here", demo:"https://numerakey-shop.vercel.app/demos/here/", name:"Here", cat:"ptsd", price:49, status:"live", ready:true,
   cover:"covers/here.jpg",
   desc:"A complex PTSD skills kit for the bad hour \u2014 pick a state, get a tool, two minutes.",
   tag:"Phase one only: safety and stabilisation.",
@@ -71,7 +71,7 @@ const AP4 = [
   inside:["Eight states, each with the tool that fits it","Fourteen skills, rated before and after","A six-point check \u2014 original wording, not a diagnosis","A safety plan you write yourself","Australian crisis lines, including 13YARN","Copy your data out, or wipe it entirely","One file, nothing leaves the phone"]
 },
 {
-  slug:"gentle-clear", name:"Gentle Clear", cat:"wellness", price:39, status:"live",
+  slug:"gentle-clear", name:"Gentle Clear", cat:"wellness", price:29, status:"live",
   cover:"covers/gentle-clear.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/gentle-clear/",
   desc:"Mira sits with you and asks the only useful question: what would feel doable?",
@@ -83,7 +83,7 @@ const AP4 = [
   inside:["Mira, who simply sits with you","One question: what would feel doable","Notices you showed up, without making it a score","No streaks, no targets","Private to your device"]
 },
 {
-  slug:"daily-plate", name:"Daily Plate", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"daily-plate", name:"Daily Plate", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/daily-plate.jpg",
   demo:"https://numerakey-daily-plate-demo.vercel.app",
   desc:"A food diary that knows the Australian shelf \u2014 Woolworths, Coles and ALDI, kept on your phone.",
@@ -95,7 +95,7 @@ const AP4 = [
   inside:["Australian products \u2014 Woolworths, Coles, ALDI","Barcode and product search (needs a connection)","Water, protein, carbs and fat alongside","A gentle daily target, not a deficit","No account, nothing uploaded","One file, buy once"]
 },
 {
-  slug:"right-action", name:"Right Action", cat:"numerology", price:59, status:"live", ready:true,
+  slug:"right-action", name:"Right Action", cat:"numerology", price:49, status:"live", ready:true,
   cover:"covers/right-action.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/right-action/",
   desc:"What this year is actually for, month by month, and the next useful step in it.",
@@ -107,7 +107,7 @@ const AP4 = [
   inside:["Today \u2014 the one useful step, now","Your personal year and what it is for","Month by month through the year","Where you sit in the nine-year cycle","The people around you, and their years","Ask it plainly, in your own words"]
 },
 {
-  slug:"nua", name:"Nua", cat:"numerology", price:39, status:"live", ready:true,
+  slug:"nua", name:"Nua", cat:"numerology", price:29, status:"live", ready:true,
   cover:"covers/nua.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/nua/",
   desc:"Name a child and see the numbers before the certificate is signed.",
@@ -119,7 +119,7 @@ const AP4 = [
   inside:["Whole name read as it will be written","Numbers rebuild live as you type","Lock the surname, try first names","Weighed against the Life Path","A name book, girls and boys","Shortlist and compare the final two"]
 },
 {
-  slug:"your-wishes", name:"Your Wishes", cat:"personal", price:59, status:"live", ready:true,
+  slug:"your-wishes", name:"Your Wishes", cat:"personal", price:49, status:"live", ready:true,
   cover:"covers/your-wishes.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/your-wishes/",
   desc:"A gentle, guided way to put your wishes into words \u2014 for your family, your future and the people you love.",
@@ -132,7 +132,7 @@ const AP4 = [
   inside:["Eight areas, one question at a time","Speak or type, and correct before saving","Skip, go back, and pick up where you left off","Review each section at a glance","Download a plain-text draft to take to your lawyer","Saved on your device, no account"]
 },
 {
-  slug:"synergy", name:"Synergy", cat:"numerology", price:59, status:"live", ready:true, cover:"covers/synergy.jpg",
+  slug:"synergy", name:"Synergy", cat:"numerology", price:49, status:"live", ready:true, cover:"covers/synergy.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/synergy/",
   desc:"Two charts side by side \u2014 where you meet easily, where the friction is structural, and what neither of you carries.",
   tag:"The bond, aspect by aspect.",
@@ -143,7 +143,7 @@ const AP4 = [
   inside:["Both charts in full, Goodwin and Phillips","Every aspect marked harmonious, neutral or challenging","Numbers only you carry, only they carry, and shared","The shared blind spot \u2014 what neither of you has","Both personal years, turning on the birthday","A typeset PDF of the whole reading","No account, nothing sent anywhere"]
 },
 {
-  slug:"nomen", name:"Nomen", cat:"numerology", price:89, status:"live", ready:true,
+  slug:"nomen", name:"Nomen", cat:"numerology", price:49, status:"live", ready:true,
   cover:"covers/nomen.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/nomen/",
   desc:"Read the name you were given, then find one that carries you better.",
@@ -155,7 +155,7 @@ const AP4 = [
   inside:["Your birth name read as the blueprint","The name you use today, read on top of it","Inclusion table \u2014 karmic lessons and hidden passion","Growth number from the first name","Test a surname already open to you","Twelve ranked variants, each explained","Type any spelling and watch it rebuild"]
 },
 {
-  slug:"meridian-emdr", name:"Meridian EMDR", cat:"ptsd", price:59, status:"live", ready:true,
+  slug:"meridian-emdr", name:"Meridian EMDR", cat:"ptsd", price:49, status:"live", ready:true,
   cover:"covers/meridian-emdr.jpg",
   demo:"https://meridian-emdrapp.netlify.app",
   desc:"A quiet room for bilateral stimulation between clinical sessions — butterfly BLS, stabilisation, grounding and a seven-step guided path.",
@@ -167,7 +167,7 @@ const AP4 = [
   inside:["Butterfly BLS — visual, stereo tones, or both","Safe place, container and resource figures","Grounding: 5-4-3-2-1, box breathing, body scan","Seven-step guided session","Private journal with SUDS trends and set counts","The eight phases explained, with CPTSD pacing notes","Calm now, with Australian crisis numbers","One file, local only"]
 },
 {
-  slug:"aurora-emdr", name:"Aurora EMDR", cat:"ptsd", price:59, status:"live", ready:true,
+  slug:"aurora-emdr", name:"Aurora EMDR", cat:"ptsd", price:49, status:"live", ready:true,
   cover:"covers/aurora-emdr.jpg",
   demo:"https://numerakey-aurora-emdr-demo.vercel.app",
   desc:"A guardian light on the path — butterfly BLS studio, stabilisation work and a guided session, private on your device.",
@@ -179,7 +179,7 @@ const AP4 = [
   inside:["Butterfly BLS studio, left–right","Coach with structured on-device guidance","Safe place, container and resource work","Grounding and breathing","Seven-step guided session","Learn EMDR — eight phases and CPTSD tips","Progress view","One file, local only"]
 },
 {
-  slug:"lumina-emdr", name:"Lumina EMDR", cat:"ptsd", price:59, status:"live", ready:true,
+  slug:"lumina-emdr", name:"Lumina EMDR", cat:"ptsd", price:49, status:"live", ready:true,
   cover:"covers/lumina-emdr.jpg",
   demo:"https://numerakey-lumina-emdr-demo.vercel.app",
   desc:"Rainbow bilateral stimulation on pure black — butterfly hug or eye tracking, offline, no account.",

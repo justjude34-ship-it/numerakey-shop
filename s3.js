@@ -1,6 +1,6 @@
 const AP3 = [
 {
-  slug:"sacred-address", name:"Sacred Address", cat:"numerology", price:39, status:"live", ready:true,
+  slug:"sacred-address", name:"Sacred Address", cat:"numerology", price:29, status:"live", ready:true,
   cover:"covers/sacred-address.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/sacred-address/",
   desc:"The number on your door, read after Thomas Muldoon \u2014 what the place supports, and what it asks of whoever lives there.",
@@ -12,7 +12,7 @@ const AP3 = [
   inside:["Your house, unit or flat number, read in full","Master numbers held whole","Letters in the address counted properly","The working shown at every step","A library of your recent readings","Muldoon's method, credited","Private to your device"]
 },
 {
-  slug:"phillips-inner-self", name:"Inside Your Numbers", cat:"numerology", price:59, status:"live", ready:true,
+  slug:"phillips-inner-self", name:"Inside Your Numbers", cat:"numerology", price:49, status:"live", ready:true,
   cover:"covers/phillips-inner-self.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/phillips-inner-self/",
   desc:"The numbers behind how you actually operate \u2014 method after David Phillips' numerology.",
@@ -24,7 +24,7 @@ const AP3 = [
   inside:["The framework, worked through in full","What each number does well, and badly","No account and no subscription","Runs offline, from one file","Private to your device"]
 },
 {
-  slug:"domain-energy", name:"Domain Energy", cat:"numerology", price:59, status:"live", ready:true,
+  slug:"domain-energy", name:"Domain Energy", cat:"numerology", price:49, status:"live", ready:true,
   cover:"covers/domain-energy.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/domain-energy/",
   desc:"Read a domain's Soul Urge, Personality and Destiny before you spend money on it.",
@@ -36,7 +36,7 @@ const AP3 = [
   inside:["Soul Urge, Personality and Destiny for any domain","Master numbers 11, 22 and 33 held intact","The TLD ignored \u2014 .com is shared, the name is not","Karmic numbers such as 14 named, not hidden","Print the reading","Runs offline from one file"]
 },
 {
-  slug:"comet", name:"Comet", cat:"money", price:39, status:"live",
+  slug:"comet", name:"Comet", cat:"money", price:29, status:"live",
   cover:"covers/comet.jpg",
   demo:"https://numerakey-comet-demo.vercel.app",
   desc:"The month-to-month one: bills, categories, savings goals, and where it actually went.",
@@ -48,7 +48,7 @@ const AP3 = [
   inside:["Bills and due dates in one view","Spending by category, month by month","Planned against actual","Savings goals with real timelines","Runs offline, no bank login"]
 },
 {
-  slug:"budget-buddy", demo:"https://numerakey-shop.vercel.app/demos/budget-buddy/", name:"Budget Buddy", cat:"money", price:39, status:"live", ready:true,
+  slug:"budget-buddy", demo:"https://numerakey-shop.vercel.app/demos/budget-buddy/", name:"Budget Buddy", cat:"money", price:29, status:"live", ready:true,
   cover:"covers/budget-buddy.jpg",
   desc:"A budget built by conversation \u2014 seven small questions, and guessing is allowed.",
   tag:"Sit down. We'll do this together.",
@@ -59,7 +59,7 @@ const AP3 = [
   inside:["Seven questions, one screen at a time","Estimates welcome \u2014 refine them later","Money for fun counted in, not left out","A finished monthly budget at the end","Warm tone, no lectures about coffee","One file, your numbers stay on your device"]
 },
 {
-  slug:"ledger-noir", name:"Ledger Noir", cat:"money", price:39, status:"live", ready:true,
+  slug:"ledger-noir", name:"Ledger Noir", cat:"money", price:29, status:"live", ready:true,
   cover:"covers/ledger-noir.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/ledger-noir/",
   desc:"A budget spreadsheet for people who actually want a spreadsheet \u2014 dark, fast, and it saves itself.",
@@ -71,7 +71,7 @@ const AP3 = [
   inside:["Monthly, yearly or blank templates","Budgeted against actual, per row","Totals and percentage of income spent","Colour-coded spending pie you control","CSV and PDF export","Auto-saves in the browser as you type"]
 },
 {
-  slug:"paws-of-destiny", name:"Paws of Destiny", cat:"numerology", price:39, status:"live",
+  slug:"paws-of-destiny", name:"Paws of Destiny", cat:"numerology", price:29, status:"live",
   cover:"covers/paws-of-destiny.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/paws-of-destiny/",
   desc:"A numerology reading for the animal who shares your life \u2014 name, date, and the nature they came with.",
@@ -83,7 +83,7 @@ const AP3 = [
   inside:["A full reading from name and birth date","The Circle \u2014 every animal in the household","How each number was worked out, shown plainly","Readings kept on your device","Never a subscription"]
 },
 {
-  slug:"still-house", name:"Still House Feng Shui", cat:"home", price:39, status:"live", ready:true,
+  slug:"still-house", name:"Still House Feng Shui", cat:"home", price:29, status:"live", ready:true,
   cover:"covers/still-house-feng-shui.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/still-house/",
   desc:"Feng shui you can ask out loud \u2014 chi, the five elements, the bagua, and what this room actually needs.",
@@ -95,7 +95,7 @@ const AP3 = [
   inside:["Ask aloud and hear the answer back","A daily note \u2014 one small thing to tend","Chi, the five elements, the bagua, yin and yang","A planner for sketching and photographing a room","A quiz for checking what stuck","No account, no network, nothing sent away"]
 },
 {
-  slug:"wind-and-water", name:"Wind & Water", cat:"home", price:39, status:"live",
+  slug:"wind-and-water", name:"Wind & Water", cat:"home", price:29, status:"live",
   cover:"covers/wind-and-water.jpg",
   demo:"https://numerakey-wind-and-water-demo.vercel.app",
   desc:"Feng shui for a real house, room by room, without buying anything.",
@@ -107,7 +107,7 @@ const AP3 = [
   inside:["Bagua mapped to your floor plan","Room-by-room guidance","Fixes using what you own","Annual energy shifts","Notes per room"]
 },
 {
-  slug:"name-your-pet", name:"How to Name Your Pet", cat:"numerology", price:39, status:"live", ready:true,
+  slug:"name-your-pet", name:"How to Name Your Pet", cat:"numerology", price:29, status:"live", ready:true,
   cover:"covers/name-your-pet.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/name-your-pet/",
   desc:"Choose a name whose numbers suit the animal, from a big catalogue or one of your own.",
@@ -119,7 +119,7 @@ const AP3 = [
   inside:["A big catalogue of names across seven species","Analyse any name you're considering","Expression, soul urge and personality","Cornerstone, first vowel and capstone","Letter meanings reference","Save a shortlist to decide later"]
 },
 {
-  slug:"testimony", name:"Testimony", cat:"narc", price:39, status:"live", ready:true,
+  slug:"testimony", name:"Testimony", cat:"narc", price:19, status:"live", ready:true,
   cover:"covers/testimony.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/testimony/",
   desc:"Turns what happened into a book, one guided question at a time.",
@@ -131,7 +131,7 @@ const AP3 = [
   inside:["Guided interview, chapter by chapter","A timeline that builds as you answer","Dictate instead of typing","Swap real names for book names in the finished manuscript","Optional draft and tidy help, using your own API key","Print or save as PDF, or download as Markdown, text or HTML","PIN lock and a quick-leave button","Works offline, saved only on your device"]
 },
 {
-  slug:"teint", name:"Teint", cat:"style", price:39, status:"live", ready:true,
+  slug:"teint", name:"Teint", cat:"style", price:29, status:"live", ready:true,
   cover:"covers/teint.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/teint/",
   desc:"Twelve-season colour analysis, then a studio for building the palette you actually wear.",
@@ -143,7 +143,7 @@ const AP3 = [
   inside:["Twelve-season analysis by undertone, value and chroma","All twelve seasons to read and compare","Five-swatch studio \u2014 lock what works, shuffle the rest","Export as HEX, RGB, HSL or CSS variables","Contrast checking built in","Private to your device"]
 },
 {
-  slug:"dual-compass", name:"Dual Compass", cat:"neuro", price:59, status:"live", ready:true,
+  slug:"dual-compass", name:"Dual Compass", cat:"neuro", price:49, status:"live", ready:true,
   cover:"covers/dual-compass.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/dual-compass/",
   desc:"For AuDHD \u2014 the two nervous systems that want opposite things, in one place that holds both.",
@@ -155,7 +155,7 @@ const AP3 = [
   inside:["Built for AuDHD, not one or the other","Rowan, set to the tone you ask for","Unstick, Sit and Rest \u2014 whichever the day needs","Familiar loop, slow body, interest nibble, one-surface tidy","Scripts for leaving, cancelling and asking for accommodations","Crisis lines for Australia, the US, the UK and Canada","One file, runs offline"]
 },
 {
-  slug:"numera-chaldean", demo:"https://numerakey-shop.vercel.app/demos/numera-chaldean/", name:"Numera Chaldean", cat:"numerology", price:59, status:"live", ready:true, cover:"covers/numera-chaldean.jpg",
+  slug:"numera-chaldean", demo:"https://numerakey-shop.vercel.app/demos/numera-chaldean/", name:"Numera Chaldean", cat:"numerology", price:49, status:"live", ready:true, cover:"covers/numera-chaldean.jpg",
   desc:"The Chaldean system in full \u2014 driver, conductor, name, Lo Shu grid and timing.",
   tag:"The older system, worked properly.",
   body:[
@@ -165,7 +165,7 @@ const AP3 = [
   inside:["Psychic (driver) and destiny (conductor) numbers","Name on the Chaldean map \u2014 no letter is a 9","Lo Shu grid from the full date","Personal year timing, lucky field and practices","Name laboratory for testing a spelling","Two-chart harmony between any two people","Compound and karmic notes in full"]
 },
 {
-  slug:"soulsync", name:"SoulSync", cat:"wellness", price:39, status:"live", ready:true,
+  slug:"soulsync", name:"SoulSync", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/soulsync.jpg",
   demo:"https://numerakey-soulsync-demo.vercel.app",
   desc:"Mood, journal and tiny habits in one quiet place \u2014 with a companion that reflects rather than advises.",
