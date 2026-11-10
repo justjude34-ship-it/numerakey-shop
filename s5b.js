@@ -47,7 +47,7 @@ artFor(APPS[APPS.length - 1]).motif = "wave";
 
 
 APPS.push({
-  slug:"somni-plus", name:"Somni Plus", cat:"sound", price:49, status:"live", ready:true,
+  slug:"somni-plus", name:"Somni Plus", cat:"sound", price:29, status:"live", ready:true,
   cover:"covers/somni-plus.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/somni-plus/",
   desc:"Exclusive binaural sound, with ocean, rain or storm underneath. One voice, made on your device.",
@@ -61,7 +61,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "wave";
 
 APPS.push({
-  slug:"somni-three", name:"Somni Three", cat:"sound", price:49, status:"live", ready:true,
+  slug:"somni-three", name:"Somni Three", cat:"sound", price:29, status:"live", ready:true,
   cover:"covers/somni-three.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/somni-three/",
   desc:"Binaural beats, isochronic tones, singing bowls, and a vagus soundscape. One mode at a time.",
@@ -130,7 +130,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"mysomni", name:"MySomni", cat:"sound", price:49, status:"live", ready:true,
+  slug:"mysomni", name:"MySomni", cat:"sound", price:29, status:"live", ready:true,
   cover:"covers/mysomni.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/mysomni/",
   desc:"A quieter night. One sound only — binaural beats, a Tibetan singing bowl or a deep temple OM.",
@@ -199,7 +199,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"lunara", name:"Lunara", cat:"wellness", price:49, status:"live", ready:true,
+  slug:"lunara", name:"Lunara", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/lunara.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/lunara/",
   desc:"Private relaxation with binaural beats and singing bowls — one file, offline, buy once.",
@@ -309,7 +309,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "rings";
 
 APPS.push({
-  slug:"cadence", name:"Cadence", cat:"numerology", price:49, status:"live", ready:true,
+  slug:"cadence", name:"Cadence", cat:"numerology", price:29, status:"live", ready:true,
   cover:"covers/cadence.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/cadence/",
   desc:"A numerology guide to your personal year, month and day, coloured by the essence you carry from your name.",
@@ -323,7 +323,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"still", name:"Still", cat:"wellness", price:49, status:"live", ready:true,
+  slug:"still", name:"Still", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/still.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/still/",
   desc:"Binaural beds, bronze chimes and an ocean breath — for racing thoughts and nights that will not quiet.",
@@ -351,7 +351,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"astra-nova", name:"Astra Nova", cat:"divine", price:49, status:"live", ready:true,
+  slug:"astra-nova", name:"Astra Nova", cat:"divine", price:29, status:"live", ready:true,
   cover:"covers/astra-nova.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/astra-nova/",
   desc:"Your natal chart and a written reading, built from your birth date, time and place.",
@@ -407,7 +407,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"tally", name:"Tally", cat:"money", price:49, status:"soon", ready:true,
+  slug:"tally", name:"Tally", cat:"money", price:29, status:"soon", ready:true,
   cover:"covers/tally.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/tally/",
   desc:"A time and fee tracker for anyone who bills by the hour \u2014 a timer, a rate for every client, and a summary ready to invoice.",

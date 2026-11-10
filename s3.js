@@ -12,7 +12,7 @@ const AP3 = [
   inside:["Your house, unit or flat number, read in full","Master numbers held whole","Letters in the address counted properly","The working shown at every step","A library of your recent readings","Muldoon's method, credited","Private to your device"]
 },
 {
-  slug:"phillips-inner-self", name:"Inside Your Numbers", cat:"numerology", price:49, status:"live", ready:true,
+  slug:"phillips-inner-self", name:"Inside Your Numbers", cat:"numerology", price:29, status:"live", ready:true,
   cover:"covers/phillips-inner-self.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/phillips-inner-self/",
   desc:"The numbers behind how you actually operate \u2014 method after David Phillips' numerology.",
@@ -24,7 +24,7 @@ const AP3 = [
   inside:["The framework, worked through in full","What each number does well, and badly","No account and no subscription","Runs offline, from one file","Private to your device"]
 },
 {
-  slug:"domain-energy", name:"Domain Energy", cat:"numerology", price:49, status:"live", ready:true,
+  slug:"domain-energy", name:"Domain Energy", cat:"numerology", price:29, status:"live", ready:true,
   cover:"covers/domain-energy.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/domain-energy/",
   desc:"Read a domain's Soul Urge, Personality and Destiny before you spend money on it.",
@@ -143,7 +143,7 @@ const AP3 = [
   inside:["Twelve-season analysis by undertone, value and chroma","All twelve seasons to read and compare","Five-swatch studio \u2014 lock what works, shuffle the rest","Export as HEX, RGB, HSL or CSS variables","Contrast checking built in","Private to your device"]
 },
 {
-  slug:"dual-compass", name:"Dual Compass", cat:"neuro", price:49, status:"live", ready:true,
+  slug:"dual-compass", name:"Dual Compass", cat:"neuro", price:29, status:"live", ready:true,
   cover:"covers/dual-compass.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/dual-compass/",
   desc:"For AuDHD \u2014 the two nervous systems that want opposite things, in one place that holds both.",
@@ -155,7 +155,7 @@ const AP3 = [
   inside:["Built for AuDHD, not one or the other","Rowan, set to the tone you ask for","Unstick, Sit and Rest \u2014 whichever the day needs","Familiar loop, slow body, interest nibble, one-surface tidy","Scripts for leaving, cancelling and asking for accommodations","Crisis lines for Australia, the US, the UK and Canada","One file, runs offline"]
 },
 {
-  slug:"numera-chaldean", demo:"https://numerakey-shop.vercel.app/demos/numera-chaldean/", name:"Numera Chaldean", cat:"numerology", price:49, status:"live", ready:true, cover:"covers/numera-chaldean.jpg",
+  slug:"numera-chaldean", demo:"https://numerakey-shop.vercel.app/demos/numera-chaldean/", name:"Numera Chaldean", cat:"numerology", price:29, status:"live", ready:true, cover:"covers/numera-chaldean.jpg",
   desc:"The Chaldean system in full \u2014 driver, conductor, name, Lo Shu grid and timing.",
   tag:"The older system, worked properly.",
   body:[

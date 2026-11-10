@@ -59,7 +59,7 @@ const AP1 = [
   inside:["Practices you set and keep","Daily check-in on mood and activation","Journal alongside the tracking","Progress across weeks, not days","Private and offline, no account"]
 },
 {
-  slug:"coming-home", name:"Coming Home", cat:"wellness", price:49, status:"live", ready:true,
+  slug:"coming-home", name:"Coming Home", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/coming-home.jpg",
   demo:"https://numerakey-coming-home-demo.vercel.app",
   desc:"Inner child work that builds a safe room first, then goes back for the parts still waiting there.",
@@ -131,7 +131,7 @@ const AP1 = [
   inside:["Talk or type \u2014 it speaks with your device's own voice","Daily check-in it remembers and refers back to","Fatigue, heat, fog, mobility, bladder, vision, pain","Energy banking, and a 4\u00b72\u00b76 breath","Questions to take to your neurologist","Lifeline 13 11 14 and 988 when it matters","A companion, never a substitute for your care team"]
 },
 {
-  slug:"spirit-breath", name:"Spirit Breath", cat:"wellness", price:49, status:"live", ready:true,
+  slug:"spirit-breath", name:"Spirit Breath", cat:"wellness", price:29, status:"live", ready:true,
   cover:"covers/spirit-breath.jpg",
   demo:"https://spirit-breath.vercel.app",
   desc:"A full breathwork practice \u2014 guided techniques, a seven-part journey, and the reasoning behind each one.",
