@@ -14,7 +14,7 @@ module.exports = async (req, res) => {
     if (!/^cs_(live|test)_[A-Za-z0-9]+$/.test(sid)) return fail(400, "Missing or invalid purchase reference.");
 
     const session = await stripe("checkout/sessions/" + sid);
-    const keyIsLive = /^(sk|rk)_live_/.test((process.env.STRIPE_SECRET_KEY || process.env.stripe_secret_key) || "");
+    const keyIsLive = /^(sk|rk)_live_/.test(String(process.env.STRIPE_SECRET_KEY || process.env.stripe_secret_key || "").replace(/\s+/g, ""));
     if (session.livemode !== keyIsLive) return fail(403, "Purchase not recognised.");
     if (session.payment_status !== "paid") return fail(402, "This purchase has not been paid.");
 

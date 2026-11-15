@@ -14,7 +14,7 @@ function loadCatalogue() {
 }
 
 function stripe(pathAndQuery, formBody, version) {
-  const key = (process.env.STRIPE_SECRET_KEY || process.env.stripe_secret_key);
+  const key = String(process.env.STRIPE_SECRET_KEY || process.env.stripe_secret_key || "").replace(/\s+/g, "");
   if (!key) throw new Error("STRIPE_SECRET_KEY is not set");
   return fetch("https://api.stripe.com/v1/" + pathAndQuery, {
     method: formBody ? "POST" : "GET",
