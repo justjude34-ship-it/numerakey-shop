@@ -3,7 +3,7 @@
    USE_CHECKOUT: false = use the hand-made Stripe links in PAYMENTS below.
                  true  = every app in FILES buys through /api/checkout (needs STRIPE_SECRET_KEY set in Vercel).
    When true, the download is only released for a paid purchase (see api/download.js). */
-const USE_CHECKOUT = false;
+const USE_CHECKOUT = true;
 const PAYMENTS = {
   "steady-day": "https://buy.stripe.com/eVq00c1dP4whbr69li0RG01",
   "currency-converter": "https://buy.stripe.com/14A14g09L1k552IdBy0RG02"
