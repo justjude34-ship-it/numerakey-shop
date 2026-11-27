@@ -29,11 +29,6 @@ APPS.push({ slug:"after-the-silence", name:"After the Silence", cat:"narc", pric
 artFor(APPS[APPS.length - 1]).motif = "field";
 (function(){const i=APPS.findIndex(a=>a.slug==="after-the-silence");if(i<0)return;const x=APPS.splice(i,1)[0];const f=APPS.findIndex(a=>a.cat==="narc");APPS.splice(f<0?APPS.length:f,0,x);})();
 
-/* Apps added in this file load after the buy links are set in s5d.js, so set them again here. */
-APPS.forEach(a => {
-  if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
-  else if (PAYMENTS[a.slug]) a.buy = PAYMENTS[a.slug];
-});
 
 /* Find It First: pattern-spotting game for quick ADHD brains, $39 Neurodivergent tier, leads that shelf. Paid file: private/find-it-first.html. Cover: covers/find-it-first.jpg. */
 APPS.push({ slug:"find-it-first", name:"Find It First", cat:"neuro", price:29, status:"live", ready:true, cover:"covers/find-it-first.jpg", demo:"https://find-it-first.vercel.app", desc:"A fast pattern-spotting game where a quick, noticing brain is the winning move.", tag:"Your quick brain wins.", body:[
@@ -135,3 +130,9 @@ artFor(APPS[APPS.length - 1]).motif = "orbits";
   const at=APPS.findIndex(a=>a.cat==="kids");
   APPS.splice(at<0?first:at,0,...picked);
 })();
+
+/* Apps added in this file load after the buy links are set in s5d.js, so set them again here. */
+APPS.forEach(a => {
+  if (USE_CHECKOUT && FILES[a.slug]) a.buy = "/api/checkout?slug=" + a.slug;
+  else if (PAYMENTS[a.slug]) a.buy = PAYMENTS[a.slug];
+});
