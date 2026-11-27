@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     const app = APPS.find(a => a.slug === slug);
     const origin = "https://" + req.headers.host;
 
-    if (!app || app.status !== "live" || !app.ready || !FILES[slug] || !(app.price > 0)) {
+    if (!app || app.status !== "live" || !FILES[slug] || !(app.price > 0)) {
       res.statusCode = 303;
       res.setHeader("Location", origin + "/#/app/" + encodeURIComponent(slug));
       return res.end();
