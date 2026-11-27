@@ -407,7 +407,7 @@ APPS.push({
 artFor(APPS[APPS.length - 1]).motif = "orbits";
 
 APPS.push({
-  slug:"tally", name:"Tally", cat:"money", price:29, status:"soon", ready:true,
+  slug:"tally", name:"Tally", cat:"money", price:29, status:"live", ready:true,
   cover:"covers/tally.jpg",
   demo:"https://numerakey-shop.vercel.app/demos/tally/",
   desc:"A time and fee tracker for anyone who bills by the hour \u2014 a timer, a rate for every client, and a summary ready to invoice.",
