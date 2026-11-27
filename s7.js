@@ -4,7 +4,7 @@ function viewHow(){
     <h1><span class="spectrum">How it works</span></h1>
     <p class="lede" style="margin-top:20px">Four steps, and none of them involve a password.</p>
     <h2>1. You buy the app</h2>
-    <p><strong>The shop isn't open for orders yet.</strong> The catalogue below is real and the apps are finished, but payment isn't switched on — so nothing can be bought today. Have a look around, and check back shortly.</p>
+    <p>Choose an app and press Buy. You pay securely through Stripe, and your download opens as soon as the payment goes through.</p>
     <h2>2. You get a file</h2>
     <p>A download link arrives by email straight after payment, along with a copy of your receipt. The file is the app — there is nothing else to install.</p>
     <h2>3. You open it</h2>
